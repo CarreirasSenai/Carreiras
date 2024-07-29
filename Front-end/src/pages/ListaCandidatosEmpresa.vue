@@ -125,7 +125,6 @@ export default {
     display: inherit;
     flex-direction: inherit;
     gap: 15px;
-    margin: 0 10px;
     width: 100%; 
     padding: 30px 50px;
 }
@@ -158,7 +157,7 @@ export default {
 
     li {
         background-color: #adadad;
-        padding: 5px 10px;
+        padding: 5px 25px;
         border-radius: 10px;
         user-select: none;
     }
