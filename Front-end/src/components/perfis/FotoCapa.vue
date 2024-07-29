@@ -1,10 +1,9 @@
 <template>
     <div class="div-capa-foto">
-        <div class="capa"></div>
+        <img class="capa" src="../../assets/capa (3).png">
         <div class="pos-capa"></div>
         <div class="div-foto-perfil">
-            <img src="https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"
-                class="foto-perfil" alt="Foto de Perfil">
+            <img src="../../assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
             <h3 class="cor-secundaria">Nome do Elemento</h3>
             <h4 class="cor-primaria">Desenvolvedor Full Stack</h4>
             <EditarFotoCapa />
@@ -23,11 +22,9 @@
 
     .capa {
         height: 250px;
-        background-image: url("https://empresas.infoempleo.com/hrtrends/media/2017/10/Compromiso-empleados.jpg");
-        background-position: center;
-        background-attachment: fixed;
-        background-size: cover;
         width: 100%;
+        object-fit: cover;
+        object-position: center;
     }
 
     .pos-capa {
@@ -67,8 +64,8 @@
     }
 }
 
-@media(max-width:800px){
-    .div-capa-foto{
+@media(max-width:800px) {
+    .div-capa-foto {
         margin: 0;
     }
 }

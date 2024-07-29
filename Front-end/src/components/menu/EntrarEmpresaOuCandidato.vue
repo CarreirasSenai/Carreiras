@@ -1,24 +1,19 @@
 <template>
   <v-container fluid class="bg-white fill-height d-flex flex-column first-container">
-    <v-col
-      class="align-start"
-      style="padding: 0px!important; margin:0% !important; width: 100vw; height: 100vh; position: relative;"
-    >
-      <v-row
-        style="display:flex; flex-direction: row; padding: 0px!important; margin:0% !important;"
-        class="bg-white fill-height"
-      >
+    <v-col class="align-start"
+      style="padding: 0px!important; margin:0% !important; width: 100vw; height: 100vh; position: relative;">
+      <v-row style="display:flex; flex-direction: row; padding: 0px!important; margin:0% !important;"
+        class="bg-white fill-height">
         <img class="carreiras-logo" src="../../assets/logo.png" alt="Logo" />
 
-        <v-col
-          class="candidate-column"
+        <v-col class="candidate-column"
           style="display:flex; flex-direction:column; align-items:center; padding:0px!important; margin:0% !important; position: relative;"
-          cols="12"
-          md="6"
-        >
+          cols="12" md="6">
           <div style="display: flex; align-items: center; flex-direction: column;">
             <h2 class="titulo-candidato">Candidato</h2>
-            <v-btn style="font-weight: bold; color: white; z-index: 3;" dark class="v-btn--size-x-large bg-purple-darken-4  v-btn--density-comfortable" @click='redirectToLogin'>
+            <v-btn style="font-weight: bold; color: white; z-index: 3;" dark
+              class="v-btn--size-x-large bg-purple-darken-4  v-btn--density-comfortable"
+              @click='redirectToLogin("candidato")'>
               Entrar
             </v-btn>
           </div>
@@ -27,16 +22,13 @@
           </div>
         </v-col>
 
-        <v-col
-          class="company-column bg-purple-darken-4"
+        <v-col class="company-column bg-purple-darken-4"
           style="display:flex; flex-direction: column; align-items: center; padding: 0px !important; margin:0% !important; position: relative;"
-          cols="12"
-          md="6"
-        >
+          cols="12" md="6">
           <div style="display: flex; align-items: center; flex-direction: column;">
             <h2 class="titulo-empresa" style="z-index: 2;">Empresa</h2>
             <v-btn style="color:rgba(58, 28, 118, 1);font-weight: bold; z-index: 3;" outlined
-              class="v-btn--size-x-large v-btn--density-comfortable" @click='redirectToLogin'>
+              class="v-btn--size-x-large v-btn--density-comfortable" @click='redirectToLogin("empresa")'>
               Entrar
             </v-btn>
           </div>
@@ -53,8 +45,9 @@
 export default {
   name: 'LandingPage',
   methods: {
-    redirectToLogin() {
-      this.$router.push('/login');
+    redirectToLogin(resposta) {
+      const encodedResposta = encodeURIComponent(resposta);
+      this.$router.push({ path: '/login', query: { resposta: encodedResposta } });
     }
   }
 }
@@ -65,8 +58,8 @@ export default {
   color: #4A148C;
   margin-top: 130px;
   z-index: 2;
-  text-shadow: 
-    -1px -1px 0 #ffffff,  
+  text-shadow:
+    -1px -1px 0 #ffffff,
     1px -1px 0 #ffffff,
     -1px 1px 0 #ffffff,
     1px 1px 0 #ffffff;
@@ -124,7 +117,7 @@ export default {
     max-width: 50%;
   }
 
-  .img-people{
+  .img-people {
     margin-top: 20px;
     width: 100%;
   }
@@ -133,7 +126,8 @@ export default {
     position: static;
   }
 
-  .candidate-column, .company-column {
+  .candidate-column,
+  .company-column {
     flex-direction: column;
     align-items: center;
     justify-content: center;

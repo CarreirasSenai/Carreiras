@@ -1,8 +1,7 @@
-
 <template>
     <EditarInfoCandidato />
     <div class="div-infos">
-        <v-expansion-panels>
+        <v-expansion-panels v-model="panel">
             <v-col cols="12" md="12">
                 <v-expansion-panel>
                     <v-expansion-panel-title>
@@ -112,7 +111,8 @@
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
                         <v-row>
-                            <v-col cols="12" lg="6" md="12" sm="12" class="bloco" v-for="(habilidade, index) in habilidades" :key="index">
+                            <v-col cols="12" lg="6" md="12" sm="12" class="bloco"
+                                v-for="(habilidade, index) in habilidades" :key="index">
                                 <v-card variant="tonal">
                                     <v-card-text> {{ habilidade }} </v-card-text>
                                     <EditarHabilidade />
@@ -135,7 +135,8 @@ export default {
             formacoes: '',
             cursos: '',
             experiencias: '',
-            habilidades: ''
+            habilidades: '',
+            panel: [0],
         };
     },
     created() {
@@ -176,7 +177,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .div-infos {
     margin: 0 20px 20px 20px;
     padding-bottom: 3px;
@@ -184,10 +185,6 @@ export default {
     .v-row {
         margin: 0 20px 20px 20px;
     }
-
-    /* .v-row div {
-        padding: 0;
-    } */
 
     h3 {
         font-size: 20px;
@@ -213,13 +210,8 @@ export default {
     }
 }
 
-.v-icon {
-    color: #6732d2e3;
-}
-
 .v-expansion-panels {
-
-    h3 {
+    .v-expansion-panel-title{
         color: #6732d2e3;
     }
 

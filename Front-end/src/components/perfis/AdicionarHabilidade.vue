@@ -2,7 +2,7 @@
     <div class="text-center div-button-edit">
         <v-dialog v-model="dialog" max-width="400">
             <template v-slot:activator="{ props: activatorProps }">                
-                <v-btn class="text-none font-weight-regular bt-add" variant="outlined" v-bind="activatorProps">
+                <v-btn class="bt-add" variant="outlined" v-bind="activatorProps">
                     Adicionar
                 </v-btn>
             </template>

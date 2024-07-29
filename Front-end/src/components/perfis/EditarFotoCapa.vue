@@ -15,7 +15,8 @@
                         </v-col>
 
                         <v-col cols="12" md="12">
-                            <v-text-field label="Profissão*" required></v-text-field>
+                            <v-autocomplete clearable label="Sua Profissão*" :items="profissoes" :search-input.sync="search"
+                                :filter="filterProfissoes" required></v-autocomplete>
                         </v-col>
 
                         <v-col cols="12" md="12">
@@ -32,7 +33,7 @@
 
                     </v-row>
 
-                    <small class="text-caption text-medium-emphasis">*indicates required field</small>
+                    <small class="text-caption text-medium-emphasis">*indica campo obrigatório</small>
                 </v-card-text>
 
                 <v-divider></v-divider>
@@ -40,9 +41,10 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
 
-                    <v-btn text="Fechar" variant="plain" @click="dialog = false"></v-btn>
-
-                    <v-btn color="Enviar" text="Salvar" variant="tonal" @click="dialog = false"></v-btn>
+                    <v-btn text="Limpar" variant="plain" @click="dialog = false" class="border-red-accent-4"></v-btn>
+                    <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
+                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false"
+                        class="bg-purple-darken-4"></v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -50,11 +52,11 @@
 </template>
 
 <style lang="scss" scoped>
-.mdi{
+.mdi {
     color: #6732d2af;
 }
 
-.mdi:hover{
+.mdi:hover {
     color: #6732d2;
 }
 
@@ -70,9 +72,20 @@
 </style>
 
 <script>
+import profissoes from '@/assets/profissoes.json';
+
 export default {
     data: () => ({
         dialog: false,
+        profissoes: profissoes,
     }),
+    methods: {
+        // Função para filtrar profissões com base na entrada do usuário
+        filterProfissoes(item, queryText) {
+            // Converte o item e a consulta para minúsculas para comparação
+            const query = queryText.toLowerCase();
+            return item.toLowerCase().includes(query);
+        }
+    }
 }
 </script>

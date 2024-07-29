@@ -1,0 +1,1 @@
+Inicie com: nodemon node app.js

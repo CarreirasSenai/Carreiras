@@ -1,14 +1,12 @@
 <template>
   <v-app>
     <v-main>
-      <!-- <Loading /> -->
       <router-view />
     </v-main>
   </v-app>
 </template>
 
-<script setup>
-//
+<script>
 </script>
 
 <style>
@@ -25,11 +23,19 @@
   color: #191919;
 }
 
+.cor-terciaria {
+  color: #3A1C76;
+}
+
 .back-primario {
   background-color: #6832D2;
 }
 
 .back-secundario {
   background-color: #f0f0f0;
+}
+
+.min-width-300 {
+    min-width: 300px;
 }
 </style>
