@@ -21,6 +21,7 @@ CREATE TABLE user_candidato (
     estado CHAR(2) NOT NULL,
     senha VARCHAR(250) NOT NULL,    
     profissao VARCHAR(200),
+    grupo VARCHAR(9) NOT NULL,
     data_atu DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -88,6 +89,7 @@ CREATE TABLE user_empresa (
     cpf_responsavel CHAR(11) NOT NULL,
     contato_responsavel VARCHAR(20),
     senha VARCHAR(250) NOT NULL,
+    grupo VARCHAR(7) NOT NULL,
     data_create DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
@@ -175,6 +177,7 @@ CREATE TABLE user_admin (
     cpf CHAR(11) NOT NULL,
     senha VARCHAR(250) NOT NULL,
     celular VARCHAR(20),
+    grupo VARCHAR(5) NOT NULL,
     data_atu DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 // Create
-exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, dataAtu, callback) => {
+exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, profissao, grupo, dataAtu, callback) => {
 
     // Verificar se o email já existe
     db.query('SELECT * FROM user_candidato WHERE email = ?', [email], (err, results) => {
@@ -25,13 +25,13 @@ exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
             }
 
             db.query(
-                'INSERT INTO user_candidato (nome_social, nome_completo, email, telefone, celular, cpf, cep, rua, numero, complemento, bairro, cidade, estado, senha, data_atu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, dataAtu],
+                'INSERT INTO user_candidato (nome_social, nome_completo, email, telefone, celular, cpf, cep, rua, numero, complemento, bairro, cidade, estado, senha, profissao, grupo, data_atu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, profissao, grupo, dataAtu],
                 (err, result) => {
 
                     if (err) {
                         // Se houver um erro na inserção, retornar o erro no callback
-                        console.log(err.sqlMessage);
+                        console.log(err);
                         return callback(err, null);
                     }
                     // Se a inserção for bem-sucedida, retornar o ID do novo registro

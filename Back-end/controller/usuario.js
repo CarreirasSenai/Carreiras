@@ -6,8 +6,10 @@ exports.createUser = (req, res) => {
     const { nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password } = req.body;
 
     const dataAtu = DataHora.dataHora();
+    const profissao = 'indefinida';
+    const grupo = 'candidato';
 
-    Users.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, dataAtu, (err, insertId) => {
+    Users.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, profissao, grupo, dataAtu, (err, insertId) => {
         if (err) {
             // Se houver um erro, retornar o status 500 (erro interno do servidor) e uma mensagem de erro
             console.log(err.message);
