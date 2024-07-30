@@ -198,7 +198,7 @@
               </div>
             </v-form>
             <div class="got-account-container my-3">
-              <p>Já criou sua conta? <a href="/login">Faça o login aqui</a></p>
+              <p>Já criou sua conta? <a href="/empresa-candidato">Faça o login aqui</a></p>
             </div>
           </v-card-text>
         </v-card>

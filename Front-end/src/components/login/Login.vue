@@ -16,9 +16,7 @@
               <div class="text-center pa-2 text-red d-none" id="aviso-invalido">Email ou senha inválidos.</div>
               <div class="sign-in-buttons d-flex justify-center align-center">
                 <v-btn class="bg-purple-darken-4 me-2 w-25 min-w-btn" @click="login">Entrar</v-btn>
-                <v-btn class="adm-btn w-25 min-w-btn" variant="outlined" cl>
-                  <a href="/cadastro-candidato">Cadastre-se</a>
-                </v-btn>
+                <v-btn class="adm-btn w-25 min-w-btn" variant="outlined" @click="goToSignUp">Cadastre-se</v-btn>
               </div>
               <p class="forgot-password" @click="forgotPassword">Esqueci minha senha</p>
               <div class="api-google">
@@ -63,6 +61,12 @@ export default {
         console.error('Erro no login', error.response.data);
         document.getElementById('aviso-invalido').classList.add('d-block');
       }
+    },
+    goToSignUp(){
+      if(window.location.href.includes("candidato"))
+        window.location.href = "cadastro-candidato"
+      else
+        window.location.href = "cadastro-empresa"
     },
     forgotPassword(){
       window.alert("Redirecionar para a tela de esqueci minha senha");
