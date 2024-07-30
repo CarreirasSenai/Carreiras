@@ -20,6 +20,7 @@
                   <a href="/cadastro-candidato">Cadastre-se</a>
                 </v-btn>
               </div>
+              <p class="forgot-password" @click="forgotPassword">Esqueci minha senha</p>
               <div class="api-google">
                 <br>
                 <!--Usar aqui a api-->
@@ -63,6 +64,9 @@ export default {
         document.getElementById('aviso-invalido').classList.add('d-block');
       }
     },
+    forgotPassword(){
+      window.alert("Redirecionar para a tela de esqueci minha senha");
+    },
   },
   mounted() {
     this.$route.query.resposta;
@@ -104,6 +108,18 @@ export default {
 .adm-btn {
   border: thin solid #3a1c76 !important;
   color: #3a1c76 !important;
+}
+
+.forgot-password {
+  text-align: center;
+  margin: 20px auto;
+  color: #4b13bb;
+  text-decoration: underline;
+
+  &:hover {
+    color: #763aee;
+    cursor: pointer;
+  }
 }
 
 .min-w-btn{

@@ -197,6 +197,9 @@
                 <v-btn class="adm-button bg-purple-darken-4 mt-4 mb-2" size="large">Salvar</v-btn>
               </div>
             </v-form>
+            <div class="got-account-container my-3">
+              <p>Já criou sua conta? <a href="/login">Faça o login aqui</a></p>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -309,5 +312,19 @@ export default {
 .adm-btn {
   border: thin solid #3a1c76 !important;
   color: #3a1c76 !important;
+}
+
+.got-account-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    color: #4b13bb;
+
+    &:hover {
+      color: #763aee;
+    }
+  }
 }
 </style>
