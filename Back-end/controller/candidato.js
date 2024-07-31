@@ -1,5 +1,5 @@
-const Users = require('../model/usuario');
-const DataHora = require('../controller/dataHora');
+const Candidato = require('../model/candidato');
+const DataHora = require('./dataHora');
 
 // Create
 exports.createUser = (req, res) => {
@@ -9,7 +9,7 @@ exports.createUser = (req, res) => {
     const profissao = 'indefinida';
     const grupo = 'candidato';
 
-    Users.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, profissao, grupo, dataAtu, (err, insertId) => {
+    Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, profissao, grupo, dataAtu, (err, insertId) => {
         if (err) {
             // Se houver um erro, retornar o status 500 (erro interno do servidor) e uma mensagem de erro
             console.log(err.message);
@@ -25,7 +25,7 @@ exports.createUser = (req, res) => {
 exports.login = (req, res) => {
     const { email, password } = req.body;
 
-    Users.getLogin(email, password, (err, user) => {
+    Candidato.getLogin(email, password, (err, user) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -49,7 +49,7 @@ exports.getUser = (req, res) => {
 
     usuario_id = req.session.usuario.id;
 
-    Users.getUser(usuario_id, (err, usuario) => {
+    Candidato.getUser(usuario_id, (err, usuario) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -63,23 +63,12 @@ exports.getUser = (req, res) => {
     });
 };
 
-// Logout
-exports.logout = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({ error: "Erro ao destruir a sessão!" });
-        }
-        res.clearCookie('session-id'); // Limpa o cookie de sessão, se necessário
-        res.json({ success: "Logout feito com sucesso!" });
-    });
-};
-
 // Update
 exports.updateUser = (id, nome, email, senha, foto, descricao, res) => {
     console.log('\n updateUser:');
     console.log(id, nome, email, senha, foto, descricao);
 
-    Users.updateUser(id, nome, email, senha, foto, descricao, (success) => {
+    Candidato.updateUser(id, nome, email, senha, foto, descricao, (success) => {
         res.redirect('/editarPerfil');
     });
 };
@@ -87,7 +76,7 @@ exports.updateUser = (id, nome, email, senha, foto, descricao, res) => {
 // Delete
 exports.deleteUser = (req, res) => {
     const { id } = req.body;
-    Users.deleteUser(id, (success) => {
+    Candidato.deleteUser(id, (success) => {
         res.redirect('/');
     });
 };
