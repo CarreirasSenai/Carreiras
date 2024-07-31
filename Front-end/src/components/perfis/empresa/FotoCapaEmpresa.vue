@@ -1,5 +1,5 @@
 <template>
-    <div class="div-capa-foto box-shadow">
+    <div class="div-capa-foto box-shadow rounded-b-xl">
         <img class="capa" src="/src/assets/capa (1).png">
         <div class="pos-capa">
             <div class="div-foto-perfil">
@@ -40,7 +40,8 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin: 30px;
+    // margin: 30px;
+    margin-bottom: 25px;
 }
 
 .capa {
