@@ -1,15 +1,12 @@
 <template>
-    <ChatLayout ref="chatLayout"/>
+    <ChatLayout ref="chatLayout" />
 
     <v-container fluid="true">
         <v-app-bar scroll-behavior="elevate">
             <div class="navbar-container">
-                <div class="d-flex justify-center align-center">
-                    <a href="/" class="d-flex justify-center align-center"
-                        style="width: 150px; height: 150px; margin-left: 15px;">
-                        <img class="carreiras-logo" src="../../assets/logo.png" alt="">
-                    </a>
-                </div>
+                <a href="/" class="d-flex justify-center align-center">
+                    <img class="carreiras-logo" src="../../assets/logo.png">
+                </a>
 
                 <!-- TODO Validar quando o usuário estiver logado (vai ser feito futurane) -->
                 <div class="sign-in-buttons" v-if="visibilidadeNaoLogado">
@@ -111,7 +108,7 @@ export default {
         // Autenticar usúario e coletar dados
         async userLogado() {
             try {
-                const response = await axios.get('http://localhost:4000/user/read', {
+                const response = await axios.get('http://localhost:4000/candidato/read', {
                     withCredentials: true
                 });
 
@@ -132,7 +129,7 @@ export default {
         // Fazer o Logout
         async logout() {
             try {
-                const response = await axios.get('http://localhost:4000/user/logout', {
+                const response = await axios.get('http://localhost:4000/logout', {
                     withCredentials: true  // Importante: enviar cookies com a requisição
                 });
                 console.log(response.data);
@@ -178,13 +175,8 @@ function extrairIniciais(nomeCompleto) {
 }
 
 .carreiras-logo {
-    height: 55px;
-    width: fit-content;
-    margin: 0 10px;
-
-    img {
-        width: 100%;
-    }
+    width: 150px;
+    margin-left: 10px;
 }
 
 .sign-in-buttons {

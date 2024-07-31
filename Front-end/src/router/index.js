@@ -6,6 +6,7 @@ import CADcandidato from '@/components/cadastro/CADcandidato';
 import EntrarEmpresaOuCandidato from '@/components/menu/EntrarEmpresaOuCandidato.vue';
 import EDCcandidato from '@/components/edicao/EDCcandidato.vue';
 import PerfilCandidato from '@/pages/perfilCandidato.vue';
+import PerfilEmpresa from '@/pages/perfilEmpresa.vue';
 import AgendaCandidato from '@/pages/AgendaCandidato.vue';
 import ListaCandidatosEmpresa from '@/pages/ListaCandidatosEmpresa.vue';
 
@@ -19,8 +20,9 @@ const router = createRouter({
     { path: '/empresa-candidato', component: EntrarEmpresaOuCandidato},
     { path: '/editar-candidato', component: EDCcandidato},
     { path: '/perfil-candidato',component: PerfilCandidato},
+    { path: '/perfil-empresa',component: PerfilEmpresa},
     { path: '/agenda-candidato', component: AgendaCandidato},
-    { path: '/lista-candidatos-empresa', component: ListaCandidatosEmpresa}
+    { path: '/lista-candidatos-empresa', component: ListaCandidatosEmpresa},
   ],
 });
 

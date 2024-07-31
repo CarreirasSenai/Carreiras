@@ -243,7 +243,7 @@ export default {
   methods: {
     async enviarCadastro() {
       try {
-        const response = await axios.post('http://localhost:4000/user/create', {
+        const response = await axios.post('http://localhost:4000/candidato/create', {
           nomeSocial: this.nomeSocial,
           nomeCompleto: this.nomeCompleto,
           email: this.email,

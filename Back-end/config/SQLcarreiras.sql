@@ -7,7 +7,7 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
 CREATE TABLE user_candidato (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome_social VARCHAR(100) NOT NULL,
-    nome_completo VARCHAR(100) NOT NULL UNIQUE,
+    nome_completo VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
 	telefone VARCHAR(20),
 	celular VARCHAR(20) NOT NULL,

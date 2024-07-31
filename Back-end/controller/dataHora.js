@@ -11,7 +11,4 @@ exports.dataHora = (req, res) => {
     const result = `${ano}-${mes}-${dia} ${hora}:${minuto}:${segundo}`;
 
     return result;
-
-    // console.log(result);
-    // res.json({ result });
 }

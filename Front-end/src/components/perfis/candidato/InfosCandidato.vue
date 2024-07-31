@@ -177,7 +177,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .div-infos {
     margin: 0 20px 20px 20px;
     padding-bottom: 3px;
@@ -210,8 +210,12 @@ export default {
     }
 }
 
+.mdi-chevron-up {
+    display: none;
+}
+
 .v-expansion-panels {
-    .v-expansion-panel-title{
+    .v-expansion-panel-title {
         color: #6732d2e3;
     }
 
