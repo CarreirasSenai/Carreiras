@@ -83,6 +83,9 @@
                 <v-btn lass="adm-btn" class="bg-purple-darken-4 me-2" @click="enviarCadastro">Cadastrar</v-btn>
               </div>
             </v-form>
+            <div class="got-account-container my-3">
+              <p>Já criou sua conta? <a href="/empresa-candidato">Faça o login aqui</a></p>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -314,5 +317,19 @@ export default {
   border: thin solid #3a1c76 !important;
   color: #3a1c76 !important;
   size: "large";
+}
+
+.got-account-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    color: #4b13bb;
+
+    &:hover {
+      color: #763aee;
+    }
+  }
 }
 </style>
