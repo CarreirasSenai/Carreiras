@@ -1,5 +1,9 @@
 <template>
   <v-container fluid class="bg-deep-purple-lighten-4 fill-height" style="width: 100%;">
+    <div style="border-radius: 5px; overflow: hidden; margin: 30px 30px 0px;">
+      <v-btn class="v-btn--size-x-large bg-purple-darken-4  v-btn--density-comfortable me-2">Entrevista</v-btn>
+      <v-btn class="v-btn--size-x-large v-btn--density-comfortable" variant="outlined">Vaga</v-btn>
+    </div>
     <div class="calendar">
       <div class="calendar-header">
         <button @click="prevMonth">◀</button>
@@ -57,18 +61,18 @@ export default {
     const events = [
       { date: '2024-08-12', title: 'Entrevista', description: 'Descrição do evento 1', type: 'event' },
       { date: '2024-08-12', title: 'Entrevista', description: 'Vacas azuis caem do céu as sabados pra falar Jesus...', type: 'event' },
-      { date: '2024-08-12', title: 'Entrevista', description: 'O feijão é um alimento que causa gases. Boa sorte!', type: 'event' },
+      { date: '2024-08-12', title: 'Vaga', description: 'O feijão é um alimento que causa gases. Boa sorte!', type: 'job' },
       { date: '2024-08-12', title: 'Entrevista', description: 'Oi, meu nome é Paula e eu gosto de mais de laranjas e mais de sorvete.', type: 'event' },
       { date: '2024-08-12', title: 'Entrevista', description: 'Aqui é onde o inferno queima as galinhas e deixam elas bem assadas. Uma diliça com Ç. Show de bola e coisa de velho.', type: 'event' },
-      { date: '2024-08-12', title: 'Entrevista', description: 'Olha só que descrição grande... Olha só como eu não sei mais o que escrever aqui lalalalala. Ta bom Cludia?', type: 'event' },
+      { date: '2024-08-12', title: 'Vaga', description: 'Olha só que descrição grande... Olha só como eu não sei mais o que escrever aqui lalalalala. Ta bom Cludia?', type: 'job' },
       { date: '2024-08-12', title: 'Entrevista', description: 'Aqui é a ultima descrição uhullll', type: 'event' },
-      { date: '2024-08-20', title: 'Entrevista', description: 'Descrição do evento 2', type: 'event' },
-      { date: '2024-08-22', title: 'Entrevista', description: 'Descrição do evento 3', type: 'event' },
+      { date: '2024-08-20', title: 'Vaga', description: 'Descrição do evento 2', type: 'job' },
+      { date: '2024-08-22', title: 'Vaga', description: 'Descrição do evento 3', type: 'job' },
       { date: '2024-08-17', title: 'Entrevista', description: 'Descrição do evento 4', type: 'event' },
       { date: '2024-08-28', title: 'Entrevista', description: 'Descrição do evento 5', type: 'event' },
       { date: '2024-08-29', title: 'Entrevista', description: 'Descrição do evento 6', type: 'event' },
-      { date: '2024-08-26', title: 'Entrevista', description: 'Descrição do evento 7', type: 'event' },
-      { date: '2024-08-26', title: 'Entrevista', description: 'Descrição do evento 7', type: 'event' },
+      { date: '2024-08-26', title: 'Vaga', description: 'Descrição do evento 7', type: 'job' },
+      { date: '2024-08-26', title: 'Vaga', description: 'Descrição do evento 7', type: 'job' },
     ];
 
     const eventStyle = (event) => {
