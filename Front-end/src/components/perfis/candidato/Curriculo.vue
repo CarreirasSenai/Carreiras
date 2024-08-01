@@ -210,10 +210,6 @@ export default {
     }
 }
 
-.mdi-chevron-up {
-    display: none;
-}
-
 .v-expansion-panels {
     .v-expansion-panel-title {
         color: #6732d2e3;

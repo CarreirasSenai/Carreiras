@@ -3,7 +3,7 @@
     <div class="text-center div-button-edit">
         <v-dialog v-model="dialog" max-width="600">
             <template v-slot:activator="{ props: activatorProps }">
-                <button class="text-none font-weight-regular mdi mdi-square-edit-outline" variant="tonal"
+                <button class="text-none font-weight-regular mdi mdi-pencil" variant="tonal"
                     v-bind="activatorProps"></button>
             </template>
 

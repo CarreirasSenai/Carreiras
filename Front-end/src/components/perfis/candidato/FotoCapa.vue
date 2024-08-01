@@ -4,8 +4,8 @@
         <div class="pos-capa"></div>
         <div class="div-foto-perfil">
             <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
-            <h3 class="cor-secundaria">Nome do Elemento</h3>
-            <h4 class="cor-primaria">Desenvolvedor Full Stack</h4>
+            <h3 class="cor-primaria">Nome do Elemento</h3>
+            <h4 class="text-grey-darken-2">Desenvolvedor Full Stack</h4>
             <EditarFotoCapa />
         </div>
     </div>
