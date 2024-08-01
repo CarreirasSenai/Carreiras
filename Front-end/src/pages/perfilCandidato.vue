@@ -1,7 +1,9 @@
 <template>
-    <Navbar />
-    <FotoCapa />
-    <InfosCandidato />
+    <div>
+        <Navbar />
+        <FotoCapa />
+        <InfosCandidato />
+    </div>
 </template>
 <style>
 * {

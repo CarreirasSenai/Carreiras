@@ -4,8 +4,18 @@
             <h1>Vagas da Empresa</h1>
         </v-col>
         <v-col cols="12" sm="6" class="text-end">
-            <v-btn class="bt-primario">Nova Vaga</v-btn>
-        </v-col>
+            <v-btn class="bt-primario" @click="publishVacancyDialog = true">Nova Vaga</v-btn>
+        </v-col> 
+        <v-dialog v-model="publishVacancyDialog" max-width="700">
+            <v-card>
+                <v-card-title class="headline">Publicação de vaga</v-card-title>
+                <FormPublicacaoVaga />
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="deep-purple-darken-2" text @click="publishVacancyDialog = false">Fechar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-row>
     <v-divider class="ml-7 mr-7"></v-divider>
     <v-row class="ma-4">
@@ -30,11 +40,17 @@
     </v-row>
 </template>
 
-<style>
-* {
-    /* border: 1px solid red; */
-}
+<script>
+export default {
+  data() {
+    return {
+      publishVacancyDialog: false
+    };
+  }
+};
+</script>
 
+<style>
 .box-shadow {
     box-shadow: 0 2px 4px gray;
 }
