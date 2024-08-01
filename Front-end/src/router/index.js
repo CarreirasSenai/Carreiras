@@ -8,7 +8,8 @@ import EDCcandidato from '@/components/edicao/EDCcandidato.vue';
 import PerfilCandidato from '@/pages/perfilCandidato.vue';
 import AgendaCandidato from '@/pages/AgendaCandidato.vue';
 import ListaCandidatosEmpresa from '@/pages/ListaCandidatosEmpresa.vue';
-import ListaEmpresas from '@/pages/ListaEmpresas.vue';
+import ListaEmpresas from '@/components/admin/ListaEmpresas.vue';
+import loginADM from '@/components/admin/loginADM.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,7 +23,8 @@ const router = createRouter({
     { path: '/perfil-candidato', component: PerfilCandidato },
     { path: '/agenda-candidato', component: AgendaCandidato },
     { path: '/lista-candidatos-empresa', component: ListaCandidatosEmpresa },
-    { path: '/lista-empresas', component: ListaEmpresas }
+    { path: '/lista-empresas', component: ListaEmpresas },
+    { path: '/login-admin', component: loginADM}
   ],
 });
 
