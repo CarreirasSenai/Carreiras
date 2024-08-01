@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="user-account-avatar">
     <v-menu min-width="200px" rounded>
       <template v-slot:activator="{ props }">
@@ -27,21 +27,13 @@
               Agenda
             </v-btn>
             <v-divider class="my-2"></v-divider>
-            <v-btn variant="text" rounded @click='redirectToChat'>
-              <a href="/chat">Chat</a>
-            </v-btn>
-            <!-- <v-divider class="my-2"></v-divider>
-            <v-btn variant="text" rounded>
-              <a href="/curriculo">Curriculo</a>
-            </v-btn> -->
+            <v-btn variant="text" @click="$emit('AbreChatHome')">Chat</v-btn>
             <v-divider class="my-2"></v-divider>
             <v-btn variant="text" rounded @click='redirectToProfile'>
               <a href="/perfil-candidato">Perfil</a>
             </v-btn>
             <v-divider class="mt-2 mb-4"></v-divider>
-            <v-btn variant="text" rounded prepend-icon="mdi-logout">
-              <a href="/login">Sair</a>
-            </v-btn>
+            <v-btn variant="text" rounded prepend-icon="mdi-logout" @click="logout">Sair</v-btn>
           </div>
         </v-card-text>
       </v-card>
@@ -50,7 +42,12 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
+  created() {
+    this.userLogado();
+  },
   data: () => ({
     user: {
       initials: 'JD',
@@ -63,16 +60,61 @@ export default {
       this.$router.push('/');
     },
     redirectToSchedule() {
-        this.$router.push('/agenda-candidato');
+      this.$router.push('/agenda-candidato');
     },
     redirectToChat() {
       this.$router.push('/chat');
     },
     redirectToProfile() {
       this.$router.push('/perfil-candidato');
-    }
+    },
+
+    // Autenticar usúario e coletar dados
+    async userLogado() {
+      try {
+        const response = await axios.get('http://localhost:4000/user/read', {
+          withCredentials: true
+        });
+
+        this.user.initials = extrairIniciais(response.data.usuario.nome_completo);
+        this.user.fullName = response.data.usuario.nome_completo;
+        this.user.email = response.data.usuario.email;
+
+        console.log('Usúario autenticado!', response.data);
+
+      } catch (error) {
+        console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
+        this.$router.push('/login');
+      }
+    },
+
+    // Fazer o Logout
+    async logout() {
+      try {
+        const response = await axios.get('http://localhost:4000/user/logout', {
+          withCredentials: true  // Importante: enviar cookies com a requisição
+        });
+        console.log(response.data);
+        this.$router.push('/login');
+      } catch (error) {
+        console.error('Erro ao efetuar Logout', error.response);
+      }
+    },
   }
 }
-</script>
 
-<style lang="scss" scoped></style>
+function extrairIniciais(nomeCompleto) {
+  const palavras = nomeCompleto.split(" ");
+
+  const primeiroNome = palavras[0];
+  const segundoNome = palavras.length > 1 ? palavras[1] : "";
+
+  const inicialPrimeiroNome = primeiroNome.charAt(0).toUpperCase();
+  const inicialSegundoNome = segundoNome.charAt(0).toUpperCase();
+
+  const iniciais = inicialPrimeiroNome + inicialSegundoNome;
+
+  return iniciais;
+}
+
+</script> -->

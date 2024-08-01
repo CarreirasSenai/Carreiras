@@ -98,7 +98,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .dialogo {
     display: flex;
     flex-direction: column;
