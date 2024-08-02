@@ -6,15 +6,22 @@
         <h1>Lista de Empresas</h1>
       </div>
 
-      <div class="search-field">
+      <div class="procurar-empresas">
         <v-card-text>
-          <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact"
-            label="Digite um cargo, cidade, estado." variant="solo" hide-details single-line
-            @click:append-inner="onClick">
+          <v-text-field
+            :loading="loading"
+            append-inner-icon="mdi-magnify"
+            density="compact"
+            label="Procure aqui uma Empresa."
+            variant="solo"
+            hide-details
+            single-line
+            @click:append-inner="onClick"
+          >
           </v-text-field>
         </v-card-text>
       </div>
-      
+
       <div class="list-empresa">
         <div class="card-do-empresa rounded">
           <div class="corpo-card-empresa">
@@ -23,11 +30,7 @@
               <h3>TOTVS - Sistemas Inteligentes</h3>
             </div>
           </div>
-          <div>
-            <ul class="localizacao-empresa">
-              <li>Localização:</li>
-            </ul>
-          </div>
+          <div class="localizacao-empresa">Localização: Joinville</div>
           <div>
             <a href="/perfil-empresa">
               <v-icon
@@ -45,11 +48,7 @@
               <h3>Whirlpool Corporation</h3>
             </div>
           </div>
-          <div>
-            <ul class="localizacao-empresa">
-              <li>Localização:</li>
-            </ul>
-          </div>
+          <div class="localizacao-empresa">Localização: Joinville</div>
           <div>
             <a href="/perfil-empresa">
               <v-icon
@@ -67,11 +66,7 @@
               <h3>Dohler S.A</h3>
             </div>
           </div>
-          <div>
-            <ul class="localizacao-empresa">
-              <li>Localização:</li>
-            </ul>
-          </div>
+          <div class="localizacao-empresa">Localização: Joinville</div>
           <div>
             <a href="/perfil-empresa">
               <v-icon
@@ -89,11 +84,7 @@
               <h3>NIDEC GLOBAL APPLIANCE BRASIL LTDA</h3>
             </div>
           </div>
-          <div>
-            <ul class="localizacao-empresa">
-              <li>Localização:</li>
-            </ul>
-          </div>
+          <div class="localizacao-empresa">Localização: Joinville</div>
           <div>
             <a href="/perfil-empresa">
               <v-icon
@@ -130,7 +121,7 @@ export default {
   flex-direction: inherit;
   gap: 15px;
   width: 100%;
-  padding: 30px 50px;
+  padding:30px 50px;
 }
 
 .card-do-empresa {
@@ -138,6 +129,7 @@ export default {
   padding: 20px 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100rem;
   flex-wrap: wrap;
   max-width: 100%;
@@ -145,26 +137,15 @@ export default {
 }
 
 .corpo-card-empresa {
-  display: inherit;
-  justify-content: space-between;
+  display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex: 1;
 }
 
 .localizacao-empresa {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 15px auto;
-
-  li {
-    align-items: center;
-    padding: 5px 25px;
-    border-radius: 10px;
-    user-select: none;
-  }
+  margin-left: auto;
+  padding-right: 10px;
+  text-align: center;
 }
 
 .perfil-empresa-link {
@@ -172,6 +153,12 @@ export default {
   top: 0;
   right: 0;
   margin: 10px;
+}
+
+.procurar-empresas {
+  width: 50%;
+  margin: 10px;
+  display: flex;
 }
 
 .card-empresa {
