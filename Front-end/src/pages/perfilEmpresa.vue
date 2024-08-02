@@ -5,5 +5,3 @@
         <VagasPerfilEmpresa />
     </div>
 </template>
-
-<style></style>

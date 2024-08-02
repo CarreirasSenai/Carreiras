@@ -3,10 +3,5 @@
         <Navbar />
         <FotoCapa />
         <InfosCandidato />
-    </div>
+    </div>  
 </template>
-<style>
-* {
-    /* border: 1px solid red; */
-}
-</style>
