@@ -16,7 +16,7 @@
         </div>
         <div class="calendar-days">
           <div v-for="(day, index) in days" :key="index" :class="{ 'out-of-month': day.isOutOfMonth }" class="day"
-            style="border: solid; padding: 5px !important; border-color: #cbcbcb !important; border-width: 1px; height: 140px;">
+            style="border: solid; padding: 5px !important; border-color: #cbcbcb !important; border-width: 1px; height: 140px; position: relative;">
             {{ day.date }}
             <div v-for="(event, eventIndex) in (showMore[index] ? day.events : day.events.slice(0, 3))"
               :key="eventIndex" :style="eventStyle(event)" @click="showModal(event.title, event.description)"
@@ -24,8 +24,18 @@
               {{ event.title }}
             </div>
             <v-btn v-if="day.events.length > 3" @click="toggleShowMore(index)" class="more-events" style="z-index: 10;">
-              {{ showMore[index] ? '-' : '+' }}{{ day.events.length - 3 }}
+              {{ showMore[index] ? '-Menos' : '+Mais ' }}{{ day.events.length - 3 }}
             </v-btn>
+            <div v-if="showMore[index]" class="show-more-content" style="z-index: 20; top: 76%; left: 0; width: 100%;">
+              <div v-for="(event, eventIndex) in day.events.slice(3)" :key="eventIndex" :style="eventStyle(event)"
+                @click="showModal(event.title, event.description)" class="event">
+                {{ event.title }}
+              </div>
+              <v-btn v-if="day.events.length > 3" @click="toggleShowMore(index)" class="more-events"
+                style="z-index: 10;">
+                {{ showMore[index] ? '-Menos ' : '+Mais ' }}{{ day.events.length - 3 }}
+              </v-btn>
+            </div>
           </div>
         </div>
         <Modal :isVisible="isModalVisible" :title="eventTitle" :description="eventDescription"
@@ -200,9 +210,7 @@ export default {
   position: absolute;
   z-index: 20;
   background-color: white;
-  border: 1px solid #cbcbcb;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 6px;
 }
 
 .more-events {
