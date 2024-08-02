@@ -1,119 +1,121 @@
 <template>
   <!-- <Navbar/> -->
-  <div class="search-container">
-    <h1>Encontre uma carreira para você!</h1>
-    <div class="search-field">
-      <v-card-text>
-        <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact"
-          label="Digite um cargo, cidade, estado." variant="solo" hide-details single-line
-          @click:append-inner="onClick">
-        </v-text-field>
-      </v-card-text>
+  <div>
+    <div class="search-container">
+      <h1>Encontre uma carreira para você!</h1>
+      <div class="search-field">
+        <v-card-text>
+          <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact"
+            label="Digite um cargo, cidade, estado." variant="solo" hide-details single-line
+            @click:append-inner="onClick">
+          </v-text-field>
+        </v-card-text>
+      </div>
     </div>
-  </div>
-  <div class="mx-4">
-    <v-row align="center" justify="center">
-      <v-col cols="12" md="4" sm="6" lg="3">
-        <v-card color="#3A1C76" variant="outlined" class="mx-auto">
-          <v-card-item class="card-vaga">
-            <div>
-              <div class="mb-1 nome-vaga">
-                Analista de Suporte ao Usuário Júnior
-              </div>
-              <div class="corpo-card-vaga">
-                <div class="text-caption">
-                  <ul class="requisitos-vaga">
-                    <li><strong>Localização:</strong> Freeline Informática - Joinville, SC</li>
-                    <li><strong>Tipo de Contrato:</strong> CLT</li>
-                    <li><strong>Modalidade de Trabalho:</strong> Presencial</li>
-                    <li><strong>Remuneração: </strong> Salário compatível com a função + Benefícios</li>
-                  </ul>
+    <div class="mx-4">
+      <v-row align="center" justify="center">
+        <v-col cols="12" md="4" sm="6" lg="3">
+          <v-card color="#3A1C76" variant="outlined" class="mx-auto">
+            <v-card-item class="card-vaga">
+              <div>
+                <div class="mb-1 nome-vaga">
+                  Analista de Suporte ao Usuário Júnior
+                </div>
+                <div class="corpo-card-vaga">
+                  <div class="text-caption">
+                    <ul class="requisitos-vaga">
+                      <li><strong>Localização:</strong> Freeline Informática - Joinville, SC</li>
+                      <li><strong>Tipo de Contrato:</strong> CLT</li>
+                      <li><strong>Modalidade de Trabalho:</strong> Presencial</li>
+                      <li><strong>Remuneração: </strong> Salário compatível com a função + Benefícios</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
+            </v-card-item>
+            <div class="my-2 container-empresa">
+              <img class="logo-vaga" src="https://picsum.photos/seed/picsum/150/150" alt="logo">
+              <span>Freeline Informática</span>
             </div>
-          </v-card-item>
-          <div class="my-2 container-empresa">
-            <img class="logo-vaga" src="https://picsum.photos/seed/picsum/150/150" alt="logo">
-            <span>Freeline Informática</span>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="4" sm="6" lg="3">
-        <v-card color="#3A1C76" variant="outlined" class="mx-auto">
-          <v-card-item class="card-vaga">
-            <div>
-              <div class="mb-1 nome-vaga">
-                Analista de Suporte ao Usuário Júnior
-              </div>
-              <div class="corpo-card-vaga">
-                <div class="text-caption">
-                  <ul class="requisitos-vaga">
-                    <li><strong>Localização:</strong> Freeline Informática - Joinville, SC</li>
-                    <li><strong>Tipo de Contrato:</strong> CLT</li>
-                    <li><strong>Modalidade de Trabalho:</strong> Presencial</li>
-                    <li><strong>Remuneração: </strong> Salário compatível com a função + Benefícios</li>
-                  </ul>
+          </v-card>
+        </v-col>
+        <v-col cols="12" md="4" sm="6" lg="3">
+          <v-card color="#3A1C76" variant="outlined" class="mx-auto">
+            <v-card-item class="card-vaga">
+              <div>
+                <div class="mb-1 nome-vaga">
+                  Analista de Suporte ao Usuário Júnior
+                </div>
+                <div class="corpo-card-vaga">
+                  <div class="text-caption">
+                    <ul class="requisitos-vaga">
+                      <li><strong>Localização:</strong> Freeline Informática - Joinville, SC</li>
+                      <li><strong>Tipo de Contrato:</strong> CLT</li>
+                      <li><strong>Modalidade de Trabalho:</strong> Presencial</li>
+                      <li><strong>Remuneração: </strong> Salário compatível com a função + Benefícios</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
+            </v-card-item>
+            <div class="my-2 container-empresa">
+              <img class="logo-vaga" src="https://picsum.photos/seed/picsum/150/150" alt="logo">
+              <span>Freeline Informática</span>
             </div>
-          </v-card-item>
-          <div class="my-2 container-empresa">
-            <img class="logo-vaga" src="https://picsum.photos/seed/picsum/150/150" alt="logo">
-            <span>Freeline Informática</span>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="4" sm="6" lg="3">
-        <v-card color="#3A1C76" variant="outlined" class="mx-auto">
-          <v-card-item class="card-vaga">
-            <div>
-              <div class="mb-1 nome-vaga">
-                Analista de Suporte ao Usuário Júnior
-              </div>
-              <div class="corpo-card-vaga">
-                <div class="text-caption">
-                  <ul class="requisitos-vaga">
-                    <li><strong>Localização:</strong> Freeline Informática - Joinville, SC</li>
-                    <li><strong>Tipo de Contrato:</strong> CLT</li>
-                    <li><strong>Modalidade de Trabalho:</strong> Presencial</li>
-                    <li><strong>Remuneração: </strong> Salário compatível com a função + Benefícios</li>
-                  </ul>
+          </v-card>
+        </v-col>
+        <v-col cols="12" md="4" sm="6" lg="3">
+          <v-card color="#3A1C76" variant="outlined" class="mx-auto">
+            <v-card-item class="card-vaga">
+              <div>
+                <div class="mb-1 nome-vaga">
+                  Analista de Suporte ao Usuário Júnior
+                </div>
+                <div class="corpo-card-vaga">
+                  <div class="text-caption">
+                    <ul class="requisitos-vaga">
+                      <li><strong>Localização:</strong> Freeline Informática - Joinville, SC</li>
+                      <li><strong>Tipo de Contrato:</strong> CLT</li>
+                      <li><strong>Modalidade de Trabalho:</strong> Presencial</li>
+                      <li><strong>Remuneração: </strong> Salário compatível com a função + Benefícios</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
+            </v-card-item>
+            <div class="my-2 container-empresa">
+              <img class="logo-vaga" src="https://picsum.photos/seed/picsum/150/150" alt="logo">
+              <span>Freeline Informática</span>
             </div>
-          </v-card-item>
-          <div class="my-2 container-empresa">
-            <img class="logo-vaga" src="https://picsum.photos/seed/picsum/150/150" alt="logo">
-            <span>Freeline Informática</span>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="4" sm="6" lg="3">
-        <v-card color="#3A1C76" variant="outlined" class="mx-auto">
-          <v-card-item class="card-vaga">
-            <div>
-              <div class="mb-1 nome-vaga">
-                Analista de Suporte ao Usuário Júnior
-              </div>
-              <div class="corpo-card-vaga">
-                <div class="text-caption">
-                  <ul class="requisitos-vaga">
-                    <li><strong>Localização:</strong> Freeline Informática - Joinville, SC</li>
-                    <li><strong>Tipo de Contrato:</strong> CLT</li>
-                    <li><strong>Modalidade de Trabalho:</strong> Presencial</li>
-                    <li><strong>Remuneração: </strong> Salário compatível com a função + Benefícios</li>
-                  </ul>
+          </v-card>
+        </v-col>
+        <v-col cols="12" md="4" sm="6" lg="3">
+          <v-card color="#3A1C76" variant="outlined" class="mx-auto">
+            <v-card-item class="card-vaga">
+              <div>
+                <div class="mb-1 nome-vaga">
+                  Analista de Suporte ao Usuário Júnior
+                </div>
+                <div class="corpo-card-vaga">
+                  <div class="text-caption">
+                    <ul class="requisitos-vaga">
+                      <li><strong>Localização:</strong> Freeline Informática - Joinville, SC</li>
+                      <li><strong>Tipo de Contrato:</strong> CLT</li>
+                      <li><strong>Modalidade de Trabalho:</strong> Presencial</li>
+                      <li><strong>Remuneração: </strong> Salário compatível com a função + Benefícios</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
+            </v-card-item>
+            <div class="my-2 container-empresa">
+              <img class="logo-vaga" src="https://picsum.photos/seed/picsum/150/150" alt="logo">
+              <span>Freeline Informática</span>
             </div>
-          </v-card-item>
-          <div class="my-2 container-empresa">
-            <img class="logo-vaga" src="https://picsum.photos/seed/picsum/150/150" alt="logo">
-            <span>Freeline Informática</span>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 
