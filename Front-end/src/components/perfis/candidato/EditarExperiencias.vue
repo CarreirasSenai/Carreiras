@@ -6,7 +6,11 @@
                     v-bind="activatorProps"></button>
             </template>
 
-            <v-card prepend-icon="mdi-account" title="Editar Experiência">
+            <v-card>
+                <v-card-title class="d-flex align-center ga-2 cor-primaria">
+                    <i class="mdi mdi-briefcase"></i>
+                    Editar Experiência
+                </v-card-title>
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12">

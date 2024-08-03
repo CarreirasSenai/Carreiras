@@ -8,7 +8,11 @@
                     v-bind="activatorProps"></button>
             </template>
 
-            <v-card prepend-icon="mdi-account" title="Editar Formações">
+            <v-card>
+                <v-card-title class="d-flex align-center ga-2 cor-primaria">
+                    <i class="mdi mdi-school"></i>
+                    Editar Formação
+                </v-card-title>
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12">
@@ -36,7 +40,8 @@
 
                     <v-btn text="Excluir" variant="plain" @click="dialog = false" class="border-red-accent-4"></v-btn>
                     <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
-                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false" class="bg-purple-darken-4"></v-btn>
+                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false"
+                        class="bg-purple-darken-4"></v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>

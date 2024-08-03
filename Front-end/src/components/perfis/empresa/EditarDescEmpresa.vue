@@ -1,32 +1,20 @@
 <template>
-    <div class="text-center position-absolute bottom-0 right-0 ma-2 mr-4">
+    <div>
         <v-dialog v-model="dialog">
             <template v-slot:activator="{ props: activatorProps }">
-                <button class="text-none font-weight-regular mdi mdi-pencil bt-edit" variant="tonal"
-                    v-bind="activatorProps"></button>
+                <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Descrição</v-btn>
             </template>
 
             <v-container>
                 <v-row no-gutters>
                     <v-col cols="12">
-                        <v-card>
-                            <v-card-title class="d-flex align-center ga-2 cor-primaria">
-                                <i class="mdi mdi-account"></i>
-                                Editar Descrição
-                            </v-card-title>
+                        <v-card title="Editar Descrição">
                             <v-card-text>
-                                <v-row dense>
-                                    <v-col cols="12" md="12">
-                                        <v-textarea label="Descrição" required></v-textarea>
-                                    </v-col>
-                                </v-row>
+                                <v-textarea label="Descrição" required></v-textarea>
                             </v-card-text>
-
                             <v-divider></v-divider>
-
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-
                                 <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
                                 <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false"
                                     class="bg-purple-darken-4"></v-btn>
@@ -41,11 +29,15 @@
 
 <style lang="scss" scoped>
 .mdi {
-    color: #6732d2;
+    color: #6732d2af;
 }
 
 .mdi:hover {
     color: #6732d2;
+}
+
+* {
+    // border: 1px solid red;
 }
 </style>
 

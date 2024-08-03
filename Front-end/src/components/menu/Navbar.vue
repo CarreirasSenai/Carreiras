@@ -1,7 +1,7 @@
 <template>
     <ChatLayout ref="chatLayout" />
 
-    <v-container fluid="true">
+    <v-container>
         <v-app-bar scroll-behavior="elevate">
             <div class="navbar-container">
                 <a href="/" class="d-flex justify-center align-center">

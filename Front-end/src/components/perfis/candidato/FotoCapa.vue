@@ -5,13 +5,15 @@
         <div class="div-foto-perfil">
             <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
             <h3 class="cor-primaria">Nome do Elemento</h3>
-            <h4 class="text-grey-darken-2">Desenvolvedor Full Stack</h4>
-            <EditarFotoCapa />
+            <h4 class="text-grey-darken-2">Desenvolvedor Full Stack</h4>       
+            <MenuEditarCandidato style="height: 20px !important;" class="d-flex align-center"/>     
         </div>
     </div>
 </template>
 
 <script>
+import MenuEditarCandidato from './MenuEditarCandidato.vue';
+
 </script>
 
 <style lang="scss" scoped>

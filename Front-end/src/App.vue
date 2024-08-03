@@ -28,7 +28,7 @@
 }
 
 .bt-primario {
-  background-color: #6832D2 !important;
+  background-color: #6E3AD4 !important;
   color: white !important;
 }
 

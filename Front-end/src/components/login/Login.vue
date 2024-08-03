@@ -8,7 +8,7 @@
         <v-card class="elevation-12" rounded="xl">
           <v-card-text>
             <h1 class="text-center my-1 xs:text-h1">Login</h1>
-            <v-form class="my-3" @submit.prevent="login">
+            <v-form class="my-3 text-center" @submit.prevent="login">
               <v-text-field v-model="email" :rules="emailRules" label="E-mail" class="mb-4"
                 bg-color="#F7F7F7"></v-text-field>
               <v-text-field v-model="password" :rules="passwordRules" label="Senha" bg-color="#F7F7F7"
@@ -18,7 +18,9 @@
                 <v-btn class="bg-purple-darken-4 me-2 w-25 min-w-btn" @click="login">Entrar</v-btn>
                 <v-btn class="adm-btn w-25 min-w-btn" variant="outlined" @click="goToSignUp">Cadastre-se</v-btn>
               </div>
-              <p class="forgot-password" @click="forgotPassword">Esqueci minha senha</p>
+              <div class="ma-5">
+                <a href="" class="cor-primaria cursor-pointer" @click="respostaGrupo">Esqueceu a senha?</a>
+              </div>
               <div class="api-google">
                 <br>
                 <!--Usar aqui a api-->
@@ -45,6 +47,7 @@ export default {
       ],
       password: '12345678Ww@',
       passwordRules: [(v) => !!v || 'Senha requerida'],
+      resposta: this.$route.query.resposta,
     };
   },
   methods: {
@@ -62,14 +65,14 @@ export default {
         document.getElementById('aviso-invalido').classList.add('d-block');
       }
     },
-    goToSignUp(){
-      if(window.location.href.includes("candidato"))
+    goToSignUp() {
+      if (window.location.href.includes("candidato"))
         window.location.href = "cadastro-candidato"
       else
         window.location.href = "cadastro-empresa"
     },
-    forgotPassword(){
-      window.alert("Redirecionar para a tela de esqueci minha senha");
+    respostaGrupo() {
+      this.$router.push({ path: '/redefinir-senha', query: { resposta: this.resposta } });
     },
   },
   mounted() {
@@ -80,6 +83,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+* {
+  // border: 1px solid red;
+}
+
 .login-container {
   background-color: #6832D2 !important;
   height: 100% !important;
@@ -114,19 +121,7 @@ export default {
   color: #3a1c76 !important;
 }
 
-.forgot-password {
-  text-align: center;
-  margin: 20px auto;
-  color: #4b13bb;
-  text-decoration: underline;
-
-  &:hover {
-    color: #763aee;
-    cursor: pointer;
-  }
-}
-
-.min-w-btn{
+.min-w-btn {
   min-width: 120px;
 }
 </style>
