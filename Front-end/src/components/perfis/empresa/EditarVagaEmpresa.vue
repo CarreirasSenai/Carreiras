@@ -20,6 +20,7 @@
                                 <v-divider></v-divider>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
+                                    <v-btn text="Excluir" variant="text" @click="dialog = false"></v-btn>
                                     <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
                                     <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false"
                                         class="bg-purple-darken-4"></v-btn>

@@ -19,8 +19,8 @@
                 </v-card-text>
                 <small class="position-absolute top-0 right-0 ma-2">1 semana atrás</small>
                 <v-card-actions class="d-flex justify-space-between">
-                    <!-- <v-btn ">Ver Detalhes</v-btn> -->
                     <ModalDetalhesVaga />
+                    <ModalCandidatosVagas />
                     <div class="d-flex align-center justify-center ga-2">
                         TOTVS
                         <img src="/src/assets/avatar.png" width="50px">
@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import ModalCandidatosVagas from './ModalCandidatosVagas.vue';
 import ModalDetalhesVaga from './ModalDetalhesVaga.vue';
 </script>
 
