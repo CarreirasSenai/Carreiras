@@ -10,6 +10,7 @@ import PerfilEmpresa from '@/pages/perfilEmpresa.vue';
 import AgendaCandidato from '@/pages/AgendaCandidato.vue';
 import ListaCandidatosEmpresa from '@/pages/ListaCandidatosEmpresa.vue';
 import RedefinirSenha from '@/pages/redefinirSenha.vue';
+import ModalJustificativa from '@/components/perfis/empresa/ModalJustificativa.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,7 @@ const router = createRouter({
     { path: '/agenda-candidato', component: AgendaCandidato},
     { path: '/lista-candidatos-empresa', component: ListaCandidatosEmpresa},
     { path: '/redefinir-senha', component: RedefinirSenha},
+    { path: '/modal-justificativa', component: ModalJustificativa},
   ],
 });
 

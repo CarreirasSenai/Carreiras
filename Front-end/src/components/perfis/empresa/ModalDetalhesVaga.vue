@@ -24,13 +24,15 @@
                                     sistemas front-end e back-end.</li>
                             </ul>
                             </p>
-                            <p class="d-flex flex-wrap"><small>Habilidades Exigidas:</small>
-                            <div v-for="n in 5" :k="n" class="mb-1 ml-1 mr-1 pl-2 pr-2 rounded-lg bg-grey-lighten-1">
-                                Javascript</div>
+                            <p class="d-flex flex-wrap align-center ga-2"><small>Habilidades Exigidas:</small>
+                                <v-chip variant="outlined" v-for="n in 5" :k="n">
+                                    Javascript
+                                </v-chip>
                             </p>
-                            <p class="d-flex flex-wrap"><small>Habilidades Opcionais:</small>
-                            <div v-for="n in 5" :k="n" class="mb-1 ml-1 mr-1 pl-2 pr-2 rounded-lg bg-grey-lighten-1">
-                                React</div>
+                            <p class="d-flex flex-wrap align-center ga-2"><small>Habilidades Exigidas:</small>
+                                <v-chip variant="outlined" v-for="n in 5" :k="n">
+                                    React
+                                </v-chip>
                             </p>
                             <p class="d-flex flex-wrap"><small>Benefícios:</small>
                             <ul class="ml-6">
