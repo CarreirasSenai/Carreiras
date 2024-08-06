@@ -23,7 +23,7 @@
       </div>
 
       <div class="list-empresa">
-        <div class="card-do-empresa rounded">
+        <div class="card-do-empresa rounded" v-for="n in 6" :key="n">
           <div class="corpo-card-empresa">
             <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
             <div>
@@ -31,17 +31,10 @@
             </div>
           </div>
           <div class="localizacao-empresa">Localização: Joinville</div>
-          <div>
-            <a href="/perfil-empresa">
-              <v-icon
-                class="perfil-empresa-link"
-                icon="mdi-arrow-top-right"
-                color="black"
-              />
-            </a>
-          </div>
+          <img class="status" src="/src/assets/statusONteste.png" alt="" />
+          <MenuAdminEmpresa />
         </div>
-        <div class="card-do-empresa rounded">
+        <!-- <div class="card-do-empresa rounded">
           <div class="corpo-card-empresa">
             <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
             <div>
@@ -49,15 +42,8 @@
             </div>
           </div>
           <div class="localizacao-empresa">Localização: Joinville</div>
-          <div>
-            <a href="/perfil-empresa">
-              <v-icon
-                class="perfil-empresa-link"
-                icon="mdi-arrow-top-right"
-                color="black"
-              />
-            </a>
-          </div>
+          <img class="status" src="/src/assets/statusONteste.png" alt="" />
+          <MenuAdminEmpresa />
         </div>
         <div class="card-do-empresa rounded">
           <div class="corpo-card-empresa">
@@ -67,15 +53,8 @@
             </div>
           </div>
           <div class="localizacao-empresa">Localização: Joinville</div>
-          <div>
-            <a href="/perfil-empresa">
-              <v-icon
-                class="perfil-empresa-link"
-                icon="mdi-arrow-top-right"
-                color="black"
-              />
-            </a>
-          </div>
+          <img class="status" src="/src/assets/statusONteste.png" alt="" />
+          <MenuAdminEmpresa />
         </div>
         <div class="card-do-empresa rounded">
           <div class="corpo-card-empresa">
@@ -85,23 +64,20 @@
             </div>
           </div>
           <div class="localizacao-empresa">Localização: Joinville</div>
-          <div>
-            <a href="/perfil-empresa">
-              <v-icon
-                class="perfil-empresa-link"
-                icon="mdi-arrow-top-right"
-                color="black"
-              />
-            </a>
-          </div>
-        </div>
+          <img class="status" src="/src/assets/statusONteste.png" alt="" />
+          <MenuAdminEmpresa />
+        </div> -->
       </div>
     </v-container>
   </div>
 </template>
 <script>
+import MenuAdminEmpresa from "./MenuAdminEmpresa.vue";
 export default {
-  data() {},
+  components: { MenuAdminEmpresa },
+  data: () => ({
+    items: [{ text: "Offline", icon: "mdi-check-circle" }],
+  }),
 };
 </script>
 <style lang="scss" scoped>
@@ -121,7 +97,7 @@ export default {
   flex-direction: inherit;
   gap: 15px;
   width: 100%;
-  padding:30px 50px;
+  padding: 30px 50px;
 }
 
 .card-do-empresa {
@@ -144,8 +120,15 @@ export default {
 
 .localizacao-empresa {
   margin-left: auto;
-  padding-right: 10px;
+  padding-right: 200px;
   text-align: center;
+}
+
+.status {
+  height: 25px;
+  width: fit-content;
+  margin: 0 10px;
+  padding-right: 200px;
 }
 
 .perfil-empresa-link {
