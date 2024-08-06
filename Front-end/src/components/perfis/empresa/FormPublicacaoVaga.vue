@@ -42,7 +42,7 @@
                 density="compact"
             ></v-select>
         </v-col>
-        <v-col cols=12>
+        <v-col cols="12">
             <v-text-field
                 v-model="quantia"
                 label="Remuneração"
@@ -51,6 +51,94 @@
                 prepend-icon="mdi-currency-usd"
                 type="number"
             ></v-text-field>
+        </v-col>
+        <v-col cols="12">
+            <v-expansion-panels>
+                <v-expansion-panel bg-color="#F7F7F7">
+                    <v-expansion-panel-title>
+                        <i class="mdi mdi-star cor-primaria" style="margin-right: 8px;"></i>
+                        <h3 class="cor-primaria">Responsabilidades</h3>
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col cols="12" lg="6" md="12" sm="12" class="bloco"
+                                v-for="(responsabilidade, index) in responsabilidades" :key="index">
+                                <v-card variant="tonal">
+                                    <v-card-text> {{ responsabilidade }} </v-card-text>
+                                    <EditarResponsabilidades />
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                        <AdicionarResponsabilidades />
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </v-col>
+        <v-col cols="12">
+            <v-expansion-panels>
+                <v-expansion-panel bg-color="#F7F7F7">
+                    <v-expansion-panel-title>
+                        <i class="mdi mdi-star cor-primaria" style="margin-right: 8px;"></i>
+                        <h3 class="cor-primaria">Habilidades Exigidas</h3>
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col cols="12" lg="6" md="12" sm="12" class="bloco"
+                                v-for="(habilidadeExigida, index) in habilidadesExigidas" :key="index">
+                                <v-card variant="tonal">
+                                    <v-card-text> {{ habilidadeExigida }} </v-card-text>
+                                    <EditarHabilidadesExigidas />
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                        <AdicionarHabilidadesExigidas />
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </v-col>
+        <v-col cols="12">
+            <v-expansion-panels>
+                <v-expansion-panel bg-color="#F7F7F7">
+                    <v-expansion-panel-title>
+                        <i class="mdi mdi-star cor-primaria" style="margin-right: 8px;"></i>
+                        <h3 class="cor-primaria">Habilidades Extras</h3>
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col cols="12" lg="6" md="12" sm="12" class="bloco"
+                                v-for="(habilidadeExtra, index) in habilidadesExtras" :key="index">
+                                <v-card variant="tonal">
+                                    <v-card-text> {{ habilidadeExtra }} </v-card-text>
+                                    <EditarHabilidadesExtras />
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                        <AdicionarHabilidadesExtras />
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </v-col>
+        <v-col cols="12">
+            <v-expansion-panels>
+                <v-expansion-panel bg-color="#F7F7F7">
+                    <v-expansion-panel-title>
+                        <i class="mdi mdi-star cor-primaria" style="margin-right: 8px;"></i>
+                        <h3 class="cor-primaria">Benefícios</h3>
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col cols="12" lg="6" md="12" sm="12" class="bloco"
+                                v-for="(beneficio, index) in beneficios" :key="index">
+                                <v-card variant="tonal">
+                                    <v-card-text> {{ beneficio }} </v-card-text>
+                                    <EditarBeneficios />
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                        <AdicionarBeneficios />
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+            </v-expansion-panels>
         </v-col>
         <v-col cols="12">
             <v-textarea
@@ -112,6 +200,9 @@ export default {
                 v => !!v || 'Remuneração requerida',
                 v => !isNaN(v) || 'Valor inválido',
             ],
+            responsabilidades: '',
+            habilidadesExtras: '',
+            beneficios: '',
             descricao: '',
             descricaoRules: [v => v.length <= 1500 || 'Máximo de 1.500 caracteres'],
             niveisCargo: 'Selecionar',
@@ -127,11 +218,42 @@ export default {
             ]
         }
     },
+    created(){
+        this.inicializaInfosVagas();
+    },
     methods: {
         formatarQuantia() {
             const valorFormatado = this.quantia.replace(/\D/g, "");
             const valorCasasDecimais = valorFormatado.replace(/(\d{1,})(\d{2})$/, "$1.$2")
             this.quantia = valorCasasDecimais;
+        },
+        inicializaInfosVagas(){
+            this.responsabilidades = [
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "Java",
+                "MySQL"
+            ];
+            this.habilidadesExigidas = [
+                "Trabalho em equipe",
+                "Comunicação",
+                "Proatividade",
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "React"                
+            ];
+            this.habilidadesExtras = [
+                "Inglês intermediário",
+                "Testes automatizados",            
+            ];
+            this.beneficios = [
+                "Vale Refeição",
+                "Day-Off",
+                "Plano Odontológico",
+                "Plano de saúde"
+            ]
         }
     }
 }
@@ -140,5 +262,25 @@ export default {
 <style lang="scss" scoped>
 .form-container {
     padding: 0 20px;
+}
+
+.v-expansion-panels {
+    .v-expansion-panel-title {
+        color: #6732d2e3;
+    }
+
+    .bloco {
+        padding: 10px;
+    }
+
+    .v-card-title {
+        font-size: unset;
+    }
+
+    @media(max-width:600px) {
+        .bloco {
+            padding: 10px 0;
+        }
+    }
 }
 </style>
