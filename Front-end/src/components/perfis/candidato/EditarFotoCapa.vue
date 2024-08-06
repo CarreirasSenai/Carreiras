@@ -1,13 +1,12 @@
 <template>
     <!-- Editar 1 perfil candidato-->
-    <div class="text-center div-button-edit">
-        <v-dialog v-model="dialog" max-width="600">
+    <div class="text-center">
+        <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ props: activatorProps }">
-                <button class="text-none font-weight-regular mdi mdi-square-edit-outline" variant="tonal"
-                    v-bind="activatorProps"></button>
+                <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Foto e Capa</v-btn>
             </template>
 
-            <v-card prepend-icon="mdi-account" title="Editar Perfil">
+            <v-card title="Editar Perfil">
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12">
@@ -64,7 +63,6 @@
     border-radius: 100%;
     height: 50px;
     width: 50px;
-    /* border: 1px solid red; */
     position: absolute !important;
     right: 0;
     top: 115px;

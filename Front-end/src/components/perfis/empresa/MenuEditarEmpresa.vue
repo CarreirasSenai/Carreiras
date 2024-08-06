@@ -8,6 +8,8 @@
             <v-list>
                 <v-list-item class="pa-0">
                     <v-list-item-title class="cursor-pointer">
+                        <EditarDescEmpresa />
+                        <EditarFotoCapaEmpresa />
                         <EditarCadEmpresa />
                     </v-list-item-title>
                 </v-list-item>
@@ -17,6 +19,9 @@
 </template>
 
 <script>
+import EditarCadEmpresa from './EditarCadEmpresa.vue';
+import EditarFotoCapaEmpresa from './EditarFotoCapaEmpresa.vue';
+
 export default {
     data: () => ({
         // items: [

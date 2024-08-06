@@ -7,11 +7,15 @@
                 </v-btn>
             </template>
 
-            <v-card prepend-icon="mdi-account" title="Adicionar Formação">
+            <v-card>
+                <v-card-title class="d-flex align-center ga-2 cor-primaria">
+                    <i class="mdi mdi-school"></i>
+                    Adicionar Curso
+                </v-card-title>
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12">
-                            <v-text-field label="Formação" required></v-text-field>
+                            <v-text-field label="Nome" required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12">
                             <v-text-field label="Nível" required></v-text-field>
@@ -53,7 +57,6 @@
     color: white;
     // margin: 10px 20px;
     border-color: #6732d2;
-    // text-transform: uppercase !important;
 }
 </style>
 

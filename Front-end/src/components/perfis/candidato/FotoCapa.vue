@@ -1,15 +1,20 @@
 <template>
     <div class="div-capa-foto">
-        <img class="capa" src="../../assets/capa (3).png">
+        <img class="capa" src="/src/assets/capa (1).png">
         <div class="pos-capa"></div>
         <div class="div-foto-perfil">
-            <img src="../../assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
-            <h3 class="cor-secundaria">Nome do Elemento</h3>
-            <h4 class="cor-primaria">Desenvolvedor Full Stack</h4>
-            <EditarFotoCapa />
+            <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
+            <h3 class="cor-primaria">Nome do Elemento</h3>
+            <h4 class="text-grey-darken-2">Desenvolvedor Full Stack</h4>       
+            <MenuEditarCandidato style="height: 20px !important;" class="d-flex align-center"/>     
         </div>
     </div>
 </template>
+
+<script>
+import MenuEditarCandidato from './MenuEditarCandidato.vue';
+
+</script>
 
 <style lang="scss" scoped>
 .div-capa-foto {
@@ -18,7 +23,6 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    // padding: 20px;
 
     .capa {
         height: 250px;

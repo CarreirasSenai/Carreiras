@@ -1,6 +1,6 @@
 <template>
     <div class="text-center div-button-edit">
-        <v-dialog v-model="dialog" max-width="300">
+        <v-dialog v-model="dialog" max-width="600">
             <template v-slot:activator="{ props: activatorProps }">
                 <!-- <v-btn class="text-none font-weight-regular bt-edit" variant="tonal"
                     v-bind="activatorProps">Editar</v-btn> -->
@@ -8,15 +8,29 @@
                     v-bind="activatorProps"></button>
             </template>
 
-            <v-card prepend-icon="mdi-account" title="Editar Habilidade">
+            <v-card>
+                <v-card-title class="d-flex align-center ga-2 cor-primaria">
+                    <i class="mdi mdi-school"></i>
+                    Editar Formação
+                </v-card-title>
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12">
-                            <v-text-field label="Habilidade" required></v-text-field>
+                            <v-text-field label="Formação" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-text-field label="Nível" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-text-field label="Unidade de Ensino" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-date-input label="Início" required></v-date-input>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-date-input label="Fim" required></v-date-input>
                         </v-col>
                     </v-row>
-
-                    <!-- <small class="text-caption text-medium-emphasis">*Indica os campos obrigatórios</small> -->
                 </v-card-text>
 
                 <v-divider></v-divider>
@@ -26,7 +40,8 @@
 
                     <v-btn text="Excluir" variant="plain" @click="dialog = false" class="border-red-accent-4"></v-btn>
                     <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
-                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false" class="bg-purple-darken-4"></v-btn>
+                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false"
+                        class="bg-purple-darken-4"></v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -38,8 +53,8 @@
     display: flex;
     justify-content: end;
     position: absolute;
-    bottom: -7px;
-    right: -5px;
+    bottom: 0;
+    right: 0;
 }
 
 .bt-edit {
@@ -59,9 +74,14 @@
 </style>
 
 <script>
+import { VDateInput } from 'vuetify/labs/VDateInput';
+
 export default {
     data: () => ({
         dialog: false,
     }),
+    components: {
+        VDateInput,
+    },
 }
 </script>

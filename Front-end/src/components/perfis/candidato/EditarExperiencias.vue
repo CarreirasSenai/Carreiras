@@ -6,17 +6,22 @@
                     v-bind="activatorProps"></button>
             </template>
 
-            <v-card prepend-icon="mdi-account" title="Editar Cursos">
+            <v-card>
+                <v-card-title class="d-flex align-center ga-2 cor-primaria">
+                    <i class="mdi mdi-briefcase"></i>
+                    Editar Experiência
+                </v-card-title>
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12">
-                            <v-text-field label="Nome" required></v-text-field>
+                            <v-text-field label="Cargo" required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-text-field label="Nível" required></v-text-field>
+                            <v-text-field label="Empresa" required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-text-field label="Unidade de Ensino" required></v-text-field>
+                            <v-select label="Contrato"
+                            :items="['CLT', 'PJ', 'Estágio', 'Temporário', 'Aprendizagem', 'Outro']" required></v-select>
                         </v-col>
                         <v-col cols="12" md="6">
                             <v-date-input label="Início" required></v-date-input>

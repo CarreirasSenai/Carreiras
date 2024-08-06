@@ -33,6 +33,8 @@
           <div class="localizacao-empresa">Localização: Joinville</div>
           <img class="status" src="/src/assets/statusONteste.png" alt="" />
           <MenuAdminEmpresa />
+          <EditarStatusEmpresa />
+
         </div>
         <!-- <div class="card-do-empresa rounded">
           <div class="corpo-card-empresa">

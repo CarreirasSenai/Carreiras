@@ -27,6 +27,11 @@
   color: #3A1C76;
 }
 
+.bt-primario {
+  background-color: #6E3AD4 !important;
+  color: white !important;
+}
+
 .back-primario {
   background-color: #6832D2;
 }
@@ -36,6 +41,10 @@
 }
 
 .min-width-300 {
-    min-width: 300px;
+  min-width: 300px;
+}
+
+.box-shadow {
+  box-shadow: 0 2px 4px gray;
 }
 </style>

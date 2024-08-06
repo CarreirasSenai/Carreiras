@@ -177,7 +177,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .div-infos {
     margin: 0 20px 20px 20px;
     padding-bottom: 3px;
@@ -211,8 +211,12 @@ export default {
 }
 
 .v-expansion-panels {
-    .v-expansion-panel-title{
-        color: #6732d2e3;
+    .v-expansion-panel-title {
+        color: #6732d2;
+    }
+
+    .mdi {
+        color: #6732d2;
     }
 
     .bloco {

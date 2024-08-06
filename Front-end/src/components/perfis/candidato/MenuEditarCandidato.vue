@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-space-around">
+    <div class="text-center w-100">
         <v-menu transition="slide-y-transition">
             <template v-slot:activator="{ props }">
                 <span class="mdi mdi-dots-horizontal w-100 text-subtitle" v-bind="props"></span>
@@ -8,7 +8,9 @@
             <v-list>
                 <v-list-item class="pa-0">
                     <v-list-item-title class="cursor-pointer">
-                        <EditarCadEmpresa />
+                        <EditarCadCandidato />
+                        <EditarFotoCapa />
+                        <EditarLinksCandidato />
                     </v-list-item-title>
                 </v-list-item>
             </v-list>
@@ -17,6 +19,10 @@
 </template>
 
 <script>
+import EditarCadCandidato from './EditarCadCandidato.vue';
+import EditarFotoCapa from './EditarFotoCapa.vue';
+import EditarLinksCandidato from './EditarLinksCandidato.vue';
+
 export default {
     data: () => ({
         // items: [
@@ -32,4 +38,12 @@ export default {
 * {
     /* border: 1px solid red; */
 }
+
+/* .div-button-edit {
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    right: 0;
+    top: 120px;
+} */
 </style>
