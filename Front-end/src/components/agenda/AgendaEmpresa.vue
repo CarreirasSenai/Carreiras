@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="bg-deep-purple-lighten-4 fill-height" style="width: 100%;">
     <div style="border-radius: 5px; overflow: hidden; margin: 30px 30px 0px;">
-      <v-btn class="v-btn--size-x-large bg-purple-darken-4  v-btn--density-comfortable me-2">Entrevista</v-btn>
+      <v-btn @click="showModalEntrevista" class="v-btn--size-x-large bg-purple-darken-4 v-btn--density-comfortable me-2">Entrevista</v-btn>
       <v-btn class="v-btn--size-x-large v-btn--density-comfortable" variant="outlined">Vaga</v-btn>
     </div>
     <div class="calendar">
@@ -16,7 +16,7 @@
         </div>
         <div class="calendar-days">
           <div v-for="(day, index) in days" :key="index" :class="{ 'out-of-month': day.isOutOfMonth }" class="day"
-            style="border: solid; padding: 5px !important; border-color: #cbcbcb !important; border-width: 1px; height: 140px;">
+            style="border: solid; padding: 5px !important; border-color: #cbcbcb !important; border-width: 1px; height: 140px; position: relative;">
             {{ day.date }}
             <div v-for="(event, eventIndex) in (showMore[index] ? day.events : day.events.slice(0, 3))"
               :key="eventIndex" :style="eventStyle(event)" @click="showModal(event.title, event.description)"
@@ -24,24 +24,37 @@
               {{ event.title }}
             </div>
             <v-btn v-if="day.events.length > 3" @click="toggleShowMore(index)" class="more-events" style="z-index: 10;">
-              {{ showMore[index] ? '-' : '+' }}{{ day.events.length - 3 }}
+              {{ showMore[index] ? '-Menos' : '+Mais ' }}{{ day.events.length - 3 }}
             </v-btn>
+            <div v-if="showMore[index]" class="show-more-content" style="z-index: 20; top: 76%; left: 0; width: 100%;">
+              <div v-for="(event, eventIndex) in day.events.slice(3)" :key="eventIndex" :style="eventStyle(event)"
+                @click="showModal(event.title, event.description)" class="event">
+                {{ event.title }}
+              </div>
+              <v-btn v-if="day.events.length > 3" @click="toggleShowMore(index)" class="more-events"
+                style="z-index: 10;">
+                {{ showMore[index] ? '-Menos ' : '+Mais ' }}{{ day.events.length - 3 }}
+              </v-btn>
+            </div>
           </div>
         </div>
         <Modal :isVisible="isModalVisible" :title="eventTitle" :description="eventDescription"
           @update:isVisible="isModalVisible = $event" />
+        <ModalEntrevista :isVisible="isModalEntrevistaVisible" @save-event="addEvent" @update:isVisible="isModalEntrevistaVisible = $event" />
       </div>
     </div>
   </v-container>
 </template>
 
 <script>
-import Modal from './Modal.vue';
+import Modal from './ModalEvent.vue';
+import ModalEntrevista from './ModalInserirEntrevista.vue';
 import { ref, reactive, computed } from 'vue';
 
 export default {
   components: {
-    Modal
+    Modal,
+    ModalEntrevista,
   },
   setup() {
     const isModalVisible = ref(false);
@@ -54,11 +67,17 @@ export default {
       isModalVisible.value = true;
     };
 
+    const isModalEntrevistaVisible = ref(false);
+
+    const showModalEntrevista = () => {
+      isModalEntrevistaVisible.value = true;
+    };
+
     const currentMonth = ref(new Date().getMonth());
     const currentYear = ref(new Date().getFullYear());
     const weekdays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-    const events = [
+    const events = reactive([
       { date: '2024-08-12', title: 'Entrevista', description: 'Descrição do evento 1', type: 'event' },
       { date: '2024-08-12', title: 'Entrevista', description: 'Vacas azuis caem do céu as sabados pra falar Jesus...', type: 'event' },
       { date: '2024-08-12', title: 'Vaga', description: 'O feijão é um alimento que causa gases. Boa sorte!', type: 'job' },
@@ -73,7 +92,7 @@ export default {
       { date: '2024-08-29', title: 'Entrevista', description: 'Descrição do evento 6', type: 'event' },
       { date: '2024-08-26', title: 'Vaga', description: 'Descrição do evento 7', type: 'job' },
       { date: '2024-08-26', title: 'Vaga', description: 'Descrição do evento 7', type: 'job' },
-    ];
+    ]);
 
     const eventStyle = (event) => {
       if (event.type === 'event') {
@@ -150,29 +169,35 @@ export default {
         showMore.push(false);
       }
 
-      return { daysArray, showMore };
+      return daysArray;
     });
 
-    const { daysArray, showMore } = days.value;
-
     const prevMonth = () => {
-      currentMonth.value--;
-      if (currentMonth.value < 0) {
+      if (currentMonth.value === 0) {
         currentMonth.value = 11;
         currentYear.value--;
+      } else {
+        currentMonth.value--;
       }
     };
 
     const nextMonth = () => {
-      currentMonth.value++;
-      if (currentMonth.value > 11) {
+      if (currentMonth.value === 11) {
         currentMonth.value = 0;
         currentYear.value++;
+      } else {
+        currentMonth.value++;
       }
     };
 
+    const showMore = reactive([]);
+
     const toggleShowMore = (index) => {
       showMore[index] = !showMore[index];
+    };
+
+    const addEvent = (newEvent) => {
+      events.push(newEvent);
     };
 
     return {
@@ -180,18 +205,21 @@ export default {
       eventTitle,
       eventDescription,
       showModal,
+      isModalEntrevistaVisible,
+      showModalEntrevista,
       currentMonth,
       currentYear,
       weekdays,
       formattedMonthYear,
-      days: daysArray,
+      days,
       prevMonth,
       nextMonth,
       eventStyle,
+      showMore,
       toggleShowMore,
-      showMore
+      addEvent,
     };
-  }
+  },
 };
 </script>
 
@@ -200,9 +228,7 @@ export default {
   position: absolute;
   z-index: 20;
   background-color: white;
-  border: 1px solid #cbcbcb;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 6px;
 }
 
 .more-events {
