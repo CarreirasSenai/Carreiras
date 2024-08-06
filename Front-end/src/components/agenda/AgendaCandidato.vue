@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import Modal from './Modal.vue';
+import Modal from './ModalEvent.vue';
 import { ref, reactive, computed } from 'vue';
 
 export default {
