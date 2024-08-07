@@ -1,14 +1,22 @@
 <template>
-    <v-form class="my-4 form-container">
+    <v-form ref="form" class="my-4 form-container" v-model="formValid">
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="titulo" :rules="tituloRules" label="Título" bg-color="#F7F7F7"
+                <v-text-field 
+                v-model="titulo" 
+                :rules="tituloRules" 
+                label="Título" 
+                bg-color="#F7F7F7"
                 density="compact"></v-text-field>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12" sm="8" md="8" lg="8">
-                <v-text-field v-model="localizacao" :rules="localizacaoRules" label="Localização" bg-color="#F7F7F7"
+                <v-text-field 
+                v-model="localizacao" 
+                :rules="localizacaoRules" 
+                label="Localização" 
+                bg-color="#F7F7F7"
                 density="compact"></v-text-field>
             </v-col>
             <v-col cols="12" sm="4" md="4" lg="4">
@@ -161,12 +169,45 @@
             ></v-select>
         </v-col>
         <v-col cols="12">
-            <v-text-field
-                v-model="etapa"
-                label="Etapas"
-                :rules="etapaRules"
-                type="number"
-            ></v-text-field>
+            <v-expansion-panels>
+                <v-expansion-panel bg-color="#F7F7F7">
+                    <v-expansion-panel-title>
+                        <i class="mdi mdi-star cor-primaria" style="margin-right: 8px;"></i>
+                        <h3 class="cor-primaria">Etapas</h3>
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col cols="12" lg="6" md="12" sm="12" class="bloco">
+                                <v-card variant="tonal">
+                                    <v-card-title>Inscrição</v-card-title>
+                                    <v-card-text><strong>Início</strong>: 06/08/2024 - <br> 
+                                        <strong>Término</strong>: 09/08/2024</v-card-text>
+                                    <EditarEtapas />
+                                </v-card>
+                            </v-col>
+                            <v-col cols="12" lg="6" md="12" sm="12" class="bloco">
+                                <v-card variant="tonal">
+                                    <v-card-title>Inscrição</v-card-title>
+                                    <v-card-text><strong>Início</strong>: 12/08/2024 - <br> 
+                                        <strong>Término</strong>: 16/08/2024</v-card-text>
+                                    <EditarEtapas />
+                                </v-card>
+                            </v-col>
+                        </v-row>                      
+                        <v-row>
+                            <v-col cols="12" lg="6" md="12" sm="12" class="bloco">
+                                <v-card variant="tonal">
+                                    <v-card-title>Contratação</v-card-title>
+                                    <v-card-text><strong>Início</strong>: 19/08/2024 - <br> 
+                                        <strong>Término</strong>: 24/08/2024</v-card-text>
+                                    <EditarEtapas />
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                        <AdicionarEtapas />
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+            </v-expansion-panels>
         </v-col>
     </v-form>
 </template>
@@ -176,6 +217,11 @@ export default {
     data() 
     {
         return {
+            formValid: '',
+            titulo: '',
+            tituloRules: [(v) => !!v || 'Título requerido'],
+            localizacao: '',
+            localizacaoRules: [(v) => !!v || 'Localização requerida'],
             estado: 'Selecionar',
             estadoRules: [(v) => v !== 'Selecionar' || 'Estado requerido'],
             listEstados: ['Selecionar','Acre - AC','Alagoas - AL','Amapá - AP','Amazonas - AM','Bahia - BA',
@@ -206,20 +252,22 @@ export default {
             descricao: '',
             descricaoRules: [v => v.length <= 1500 || 'Máximo de 1.500 caracteres'],
             niveisCargo: 'Selecionar',
-            niveisCargoRules: ((v) => v !== "Selecionar" || 'Nível de cargo requerido'),
+            niveisCargoRules: [(v) => v !== "Selecionar" || 'Nível de cargo requerido'],
             listNiveisCargo: ["Selecionar","Estagiário/Intern","Assistente","Júnior",
             "Pleno","Sênior","Supervisor","Coordenador","Gerente",
             "Diretor","Vice-Presidente","Presidente","CEO (Chief Executive Officer)",
             "CFO (Chief Financial Officer)","COO (Chief Operating Officer)","CTO (Chief Technology Officer)",
             "CMO (Chief Marketing Officer)","Conselho de Administração (Board of Directors)"],
-            etapa: '0',
-            etapaRules: [((v) => !!v || 'Etapa requerida'),
-                v => v > -1 || 'Número de etapas inválido'
-            ]
+
         }
     },
     created(){
         this.inicializaInfosVagas();
+    },
+    watch: {
+        formValid(newValue) {
+            this.$emit('updateFormValid', newValue);
+        }
     },
     methods: {
         formatarQuantia() {
@@ -253,9 +301,9 @@ export default {
                 "Day-Off",
                 "Plano Odontológico",
                 "Plano de saúde"
-            ]
-        }
-    }
+            ];
+        },
+    },
 }
 </script>
 

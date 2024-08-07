@@ -26,10 +26,6 @@
 </script>
 
 <style lang="scss" scoped>
-* {
-    // border: 1px solid red;
-}
-
 .box-shadow {
     box-shadow: 0 2px 4px gray;
 }

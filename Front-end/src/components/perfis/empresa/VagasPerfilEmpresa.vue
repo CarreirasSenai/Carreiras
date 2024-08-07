@@ -9,10 +9,11 @@
         <v-dialog v-model="publishVacancyDialog" max-width="700">
             <v-card>
                 <v-card-title class="headline">Publicação de vaga</v-card-title>
-                <FormPublicacaoVaga />
+                <FormPublicacaoVaga ref="form" @updateFormValid="updateFormValid"/>
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="deep-purple-darken-2" text @click="publishVacancyDialog = false">Fechar</v-btn>
+                <v-btn bg-color="deep-purple-darken-2" :disabled="!formValid" text="Salvar" variant="tonal" @click="submitForm"></v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -44,8 +45,22 @@
 export default {
   data() {
     return {
-      publishVacancyDialog: false
+      publishVacancyDialog: false,
+      formValid: false,
     };
+  },
+  methods: {
+    updateFormValid(valid) {
+      this.formValid = valid;
+    },
+    submitForm(){
+        const form = this.$refs.form.$refs.form
+        if(form.validate()){
+            alert('Formulário salvo');
+        } else {
+            alert('Preencha os campos corretamente');
+        }
+    },
   }
 };
 </script>
