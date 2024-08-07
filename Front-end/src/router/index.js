@@ -13,6 +13,7 @@ import RedefinirSenha from '@/pages/redefinirSenha.vue';
 import ModalJustificativa from '@/components/perfis/empresa/ModalJustificativa.vue';
 import ListaEmpresas from '@/components/admin/ListaEmpresas.vue';
 import loginADM from '@/components/admin/loginADM.vue';
+import ListaDeUsuarios from '@/components/admin/ListaDeUsuarios.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,7 +39,8 @@ const router = createRouter({
     { path: '/agenda-candidato', component: AgendaCandidato },
     { path: '/lista-candidatos-empresa', component: ListaCandidatosEmpresa },
     { path: '/lista-empresas', component: ListaEmpresas },
-    { path: '/login-admin', component: loginADM}
+    { path: '/login-admin', component: loginADM},
+    {path: '/listaDe-usuarios', component: ListaDeUsuarios}
   ],
 });
 
