@@ -1,5 +1,5 @@
 <template>
-    <!-- <Navbar /> -->
+    <Navbar />
     <FotoCapaEmpresa />
     <!-- <v-row class="ma-4 mb-1 d-flex flex-row align-center">            
         <v-col cols="12" sm="6">
