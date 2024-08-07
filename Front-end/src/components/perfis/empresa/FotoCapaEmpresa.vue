@@ -34,17 +34,12 @@ import MenuEditarEmpresa from './MenuEditarEmpresa.vue';
     // border: 1px solid red;
 }
 
-// .box-shadow {
-//     box-shadow: 0 2px 4px gray;
-// }
-
 .div-capa-foto {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    // margin: 30px;
     margin-bottom: 25px;
 }
 
@@ -61,9 +56,8 @@ import MenuEditarEmpresa from './MenuEditarEmpresa.vue';
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 15px;
+    padding: 25px;
     gap: 15px;
-    // background-color: #e1d6f6;
 }
 
 .div-foto-perfil {

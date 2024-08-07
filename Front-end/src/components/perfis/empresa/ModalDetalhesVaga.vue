@@ -1,6 +1,6 @@
 <template>
     <!-- <div class="text-center"> -->
-    <v-btn variant="tonal" @click="dialog = true">
+    <v-btn variant="tonal" class="bg-deep-purple-accent-3" @click="dialog = true">
         Ver Detalhes
     </v-btn>
 

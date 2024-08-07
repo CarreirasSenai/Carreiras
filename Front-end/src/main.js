@@ -31,6 +31,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import vuetify from './plugins/vuetify'; // Importe o objeto vuetify configurado
+import './styles/keyframes.css';
 
 const app = createApp(App);
 
