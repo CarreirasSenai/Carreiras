@@ -13,7 +13,7 @@
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="deep-purple-darken-2" text @click="publishVacancyDialog = false">Fechar</v-btn>
-                <v-btn bg-color="deep-purple-darken-2" :disabled="!formValid" text="Salvar" variant="tonal" @click="submitForm"></v-btn>
+                <v-btn class="bt-salvar" :disabled="!formValid" variant="tonal" @click="submitForm">Salvar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -65,9 +65,15 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .box-shadow {
     box-shadow: 0 2px 4px gray;
+}
+
+.bt-salvar {
+    background-color: #6200EA;
+    color: white;
+    border-color: #6200EA;
 }
 
 @media(max-width:600px){

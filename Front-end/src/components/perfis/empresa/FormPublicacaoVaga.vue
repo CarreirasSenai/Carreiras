@@ -61,10 +61,20 @@
             ></v-text-field>
         </v-col>
         <v-col cols="12">
+            <v-textarea
+                :model-value="descricao" 
+                label="Descrição"
+                :rules="descricaoRules"
+                counter
+                maxlength="1500"
+                auto-grow
+            ></v-textarea>
+        </v-col>
+        <v-col cols="12">
             <v-expansion-panels>
                 <v-expansion-panel bg-color="#F7F7F7">
                     <v-expansion-panel-title>
-                        <i class="mdi mdi-star cor-primaria" style="margin-right: 8px;"></i>
+                        <i class="mdi mdi-list-box cor-primaria" style="margin-right: 8px;"></i>
                         <h3 class="cor-primaria">Responsabilidades</h3>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
@@ -86,7 +96,7 @@
             <v-expansion-panels>
                 <v-expansion-panel bg-color="#F7F7F7">
                     <v-expansion-panel-title>
-                        <i class="mdi mdi-star cor-primaria" style="margin-right: 8px;"></i>
+                        <i class="mdi mdi-medal cor-primaria" style="margin-right: 8px;"></i>
                         <h3 class="cor-primaria">Habilidades Exigidas</h3>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
@@ -130,7 +140,7 @@
             <v-expansion-panels>
                 <v-expansion-panel bg-color="#F7F7F7">
                     <v-expansion-panel-title>
-                        <i class="mdi mdi-star cor-primaria" style="margin-right: 8px;"></i>
+                        <i class="mdi mdi-lightbulb cor-primaria" style="margin-right: 8px;"></i>
                         <h3 class="cor-primaria">Benefícios</h3>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
@@ -149,16 +159,6 @@
             </v-expansion-panels>
         </v-col>
         <v-col cols="12">
-            <v-textarea
-                :model-value="descricao" 
-                label="Descrição"
-                :rules="descricaoRules"
-                counter
-                maxlength="1500"
-                auto-grow
-            ></v-textarea>
-        </v-col>
-        <v-col cols="12">
             <v-select
                 v-model="niveisCargo"
                 :rules="niveisCargoRules"
@@ -172,7 +172,7 @@
             <v-expansion-panels>
                 <v-expansion-panel bg-color="#F7F7F7">
                     <v-expansion-panel-title>
-                        <i class="mdi mdi-star cor-primaria" style="margin-right: 8px;"></i>
+                        <i class="mdi mdi-timeline-check cor-primaria" style="margin-right: 8px;"></i>
                         <h3 class="cor-primaria">Etapas</h3>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
@@ -224,6 +224,13 @@ export default {
             localizacaoRules: [(v) => !!v || 'Localização requerida'],
             estado: 'Selecionar',
             estadoRules: [(v) => v !== 'Selecionar' || 'Estado requerido'],
+            descricao: '',
+            descricaoRules: [v => v.length <= 1500 || 'Máximo de 1.500 caracteres'],
+            quantia: '',
+            quantiaRules: [
+                v => !!v || 'Remuneração requerida',
+                v => !isNaN(v) || 'Valor inválido',
+            ],
             listEstados: ['Selecionar','Acre - AC','Alagoas - AL','Amapá - AP','Amazonas - AM','Bahia - BA',
                 'Ceará - CE','Distrito Federal - DF','Espírito Santo - ES','Goiás - GO','Maranhão - MA',
                 'Mato Grosso - MT','Mato Grosso do Sul - MS','Minas Gerais - MG','Pará - PA','Paraíba - PB',
@@ -241,16 +248,9 @@ export default {
             modalidadeRules: [(v) => v !== 'Selecionar' || 'Modalidade requerida'],
             listModalidades: ['Selecionar', 'Presencial','Híbrido',
                 'Home office','Trabalho externo','Freelance'],
-            quantia: '',
-            quantiaRules: [
-                v => !!v || 'Remuneração requerida',
-                v => !isNaN(v) || 'Valor inválido',
-            ],
             responsabilidades: '',
             habilidadesExtras: '',
             beneficios: '',
-            descricao: '',
-            descricaoRules: [v => v.length <= 1500 || 'Máximo de 1.500 caracteres'],
             niveisCargo: 'Selecionar',
             niveisCargoRules: [(v) => v !== "Selecionar" || 'Nível de cargo requerido'],
             listNiveisCargo: ["Selecionar","Estagiário/Intern","Assistente","Júnior",
