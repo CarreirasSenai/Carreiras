@@ -3,16 +3,16 @@
     <Navbar />
     <v-container fluid class="fill-height main-container">
       <div class="mt-4">
-        <h1>Lista de Empresas</h1>
+        <h1>Lista de Usuarios</h1>
       </div>
 
-      <div class="procurar-empresas">
+      <div class="procurar-Usuarios">
         <v-card-text>
           <v-text-field
             :loading="loading"
             append-inner-icon="mdi-magnify"
             density="compact"
-            label="Procure aqui uma Empresa."
+            label="Procure um Usúario."
             variant="solo"
             hide-details
             single-line
@@ -22,59 +22,64 @@
         </v-card-text>
       </div>
 
-      <div class="list-empresa">
-        <div class="card-do-empresa rounded" v-for="n in 6" :key="n">
-          <div class="corpo-card-empresa">
+      <div class="list-usuario">
+        <div class="card-do-usuario rounded" v-for="n in 6" :key="n">
+          <div class="corpo-card-usuario">
             <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
             <div>
-              <h3>TOTVS - Sistemas Inteligentes</h3>
+              <h3>Robsoh Hush</h3>
             </div>
           </div>
-          <div class="localizacao-empresa"><span class="locaCor">Localização:</span> Joinville</div>
+          <div class="email-usuario">
+            <span class="locaCor">robsoh56@gmail.com</span>
+          </div>
+          <div class="funcao-usuario">
+            <span class="locaCor">Administrador</span>
+          </div>
           <div class="status" />
-          <MenuAdminEmpresa />
+          <div class="dotsNav"><MenuAdminUsuario /></div>
         </div>
-        <!-- <div class="card-do-empresa rounded">
-          <div class="corpo-card-empresa">
+        <!-- <div class="card-do-usuario rounded">
+          <div class="corpo-card-usuario">
             <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
             <div>
               <h3>Whirlpool Corporation</h3>
             </div>
           </div>
-          <div class="localizacao-empresa">Localização: Joinville</div>
+          <div class="localizacao-usuario">Localização: Joinville</div>
           <img class="status" src="/src/assets/statusONteste.png" alt="" />
-          <MenuAdminEmpresa />
+          <MenuAdminusuario />
         </div>
-        <div class="card-do-empresa rounded">
-          <div class="corpo-card-empresa">
+        <div class="card-do-usuario rounded">
+          <div class="corpo-card-usuario">
             <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
             <div>
               <h3>Dohler S.A</h3>
             </div>
           </div>
-          <div class="localizacao-empresa">Localização: Joinville</div>
+          <div class="localizacao-usuario">Localização: Joinville</div>
           <img class="status" src="/src/assets/statusONteste.png" alt="" />
-          <MenuAdminEmpresa />
+          <MenuAdminusuario />
         </div>
-        <div class="card-do-empresa rounded">
-          <div class="corpo-card-empresa">
+        <div class="card-do-usuario rounded">
+          <div class="corpo-card-usuario">
             <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
             <div>
               <h3>NIDEC GLOBAL APPLIANCE BRASIL LTDA</h3>
             </div>
           </div>
-          <div class="localizacao-empresa">Localização: Joinville</div>
+          <div class="localizacao-usuario">Localização: Joinville</div>
           <img class="status" src="/src/assets/statusONteste.png" alt="" />
-          <MenuAdminEmpresa />
+          <MenuAdminusuario />
         </div> -->
       </div>
     </v-container>
   </div>
 </template>
 <script>
-import MenuAdminEmpresa from "./MenuAdminEmpresa.vue";
+import MenuAdminUsuario from "./MenuAdminUsuario.vue";
 export default {
-  components: { MenuAdminEmpresa },
+  components: { MenuAdminUsuario },
   data: () => ({
     items: [{ text: "Offline", icon: "mdi-check-circle" }],
   }),
@@ -92,7 +97,7 @@ export default {
   flex-direction: column;
 }
 
-.list-empresa {
+.list-usuario {
   display: inherit;
   flex-direction: inherit;
   gap: 15px;
@@ -100,7 +105,7 @@ export default {
   padding: 30px 50px;
 }
 
-.card-do-empresa {
+.card-do-usuario {
   background-color: white;
   padding: 20px 10px;
   display: flex;
@@ -112,43 +117,44 @@ export default {
   position: relative;
 }
 
-.corpo-card-empresa {
+.corpo-card-usuario {
   display: flex;
   align-items: center;
   flex: 1;
 }
 
-.localizacao-empresa {
+.email-usuario {
   margin-left: auto;
-   margin: 0 200px;
+  margin: 0 130px;
   text-align: center;
 }
-.locaCor{
-font-weight: 600;
+
+.funcao-usuario {
+  margin-left: auto;
+  margin: 0 120px;
+  text-align: center;
 }
 
-.status {
-  height: 25px;
-  width: 25px;
-  border-radius: 50%;
-  background-color: #34C759; // cor verde
-  margin: 0 100px;
+.locaCor {
+  font-weight: 400;
 }
-
-.perfil-empresa-link {
+.dotsNav {
+  margin: 0 30px;
+}
+.perfil-usuario-link {
   position: absolute;
   top: 0;
   right: 0;
   margin: 10px;
 }
 
-.procurar-empresas {
+.procurar-Usuarios {
   width: 50%;
   margin: 10px;
   display: flex;
 }
 
-.card-empresa {
+.card-usuario {
   display: flex;
   flex-direction: column;
   padding: 10px;

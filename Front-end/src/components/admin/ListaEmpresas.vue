@@ -32,7 +32,7 @@
           </div>
           <div class="localizacao-empresa"><span class="locaCor">Localização:</span> Joinville</div>
           <div class="status" />
-          <MenuAdminEmpresa />
+          <div class="dotsNav"><MenuAdminEmpresa /></div>
         </div>
         <!-- <div class="card-do-empresa rounded">
           <div class="corpo-card-empresa">
@@ -134,7 +134,9 @@ font-weight: 600;
   background-color: #34C759; // cor verde
   margin: 0 100px;
 }
-
+.dotsNav{
+    margin: 0 30px;
+}
 .perfil-empresa-link {
   position: absolute;
   top: 0;

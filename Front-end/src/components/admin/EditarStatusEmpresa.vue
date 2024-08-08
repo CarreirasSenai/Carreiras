@@ -1,7 +1,7 @@
 <template>
-    <div class="text-center pa-4">
-        <v-btn @click.stop.prevent="dialog = true" class="bg-red">
-            Recusar
+    <div>
+        <v-btn @click.stop.prevent="dialog = true" style="max-height: 70vh;" class="overflow-auto">
+            Desativar Empresa
         </v-btn>
 
         <v-dialog v-model="dialog">
@@ -9,16 +9,15 @@
                 <v-row class="d-flex justify-center">
                     <v-col cols="12">
                         <v-form ref="form" v-model="isValid" class="my-4">
-                            <v-card title="Justificativa para não Contratação">
+                            <v-card title="Justificativa para Desativação da Empresa">
                                 <v-card-text>
-                                    <!-- <p>Candidato: {{ candidato }}</p>
+                                    <!-- <p>empresa: {{ empresa }}</p>
                                     <p>Vaga: {{ vaga }}</p>
                                     <br> -->
                                     <div class="mb-5 d-flex flex-wrap ga-2">
-                                        <p>Candidato: <v-chip variant="outlined">{{ candidato }}</v-chip></p>
-                                        <p>Vaga: <v-chip variant="outlined">{{ vaga }}</v-chip></p>
+                                        <p>Empresa: <v-chip variant="outlined">{{ Empresas }}</v-chip></p>
                                     </div>
-                                    <v-textarea label="Justifique a não contratação do candidato"
+                                    <v-textarea label="Justifique a Desativação da Empresa"
                                         v-model="justificativa" :rules="[rules.justificativa, rules.length(200)]"
                                         counter="200" variant="outlined"></v-textarea>
                                 </v-card-text>
@@ -40,8 +39,7 @@
 export default {
     data: () => ({
         dialog: false,
-        candidato: 'Tyrion Lannister',
-        vaga: 'Gerente de Projetos',
+        Empresas: 'TOTVS - Sistemas Inteligentes',
         isValid: false,
         isLoading: false,
         justificativa: '',
