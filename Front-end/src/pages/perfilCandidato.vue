@@ -20,10 +20,6 @@ import LinksCandidato from '@/components/perfis/candidato/LinksCandidato.vue';
 </script>
 
 <style>
-* {
-    /* border: 1px solid red; */
-}
-
 .mdi {
     color: #6732d2af;
 }
