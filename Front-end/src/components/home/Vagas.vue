@@ -2,7 +2,8 @@
     <v-row class="ma-2">
         <v-col cols="12" lg="4" md="6" sm="6" v-for="n in 9" :key="n">
             <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
-                <v-card-title class="bg-deep-purple-accent-4 rounded-lg observavel">Analista de Dados</v-card-title>
+                <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">Analista de
+                    Dados</v-card-title>
                 <v-card-text class="pa-4">
                     <p class="observavel"><small>Local:</small> América, Joinville</p>
                     <p class="observavel"><small>Contrato:</small> CLT</p>
@@ -21,6 +22,7 @@
         </v-col>
     </v-row>
 </template>
+
 <script>
 export default {
     mounted() {
@@ -28,7 +30,7 @@ export default {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
                     setTimeout(() => {
-                        entry.target.classList.add('visivel'); 
+                        entry.target.classList.add('visivel');
                     }, index * 10); // Ajuste o tempo conforme necessário
                 }
             });
@@ -47,6 +49,7 @@ export default {
     }
 };
 </script>
+
 <style scoped>
 @keyframes fadeInLeft {
     0% {
@@ -79,7 +82,7 @@ export default {
     animation: fadeInLeft 1s normal;
 }
 
-.v-card-title.visivel{
-    animation: fadeInTop 2s normal;
+.v-card-title.visivel {
+    animation: fadeInLeft 2s normal;
 }
 </style>

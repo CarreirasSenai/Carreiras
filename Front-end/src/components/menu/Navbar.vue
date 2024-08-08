@@ -8,7 +8,7 @@
                     <img class="carreiras-logo" src="../../assets/logo.png">
                 </a>
 
-                <!-- TODO Validar quando o usuário estiver logado (vai ser feito futurane) -->
+                <!-- <ADM / LOGIN /> -->
                 <div class="sign-in-buttons" v-if="visibilidadeNaoLogado">
                     <v-btn class="adm-btn" variant="outlined">
                         Adm
