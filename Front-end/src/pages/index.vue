@@ -1,14 +1,45 @@
 <template>
   <Navbar />
   <Home v-if="visibilidadeHome" />
-  <div>Current Count: {{ counter.count }}</div>
   <Vagas />
   <FiltroVagas v-if="visibilidadeFiltroVagas" />
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<!-- Options API -->
+<script>
 import { useCounterStore } from '@/stores/counter';
+
+export default {
+  data() {
+    return {
+      visibilidadeHome: true,
+      visibilidadeFiltroVagas: false,
+    };
+  },
+  computed: {
+    counter() {
+      return useCounterStore();
+    },
+  },
+  mounted() {
+    this.lojaPinia();
+  },
+  methods: {
+    lojaPinia() {
+      this.counter.mudaNome;
+    }
+  }
+};
+</script>
+
+<!-- Composition API -->
+<!-- <script setup>
+import { ref, onMounted } from 'vue';
+import { useCounterStore } from '@/stores/counter';
+
+// reactive state
+const visibilidadeHome = ref(true);
+const visibilidadeFiltroVagas = ref(false);
 
 // Initialize the Pinia store
 const counter = useCounterStore();
@@ -17,9 +48,4 @@ const counter = useCounterStore();
 counter.count++;
 counter.$patch({ count: counter.count + 1 });
 counter.increment();
-
-// Propriedades reativas
-const visibilidadeHome = ref(true);
-const visibilidadeFiltroVagas = ref(false);
-
-</script>
+</script> -->

@@ -1,7 +1,7 @@
 <template>
   <v-card variant="elevated"
     class="text-center bg-deep-purple-accent-4 ma-5 mb-3 pt-10 pb-10 pl-5 pr-5 rounded-lg elevation-2">
-    <h1 style="font-size: 4vh;">Encontre uma carreira para você {{ user }} !</h1>
+    <h1 style="font-size: 4vh;">Encontre uma carreira para você {{ user.user.fullName }} !</h1>
     <v-row>
       <v-card-text class="d-flex justify-center">
         <v-col cols="12" sm="8" md="8">
@@ -19,18 +19,24 @@
 
 <script>
 import axios from 'axios';
+import { useUserStore } from '@/stores/candidato';
 
 export default {
   data: () => ({
     loaded: false,
     loading: false,
     pesquisa: '',
-    user: '',
   }),
 
+  computed: {
+    user() {
+      return useUserStore();
+    }
+  },
+
   mounted() {
-    // Chama a função userLogado quando o componente for montado
-    this.userLogado();
+    const user = this.user;
+    user.userLogado();
   },
 
   methods: {
@@ -63,17 +69,6 @@ export default {
       } catch (error) {
         console.log('Erro ao enviar busca!', error.response);
       };
-    },
-
-    async userLogado() {
-      try {
-        const response = await axios.get('http://localhost:4000/candidato/read', {
-          withCredentials: true
-        });
-        this.user = response.data.usuario.nome_completo;
-      } catch (error) {
-        console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
-      }
     },
   },
 }
