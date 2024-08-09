@@ -2,7 +2,7 @@
   <v-container fluid class="bg-deep-purple-lighten-4 fill-height" style="width: 100%;">
     <div style="border-radius: 5px; overflow: hidden; margin: 30px 30px 0px;">
       <v-btn @click="showModalEntrevista" class="v-btn--size-x-large bg-purple-darken-4 v-btn--density-comfortable me-2">Entrevista</v-btn>
-      <v-btn class="v-btn--size-x-large v-btn--density-comfortable" variant="outlined">Vaga</v-btn>
+      <v-btn @click="showModalVaga" class="v-btn--size-x-large v-btn--density-comfortable" variant="outlined">Vaga</v-btn>
     </div>
     <div class="calendar">
       <div class="calendar-header">
@@ -41,6 +41,7 @@
         <Modal :isVisible="isModalVisible" :title="eventTitle" :description="eventDescription"
           @update:isVisible="isModalVisible = $event" />
         <ModalEntrevista :isVisible="isModalEntrevistaVisible" @save-event="addEvent" @update:isVisible="isModalEntrevistaVisible = $event" />
+        <ModalInserirVaga :isVisible="isModalVagaVisible" @update:isVisible="isModalVagaVisible = $event"/>
       </div>
     </div>
   </v-container>
@@ -72,6 +73,12 @@ export default {
     const showModalEntrevista = () => {
       isModalEntrevistaVisible.value = true;
     };
+
+    const isModalVagaVisible = ref(false);
+
+    const showModalVaga = () => {
+      isModalVagaVisible.value = true;
+    }
 
     const currentMonth = ref(new Date().getMonth());
     const currentYear = ref(new Date().getFullYear());
@@ -207,6 +214,8 @@ export default {
       showModal,
       isModalEntrevistaVisible,
       showModalEntrevista,
+      isModalVagaVisible,
+      showModalVaga,
       currentMonth,
       currentYear,
       weekdays,
