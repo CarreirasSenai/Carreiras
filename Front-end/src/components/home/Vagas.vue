@@ -10,7 +10,7 @@
                     <p class="observavel"><small>Modalidade:</small> Híbrido</p>
                     <p class="observavel"><small>Remuneração:</small> Salário compatível com a função</p>
                 </v-card-text>
-                <small class="position-absolute top-0 right-0 ma-2 text-white">1 semana atrás</small>
+                <small class="position-absolute top-0 right-0 ma-2 text-white observavel data-vaga">1 semana atrás</small>
                 <v-card-actions class="d-flex justify-space-between">
                     <ModalDetalhesVaga />
                     <div class="d-flex align-center justify-center ga-2">
@@ -83,6 +83,10 @@ export default {
 }
 
 .v-card-title.visivel {
+    animation: fadeInLeft 2s normal;
+}
+
+.data-vaga.visivel{
     animation: fadeInLeft 2s normal;
 }
 </style>

@@ -9,7 +9,7 @@
                 </a>
 
                 <!-- <ADM / LOGIN /> -->
-                <div class="sign-in-buttons" v-if="visibilidadeNaoLogado">
+                <div class="sign-in-buttons" v-if="user.visibilidadeNaoLogado">
                     <v-btn class="adm-btn" variant="outlined">
                         Adm
                     </v-btn>
@@ -19,7 +19,7 @@
                 </div>
 
                 <!-- <NavbarLogado /> -->
-                <div class="user-account-avatar d-flex align-center ga-2" v-if="visibilidadeLogado">
+                <div class="user-account-avatar d-flex align-center ga-2" v-if="user.visibilidadeLogado">
                     <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.email }}</h1>
                     <v-menu min-width="200px" rounded>
                         <template v-slot:activator="{ props }">
@@ -70,20 +70,34 @@
 
 <script>
 import axios from 'axios';
+import { useUserStore } from '@/stores/candidato';
 
 export default {
     created() {
-        this.userLogado();
+        // this.userLogado();
     },
+
     data: () => ({
-        user: {
-            initials: 'JD',
-            fullName: 'Junior Dev',
-            email: 'juniordev@gmail.com',
-        },
-        visibilidadeNaoLogado: true,
-        visibilidadeLogado: false,
+        // user: {
+        //     initials: 'JD',
+        //     fullName: 'Junior Dev',
+        //     email: 'juniordev@gmail.com',
+        // },
+        // visibilidadeNaoLogado: true,
+        // visibilidadeLogado: false,
     }),
+
+    computed: {
+        user() {
+            return useUserStore();
+        }
+    },
+
+    mounted() {
+        const user = this.user;
+        user.userLogado();
+    },
+
     methods: {
         redirectToLogin() {
             this.$router.push('/empresa-candidato');
@@ -106,25 +120,25 @@ export default {
         },
 
         // Autenticar usúario e coletar dados
-        async userLogado() {
-            try {
-                const response = await axios.get('http://localhost:4000/candidato/read', {
-                    withCredentials: true
-                });
+        // async userLogado() {
+        //     try {
+        //         const response = await axios.get('http://localhost:4000/candidato/read', {
+        //             withCredentials: true
+        //         });
 
-                this.user.initials = extrairIniciais(response.data.usuario.nome_completo);
-                this.user.fullName = response.data.usuario.nome_completo;
-                this.user.email = response.data.usuario.email;
-                this.visibilidadeNaoLogado = !this.visibilidadeNaoLogado;
-                this.visibilidadeLogado = !this.visibilidadeLogado;
+        //         this.user.initials = extrairIniciais(response.data.usuario.nome_completo);
+        //         this.user.fullName = response.data.usuario.nome_completo;
+        //         this.user.email = response.data.usuario.email;
+        //         this.visibilidadeNaoLogado = !this.visibilidadeNaoLogado;
+        //         this.visibilidadeLogado = !this.visibilidadeLogado;
 
-                console.log('Usúario autenticado!', response.data);
+        //         console.log('Usúario autenticado!', response.data);
 
-            } catch (error) {
-                console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
-                this.$router.push('/');
-            }
-        },
+        //     } catch (error) {
+        //         console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
+        //         this.$router.push('/');
+        //     }
+        // },
 
         // Fazer o Logout
         async logout() {
@@ -142,19 +156,19 @@ export default {
     }
 }
 
-function extrairIniciais(nomeCompleto) {
-    const palavras = nomeCompleto.split(" ");
+// function extrairIniciais(nomeCompleto) {
+//     const palavras = nomeCompleto.split(" ");
 
-    const primeiroNome = palavras[0];
-    const segundoNome = palavras.length > 1 ? palavras[1] : "";
+//     const primeiroNome = palavras[0];
+//     const segundoNome = palavras.length > 1 ? palavras[1] : "";
 
-    const inicialPrimeiroNome = primeiroNome.charAt(0).toUpperCase();
-    const inicialSegundoNome = segundoNome.charAt(0).toUpperCase();
+//     const inicialPrimeiroNome = primeiroNome.charAt(0).toUpperCase();
+//     const inicialSegundoNome = segundoNome.charAt(0).toUpperCase();
 
-    const iniciais = inicialPrimeiroNome + inicialSegundoNome;
+//     const iniciais = inicialPrimeiroNome + inicialSegundoNome;
 
-    return iniciais;
-}
+//     return iniciais;
+// }
 
 </script>
 
