@@ -8,7 +8,7 @@
             <v-list>
                 <v-list-item class="pa-0">
                     <v-list-item-title class="cursor-pointer">
-                        <EditarCadEmpresa />
+                        <EditarCadEmpresaAdmin />
                         <EditarStatusEmpresa />
                     </v-list-item-title>
                 </v-list-item>

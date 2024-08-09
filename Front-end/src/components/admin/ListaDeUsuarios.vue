@@ -2,7 +2,7 @@
   <div style="height: 100%">
     <Navbar />
     <v-container fluid class="fill-height main-container">
-      <div class="mt-4">
+      <div class="text-center mt-4">
         <h1>Lista de Usuarios</h1>
       </div>
 
@@ -23,72 +23,48 @@
       </div>
 
       <div class="list-usuario">
-        <div class="card-do-usuario rounded" v-for="n in 6" :key="n">
-          <div class="corpo-card-usuario">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>Robsoh Hush</h3>
-            </div>
-          </div>
-          <div class="email-usuario">
-            <span class="locaCor">robsoh56@gmail.com</span>
-          </div>
-          <div class="funcao-usuario">
-            <span class="locaCor">Administrador</span>
-          </div>
-          <div class="status" />
-          <div class="dotsNav"><MenuAdminUsuario /></div>
-        </div>
-        <!-- <div class="card-do-usuario rounded">
-          <div class="corpo-card-usuario">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>Whirlpool Corporation</h3>
-            </div>
-          </div>
-          <div class="localizacao-usuario">Localização: Joinville</div>
-          <img class="status" src="/src/assets/statusONteste.png" alt="" />
-          <MenuAdminusuario />
-        </div>
-        <div class="card-do-usuario rounded">
-          <div class="corpo-card-usuario">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>Dohler S.A</h3>
-            </div>
-          </div>
-          <div class="localizacao-usuario">Localização: Joinville</div>
-          <img class="status" src="/src/assets/statusONteste.png" alt="" />
-          <MenuAdminusuario />
-        </div>
-        <div class="card-do-usuario rounded">
-          <div class="corpo-card-usuario">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>NIDEC GLOBAL APPLIANCE BRASIL LTDA</h3>
-            </div>
-          </div>
-          <div class="localizacao-usuario">Localização: Joinville</div>
-          <img class="status" src="/src/assets/statusONteste.png" alt="" />
-          <MenuAdminusuario />
-        </div> -->
+        <v-row v-for="n in 6" :key="n" class="list-usuario-row">
+          <v-col cols="12">
+            <v-card class="card-do-usuario">
+              <v-row align="center" no-gutters>
+                <v-col cols="3" class="text-center">
+                  <v-avatar color="surface-variant" size="40">
+                    <v-icon>mdi-account-circle</v-icon>
+                  </v-avatar>
+                </v-col>
+                <v-col cols="7">
+                  <h3 class="usuario-nome">Robsoh Hush</h3>
+                  <p class="usuario-email">robsoh56@gmail.com</p>
+                </v-col>
+                <v-col cols="2" class="text-right">
+                  <div class="locaCor"><MenuAdminUsuario /></div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
       </div>
     </v-container>
   </div>
 </template>
+
 <script>
 import MenuAdminUsuario from "./MenuAdminUsuario.vue";
 export default {
   components: { MenuAdminUsuario },
   data: () => ({
-    items: [{ text: "Offline", icon: "mdi-check-circle" }],
+    loading: false,
   }),
+  methods: {
+    onClick() {
+      // Função de exemplo para o clique no ícone de busca
+    },
+  },
 };
 </script>
+
 <style lang="scss" scoped>
-// *{
-//     border: 1px solid red;
-// }
+// Estilos gerais
 .main-container {
   background-color: #e1d6f6;
   display: flex;
@@ -98,78 +74,68 @@ export default {
 }
 
 .list-usuario {
-  display: inherit;
-  flex-direction: inherit;
-  gap: 15px;
-  width: 100%;
-  padding: 30px 50px;
+  width: 95%;
+  padding: 10px 0;
 }
 
 .card-do-usuario {
   background-color: white;
-  padding: 20px 10px;
+  border-radius: 8px;
+  padding: 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100rem;
-  flex-wrap: wrap;
-  max-width: 100%;
-  position: relative;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-.corpo-card-usuario {
-  display: flex;
-  align-items: center;
-  flex: 1;
+.usuario-nome {
+  font-size: 16px;
+  font-weight: 600;
 }
 
-.email-usuario {
-  margin-left: auto;
-  margin: 0 130px;
-  text-align: center;
-}
-
-.funcao-usuario {
-  margin-left: auto;
-  margin: 0 120px;
-  text-align: center;
-}
-
-.locaCor {
-  font-weight: 400;
-}
-.dotsNav {
-  margin: 0 30px;
-}
-.perfil-usuario-link {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
+.usuario-email {
+  font-size: 14px;
+  color: #666;
 }
 
 .procurar-Usuarios {
-  width: 50%;
-  margin: 10px;
-  display: flex;
+  width: 80%;
 }
 
-.card-usuario {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  width: 90%;
+.locaCor {
+  padding: 5px;
+  margin: 15px;
 }
-
-.skills {
-  width: 100%;
-  display: flex;
-}
-
-.v-slide-group {
-  :deep(.v-slide-group__content) {
-    display: flex;
-    justify-content: center;
+// Responsividade para telas menores
+@media (max-width: 768px) {
+  .main-container {
+    padding: 10px;
   }
+
+  .procurar-Usuarios {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .list-usuario-row {
+    margin-bottom: 10px;
+  }
+
+  .card-do-usuario {
+    flex-direction: row;
+    padding: 10px;
+  }
+
+  .usuario-nome {
+    font-size: 14px;
+  }
+
+  .usuario-email {
+    font-size: 12px;
+  }
+  .locaCor {
+  padding: 5px;
+  margin: 15px;
 }
+}
+
 </style>

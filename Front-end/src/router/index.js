@@ -19,17 +19,17 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', component: Index }, // Página Index como a rota padrão
-    { path: '/login', component: Login},
-    { path: '/cadastro-empresa', component: CADempresa},
-    { path: '/cadastro-candidato', component: CADcandidato},
-    { path: '/empresa-candidato', component: EntrarEmpresaOuCandidato},
-    { path: '/editar-candidato', component: EDCcandidato},
-    { path: '/perfil-candidato',component: PerfilCandidato},
-    { path: '/perfil-empresa',component: PerfilEmpresa},
-    { path: '/agenda-candidato', component: AgendaCandidato},
-    { path: '/lista-candidatos-empresa', component: ListaCandidatosEmpresa},
-    { path: '/redefinir-senha', component: RedefinirSenha},
-    { path: '/modal-justificativa', component: ModalJustificativa},
+    { path: '/login', component: Login },
+    { path: '/cadastro-empresa', component: CADempresa },
+    { path: '/cadastro-candidato', component: CADcandidato },
+    { path: '/empresa-candidato', component: EntrarEmpresaOuCandidato },
+    { path: '/editar-candidato', component: EDCcandidato },
+    { path: '/perfil-candidato', component: PerfilCandidato },
+    { path: '/perfil-empresa', component: PerfilEmpresa },
+    { path: '/agenda-candidato', component: AgendaCandidato },
+    { path: '/lista-candidatos-empresa', component: ListaCandidatosEmpresa },
+    { path: '/redefinir-senha', component: RedefinirSenha },
+    { path: '/modal-justificativa', component: ModalJustificativa },
     { path: '/login', component: Login },
     { path: '/cadastro-empresa', component: CADempresa },
     { path: '/cadastro-candidato', component: CADcandidato },
@@ -39,8 +39,8 @@ const router = createRouter({
     { path: '/agenda-candidato', component: AgendaCandidato },
     { path: '/lista-candidatos-empresa', component: ListaCandidatosEmpresa },
     { path: '/lista-empresas', component: ListaEmpresas },
-    { path: '/login-admin', component: loginADM},
-    {path: '/listaDe-usuarios', component: ListaDeUsuarios}
+    { path: '/login-admin', component: loginADM },
+    { path: '/listaDe-usuarios', component: ListaDeUsuarios }
   ],
 });
 
