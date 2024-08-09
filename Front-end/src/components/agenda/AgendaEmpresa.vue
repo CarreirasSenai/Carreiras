@@ -61,10 +61,6 @@ export default {
       isModalEntrevistaVisible.value = true;
     };
 
-    const addEvent = (event) => {
-      console.log('Event added:', event);
-    };
-
     const toggleDayEvents = (index) => {
       if (display.mdAndDown) {
         days.value[index].showEvents = !days.value[index].showEvents;
