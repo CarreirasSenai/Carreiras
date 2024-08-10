@@ -60,14 +60,6 @@
     text-transform: uppercase;
     margin: 10px 20px;
 }
-
-.mdi {
-    color: #6732d2af;
-}
-
-.mdi:hover {
-    color: #6732d2;
-}
 </style>
 
 <script>

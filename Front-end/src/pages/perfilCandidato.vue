@@ -24,19 +24,13 @@ import LinksCandidato from '@/components/perfis/candidato/LinksCandidato.vue';
     /* border: 1px solid red; */
 }
 
-.mdi {
-    color: #6732d2af;
-}
-
-.mdi-pencil {
-    color: #6732d2af !important;
-}
-
-.mdi-pencil:hover {
-    color: #6732d2 !important;
-}
-
-.mdi:hover {
+.mdi-pencil,
+.mdi-dots-horizontal,
+.mdi-instagram,
+.mdi-facebook,
+.mdi-linkedin,
+.mdi-github,
+.mdi-web {
     color: #6732d2;
 }
 </style>
