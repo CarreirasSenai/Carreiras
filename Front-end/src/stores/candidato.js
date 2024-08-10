@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import { useRouter } from 'vue-router';
+import axios from 'axios';
 
-export const useUserStore = defineStore('user', {
+export const useCandidatoStore = defineStore('candidato', {
     state: () => ({
         user: {
             initials: '',
@@ -10,6 +11,7 @@ export const useUserStore = defineStore('user', {
         },
         visibilidadeNaoLogado: true,
         visibilidadeLogado: false,
+        router: useRouter(),
     }),
     actions: {
         async userLogado() {
@@ -21,14 +23,14 @@ export const useUserStore = defineStore('user', {
                 this.user.initials = this.extrairIniciais(response.data.usuario.nome_completo);
                 this.user.fullName = response.data.usuario.nome_completo;
                 this.user.email = response.data.usuario.email;
-                this.visibilidadeNaoLogado = !this.visibilidadeNaoLogado;
-                this.visibilidadeLogado = !this.visibilidadeLogado;
+                this.visibilidadeNaoLogado = false;
+                this.visibilidadeLogado = true;
 
                 console.log('Usuário autenticado!', response.data);
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
-                this.$router.push('/');
+                this.router.push('/');
             }
         },
         extrairIniciais(nomeCompleto) {

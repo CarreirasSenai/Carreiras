@@ -19,24 +19,24 @@
 
 <script>
 import axios from 'axios';
-import { useUserStore } from '@/stores/candidato';
+import { useCandidatoStore } from '@/stores/candidato';
 
 export default {
   data: () => ({
     loaded: false,
     loading: false,
     pesquisa: '',
+    teste: '',
   }),
 
   computed: {
     user() {
-      return useUserStore();
+      return useCandidatoStore();
     }
   },
 
   mounted() {
     const user = this.user;
-    user.userLogado();
   },
 
   methods: {
@@ -70,6 +70,10 @@ export default {
         console.log('Erro ao enviar busca!', error.response);
       };
     },
+
+    testando(){
+      return this.teste = '123';
+    }
   },
 }
 </script>
