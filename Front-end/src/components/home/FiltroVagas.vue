@@ -1,5 +1,5 @@
 <template>
-    <div class="text-start ma-5" v-if="pesquisa.visibilidadeFiltroVagas">   
+    <div class="text-start ma-5 mb-0" v-if="pesquisa.visibilidadeFiltroVagas">   
         <div class="d-flex align-center justify-space-between">
             <h1 class="text-deep-purple-accent-4" style="font-size: 3vh;">Resultados da Pesquisa:</h1>
             <v-btn @click="dialog = true" icon="mdi-filter-variant" class="bg-deep-purple-accent-3"></v-btn>
