@@ -1,8 +1,9 @@
 <template>
-    <div class="text-start ma-5 mb-0" v-if="pesquisa.visibilidadeFiltroVagas">   
-        <div class="d-flex align-center justify-space-between">
-            <h1 class="text-deep-purple-accent-4" style="font-size: 3vh;">Resultados da Pesquisa:</h1>
-            <v-btn @click="dialog = true" icon="mdi-filter-variant" class="bg-deep-purple-accent-3"></v-btn>
+    <div class="text-start ma-5 mb-0" v-if="pesquisa.visibilidadeFiltroVagas">
+        <div
+            class="d-flex align-center justify-space-between ga-5 bg-deep-purple-accent-4 pa-10 pl-4 pr-4 rounded-lg elevation-2">
+            <h1 style="font-size: 3vh;">Resultados da Pesquisa:</h1>
+            <v-btn @click="dialog = true" icon="mdi-filter-variant" variant="text" title="Filtrar Vagas"></v-btn>
         </div>
         <v-dialog v-model="dialog">
             <v-card min-width="300" max-width="400" prepend-icon="mdi-filter-variant" title="Filtrar Vagas"
@@ -56,8 +57,8 @@
                             <v-row no-gutters>
                                 <v-col cols="12">
                                     <v-text-field v-model="remuneracao" label="Remuneração"
-                                        prepend-icon="mdi-currency-brl" variant="outlined" density="compact"
-                                        hide-details ingle-line></v-text-field>
+                                        prefix="R$" variant="outlined" density="compact" hide-details
+                                        ingle-line></v-text-field>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -66,7 +67,8 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-btn class="text-grey-darken-4" variant="text" text="Cancelar" @click="dialog = false"></v-btn>
-                    <v-btn class="bt-primario" variant="tonal" text="Filtrar" @click="filtrarVaga(), dialog = false"></v-btn>
+                    <v-btn class="bt-primario" variant="tonal" text="Filtrar"
+                        @click="filtrarVaga(), dialog = false"></v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -92,7 +94,7 @@ export default {
             contrato: '',
             modalidade: '',
             habilidade: [],
-            remuneracao: '',
+            remuneracao: '0.000,00',
         }
     },
 
@@ -119,7 +121,7 @@ export default {
     /* border: 1px solid red; */
 }
 
-.mdi-filter-variant {
-    color: #6200EA !important;
-}
+/* .mdi-filter-variant {
+    color: #6200EA;
+} */
 </style>
