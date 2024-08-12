@@ -6,7 +6,6 @@ import CADcandidato from '@/components/cadastro/CADcandidato';
 import EntrarEmpresaOuCandidato from '@/components/menu/EntrarEmpresaOuCandidato.vue';
 import EDCcandidato from '@/components/edicao/EDCcandidato.vue';
 import PerfilCandidato from '@/pages/perfilCandidato.vue';
-import PerfilEmpresa from '@/pages/perfilEmpresa.vue';
 import AgendaCandidato from '@/pages/AgendaCandidato.vue';
 import AgendaEmpresa from '@/pages/AgendaEmpresa.vue';
 import ListaCandidatosEmpresa from '@/pages/ListaCandidatosEmpresa.vue';

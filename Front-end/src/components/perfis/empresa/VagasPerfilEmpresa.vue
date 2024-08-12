@@ -1,7 +1,27 @@
 <template>
+    <v-row class="ma-4 mb-1 d-flex align-center row-rev">
+        <v-col cols="12" sm="6">
+            <h1>Vagas da Empresa</h1>
+        </v-col>
+        <v-col cols="12" sm="6" class="text-end">
+            <v-btn class="bt-primario" @click="publishVacancyDialog = true">Nova Vaga</v-btn>
+        </v-col> 
+        <v-dialog v-model="publishVacancyDialog" max-width="700">
+            <v-card>
+                <v-card-title class="headline">Publicação de vaga</v-card-title>
+                <FormPublicacaoVaga ref="form" @updateFormValid="updateFormValid"/>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="deep-purple-darken-2" text @click="publishVacancyDialog = false">Fechar</v-btn>
+                <v-btn class="bt-salvar" :disabled="!formValid" variant="tonal" @click="submitForm">Salvar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </v-row>
+    <v-divider class="ml-7 mr-7"></v-divider>
     <v-row class="ma-4">
         <v-col cols="12" lg="4" md="6" sm="6" v-for="n in 6" :key="n">
-            <v-card class="elevation-2" title="Analista de Dados">
+            <v-card class="box-shadow" title="Analista de Dados">
                 <v-card-text>
                     <p><small>Local:</small> América, Joinville</p>
                     <p><small>Contrato:</small> CLT</p>
@@ -10,8 +30,7 @@
                 </v-card-text>
                 <small class="position-absolute top-0 right-0 ma-2">1 semana atrás</small>
                 <v-card-actions class="d-flex justify-space-between">
-                    <ModalDetalhesVaga />
-                    <ModalCandidatosVagas />
+                    <v-btn variant="tonal">Ver Detalhes</v-btn>
                     <div class="d-flex align-center justify-center ga-2">
                         TOTVS
                         <img src="/src/assets/avatar.png" width="50px">
@@ -22,18 +41,43 @@
     </v-row>
 </template>
 
-<script setup lang="ts">
-import ModalCandidatosVagas from './ModalCandidatosVagas.vue';
-import ModalDetalhesVaga from './ModalDetalhesVaga.vue';
+<script>
+export default {
+  data() {
+    return {
+      publishVacancyDialog: false,
+      formValid: false,
+    };
+  },
+  methods: {
+    updateFormValid(valid) {
+      this.formValid = valid;
+    },
+    submitForm(){
+        const form = this.$refs.form.$refs.form
+        if(form.validate()){
+            alert('Formulário salvo');
+        } else {
+            alert('Preencha os campos corretamente');
+        }
+    },
+  }
+};
 </script>
 
-<style>
-* {
-    /* border: 1px solid red; */
+<style lang="scss" scoped>
+.box-shadow {
+    box-shadow: 0 2px 4px gray;
 }
 
-@media(max-width:600px) {
-    .row-rev div:nth-child(2) {
+.bt-salvar {
+    background-color: #6200EA;
+    color: white;
+    border-color: #6200EA;
+}
+
+@media(max-width:600px){
+    .row-rev div:nth-child(2){
         /* flex-direction: column-reverse; */
         display: flex;
         justify-content: start;

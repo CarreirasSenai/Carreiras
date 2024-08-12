@@ -30,13 +30,9 @@ import MenuEditarEmpresa from './MenuEditarEmpresa.vue';
 </script>
 
 <style lang="scss" scoped>
-* {
-    // border: 1px solid red;
+.box-shadow {
+    box-shadow: 0 2px 4px gray;
 }
-
-// .box-shadow {
-//     box-shadow: 0 2px 4px gray;
-// }
 
 .div-capa-foto {
     position: relative;

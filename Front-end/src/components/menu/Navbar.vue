@@ -122,7 +122,7 @@ export default {
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
-                this.$router.push('/');
+                //this.$router.push('/');
             }
         },
 

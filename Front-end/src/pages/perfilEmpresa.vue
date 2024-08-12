@@ -12,5 +12,3 @@
     <v-divider class="ml-7 mr-7"></v-divider>
     <VagasPerfilEmpresa />
 </template>
-
-<style></style>
