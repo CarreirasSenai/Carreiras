@@ -3,7 +3,8 @@
         <div
             class="d-flex align-center justify-space-between ga-5 bg-deep-purple-accent-4 pa-10 pl-4 pr-4 rounded-lg elevation-2">
             <h1 style="font-size: 3vh;">Resultados da Pesquisa:</h1>
-            <v-btn @click="dialog = true" icon="mdi-filter-variant" variant="text" title="Filtrar Vagas"></v-btn>
+            <v-btn @click="dialog = true" icon="mdi-filter-variant" variant="tonal" class="elevation-1"
+                title="Filtrar Vagas"></v-btn>
         </div>
         <v-dialog v-model="dialog">
             <v-card min-width="300" max-width="400" prepend-icon="mdi-filter-variant" title="Filtrar Vagas"
@@ -56,9 +57,18 @@
                             </v-row>
                             <v-row no-gutters>
                                 <v-col cols="12">
-                                    <v-text-field v-model="remuneracao" label="Remuneração"
-                                        prefix="R$" variant="outlined" density="compact" hide-details
-                                        ingle-line></v-text-field>
+                                    <v-text-field v-model="remuneracao" prefix="R$" label="Remuneração"
+                                        variant="outlined" density="compact" hide-details ingle-line></v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col cols="6">
+                                    <label for="data-inicio">De</label>
+                                    <input type="date" v-model="dataInicio" id="data-inicio">
+                                </v-col>
+                                <v-col cols="6">
+                                    <label for="data-fim">Até</label>
+                                    <input type="date" v-model="dataFim" id="data-fim">
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -77,6 +87,7 @@
 
 <script>
 import { usePesquisaVaga } from '@/stores/pesquisaVaga';
+import { useDataHora } from '@/stores/dataHora';
 
 export default {
     data() {
@@ -94,34 +105,69 @@ export default {
             contrato: '',
             modalidade: '',
             habilidade: [],
-            remuneracao: '0.000,00',
+            remuneracao: '',
+            dataInicio: '',
+            dataFim: '',
         }
+    },
+
+    mounted() {
+        this.inputData();
     },
 
     computed: {
         pesquisa() { return usePesquisaVaga(); },
+        dataHora() { return useDataHora(); }
     },
 
     methods: {
         filtrarVaga() {
-            console.log(this.chave);
-            console.log(this.cidade);
-            console.log(this.estado);
-            console.log(this.contrato);
-            console.log(this.modalidade);
-            console.log(this.habilidade);
-            console.log(this.remuneracao);
+            alert(
+                'Chave: ' + this.chave + '\n' +
+                'Cidade: ' + this.cidade + '\n' +
+                'Estado: ' + this.estado + '\n' +
+                'Contrato: ' + this.contrato + '\n' +
+                'Modalidade: ' + this.modalidade + '\n' +
+                'Habilidade: ' + this.habilidade + '\n' +
+                'Remuneração: ' + this.remuneracao + '\n' +
+                'De: ' + this.dataInicio + '\n' +
+                'Até: ' + this.dataFim
+            );
+        },
+
+        formatCurrency() {
+            let value = this.remuneracao.replace(/\D/g, ''); // Remove tudo que não é número
+            value = (Number(value) / 100).toFixed(2).replace('.', ','); // Converte para float e formata
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Adiciona os pontos de milhar
+            this.remuneracao = value;
+        },
+
+        inputData() {
+            const data = this.dataHora.ano + '-' + this.dataHora.mes + '-' + this.dataHora.dia;
+            this.dataInicio = data;
+            this.dataFim = data;
         }
-    }
+    },
+
+    watch: {
+        remuneracao() {
+            this.formatCurrency();
+        }
+    },
 }
 </script>
 
 <style scoped>
-* {
-    /* border: 1px solid red; */
+input {
+    border: 1px solid #929292;
+    color: #666;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    width: 100%;
 }
 
-/* .mdi-filter-variant {
-    color: #6200EA;
-} */
+label {
+    color: #666;
+}
 </style>

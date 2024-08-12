@@ -39,7 +39,9 @@ export default createVuetify({
     defaultTheme: 'light',
   },
   locale: {
-    locales: { pt }, // Defina o idioma pt-BR
+    locales: { pt },
     current: 'pt',
+    fallback: 'en',
+    messages: { pt },
   },
 });

@@ -31,20 +31,18 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
-import vuetify from './plugins/vuetify';
+import vuetify from './plugins/vuetify'; // Importa a configuração do Vuetify
+import { i18n } from './plugins/i18n'; // Importa a configuração do i18n
 import './styles/keyframes.css';
 
 const pinia = createPinia();
+
 const app = createApp(App);
 
-// Use o router antes de montar o aplicativo
 app.use(router);
-
-// Configure o Vuetify
 app.use(vuetify);
-
-// Configure o uso do pinia
 app.use(pinia);
+app.use(i18n);
 
-// Monte o aplicativo
 app.mount('#app');
+
