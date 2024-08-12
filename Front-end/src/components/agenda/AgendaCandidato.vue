@@ -8,7 +8,7 @@
       </div>
       <div class="calendar-body">
         <div class="calendar-weekdays">
-          <div v-for="(day, index) in (display.mdAndDown ? shortweekdays : weekdays)" :key="index">
+          <div v-for="(day, index) in (display.width.value <= 700 ? shortweekdays : weekdays)" :key="index">
             {{ day }}
           </div>
         </div>
@@ -61,13 +61,13 @@ export default {
     };
 
     const toggleDayEvents = (index) => {
-      if (display.mdAndDown) {
+      if (display.width.value <= 700) {
         days.value[index].showEvents = !days.value[index].showEvents;
       }
     };
 
     const currentCalendarDaysComponent = computed(() => {
-      return display.mdAndDown.value ? CalendarDaysMedia : CalendarDays;
+      return display.width.value <= 700 ? CalendarDaysMedia : CalendarDays;
     });
 
     const currentMonth = ref(new Date().getMonth());
@@ -213,7 +213,7 @@ export default {
   padding: 5px !important;
   border-color: #cbcbcb !important;
   border-width: 1px;
-  height: 140px;
+  height: 150px;
   position: relative;
 }
 
