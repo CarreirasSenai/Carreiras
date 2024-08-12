@@ -3,36 +3,20 @@
     <div class="text-center">
         <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ props: activatorProps }">
-                <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Foto e Capa</v-btn>
+                <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Links</v-btn>
             </template>
 
-            <v-card title="Editar Perfil">
+            <v-card title="Editar Links">
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12">
-                            <v-text-field label="Nome Completo*" required></v-text-field>
+                            <v-text-field prepend-icon="mdi mdi-instagram" clearable label="instagram.com/" variant="underlined" v-model="instagram" required></v-text-field>
+                            <v-text-field prepend-icon="mdi mdi-facebook" clearable label="facebook.com/" variant="underlined" v-model="facebook" required></v-text-field>
+                            <v-text-field prepend-icon="mdi mdi-linkedin" clearable label="linkedin.com/" variant="underlined" v-model="linkedin" required></v-text-field>
+                            <v-text-field prepend-icon="mdi mdi-github" clearable label="github.com/" variant="underlined" v-model="github" required></v-text-field>
+                            <v-text-field prepend-icon="mdi mdi-web" clearable label="www.seusite.com" variant="underlined" v-model="site" required></v-text-field>
                         </v-col>
-
-                        <v-col cols="12" md="12">
-                            <v-autocomplete clearable label="Sua Profissão*" :items="profissoes" :search-input.sync="search"
-                                :filter="filterProfissoes" required></v-autocomplete>
-                        </v-col>
-
-                        <v-col cols="12" md="12">
-                            <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp"
-                                label="Foto de perfil" placeholder="Foto de perfil" prepend-icon="mdi-camera">
-                            </v-file-input>
-                        </v-col>
-
-                        <v-col cols="12" md="12">
-                            <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp" label="Foto de capa"
-                                placeholder="Foto de capa" prepend-icon="mdi-camera">
-                            </v-file-input>
-                        </v-col>
-
                     </v-row>
-
-                    <small class="text-caption text-medium-emphasis">*indica campo obrigatório</small>
                 </v-card-text>
 
                 <v-divider></v-divider>
@@ -70,12 +54,14 @@
 </style>
 
 <script>
-import profissoes from '@/assets/profissoes.json';
-
 export default {
     data: () => ({
         dialog: false,
-        profissoes: profissoes,
+        instagram: '',
+        facebook: '',
+        linkedin: '',
+        github: '',
+        site: '',
     }),
     methods: {
         // Função para filtrar profissões com base na entrada do usuário

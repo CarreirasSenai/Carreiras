@@ -2,13 +2,15 @@
     <div class="text-center div-button-edit">
         <v-dialog v-model="dialog" max-width="300">
             <template v-slot:activator="{ props: activatorProps }">
-                <!-- <v-btn class="text-none font-weight-regular bt-edit" variant="tonal"
-                    v-bind="activatorProps">Editar</v-btn> -->
                 <button class="text-none font-weight-regular mdi mdi-pencil bt-edit" variant="tonal"
                     v-bind="activatorProps"></button>
             </template>
 
-            <v-card prepend-icon="mdi-account" title="Editar Habilidade">
+            <v-card>
+                <v-card-title class="d-flex align-center ga-2 cor-primaria">
+                    <i class="mdi mdi-star"></i>
+                    Editar Habilidade
+                </v-card-title>
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12">
@@ -16,7 +18,6 @@
                         </v-col>
                     </v-row>
 
-                    <!-- <small class="text-caption text-medium-emphasis">*Indica os campos obrigatórios</small> -->
                 </v-card-text>
 
                 <v-divider></v-divider>
