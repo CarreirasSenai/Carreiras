@@ -28,13 +28,16 @@
             <v-card class="card-do-usuario">
               <v-row align="center" no-gutters>
                 <v-col cols="3" class="text-center">
-                  <v-avatar color="surface-variant" size="40">
-                    <v-icon>mdi-account-circle</v-icon>
+                  <v-avatar color="surface-variant" size="60">
+                    <v-icon >mdi-account-circle</v-icon>
                   </v-avatar>
                 </v-col>
-                <v-col cols="7">
+                <v-col cols="3">
                   <h3 class="usuario-nome">Robsoh Hush</h3>
                   <p class="usuario-email">robsoh56@gmail.com</p>
+                </v-col>
+                <v-col cols="3">
+                  <p class="tipodeUsuario">Administrador</p>
                 </v-col>
                 <v-col cols="2" class="text-right">
                   <div class="locaCor"><MenuAdminUsuario /></div>
@@ -92,6 +95,10 @@ export default {
   font-weight: 600;
 }
 
+.tipodeUsuario {
+  font-size: 14px;
+  color: #666;
+}
 .usuario-email {
   font-size: 14px;
   color: #666;
@@ -133,9 +140,8 @@ export default {
     font-size: 12px;
   }
   .locaCor {
-  padding: 5px;
-  margin: 15px;
+    padding: 5px;
+    margin: 15px;
+  }
 }
-}
-
 </style>
