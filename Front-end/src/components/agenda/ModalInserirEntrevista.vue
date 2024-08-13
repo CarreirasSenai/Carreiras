@@ -18,11 +18,11 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col cols="12" sm="9">
+                                <v-col cols="12" sm="8">
                                     <v-select v-model="candidato" :rules="candidatoRules" :items="items"
                                         label="Candidato" density="compact"></v-select>
                                 </v-col>
-                                <v-col cols="12" sm="3">
+                                <v-col cols="12" sm="4">
                                     <v-text-field type="datetime-local" v-model="data" :rules="dataRules"
                                         label="Data e hora" density="compact"></v-text-field>
                                 </v-col>
