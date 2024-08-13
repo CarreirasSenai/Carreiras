@@ -14,7 +14,7 @@ import ModalJustificativa from '@/components/perfis/empresa/ModalJustificativa.v
 import ListaEmpresas from '@/components/admin/ListaEmpresas.vue';
 import loginADM from '@/components/admin/loginADM.vue';
 import ListaDeUsuarios from '@/components/admin/ListaDeUsuarios.vue';
-import PerfilEmpresa from '@/pages/perfilEmpresa.vue'
+import PerfilEmpresa from '@/pages/perfilEmpresa.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
