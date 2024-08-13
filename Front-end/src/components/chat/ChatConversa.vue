@@ -4,8 +4,7 @@
         class="bg-white rounded-t-lg mr-5 ml-5 bottom-0 h-75 w-25 d-flex align-end justify-end flex-colunm min-width-300 h-vh-75">
         <v-container fluid class="chat-container d-flex flex-column h-100">
             <v-row class="ma-1" style="max-height: 50px;">
-                <v-toolbar density="comfortable" class="bg-white border-b position-relative cursor-pointer"
-                    @click="minimizeChat">
+                <v-toolbar density="comfortable" class="bg-white border-b position-relative cursor-pointer">
                     <v-list-item :title="'Nome do Fulano'"
                         :prepend-avatar="'https://randomuser.me/api/portraits/women/1.jpg'"
                         @click="visitaPerfil(title = 'Candidato ' + n)"></v-list-item>
@@ -35,10 +34,26 @@
                     </div>
                 </div>
             </v-row>
-            <v-row class="d-flex align-center ma-0" style="max-height: 100px;" id="entrada">
-                <v-form style="all: inherit;" class="mr-1 ml-1 pt-2 ga-2 d-flex align-start">
-                    <v-textarea label="Escreva aqui" variant="outlined" rows="3" class="w-25 mb-1 custom-textarea border-0"
-                        density="compact" append-inner-icon="mdi-send-variant" no-resize hide-details single-line></v-textarea>
+            <v-row class="d-flex align-center ma-0" style="max-height: 400px;" id="entrada">
+                <v-form @submit.prevent="enviar" style="all: inherit;" class="mr-1 ml-1 pt-2 ga-2 d-flex align-start">
+
+                    <v-col cols="12" v-if="filePreview">
+                        <!-- Visualização do arquivo anexado -->
+                        <v-img v-if="isImage" :src="filePreview" max-height="100" max-width="100" />
+                        <v-chip v-else color="primary" dark>
+                            PDF: {{ fileName }}
+                        </v-chip>
+                        <embed v-else :src="filePreview" type="application/pdf" width="100%" height="200px" />
+                    </v-col>
+
+                    <v-textarea v-model="mensagem" label="Escreva aqui" variant="solo-filled" rows="2" max-rows="6"
+                        class="mb-2 custom-textarea" density="compact" append-inner-icon="mdi-send"
+                        prepend-inner-icon="mdi-plus-circle" flat auto-grow hide-details single-line
+                        @click:append-inner="enviar" @keydown.enter.prevent="enviar"
+                        @click:prepend-inner="openFilePicker"></v-textarea>
+
+                    <input ref="fileInput" type="file" accept="image/*,application/pdf" @change="handleFileChange"
+                        style="display: none;" />
                 </v-form>
             </v-row>
         </v-container>
@@ -51,7 +66,20 @@ export default {
         loaded: false,
         loading: false,
         minimize: true,
+        mensagem: '',
+        file: null,
+        filePreview: null,
+        fileName: '',
     }),
+
+    computed: {
+        isImage() {
+            return this.file && this.file.type.startsWith('image/');
+        },
+        isPDF() {
+            return this.file && this.file.type === 'application/pdf';
+        },
+    },
 
     methods: {
         onClick() {
@@ -62,24 +90,44 @@ export default {
                 this.loaded = true
             }, 2000)
         },
-        minimizeChat() {
-            const corpo = document.getElementById('chat-home');
-            const conversa = document.getElementById('conversa');
-            const entrada = document.getElementById('entrada');
 
-            if (this.minimize === true) {
-                corpo.classList.remove('h-vh-75');
-                corpo.classList.add('corpo-minimizado');
-                conversa.classList.add('conversa-minimizado');
-                entrada.classList.add('entrada-minimizado');
-            } else {
-                corpo.classList.add('h-vh-75');
-                corpo.classList.remove('corpo-minimizado');
-                conversa.classList.remove('conversa-minimizado');
-                entrada.classList.remove('entrada-minimizado');
+        openFilePicker() {
+            this.$refs.fileInput.click();
+        },
+
+        handleFileChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.file = file;
+                this.fileName = file.name;
+
+                if (this.isImage || this.isPDF) {
+                    this.filePreview = URL.createObjectURL(file);
+                } else {
+                    this.filePreview = null;
+                }
             }
+        },
 
-            this.minimize = !this.minimize;
+        enviar() {
+            if (this.mensagem || this.file) {
+                const formData = new FormData();
+                formData.append('mensagem', this.mensagem);
+                if (this.file) {
+                    formData.append('file', this.file);
+                }
+
+                // Realize a requisição POST aqui
+                // Por exemplo: axios.post('/api/mensagem', formData)
+                console.log('Enviar mensagem:', this.mensagem);
+                console.log('Arquivo:', this.file);
+
+                // Limpe os campos após o envio
+                this.mensagem = '';
+                this.file = null;
+                this.filePreview = null;
+                this.fileName = '';
+            }
         },
     },
 }
@@ -98,6 +146,7 @@ export default {
 .dialogo-conversa::-webkit-scrollbar-thumb {
     background-color: #adadad;
 } */
+
 .corpo-minimizado {
     height: auto !important;
 }
