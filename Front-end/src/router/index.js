@@ -37,7 +37,7 @@ const router = createRouter({
     { path: '/empresa-candidato', component: EntrarEmpresaOuCandidato },
     { path: '/editar-candidato', component: EDCcandidato },
     { path: '/perfil-candidato', component: PerfilCandidato },
-    { path: '/agenda-candidato', component: AgendaCandidato },
+    { path: '/agenda-empresa', component: AgendaEmpresa },
     { path: '/lista-candidatos-empresa', component: ListaCandidatosEmpresa },
     { path: '/lista-empresas', component: ListaEmpresas },
     { path: '/login-admin', component: loginADM },
