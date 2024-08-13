@@ -6,8 +6,8 @@
       <v-card-text class="d-flex justify-center">
         <v-col cols="12" sm="8" md="8">
           <v-form @submit.prevent="pesquisa.pesquisar">
-            <v-text-field v-model="pesquisa.pesquisa" :loading="pesquisa.loading" append-inner-icon="mdi-magnify" density="compact"
-              label="Digite um cargo, cidade, estado." variant="solo" hide-details single-line
+            <v-text-field v-model="pesquisa.pesquisa" :loading="pesquisa.loading" append-inner-icon="mdi-magnify"
+              density="compact" label="Digite um cargo, cidade, estado." variant="solo" hide-details single-line
               @click:append-inner="pesquisa.onClick" @keyup.enter="pesquisa.onEnter">
             </v-text-field>
           </v-form>
