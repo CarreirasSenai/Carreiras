@@ -22,11 +22,11 @@
                         <v-col cols="12" md="12">
                             <v-text-field label="Unidade de Ensino" required></v-text-field>
                         </v-col>
-                        <v-col cols="12" md="6">
-                            <v-date-input label="Início" required></v-date-input>
+                        <v-col cols="6">
+                            <v-text-field label="Início" type="date" required></v-text-field>
                         </v-col>
-                        <v-col cols="12" md="6">
-                            <v-date-input label="Fim" required></v-date-input>
+                        <v-col cols="6">
+                            <v-text-field label="Fim" type="date" required></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -38,14 +38,15 @@
 
                     <v-btn text="Excluir" variant="plain" @click="dialog = false" class="border-red-accent-4"></v-btn>
                     <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
-                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false" class="bg-purple-darken-4"></v-btn>
+                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false"
+                        class="bg-purple-darken-4"></v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
     </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .div-button-edit {
     display: flex;
     justify-content: end;
@@ -55,22 +56,15 @@
 }
 
 .bt-edit {
-    // background-color: #6732d2;
-    // color: white;
     text-transform: uppercase;
     margin: 10px 20px;
 }
 </style>
 
 <script>
-import { VDateInput } from 'vuetify/labs/VDateInput';
-
 export default {
     data: () => ({
         dialog: false,
     }),
-    components: {
-        VDateInput,
-    },
 }
 </script>

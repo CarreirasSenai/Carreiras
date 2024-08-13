@@ -37,10 +37,8 @@
             </v-row>
             <v-row class="d-flex align-center ma-0" style="max-height: 100px;" id="entrada">
                 <v-form style="all: inherit;" class="mr-1 ml-1 pt-2 ga-2 d-flex align-start">
-                    <v-btn icon="mdi-plus" variant="text"></v-btn>
-                    <v-textarea label="Escreva aqui" variant="outlined" rows="2"
-                        class="w-25 custom-textarea"></v-textarea>
-                    <v-btn icon="mdi-send-outline" variant="text"></v-btn>
+                    <v-textarea label="Escreva aqui" variant="outlined" rows="3" class="w-25 mb-1 custom-textarea border-0"
+                        density="compact" append-inner-icon="mdi-send-variant" no-resize hide-details single-line></v-textarea>
                 </v-form>
             </v-row>
         </v-container>
@@ -115,5 +113,16 @@ export default {
 
 .h-vh-75 {
     height: 75vh !important;
+}
+
+@media(max-width:700px) {
+    #chat-home {
+        margin: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        z-index: 1006;
+        position: absolute;
+        border-radius: 0 !important;
+    }
 }
 </style>
