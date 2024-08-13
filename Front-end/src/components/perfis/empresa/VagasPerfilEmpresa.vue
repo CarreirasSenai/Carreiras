@@ -21,19 +21,20 @@
     <v-divider class="ml-7 mr-7"></v-divider>
     <v-row class="ma-4">
         <v-col cols="12" lg="4" md="6" sm="6" v-for="n in 6" :key="n">
-            <v-card class="box-shadow" title="Analista de Dados">
-                <v-card-text>
+            <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
+                <v-card-title class="bg-deep-purple-accent-4 rounded-lg observavel">Analista de Dados</v-card-title>
+                <v-card-text class="pa-4">
                     <p><small>Local:</small> América, Joinville</p>
                     <p><small>Contrato:</small> CLT</p>
                     <p><small>Modalidade:</small> Híbrido</p>
                     <p><small>Remuneração:</small> Salário compativel com a função</p>
                 </v-card-text>
-                <small class="position-absolute top-0 right-0 ma-2">1 semana atrás</small>
+                <small class="position-absolute top-0 right-0 ma-2 text-white">1 semana atrás</small>
                 <v-card-actions class="d-flex justify-space-between">
                     <v-btn variant="tonal">Ver Detalhes</v-btn>
                     <div class="d-flex align-center justify-center ga-2">
                         TOTVS
-                        <img src="/src/assets/avatar.png" width="50px">
+                        <img src="/src/assets/avatar.png" width="50px" class="rounded-circle">
                     </div>
                 </v-card-actions>
             </v-card>

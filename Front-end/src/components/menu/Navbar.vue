@@ -8,8 +8,8 @@
                     <img class="carreiras-logo" src="../../assets/logo.png">
                 </a>
 
-                <!-- TODO Validar quando o usuário estiver logado (vai ser feito futurane) -->
-                <div class="sign-in-buttons" v-if="visibilidadeNaoLogado">
+                <!-- <ADM / LOGIN /> -->
+                <div class="sign-in-buttons" v-if="user.visibilidadeNaoLogado">
                     <v-btn class="adm-btn" variant="outlined">
                         Adm
                     </v-btn>
@@ -19,13 +19,13 @@
                 </div>
 
                 <!-- <NavbarLogado /> -->
-                <div class="user-account-avatar d-flex align-center ga-2" v-if="visibilidadeLogado">
-                    <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.email }}</h1>
+                <div class="user-account-avatar d-flex align-center ga-2" v-if="user.visibilidadeLogado">
+                    <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.user.email }}</h1>
                     <v-menu min-width="200px" rounded>
                         <template v-slot:activator="{ props }">
                             <v-btn icon v-bind="props">
                                 <v-avatar color="brown" size="45">
-                                    <span class="text-h5">{{ user.initials }}</span>
+                                    <span class="text-h5">{{ user.user.initials }}</span>
                                 </v-avatar>
                             </v-btn>
                         </template>
@@ -33,11 +33,11 @@
                             <v-card-text>
                                 <div class="mx-auto text-center">
                                     <v-avatar color="brown">
-                                        <span class="text-h5">{{ user.initials }}</span>
+                                        <span class="text-h5">{{ user.user.initials }}</span>
                                     </v-avatar>
-                                    <h3>{{ user.fullName }}</h3>
+                                    <h3>{{ user.user.fullName }}</h3>
                                     <p class="text-caption mt-1">
-                                        {{ user.email }}
+                                        {{ user.user.email }}
                                     </p>
 
                                     <v-divider class="my-2"></v-divider>
@@ -70,20 +70,23 @@
 
 <script>
 import axios from 'axios';
+import { useCandidatoStore } from '@/stores/candidato';
 
 export default {
-    created() {
-        this.userLogado();
-    },
     data: () => ({
-        user: {
-            initials: 'JD',
-            fullName: 'Junior Dev',
-            email: 'juniordev@gmail.com',
-        },
-        visibilidadeNaoLogado: true,
-        visibilidadeLogado: false,
     }),
+
+    computed: {
+        user() {
+            return useCandidatoStore();
+        }
+    },
+
+    mounted() {
+        const user = this.user;
+        user.userLogado();
+    },
+
     methods: {
         redirectToLogin() {
             this.$router.push('/empresa-candidato');
@@ -105,27 +108,6 @@ export default {
             this.$refs.chatLayout.abrirChatHome();
         },
 
-        // Autenticar usúario e coletar dados
-        async userLogado() {
-            try {
-                const response = await axios.get('http://localhost:4000/candidato/read', {
-                    withCredentials: true
-                });
-
-                this.user.initials = extrairIniciais(response.data.usuario.nome_completo);
-                this.user.fullName = response.data.usuario.nome_completo;
-                this.user.email = response.data.usuario.email;
-                this.visibilidadeNaoLogado = !this.visibilidadeNaoLogado;
-                this.visibilidadeLogado = !this.visibilidadeLogado;
-
-                console.log('Usúario autenticado!', response.data);
-
-            } catch (error) {
-                console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
-                //this.$router.push('/');
-            }
-        },
-
         // Fazer o Logout
         async logout() {
             try {
@@ -133,29 +115,14 @@ export default {
                     withCredentials: true  // Importante: enviar cookies com a requisição
                 });
                 console.log(response.data);
-                this.$router.push('/');
                 window.location.reload();
+                this.$router.push('/');
             } catch (error) {
                 console.error('Erro ao efetuar Logout', error.response);
             }
         },
     }
 }
-
-function extrairIniciais(nomeCompleto) {
-    const palavras = nomeCompleto.split(" ");
-
-    const primeiroNome = palavras[0];
-    const segundoNome = palavras.length > 1 ? palavras[1] : "";
-
-    const inicialPrimeiroNome = primeiroNome.charAt(0).toUpperCase();
-    const inicialSegundoNome = segundoNome.charAt(0).toUpperCase();
-
-    const iniciais = inicialPrimeiroNome + inicialSegundoNome;
-
-    return iniciais;
-}
-
 </script>
 
 <style lang="scss">
