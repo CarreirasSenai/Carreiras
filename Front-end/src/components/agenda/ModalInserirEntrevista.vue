@@ -3,27 +3,28 @@
         <v-row style="margin: 0" justify="center">
             <v-col cols="12" sm="9" md="10" lg="11">
                 <v-card class="px-4 elevation-12 signup-card" rounded="xl">
+                    <span class="close" @click="close">&times;</span>
                     <v-card-text>
                         <h1 class="text-center my-1">Inserir Entrevista</h1>
                         <v-form class="my-4" @submit.prevent="submitForm" v-model="isValid">
                             <v-row>
                                 <v-col cols="12">
                                     <v-text-field v-model="titulo" :rules="tituloRules" label="Título"
-                                        bg-color="#F7F7F7" density="compact"></v-text-field>
+                                        density="compact"></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
                                     <v-textarea counter="600" auto-grow v-model="descricao" :rules="descricaoRules"
-                                        label="Descrição" bg-color="#F7F7F7" density="compact"></v-textarea>
+                                        label="Descrição" density="compact"></v-textarea>
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col cols="12" sm="9">
+                                <v-col cols="12" sm="8">
                                     <v-select v-model="candidato" :rules="candidatoRules" :items="items"
-                                        label="Candidato" bg-color="#F7F7F7" density="compact"></v-select>
+                                        label="Candidato" density="compact"></v-select>
                                 </v-col>
-                                <v-col cols="12" sm="3">
-                                    <v-text-field type="date" v-model="data" :rules="dataRules" label="Data e hora"
-                                        bg-color="#F7F7F7" density="compact"></v-text-field>
+                                <v-col cols="12" sm="4">
+                                    <v-text-field type="datetime-local" v-model="data" :rules="dataRules"
+                                        label="Data e hora" density="compact"></v-text-field>
                                 </v-col>
                             </v-row>
                             <div class="sign-in-buttons d-flex justify-center my-4">
@@ -61,11 +62,11 @@ export default {
                 (v) => v.length >= 3 || "Título deve ter pelo menos 3 caracteres",
             ],
             descricaoRules: [
-                (v) => !!v || "Descrição Requerido",
+                (v) => !!v || "Descrição Requerida",
                 (v) => v.length <= 600 || "Máximo permitido 600 caracteres",
             ],
             dataRules: [
-                (v) => !!v || "Data requerida"
+                (v) => !!v || "Data e hora requeridas"
             ],
             candidatoRules: [
                 (v) => !!v || "Candidato Requerido"
@@ -115,7 +116,7 @@ export default {
                 this.close();
             } else {
                 this.isLoading = false;
-                console.log("Form is invalid");
+                console.log("Formulário inválido");
             }
         }
     },
@@ -123,6 +124,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.close{
+    padding: 10px;
+}
 .signup-card {
     margin: 0 auto;
     width: auto;

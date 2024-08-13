@@ -1,15 +1,18 @@
 <template>
-    <div class="div-capa-foto box-shadow rounded-b-xl">
+    <div class="div-capa-foto rounded-b-xl elevation-2" id="foto-capa">
         <img class="capa" src="/src/assets/capa (1).png">
         <div class="pos-capa">
             <div class="div-foto-perfil">
-                <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
+                <div class="position-relative">
+                    <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
+                </div>
                 <div>
                     <h3 class="cor-primaria">Nome da Empresa</h3>
                     <h5 class="text-grey-darken-2">Joinville, Santa Catarina, Brasil</h5>
+                    <MenuEditarEmpresa style="height: 20px !important;" class="d-flex align-center" />
                 </div>
             </div>
-            <div class="descricao text-grey-darken-4">
+            <div class="descricao text-grey-darken-4 pb-5">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                 dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
                 ex ea
@@ -23,6 +26,7 @@
 </template>
 
 <script>
+import MenuEditarEmpresa from './MenuEditarEmpresa.vue';
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,9 @@
 <template>
-  <v-container fluid class="bg-deep-purple-lighten-4 fill-height" style="width: 100%;">
-    <div style="border-radius: 5px; overflow: hidden; margin: 30px 30px 0px;">
-      <v-btn @click="showModalEntrevista" class="v-btn--size-x-large bg-purple-darken-4 v-btn--density-comfortable me-2">Entrevista</v-btn>
-      <v-btn @click="showModalVaga" class="v-btn--size-x-large v-btn--density-comfortable" variant="outlined">Vaga</v-btn>
+  <v-container fluid class="bg-deep-purple-lighten-4 fill-height estilo">
+    <div class="botoes-estilo">
+      <v-btn @click="showModalEntrevista"
+        class="v-btn--size-x-large bg-purple-darken-4 v-btn--density-comfortable me-2">Entrevista</v-btn>
+      <v-btn class="v-btn--size-x-large v-btn--density-comfortable" variant="outlined">Vaga</v-btn>
     </div>
     <div class="calendar">
       <div class="calendar-header">
@@ -12,36 +13,17 @@
       </div>
       <div class="calendar-body">
         <div class="calendar-weekdays">
-          <div v-for="day in weekdays" :key="day">{{ day }}</div>
-        </div>
-        <div class="calendar-days">
-          <div v-for="(day, index) in days" :key="index" :class="{ 'out-of-month': day.isOutOfMonth }" class="day"
-            style="border: solid; padding: 5px !important; border-color: #cbcbcb !important; border-width: 1px; height: 140px; position: relative;">
-            {{ day.date }}
-            <div v-for="(event, eventIndex) in (showMore[index] ? day.events : day.events.slice(0, 3))"
-              :key="eventIndex" :style="eventStyle(event)" @click="showModal(event.title, event.description)"
-              class="event">
-              {{ event.title }}
-            </div>
-            <v-btn v-if="day.events.length > 3" @click="toggleShowMore(index)" class="more-events" style="z-index: 10;">
-              {{ showMore[index] ? '-Menos' : '+Mais ' }}{{ day.events.length - 3 }}
-            </v-btn>
-            <div v-if="showMore[index]" class="show-more-content" style="z-index: 20; top: 76%; left: 0; width: 100%;">
-              <div v-for="(event, eventIndex) in day.events.slice(3)" :key="eventIndex" :style="eventStyle(event)"
-                @click="showModal(event.title, event.description)" class="event">
-                {{ event.title }}
-              </div>
-              <v-btn v-if="day.events.length > 3" @click="toggleShowMore(index)" class="more-events"
-                style="z-index: 10;">
-                {{ showMore[index] ? '-Menos ' : '+Mais ' }}{{ day.events.length - 3 }}
-              </v-btn>
-            </div>
+          <div v-for="(day, index) in (display.width.value <= 700 ? shortweekdays : weekdays)" :key="index">
+            {{ day }}
           </div>
         </div>
+        <component :is="currentCalendarDaysComponent" :days="days" :dayStyle="dayStyle" :eventStyle="eventStyle"
+          :showMore="showMore" :showModal="showModal" :toggleShowMore="toggleShowMore"
+          class="calendar-days-component" />
         <Modal :isVisible="isModalVisible" :title="eventTitle" :description="eventDescription"
           @update:isVisible="isModalVisible = $event" />
-        <ModalEntrevista :isVisible="isModalEntrevistaVisible" @save-event="addEvent" @update:isVisible="isModalEntrevistaVisible = $event" />
-        <ModalInserirVaga :isVisible="isModalVagaVisible" @update:isVisible="isModalVagaVisible = $event"/>
+        <ModalEntrevista :isVisible="isModalEntrevistaVisible" @save-event="addEvent"
+          @update:isVisible="isModalEntrevistaVisible = $event" />
       </div>
     </div>
   </v-container>
@@ -50,15 +32,22 @@
 <script>
 import Modal from './ModalEvent.vue';
 import ModalEntrevista from './ModalInserirEntrevista.vue';
+import CalendarDays from './CalendarDays.vue';
+import CalendarDaysMedia from './CalendarDaysMedia.vue';
 import { ref, reactive, computed } from 'vue';
+import { useDisplay } from 'vuetify';
 
 export default {
   components: {
     Modal,
     ModalEntrevista,
+    CalendarDaysMedia,
+    CalendarDays
   },
   setup() {
+    const display = useDisplay();
     const isModalVisible = ref(false);
+    const isModalEntrevistaVisible = ref(false);
     const eventTitle = ref('');
     const eventDescription = ref('');
 
@@ -68,22 +57,24 @@ export default {
       isModalVisible.value = true;
     };
 
-    const isModalEntrevistaVisible = ref(false);
-
     const showModalEntrevista = () => {
       isModalEntrevistaVisible.value = true;
     };
 
-    const isModalVagaVisible = ref(false);
+    const toggleDayEvents = (index) => {
+      if (display.width.value <= 700) {
+        days.value[index].showEvents = !days.value[index].showEvents;
+      }
+    };
 
-    const showModalVaga = () => {
-      isModalVagaVisible.value = true;
-    }
+    const currentCalendarDaysComponent = computed(() => {
+      return display.width.value <= 700 ? CalendarDaysMedia : CalendarDays;
+    });
 
     const currentMonth = ref(new Date().getMonth());
     const currentYear = ref(new Date().getFullYear());
     const weekdays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-
+    const shortweekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
     const events = reactive([
       { date: '2024-08-12', title: 'Entrevista', description: 'Descrição do evento 1', type: 'event' },
       { date: '2024-08-12', title: 'Entrevista', description: 'Vacas azuis caem do céu as sabados pra falar Jesus...', type: 'event' },
@@ -100,7 +91,6 @@ export default {
       { date: '2024-08-26', title: 'Vaga', description: 'Descrição do evento 7', type: 'job' },
       { date: '2024-08-26', title: 'Vaga', description: 'Descrição do evento 7', type: 'job' },
     ]);
-
     const eventStyle = (event) => {
       if (event.type === 'event') {
         return {
@@ -151,7 +141,8 @@ export default {
         daysArray.push({
           date: daysInPrevMonth - x + 1,
           isOutOfMonth: true,
-          events: []
+          events: [],
+          showEvents: false
         });
         showMore.push(false);
       }
@@ -162,7 +153,8 @@ export default {
         daysArray.push({
           date: i,
           isOutOfMonth: false,
-          events: dayEvents
+          events: dayEvents,
+          showEvents: false
         });
         showMore.push(false);
       }
@@ -171,7 +163,8 @@ export default {
         daysArray.push({
           date: j,
           isOutOfMonth: true,
-          events: []
+          events: [],
+          showEvents: false
         });
         showMore.push(false);
       }
@@ -208,17 +201,19 @@ export default {
     };
 
     return {
+      display,
       isModalVisible,
+      isModalEntrevistaVisible,
       eventTitle,
       eventDescription,
       showModal,
-      isModalEntrevistaVisible,
       showModalEntrevista,
       isModalVagaVisible,
       showModalVaga,
       currentMonth,
       currentYear,
       weekdays,
+      shortweekdays,
       formattedMonthYear,
       days,
       prevMonth,
@@ -227,26 +222,27 @@ export default {
       showMore,
       toggleShowMore,
       addEvent,
+      toggleDayEvents,
+      currentCalendarDaysComponent
     };
   },
 };
 </script>
 
 <style scoped>
-.show-more-content {
-  position: absolute;
-  z-index: 20;
-  background-color: white;
-  padding: 6px;
+.day {
+  border: solid;
+  padding: 5px !important;
+  border-color: #cbcbcb !important;
+  border-width: 1px;
+  height: 150px;
+  position: relative;
 }
 
-.more-events {
-  margin-top: 5px;
-  color: rgb(255, 102, 67);
-  box-shadow: none !important;
-  font-size: 15px;
-  padding: 3px !important;
-  height: auto;
+.botoes-estilo {
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 30px 30px 0px;
 }
 
 body {
@@ -264,6 +260,12 @@ body {
   overflow: hidden;
   margin: 30px;
   width: 100%;
+  position: relative;
+}
+
+.calendar-days-component {
+  position: absorelativelute;
+  z-index: 10;
 }
 
 .calendar-header {
@@ -284,6 +286,8 @@ body {
   padding: 10px;
   background-color: white;
   border-radius: 5px;
+  position: relative;
+  z-index: 1;
 }
 
 .calendar-weekdays {
@@ -328,11 +332,66 @@ body {
   border-radius: 5px;
 }
 
+.out-of-month {
+  background-color: rgb(217, 217, 217);
+}
 
-/* Media query for mobile devices */
-@media (max-width: 955px) {
+@media (max-width: 700px) {
+  .calendar-days .event,
+  .calendar-days .more-events,
+  .calendar-days .show-more-content {
+    display: none;
+  }
+
+  .day.has-events {
+    background-color: rgb(141, 50, 210);
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .botoes-estilo {
+    margin: 30px 30px 30px;
+  }
+
+  .v-container.fill-height {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+  }
+
   .calendar-header {
     padding: 0px !important;
+    margin-bottom: 35px;
+  }
+
+  .estilo {
+    justify-content: center;
+  }
+
+  .calendar {
+    margin: 0px 10px 20px;
+  }
+
+  .calendar-weekdays div {
+    margin: 20px 0px;
+  }
+
+  .calendar-body {
+    padding: 10px 10px;
+  }
+
+  .more-events {
+    display: none !important;
+  }
+
+  .show-more-content {
+    display: block !important;
+  }
+
+  .calendar-days .day .event {
+    display: block !important;
   }
 }
 </style>

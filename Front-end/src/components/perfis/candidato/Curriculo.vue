@@ -212,7 +212,11 @@ export default {
 
 .v-expansion-panels {
     .v-expansion-panel-title {
-        color: #6732d2e3;
+        color: #6732d2;
+    }
+
+    .mdi {
+        color: #6732d2;
     }
 
     .bloco {
