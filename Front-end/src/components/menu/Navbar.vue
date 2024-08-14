@@ -22,7 +22,7 @@
                 <div v-if="user.visibilidadeNaoLogado" class="ma-2">
                     <div v-if="visibilidadeMenuInicial" class="d-flex align-center ga-15">
                         <div class="d-flex ga-10 position-absolute left-0 right-0 justify-center">
-                            <button>Início</button>
+                            <button @click="redirectToHome">Início</button>
                             <button>Sobre a Carreiras</button>
                             <button>Contate-nos</button>
                         </div>
@@ -32,11 +32,11 @@
                             <v-menu activator="parent">
                                 <v-list class="d-flex flex-column">
                                     <v-list-item>
-                                        <v-btn class="w-100" variant="text" prepend-icon="mdi-login"><a href="/login">Entrar</a></v-btn>
+                                        <v-btn class="w-100" variant="text" prepend-icon="mdi-login" @click="redirectToLogin">Entrar</v-btn>
                                     </v-list-item>
                                     <v-list-item>
                                         <v-btn class="w-100" variant="text"
-                                            prepend-icon="mdi-account-plus"><a href="/cadastro-candidato">Cadastrar</a></v-btn>
+                                            prepend-icon="mdi-account-plus" @click="redirectToCad">Cadastrar</v-btn>
                                     </v-list-item>
                                     <v-list-item>
                                         <v-btn class="w-100" variant="text"
@@ -132,6 +132,9 @@ export default {
     methods: {
         redirectToLogin() {
             this.$router.push('/empresa-candidato');
+        },
+        redirectToCad() {
+            this.$router.push('/cadastro-candidato');
         },
         redirectToHome() {
             this.$router.push('/');
