@@ -22,8 +22,8 @@
                 <div v-if="user.visibilidadeNaoLogado" class="ma-2">
                     <div v-if="visibilidadeMenuInicial" class="d-flex align-center ga-15">
                         <div class="d-flex ga-10 position-absolute left-0 right-0 justify-center">
-                            <button @click="redirectToHome">Início</button>
-                            <button>Sobre a Carreiras</button>
+                            <button @click="redirectToHome">Home</button>
+                            <button>Sobre o Carreiras</button>
                             <button>Contate-nos</button>
                         </div>
                         <v-btn class="bg-deep-purple-accent-4 pa-2 ma-2">
@@ -102,7 +102,6 @@
 <script>
 import axios from 'axios';
 import { useCandidatoStore } from '@/stores/candidato';
-import MenuInicial from './MenuMobile.vue';
 import MenuMobile from './MenuMobile.vue';
 
 export default {

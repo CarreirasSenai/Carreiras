@@ -12,13 +12,13 @@
         </div>
         <v-list nav class="bg-deep-purple-accent-3">
             <v-divider class="mb-4"></v-divider>
-            <v-list-item prepend-icon="mdi-home" title="Home" value="home"></v-list-item>
-            <v-list-item prepend-icon="mdi-book-open" title="Sobre" value="sobre"></v-list-item>
-            <v-list-item prepend-icon="mdi-phone" title="Contato" value="contato"></v-list-item>
+            <v-list-item prepend-icon="mdi-home" title="Home" value="home" @click="redirectToHome"></v-list-item>
+            <v-list-item prepend-icon="mdi-book-open" title="Sobre o Carreiras" value="sobre"></v-list-item>
+            <v-list-item prepend-icon="mdi-phone" title="Contate-nos" value="contato"></v-list-item>
             <v-divider class="mt-4 mb-4"></v-divider>
             <v-list-item prepend-icon="mdi-shield-account" title="Adm" value="adm"></v-list-item>
-            <v-list-item prepend-icon="mdi-account-plus" title="Cadastro" value="cadastro"><a href="/login"></a></v-list-item>
-            <v-list-item prepend-icon="mdi-login" title="Login" value="login"><a href="/cadastro-candidato"></a></v-list-item>
+            <v-list-item prepend-icon="mdi-account-plus" title="Cadastro" value="cadastro" @click="redirectToCad"></v-list-item>
+            <v-list-item prepend-icon="mdi-login" title="Login" value="login" @click="redirectToLogin"></v-list-item>
         </v-list>
     </v-card>
 </template>
@@ -31,6 +31,17 @@ export default {
             dialog: false,
         }
     },
+    methods: {
+        redirectToLogin() {
+            this.$router.push('/empresa-candidato');
+        },
+        redirectToCad() {
+            this.$router.push('/cadastro-candidato');
+        },
+        redirectToHome() {
+            this.$router.push('/');
+        },
+    }
 }
 </script>
 
@@ -39,7 +50,7 @@ export default {
     /* border: 1px solid red; */
 }
 
-.v-card{
+.v-card {
     animation: fadeInLeft 1s normal;
 }
 </style>
