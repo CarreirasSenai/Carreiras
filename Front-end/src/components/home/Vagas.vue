@@ -123,18 +123,6 @@ export default {
 </script>
 
 <style scoped>
-@keyframes fadeInLeft {
-    0% {
-        opacity: 0;
-        transform: translate3d(-100%, 0, 0);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateZ(0);
-    }
-}
-
 @media(max-width:600px) {
     .row-rev div:nth-child(2) {
         display: flex;

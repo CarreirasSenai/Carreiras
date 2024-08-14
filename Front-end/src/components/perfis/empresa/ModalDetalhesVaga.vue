@@ -1,7 +1,7 @@
 <template>
     <!-- <div class="text-center"> -->
     <v-btn variant="tonal" class="bg-deep-purple-accent-3" @click="dialog = true">
-        Ver Detalhes
+        Detalhes
     </v-btn>
 
     <v-dialog v-model="dialog" min-width="300px" max-width="1000px">

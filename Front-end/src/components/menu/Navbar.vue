@@ -3,19 +3,50 @@
 
     <v-container>
         <v-app-bar scroll-behavior="elevate">
-            <div class="navbar-container">
+            <div class="navbar-container position-relative">
                 <a href="/" class="d-flex justify-center align-center">
                     <img class="carreiras-logo" src="../../assets/logo.png">
                 </a>
 
                 <!-- <ADM / LOGIN /> -->
-                <div class="sign-in-buttons" v-if="user.visibilidadeNaoLogado">
+                <!-- <div class="d-flex ga-1 ma-1" v-if="user.visibilidadeNaoLogado">
                     <v-btn class="adm-btn" variant="outlined">
                         Adm
                     </v-btn>
                     <v-btn class="bg-purple-darken-4" @click="redirectToLogin">
                         Login
                     </v-btn>
+                </div> -->
+
+                <!-- Aqui o Menu com opções visiveis que o sestito pediu e tbm a versão mob -->
+                <div v-if="user.visibilidadeNaoLogado" class="ma-2">
+                    <div v-if="visibilidadeMenuInicial" class="d-flex align-center ga-15">
+                        <div class="d-flex ga-10 position-absolute left-0 right-0 justify-center">
+                            <button>Início</button>
+                            <button>Sobre a Carreiras</button>
+                            <button>Contate-nos</button>
+                        </div>
+                        <v-btn class="bg-deep-purple-accent-4 pa-2 ma-2">
+                            <v-icon>mdi-account</v-icon>
+                            Minha Conta
+                            <v-menu activator="parent">
+                                <v-list class="d-flex flex-column">
+                                    <v-list-item>
+                                        <v-btn class="w-100" variant="text" prepend-icon="mdi-login"><a href="/login">Entrar</a></v-btn>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <v-btn class="w-100" variant="text"
+                                            prepend-icon="mdi-account-plus"><a href="/cadastro-candidato">Cadastrar</a></v-btn>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <v-btn class="w-100" variant="text"
+                                            prepend-icon="mdi-shield-account">Adm</v-btn>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </v-btn>
+                    </div>
+                    <MenuMobile v-if="visibilidadeMenuMobilie" />
                 </div>
 
                 <!-- <NavbarLogado /> -->
@@ -71,9 +102,13 @@
 <script>
 import axios from 'axios';
 import { useCandidatoStore } from '@/stores/candidato';
+import MenuInicial from './MenuMobile.vue';
+import MenuMobile from './MenuMobile.vue';
 
 export default {
     data: () => ({
+        visibilidadeMenuInicial: true,
+        visibilidadeMenuMobilie: false,
     }),
 
     computed: {
@@ -85,6 +120,13 @@ export default {
     mounted() {
         const user = this.user;
         user.userLogado();
+
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize();
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('resize', this.handleResize);
     },
 
     methods: {
@@ -121,11 +163,25 @@ export default {
                 console.error('Erro ao efetuar Logout', error.response);
             }
         },
+
+        handleResize() {
+            if (window.innerWidth < 1000) {
+                this.visibilidadeMenuInicial = false;
+                this.visibilidadeMenuMobilie = true;
+            } else {
+                this.visibilidadeMenuInicial = true;
+                this.visibilidadeMenuMobilie = false;
+            }
+        }
     }
 }
 </script>
 
 <style lang="scss">
+* {
+    // border: 1px solid red;
+}
+
 .v-container {
     padding: 0 !important;
 }
@@ -146,7 +202,7 @@ export default {
     margin-left: 10px;
 }
 
-.sign-in-buttons {
+.sign-in-v-btns {
     display: flex;
     justify-content: center;
     align-items: center;
