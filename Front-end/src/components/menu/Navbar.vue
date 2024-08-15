@@ -19,32 +19,38 @@
                 </div> -->
 
                 <!-- Aqui o Menu com opções visiveis que o sestito pediu e tbm a versão mob -->
-                <div v-if="user.visibilidadeNaoLogado" class="ma-2">
+                <div v-if="user.visibilidadeNaoLogado">
                     <div v-if="visibilidadeMenuInicial" class="d-flex align-center ga-15">
-                        <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center">
+                        <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center div-btn-links">
                             <button @click="redirectToHome">Home</button>
                             <button>Sobre o Carreiras</button>
                             <button>Contate-nos</button>
                         </div>
-                        <v-btn class="bg-deep-purple-accent-4 pa-2 ma-2 rounded-lg">
-                            <v-icon>mdi-account</v-icon>
-                            Minha Conta
-                            <v-menu activator="parent">
-                                <v-list class="d-flex flex-column">
-                                    <v-list-item>
-                                        <v-btn class="w-100" variant="text" prepend-icon="mdi-login" @click="redirectToLogin">Entrar</v-btn>
-                                    </v-list-item>
-                                    <v-list-item>
-                                        <v-btn class="w-100" variant="text"
-                                            prepend-icon="mdi-account-plus" @click="redirectToCad">Cadastrar</v-btn>
-                                    </v-list-item>
-                                    <v-list-item>
-                                        <v-btn class="w-100" variant="text"
-                                            prepend-icon="mdi-shield-account">Adm</v-btn>
-                                    </v-list-item>
-                                </v-list>
-                            </v-menu>
-                        </v-btn>
+
+                        <v-menu :location="location">
+                            <template v-slot:activator="{ props }">
+                                <v-btn v-bind="props" class="bg-deep-purple-accent-3 pa-2 ma-2 elevation-4 rounded-xl">
+                                    <div class="d-flex align-center ga-2">
+                                        <v-icon>mdi-menu-down</v-icon>
+                                        Conta
+                                        <v-icon>mdi-account</v-icon>
+                                    </div>
+                                </v-btn>
+                            </template>
+
+                            <v-list class="d-flex flex-column ga-2 pa-2 mt-2">
+                                <v-btn class="w-100" variant="text" prepend-icon="mdi-login"
+                                    @click="redirectToLogin">Entrar</v-btn>
+                                <v-divider></v-divider>
+                                <v-btn class="w-100" variant="text" prepend-icon="mdi-account-plus"
+                                    @click="redirectToCad">Cadastrar</v-btn>
+                                <v-divider></v-divider>
+                                <v-btn class="w-100" variant="text" prepend-icon="mdi-shield-account">Adm</v-btn>
+                                <v-divider></v-divider>
+                                <v-btn class="w-100" variant="text" prepend-icon="mdi-help-circle">Faq</v-btn>
+                            </v-list>
+                        </v-menu>
+
                     </div>
                     <MenuMobile v-if="visibilidadeMenuMobilie" />
                 </div>
@@ -108,6 +114,7 @@ export default {
     data: () => ({
         visibilidadeMenuInicial: true,
         visibilidadeMenuMobilie: false,
+        location: 'bottom',
     }),
 
     computed: {
@@ -179,7 +186,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 * {
     // border: 1px solid red;
 }
@@ -226,13 +233,13 @@ export default {
     margin: 0 20px;
 }
 
-button{
+.div-btn-links button {
     padding: 5px 10px 5px 10px;
     border-radius: 10px;
 }
 
-button:hover{
-    background-color: #6200EA;    
+.div-btn-links button:hover {
+    background-color: #6200EA;
     color: white;
     transition: background-color 0.5s ease-in-out;
 }
