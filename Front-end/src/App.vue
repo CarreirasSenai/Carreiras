@@ -47,4 +47,8 @@
 .box-shadow {
   box-shadow: 0 2px 4px gray;
 }
+
+.v-container {
+  padding: 0 !important;
+}
 </style>

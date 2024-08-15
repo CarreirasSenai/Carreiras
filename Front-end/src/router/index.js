@@ -41,7 +41,7 @@ const router = createRouter({
     { path: '/lista-candidatos-empresa', component: ListaCandidatosEmpresa },
     { path: '/lista-empresas', component: ListaEmpresas },
     { path: '/login-admin', component: loginADM },
-    { path: '/lista-de-usuarios', component: ListaDeUsuarios }
+    { path: '/lista-de-usuarios', component: ListaDeUsuarios },
   ],
 });
 

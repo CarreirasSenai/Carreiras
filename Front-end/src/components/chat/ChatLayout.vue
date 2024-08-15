@@ -1,9 +1,10 @@
 <template>
-    <div class="position-fixed bottom-0 h-0 w-100 d-flex align-end justify-end flex-colunm">
-    <ChatConversa v-if="visibilidadeChatConversa" @FecharChatConversa="fecharChatConversa" />
-    <ChatNova v-if="visibilidadeChatNova" @AlternaChatHomeNova="alternaChatHomeNova" @FecharChatNova="fecharChatNova"
-        @FecharChatConversa="fecharChatConversa" />
-    <ChatHome v-if="visibilidadeChatHome" @AlternaChatHomeNova="alternaChatHomeNova" @FecharChatHome="fecharChatHome" />
+    <div class="position-fixed bottom-0 h-0 w-100 d-flex align-end justify-end flex-colunm container-layout">
+        <ChatConversa v-if="visibilidadeChatConversa" @FecharChatConversa="fecharChatConversa" />
+        <ChatNova v-if="visibilidadeChatNova" @AlternaChatHomeNova="alternaChatHomeNova"
+            @FecharChatNova="fecharChatNova" @FecharChatConversa="fecharChatConversa" />
+        <ChatHome v-if="visibilidadeChatHome" @AlternaChatHomeNova="alternaChatHomeNova"
+            @FecharChatHome="fecharChatHome" />
     </div>
 </template>
 
@@ -51,6 +52,12 @@ export default {
 
 <style scoped>
 * {
-    z-index: 1000;
+    z-index: 1005;
+}
+
+@media(max-width:700px) {
+    .container-layout {
+        /* padding: ; */
+    }
 }
 </style>

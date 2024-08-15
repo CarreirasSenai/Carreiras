@@ -35,9 +35,7 @@
                   <p class="tipodeUsuario">ADM</p>
                 </v-col>
                 <v-col cols="2" class="text-right">
-                  <div class="locaCor">
-                    <MenuAdminUsuario />
-                  </div>
+                  <div class="locaCor"><MenuAdminUsuario /></div>
                 </v-col>
               </v-row>
             </v-card>
@@ -140,7 +138,6 @@ export default {
   padding: 5px;
   margin: 15px;
 }
-
 .v-btn__content {
   font-size: 12px !important;
   font-weight: bold !important;
@@ -161,7 +158,11 @@ export default {
   .list-usuario-row {
     margin-bottom: 10px;
   }
-
+  .tipodeUsuario {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+  }
   .card-do-usuario {
     flex-direction: row;
     padding: 10px;

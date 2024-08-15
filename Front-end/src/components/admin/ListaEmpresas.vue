@@ -23,54 +23,38 @@
       </div>
 
       <div class="list-empresa">
-        <div class="card-do-empresa rounded" v-for="n in 6" :key="n">
-          <div class="corpo-card-empresa">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>TOTVS - Sistemas Inteligentes</h3>
-            </div>
-          </div>
-          <div class="localizacao-empresa"><span class="locaCor">Localização:</span> Joinville</div>
-          <div class="status" />
-          <div class="dotsNav"><MenuAdminEmpresa /></div>
-        </div>
-        <!-- <div class="card-do-empresa rounded">
-          <div class="corpo-card-empresa">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>Whirlpool Corporation</h3>
-            </div>
-          </div>
-          <div class="localizacao-empresa">Localização: Joinville</div>
-          <img class="status" src="/src/assets/statusONteste.png" alt="" />
-          <MenuAdminEmpresa />
-        </div>
-        <div class="card-do-empresa rounded">
-          <div class="corpo-card-empresa">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>Dohler S.A</h3>
-            </div>
-          </div>
-          <div class="localizacao-empresa">Localização: Joinville</div>
-          <img class="status" src="/src/assets/statusONteste.png" alt="" />
-          <MenuAdminEmpresa />
-        </div>
-        <div class="card-do-empresa rounded">
-          <div class="corpo-card-empresa">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>NIDEC GLOBAL APPLIANCE BRASIL LTDA</h3>
-            </div>
-          </div>
-          <div class="localizacao-empresa">Localização: Joinville</div>
-          <img class="status" src="/src/assets/statusONteste.png" alt="" />
-          <MenuAdminEmpresa />
-        </div> -->
+        <v-row v-for="n in 6" :key="n" class="list-empresa-row">
+          <v-col cols="12">
+            <v-card class="card-da-empresa">
+              <v-row align="center" no-gutters>
+                <v-col cols="1" class="texte-center">
+                  <v-avatar color="surface-variant" size="60">
+                    <v-icon>mdi-account-circle</v-icon>
+                  </v-avatar>
+                </v-col>
+                <v-col cons="1">
+                  <h3 class="empresa-nome">TOTVS - Sistemas Inteligentes</h3>
+                </v-col>
+                <v-col cols="4">
+                  <p class="localizacao-empresa">
+                    <span class="locaCor">Localização:</span> Joinville
+                  </p>
+                </v-col>
+                <v-col cols="4">
+                 <p class="status"> </p>
+                </v-col>
+                <v-col cons="4" class="text-ritgh">
+                  <div class="dotsNav"><MenuAdminEmpresa /></div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
       </div>
     </v-container>
   </div>
 </template>
+
 <script>
 import MenuAdminEmpresa from "./MenuAdminEmpresa.vue";
 export default {
@@ -93,79 +77,78 @@ export default {
 }
 
 .list-empresa {
-  display: inherit;
-  flex-direction: inherit;
-  gap: 15px;
-  width: 100%;
-  padding: 30px 50px;
+  width: 95%;
+  padding: 10px 0;
 }
 
-.card-do-empresa {
+.card-da-empresa {
   background-color: white;
-  padding: 20px 10px;
+  border-radius: 8px;
+  padding: 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100rem;
-  flex-wrap: wrap;
-  max-width: 100%;
-  position: relative;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-.corpo-card-empresa {
-  display: flex;
-  align-items: center;
-  flex: 1;
+.empresa-nome {
+  font-size: 16px;
+  font-weight: 600;
 }
 
+.procurar-empresas {
+  width: 80%;
+}
 .localizacao-empresa {
-  margin-left: auto;
-   margin: 0 200px;
   text-align: center;
 }
-.locaCor{
-font-weight: 600;
+.locaCor {
+  padding: 5px;
+  margin: 15px;
 }
 
 .status {
+  align-content: center;
+ align-items: center;
   height: 25px;
   width: 25px;
   border-radius: 50%;
   background-color: #34C759; // cor verde
   margin: 0 100px;
 }
-.dotsNav{
-    margin: 0 30px;
-}
-.perfil-empresa-link {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
-}
+// Responsividade para telas menores
+@media (max-width: 768px) {
+  .main-container {
+    padding: 10px;
+  }
 
-.procurar-empresas {
-  width: 50%;
-  margin: 10px;
-  display: flex;
-}
+  .procurar-empresas {
+    width: 100%;
+    margin: 10px 0;
+  }
 
-.card-empresa {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  width: 90%;
-}
+  .list-empresa-row {
+    margin-bottom: 10px;
+  }
+  .tipodeempresa {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+  }
+  .card-do-empresa {
+    flex-direction: row;
+    padding: 10px;
+  }
 
-.skills {
-  width: 100%;
-  display: flex;
-}
+  .empresa-nome {
+    font-size: 14px;
+  }
 
-.v-slide-group {
-  :deep(.v-slide-group__content) {
-    display: flex;
-    justify-content: center;
+  .empresa-email {
+    font-size: 12px;
+  }
+  .locaCor {
+    padding: 5px;
+    margin: 15px;
   }
 }
 </style>

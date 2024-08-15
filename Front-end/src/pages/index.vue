@@ -1,8 +1,11 @@
 <template>
-  <Home />
   <Navbar />
+  <div class="ma-3">
+    <Home/>
+    <FiltroVagas />
+    <Vagas />
+  </div>
 </template>
 
 <script>
-import Home from '@/components/home/Home.vue';
 </script>
