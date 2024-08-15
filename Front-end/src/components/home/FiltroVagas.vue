@@ -1,5 +1,5 @@
 <template>
-    <div class="text-start ma-5 mb-0" v-if="pesquisa.visibilidadeFiltroVagas">
+    <div class="text-start mb-3" v-if="pesquisa.visibilidadeFiltroVagas">
         <div
             class="d-flex align-center justify-space-between ga-5 bg-deep-purple-accent-4 pa-10 pl-4 pr-4 rounded-lg elevation-2">
             <h1 style="font-size: 3vh;">Resultados da Pesquisa:</h1>

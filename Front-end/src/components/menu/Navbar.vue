@@ -29,7 +29,7 @@
 
                         <v-menu :location="location">
                             <template v-slot:activator="{ props }">
-                                <v-btn v-bind="props" class="bg-deep-purple-accent-3 pa-2 ma-2 elevation-4 rounded-xl">
+                                <v-btn v-bind="props" class="bg-deep-purple-accent-3 pa-2 ma-2 elevation-2 rounded-xl">
                                     <div class="d-flex align-center ga-2">
                                         <v-icon>mdi-menu-down</v-icon>
                                         Conta
@@ -189,10 +189,6 @@ export default {
 <style lang="scss" scoped>
 * {
     // border: 1px solid red;
-}
-
-.v-container {
-    padding: 0 !important;
 }
 
 .v-app-bar {
