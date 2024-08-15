@@ -3,23 +3,18 @@
     <Navbar />
     <v-container fluid class="fill-height main-container">
       <div class="text-center mt-4">
-        <h1>Lista de Usuarios</h1>
+        <h1>Lista de Usuários</h1>
       </div>
-
-      <div class="procurar-Usuarios">
-        <v-card-text>
-          <v-text-field
-            :loading="loading"
-            append-inner-icon="mdi-magnify"
-            density="compact"
-            label="Procure um Usúario."
-            variant="solo"
-            hide-details
-            single-line
-            @click:append-inner="onClick"
-          >
-          </v-text-field>
-        </v-card-text>
+      <div class="busca">
+        <div class="procurar-Usuarios">
+          <v-card-text>
+            <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact"
+              label="Procure um Usuário." variant="solo" hide-details single-line @click:append-inner="onClick" />
+          </v-card-text>
+        </div>
+        <v-btn style="font-weight: 900; color: rgba(58, 28, 118, 1);border-width:2px;" text variant="outlined" @click="abrirModal">
+          Novo Cadastro
+        </v-btn>
       </div>
 
       <div class="list-usuario">
@@ -29,18 +24,20 @@
               <v-row align="center" no-gutters>
                 <v-col cols="3" class="text-center">
                   <v-avatar color="surface-variant" size="60">
-                    <v-icon >mdi-account-circle</v-icon>
+                    <v-icon>mdi-account-circle</v-icon>
                   </v-avatar>
                 </v-col>
-                <v-col cols="3">
+                <v-col cols="5">
                   <h3 class="usuario-nome">Robsoh Hush</h3>
                   <p class="usuario-email">robsoh56@gmail.com</p>
                 </v-col>
-                <v-col cols="3">
-                  <p class="tipodeUsuario">Administrador</p>
+                <v-col cols="2">
+                  <p class="tipodeUsuario">ADM</p>
                 </v-col>
                 <v-col cols="2" class="text-right">
-                  <div class="locaCor"><MenuAdminUsuario /></div>
+                  <div class="locaCor">
+                    <MenuAdminUsuario />
+                  </div>
                 </v-col>
               </v-row>
             </v-card>
@@ -48,19 +45,30 @@
         </v-row>
       </div>
     </v-container>
+
+    <!-- Modal -->
+    <v-dialog v-model="modalVisible" max-width="800px">
+      <CadUsuarioAdmin v-model:dialog="modalVisible" />
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import MenuAdminUsuario from "./MenuAdminUsuario.vue";
+import CadUsuarioAdmin from "./CadUsuarioAdmin.vue";
+
 export default {
-  components: { MenuAdminUsuario },
+  components: { MenuAdminUsuario, CadUsuarioAdmin },
   data: () => ({
     loading: false,
+    modalVisible: false,
   }),
   methods: {
     onClick() {
-      // Função de exemplo para o clique no ícone de busca
+      console.log('Ícone de busca clicado');
+    },
+    abrirModal() {
+      this.modalVisible = true;
     },
   },
 };
@@ -74,6 +82,24 @@ export default {
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+}
+
+.v-card-text {
+  padding: 30px 40px 30px 20px !important;
+  flex: 1 1 auto;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.0178571429em;
+  opacity: var(--v-card-text-opacity, 1);
+  text-transform: none;
+}
+
+.busca {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row-reverse;
 }
 
 .list-usuario {
@@ -96,22 +122,31 @@ export default {
 }
 
 .tipodeUsuario {
-  font-size: 14px;
-  color: #666;
+  font-size: 12px;
+  font-weight: bold;
+  color: #3a3a3a;
 }
+
 .usuario-email {
   font-size: 14px;
   color: #666;
 }
 
 .procurar-Usuarios {
-  width: 80%;
+  width: 450px;
 }
 
 .locaCor {
   padding: 5px;
   margin: 15px;
 }
+
+.v-btn__content {
+  font-size: 12px !important;
+  font-weight: bold !important;
+  color: black !important;
+}
+
 // Responsividade para telas menores
 @media (max-width: 768px) {
   .main-container {
@@ -139,9 +174,24 @@ export default {
   .usuario-email {
     font-size: 12px;
   }
+
   .locaCor {
     padding: 5px;
     margin: 15px;
   }
+
+ 
+  .v-card-text {
+    padding:20px 20px 10px !important
+  }
+
+  .busca {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+
 }
 </style>
