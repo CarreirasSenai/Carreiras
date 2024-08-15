@@ -21,7 +21,7 @@
     </v-card>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 * {
     /* border: 1px solid red; */
 }
@@ -36,5 +36,6 @@ p {
 
 a {
     text-decoration: none;
+    color: #6732d2;
 }
 </style>

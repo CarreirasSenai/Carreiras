@@ -28,17 +28,21 @@
 // LEIA! ******* ACIMA CONFIGS ANTIGAS COMENTADAS, ABAIXO NOVAS CONFIGS QUE RESOLVERAM OS CONSTANTES ERROS OCUPANDO TODO O CONSOLE. AJUSTES FEITOS NOS ARQUIVOS (vuetify.js) e (main.js)
 
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
-import vuetify from './plugins/vuetify'; // Importe o objeto vuetify configurado
+import vuetify from './plugins/vuetify'; // Importa a configuração do Vuetify
+import { i18n } from './plugins/i18n'; // Importa a configuração do i18n
+import './styles/keyframes.css';
+
+const pinia = createPinia();
 
 const app = createApp(App);
 
-// Use o router antes de montar o aplicativo
 app.use(router);
-
-// Configure o Vuetify
 app.use(vuetify);
+app.use(pinia);
+app.use(i18n);
 
-// Monte o aplicativo
 app.mount('#app');
+

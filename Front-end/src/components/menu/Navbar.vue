@@ -3,29 +3,60 @@
 
     <v-container>
         <v-app-bar scroll-behavior="elevate">
-            <div class="navbar-container">
+            <div class="navbar-container position-relative">
                 <a href="/" class="d-flex justify-center align-center">
                     <img class="carreiras-logo" src="../../assets/logo.png">
                 </a>
 
-                <!-- TODO Validar quando o usuário estiver logado (vai ser feito futurane) -->
-                <div class="sign-in-buttons" v-if="visibilidadeNaoLogado">
+                <!-- <ADM / LOGIN /> -->
+                <!-- <div class="d-flex ga-1 ma-1" v-if="user.visibilidadeNaoLogado">
                     <v-btn class="adm-btn" variant="outlined">
                         Adm
                     </v-btn>
                     <v-btn class="bg-purple-darken-4" @click="redirectToLogin">
                         Login
                     </v-btn>
+                </div> -->
+
+                <!-- Aqui o Menu com opções visiveis que o sestito pediu e tbm a versão mob -->
+                <div v-if="user.visibilidadeNaoLogado" class="ma-2">
+                    <div v-if="visibilidadeMenuInicial" class="d-flex align-center ga-15">
+                        <div class="d-flex ga-10 position-absolute left-0 right-0 justify-center">
+                            <button @click="redirectToHome">Home</button>
+                            <button>Sobre o Carreiras</button>
+                            <button>Contate-nos</button>
+                        </div>
+                        <v-btn class="bg-deep-purple-accent-4 pa-2 ma-2">
+                            <v-icon>mdi-account</v-icon>
+                            Minha Conta
+                            <v-menu activator="parent">
+                                <v-list class="d-flex flex-column">
+                                    <v-list-item>
+                                        <v-btn class="w-100" variant="text" prepend-icon="mdi-login" @click="redirectToLogin">Entrar</v-btn>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <v-btn class="w-100" variant="text"
+                                            prepend-icon="mdi-account-plus" @click="redirectToCad">Cadastrar</v-btn>
+                                    </v-list-item>
+                                    <v-list-item>
+                                        <v-btn class="w-100" variant="text"
+                                            prepend-icon="mdi-shield-account">Adm</v-btn>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </v-btn>
+                    </div>
+                    <MenuMobile v-if="visibilidadeMenuMobilie" />
                 </div>
 
                 <!-- <NavbarLogado /> -->
-                <div class="user-account-avatar d-flex align-center ga-2" v-if="visibilidadeLogado">
-                    <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.email }}</h1>
+                <div class="user-account-avatar d-flex align-center ga-2" v-if="user.visibilidadeLogado">
+                    <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.user.email }}</h1>
                     <v-menu min-width="200px" rounded>
                         <template v-slot:activator="{ props }">
                             <v-btn icon v-bind="props">
                                 <v-avatar color="brown" size="45">
-                                    <span class="text-h5">{{ user.initials }}</span>
+                                    <span class="text-h5">{{ user.user.initials }}</span>
                                 </v-avatar>
                             </v-btn>
                         </template>
@@ -33,11 +64,11 @@
                             <v-card-text>
                                 <div class="mx-auto text-center">
                                     <v-avatar color="brown">
-                                        <span class="text-h5">{{ user.initials }}</span>
+                                        <span class="text-h5">{{ user.user.initials }}</span>
                                     </v-avatar>
-                                    <h3>{{ user.fullName }}</h3>
+                                    <h3>{{ user.user.fullName }}</h3>
                                     <p class="text-caption mt-1">
-                                        {{ user.email }}
+                                        {{ user.user.email }}
                                     </p>
 
                                     <v-divider class="my-2"></v-divider>
@@ -70,23 +101,39 @@
 
 <script>
 import axios from 'axios';
+import { useCandidatoStore } from '@/stores/candidato';
+import MenuMobile from './MenuMobile.vue';
 
 export default {
-    created() {
-        this.userLogado();
-    },
     data: () => ({
-        user: {
-            initials: 'JD',
-            fullName: 'Junior Dev',
-            email: 'juniordev@gmail.com',
-        },
-        visibilidadeNaoLogado: true,
-        visibilidadeLogado: false,
+        visibilidadeMenuInicial: true,
+        visibilidadeMenuMobilie: false,
     }),
+
+    computed: {
+        user() {
+            return useCandidatoStore();
+        }
+    },
+
+    mounted() {
+        const user = this.user;
+        user.userLogado();
+
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize();
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('resize', this.handleResize);
+    },
+
     methods: {
         redirectToLogin() {
             this.$router.push('/empresa-candidato');
+        },
+        redirectToCad() {
+            this.$router.push('/cadastro-candidato');
         },
         redirectToHome() {
             this.$router.push('/');
@@ -105,27 +152,6 @@ export default {
             this.$refs.chatLayout.abrirChatHome();
         },
 
-        // Autenticar usúario e coletar dados
-        async userLogado() {
-            try {
-                const response = await axios.get('http://localhost:4000/candidato/read', {
-                    withCredentials: true
-                });
-
-                this.user.initials = extrairIniciais(response.data.usuario.nome_completo);
-                this.user.fullName = response.data.usuario.nome_completo;
-                this.user.email = response.data.usuario.email;
-                this.visibilidadeNaoLogado = !this.visibilidadeNaoLogado;
-                this.visibilidadeLogado = !this.visibilidadeLogado;
-
-                console.log('Usúario autenticado!', response.data);
-
-            } catch (error) {
-                console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
-                //this.$router.push('/');
-            }
-        },
-
         // Fazer o Logout
         async logout() {
             try {
@@ -133,32 +159,31 @@ export default {
                     withCredentials: true  // Importante: enviar cookies com a requisição
                 });
                 console.log(response.data);
-                this.$router.push('/');
                 window.location.reload();
+                this.$router.push('/');
             } catch (error) {
                 console.error('Erro ao efetuar Logout', error.response);
             }
         },
+
+        handleResize() {
+            if (window.innerWidth < 1000) {
+                this.visibilidadeMenuInicial = false;
+                this.visibilidadeMenuMobilie = true;
+            } else {
+                this.visibilidadeMenuInicial = true;
+                this.visibilidadeMenuMobilie = false;
+            }
+        }
     }
 }
-
-function extrairIniciais(nomeCompleto) {
-    const palavras = nomeCompleto.split(" ");
-
-    const primeiroNome = palavras[0];
-    const segundoNome = palavras.length > 1 ? palavras[1] : "";
-
-    const inicialPrimeiroNome = primeiroNome.charAt(0).toUpperCase();
-    const inicialSegundoNome = segundoNome.charAt(0).toUpperCase();
-
-    const iniciais = inicialPrimeiroNome + inicialSegundoNome;
-
-    return iniciais;
-}
-
 </script>
 
 <style lang="scss">
+* {
+    // border: 1px solid red;
+}
+
 .v-container {
     padding: 0 !important;
 }
@@ -179,7 +204,7 @@ function extrairIniciais(nomeCompleto) {
     margin-left: 10px;
 }
 
-.sign-in-buttons {
+.sign-in-v-btns {
     display: flex;
     justify-content: center;
     align-items: center;

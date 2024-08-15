@@ -128,6 +128,8 @@
 </template>
 
 <script>
+import EditarDescCandidato from './EditarDescCandidato.vue';
+
 export default {
     data() { // Estado inicial do componente
         return {

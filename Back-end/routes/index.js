@@ -5,16 +5,21 @@ const path = require('path');
 const { json } = require('body-parser');
 
 // Objetos do controller
-const Candidato = require('../controller/candidato');
 const DataHora = require('../controller/dataHora');
+const Candidato = require('../controller/candidato');
+const Vaga = require('../controller/vaga');
 
-// rotas usuario
+// rotas candidato
 router.post('/candidato/login', Candidato.login);
 router.post('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
 router.post('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
 
+// rotas vagas
+router.get('/vaga/pesquisa', Vaga.buscarVaga);
+
+// rota logout
 router.get('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {

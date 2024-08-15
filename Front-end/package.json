@@ -18,9 +18,11 @@
     "core-js": "^3.34.0",
     "roboto-fontface": "*",
     "v-calendar": "^3.1.2",
+    "v-money3": "^3.24.1",
     "vue": "^3.4.0",
     "vuetify": "^3.6.9",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "vue-i18n": "^9.13.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
@@ -31,7 +33,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-vue": "^9.22.0",
-    "pinia": "^2.1.7",
+    "pinia": "^2.2.1",
     "sass": "^1.71.1",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-fonts": "^1.1.1",

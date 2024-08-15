@@ -4,6 +4,7 @@
             <template v-slot:activator="{ props: activatorProps }">
                 <button class="text-none font-weight-regular mdi mdi-pencil bt-edit" variant="tonal"
                     v-bind="activatorProps"></button>
+                <!-- <v-btn icon="mdi-pencil" variant="text" v-bind="activatorProps"></v-btn> -->
             </template>
 
             <v-container>

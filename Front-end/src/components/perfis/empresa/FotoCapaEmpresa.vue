@@ -40,7 +40,6 @@ import MenuEditarEmpresa from './MenuEditarEmpresa.vue';
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    // margin: 30px;
     margin-bottom: 25px;
 }
 
@@ -57,9 +56,8 @@ import MenuEditarEmpresa from './MenuEditarEmpresa.vue';
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 15px;
+    padding: 25px;
     gap: 15px;
-    // background-color: #e1d6f6;
 }
 
 .div-foto-perfil {
