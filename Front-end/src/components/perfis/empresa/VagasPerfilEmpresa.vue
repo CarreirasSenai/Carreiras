@@ -1,6 +1,6 @@
 <template>
     <div class="ma-4 mb-2 d-flex justify-space-between align-center">
-        <h1 style="font-size: 4vh;">Minhas Vagas</h1>
+        <h1 style="font-size: 4vh;">Vagas da Empresa</h1>
         <v-btn class="bt-primario" @click="publishVacancyDialog = true">+ Nova</v-btn>
     </div>
     <v-divider class="ml-4 mr-4"></v-divider>
