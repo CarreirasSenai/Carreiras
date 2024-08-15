@@ -1,5 +1,5 @@
 <template>
-    <v-btn icon="mdi-menu" @click="dialog = !dialog" style="z-index: 1004;"></v-btn>
+    <v-btn icon="mdi-menu" @click="dialog = !dialog"></v-btn>
     <div v-if="dialog"
         class="position-fixed top-0 left-0 rounded-0 h-screen w-100 elevation bg-grey-darken-4 opacity-60"
         min-width="300">
@@ -51,6 +51,6 @@ export default {
 }
 
 .v-card {
-    animation: fadeInLeft 1s normal;
+    animation: fadeInLeft 0.5s normal;
 }
 </style>

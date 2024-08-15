@@ -1,5 +1,5 @@
 <template>
-    <v-row class="ml-2 mr-2 mt-2">
+    <v-row class="ma-1">
         <!-- <v-col cols="12" lg="4" md="6" sm="6" v-for="n in 9" :key="n"> -->
         <v-col cols="12" lg="4" md="6" sm="6" v-for="vaga in vagas" :key="vaga.id">
             <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
