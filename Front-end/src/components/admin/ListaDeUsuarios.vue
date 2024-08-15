@@ -29,7 +29,7 @@
               <v-row align="center" no-gutters>
                 <v-col cols="3" class="text-center">
                   <v-avatar color="surface-variant" size="60">
-                    <v-icon >mdi-account-circle</v-icon>
+                    <v-icon>mdi-account-circle</v-icon>
                   </v-avatar>
                 </v-col>
                 <v-col cols="3">
@@ -39,7 +39,7 @@
                 <v-col cols="3">
                   <p class="tipodeUsuario">Administrador</p>
                 </v-col>
-                <v-col cols="2" class="text-right">
+                <v-col cols="3" class="text-right">
                   <div class="locaCor"><MenuAdminUsuario /></div>
                 </v-col>
               </v-row>
@@ -96,7 +96,7 @@ export default {
 }
 
 .tipodeUsuario {
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
 }
 .usuario-email {
@@ -112,6 +112,7 @@ export default {
   padding: 5px;
   margin: 15px;
 }
+
 // Responsividade para telas menores
 @media (max-width: 768px) {
   .main-container {
@@ -126,7 +127,11 @@ export default {
   .list-usuario-row {
     margin-bottom: 10px;
   }
-
+  .tipodeUsuario {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+  }
   .card-do-usuario {
     flex-direction: row;
     padding: 10px;
