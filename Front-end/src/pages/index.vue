@@ -1,15 +1,11 @@
 <template>
   <Navbar />
-  <Home/>
-  <FiltroVagas />
-  <Vagas />
+  <div class="ma-3">
+    <Home/>
+    <FiltroVagas />
+    <Vagas />
+  </div>
 </template>
 
 <script>
 </script>
-
-<style>
-body{
-  margin: 10px;
-}
-</style>
