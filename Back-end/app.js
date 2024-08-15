@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
 const fileupload = require('express-fileupload');
+require('dotenv').config();
 
 // Middleware de sessão
 app.use(session({
@@ -17,7 +18,7 @@ app.use(session({
 
 // Use o CORS para permitir todas as origens ou especifique as origens permitidas
 app.use(cors({
-  origin: 'http://localhost:3000', // O domínio do seu front-end
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000', // O domínio do seu front-end
   credentials: true // Permitir envio de cookies
 }));
 
@@ -40,7 +41,7 @@ app.use(fileupload());
 // Use suas rotas
 app.use('/', routes);
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server is running in http://localhost:${PORT}`);
+const port = process.env.BACKEND_URL || 4000;
+app.listen(port, () => {
+  console.log(`Server is running in http://localhost:${port}`);
 });

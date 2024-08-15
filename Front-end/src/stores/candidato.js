@@ -16,7 +16,7 @@ export const useCandidatoStore = defineStore('candidato', {
     actions: {
         async userLogado() {
             try {
-                const response = await axios.get('http://localhost:4000/candidato/read', {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidato/read`, {
                     withCredentials: true
                 });
 

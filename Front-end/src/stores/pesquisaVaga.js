@@ -32,7 +32,7 @@ export const usePesquisaVaga = defineStore('pesquisaVaga', {
 
         async pesquisar() {
             try {
-                const response = await axios.get('http://localhost:4000/vaga/pesquisa', {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/pesquisa`, {
                     pesquisa: this.pesquisa,
                 });
 

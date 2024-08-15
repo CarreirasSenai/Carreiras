@@ -162,7 +162,7 @@ export default {
         // Fazer o Logout
         async logout() {
             try {
-                const response = await axios.get('http://localhost:4000/logout', {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/logout`, {
                     withCredentials: true  // Importante: enviar cookies com a requisição
                 });
                 console.log(response.data);
