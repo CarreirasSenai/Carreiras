@@ -72,8 +72,8 @@ export default {
         },
         submitForm() {
             const form = this.$refs.form.$refs.form
-            if (form.validate()) {
-                alert('Formulário salvo');
+            if  (window.location.href.includes("perfil-empresa"))  {
+                alert("Formulário salvo no perfil da empresa");
             } else {
                 alert('Preencha os campos corretamente');
             }
