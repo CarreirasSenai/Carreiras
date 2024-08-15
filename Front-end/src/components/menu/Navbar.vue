@@ -21,12 +21,12 @@
                 <!-- Aqui o Menu com opções visiveis que o sestito pediu e tbm a versão mob -->
                 <div v-if="user.visibilidadeNaoLogado" class="ma-2">
                     <div v-if="visibilidadeMenuInicial" class="d-flex align-center ga-15">
-                        <div class="d-flex ga-10 position-absolute left-0 right-0 justify-center">
+                        <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center">
                             <button @click="redirectToHome">Home</button>
                             <button>Sobre o Carreiras</button>
                             <button>Contate-nos</button>
                         </div>
-                        <v-btn class="bg-deep-purple-accent-4 pa-2 ma-2">
+                        <v-btn class="bg-deep-purple-accent-4 pa-2 ma-2 rounded-lg">
                             <v-icon>mdi-account</v-icon>
                             Minha Conta
                             <v-menu activator="parent">
@@ -224,5 +224,16 @@ export default {
 
 .user-account-avatar {
     margin: 0 20px;
+}
+
+button{
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+}
+
+button:hover{
+    background-color: #6200EA;    
+    color: white;
+    transition: background-color 0.5s ease-in-out;
 }
 </style>
