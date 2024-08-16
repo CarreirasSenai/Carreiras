@@ -2,24 +2,24 @@
   <div style="height: 100%">
     <Navbar />
     <v-container fluid class="fill-height main-container">
-      <div class="mt-4">
+      <div class="text-center mt-4">
         <h1>Lista de Empresas</h1>
       </div>
-
-      <div class="procurar-empresas">
-        <v-card-text>
-          <v-text-field
-            :loading="loading"
-            append-inner-icon="mdi-magnify"
-            density="compact"
-            label="Procure aqui uma Empresa."
-            variant="solo"
-            hide-details
-            single-line
-            @click:append-inner="onClick"
-          >
-          </v-text-field>
-        </v-card-text>
+      <div class="busca">
+        <div class="procurar-Usuarios">
+          <v-card-text>
+            <v-text-field
+              :loading="loading"
+              append-inner-icon="mdi-magnify"
+              density="compact"
+              label="Procure uma Empresa."
+              variant="solo"
+              hide-details
+              single-line
+              @click:append-inner="onClick"
+            />
+          </v-card-text>
+        </div>
       </div>
 
       <div class="list-empresa">
@@ -41,7 +41,7 @@
                   </p>
                 </v-col>
                 <v-col cols="4">
-                 <p class="status"> </p>
+                  <p class="status"></p>
                 </v-col>
                 <v-col cons="4" class="text-ritgh">
                   <div class="dotsNav"><MenuAdminEmpresa /></div>
@@ -75,21 +75,43 @@ export default {
   align-items: center;
   flex-direction: column;
 }
+.v-card-text {
+  padding: 30px 40px 30px 20px !important;
+  flex: 1 1 auto;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.0178571429em;
+  opacity: var(--v-card-text-opacity, 1);
+  text-transform: none;
+}
 
 .list-empresa {
   width: 95%;
   padding: 10px 0;
 }
 
+.v-col {
+  padding: 10px;
+  border-radius: 8px;
+}
 .card-da-empresa {
   background-color: white;
   border-radius: 8px;
-  padding: 10px;
+  padding: 25px;
   display: flex;
   align-items: center;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
 }
-
+.procurar-Usuarios {
+  width: 450px;
+}
+.busca {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+}
 .empresa-nome {
   font-size: 16px;
   font-weight: 600;
@@ -108,12 +130,18 @@ export default {
 
 .status {
   align-content: center;
- align-items: center;
+  align-items: center;
   height: 25px;
   width: 25px;
   border-radius: 50%;
-  background-color: #34C759; // cor verde
+  background-color: #34c759; // cor verde
   margin: 0 100px;
+}
+
+.v-btn__content {
+  font-size: 12px !important;
+  font-weight: bold !important;
+  color: black !important;
 }
 // Responsividade para telas menores
 @media (max-width: 768px) {
@@ -149,6 +177,18 @@ export default {
   .locaCor {
     padding: 5px;
     margin: 15px;
+  }
+
+  .v-card-text {
+    padding: 20px 20px 10px !important;
+  }
+
+  .busca {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 15px;
   }
 }
 </style>

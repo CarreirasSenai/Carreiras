@@ -8,11 +8,28 @@
       <div class="busca">
         <div class="procurar-Usuarios">
           <v-card-text>
-            <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact"
-              label="Procure um Usuário." variant="solo" hide-details single-line @click:append-inner="onClick" />
+            <v-text-field
+              :loading="loading"
+              append-inner-icon="mdi-magnify"
+              density="compact"
+              label="Procure um Usuário."
+              variant="solo"
+              hide-details
+              single-line
+              @click:append-inner="onClick"
+            />
           </v-card-text>
         </div>
-        <v-btn style="font-weight: 900; color: rgba(58, 28, 118, 1);border-width:2px;" text variant="outlined" @click="abrirModal">
+        <v-btn
+          style="
+            font-weight: 900;
+            color: rgba(58, 28, 118, 1);
+            border-width: 2px;
+          "
+          text
+          variant="outlined"
+          @click="abrirModal"
+        >
           Novo Cadastro
         </v-btn>
       </div>
@@ -63,7 +80,7 @@ export default {
   }),
   methods: {
     onClick() {
-      console.log('Ícone de busca clicado');
+      console.log("Ícone de busca clicado");
     },
     abrirModal() {
       this.modalVisible = true;
@@ -181,9 +198,8 @@ export default {
     margin: 15px;
   }
 
- 
   .v-card-text {
-    padding:20px 20px 10px !important
+    padding: 20px 20px 10px !important;
   }
 
   .busca {
@@ -193,6 +209,5 @@ export default {
     flex-direction: column;
     margin-bottom: 15px;
   }
-
 }
 </style>
