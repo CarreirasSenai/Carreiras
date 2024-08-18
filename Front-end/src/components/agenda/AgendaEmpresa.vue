@@ -24,17 +24,6 @@
           @update:isVisible="isModalVisible = $event" />
         <ModalEntrevista :isVisible="isModalEntrevistaVisible" @save-event="addEvent"
           @update:isVisible="isModalEntrevistaVisible = $event" />
-        <v-dialog v-model="publishVacancyDialog" max-width="700">
-            <v-card>
-                <v-card-title class="headline">Publicação de vaga</v-card-title>
-                <FormPublicacaoVaga ref="form" @updateFormValid="updateFormValid"/>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="deep-purple-darken-2" @click="publishVacancyDialog = false">Fechar</v-btn>
-                <v-btn class="bt-salvar" :disabled="!formValid" variant="tonal" @click="submitForm">Salvar</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
       </div>
     </div>
   </v-container>
@@ -45,7 +34,7 @@ import Modal from './ModalEvent.vue';
 import ModalEntrevista from './ModalInserirEntrevista.vue';
 import CalendarDays from './CalendarDays.vue';
 import CalendarDaysMedia from './CalendarDaysMedia.vue';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 
 export default {
@@ -55,13 +44,14 @@ export default {
     CalendarDaysMedia,
     CalendarDays
   },
-  data() {
-    return {
-      formValid: false,
+  props: {
+    dayStyle: {
+      type: Function,
+      required: true
     }
   },
   setup() {
-    const display = useDisplay();
+    const display = useDisplay(); 
     const isModalVisible = ref(false);
     const isModalEntrevistaVisible = ref(false);
     const eventTitle = ref('');
@@ -77,10 +67,8 @@ export default {
       isModalEntrevistaVisible.value = true;
     };
 
-    const publishVacancyDialog = ref(false);
-
-    const showPublishVacancyDialog = () => {
-      publishVacancyDialog.value = true;
+    const addEvent = (event) => {
+      console.log('Event added:', event);
     };
 
     const toggleDayEvents = (index) => {
@@ -105,12 +93,7 @@ export default {
       { date: '2024-08-12', title: 'Entrevista', description: 'Aqui é onde o inferno queima as galinhas e deixam elas bem assadas. Uma diliça com Ç. Show de bola e coisa de velho.', type: 'event' },
       { date: '2024-08-12', title: 'Vaga', description: 'Olha só que descrição grande... Olha só como eu não sei mais o que escrever aqui lalalalala. Ta bom Cludia?', type: 'job' },
       { date: '2024-08-12', title: 'Entrevista', description: 'Aqui é a ultima descrição uhullll', type: 'event' },
-      { date: '2024-08-20', title: 'Vaga', description: 'Descrição do evento 2', type: 'job' },
-      { date: '2024-08-22', title: 'Vaga', description: 'Descrição do evento 3', type: 'job' },
       { date: '2024-08-17', title: 'Entrevista', description: 'Descrição do evento 4', type: 'event' },
-      { date: '2024-08-28', title: 'Entrevista', description: 'Descrição do evento 5', type: 'event' },
-      { date: '2024-08-29', title: 'Entrevista', description: 'Descrição do evento 6', type: 'event' },
-      { date: '2024-08-26', title: 'Vaga', description: 'Descrição do evento 7', type: 'job' },
       { date: '2024-08-26', title: 'Vaga', description: 'Descrição do evento 7', type: 'job' },
     ]);
     const eventStyle = (event) => {
@@ -145,7 +128,10 @@ export default {
       return date.toLocaleString('pt-BR', { month: 'long' }).toUpperCase() + ' ' + currentYear.value;
     });
 
-    const days = computed(() => {
+    const days = ref([]);
+    const showMore = ref([]);
+
+    const calculateDays = () => {
       const firstDay = new Date(currentYear.value, currentMonth.value, 1);
       const lastDay = new Date(currentYear.value, currentMonth.value + 1, 0);
       const prevLastDay = new Date(currentYear.value, currentMonth.value, 0);
@@ -157,16 +143,15 @@ export default {
       const nextDays = 7 - lastDayIndex - 1;
 
       const daysArray = [];
-      const showMore = reactive([]);
+      const showMoreArray = [];
 
       for (let x = firstDayIndex; x > 0; x--) {
         daysArray.push({
           date: daysInPrevMonth - x + 1,
           isOutOfMonth: true,
-          events: [],
-          showEvents: false
+          events: []
         });
-        showMore.push(false);
+        showMoreArray.push(false);
       }
 
       for (let i = 1; i <= daysInMonth; i++) {
@@ -175,51 +160,44 @@ export default {
         daysArray.push({
           date: i,
           isOutOfMonth: false,
-          events: dayEvents,
-          showEvents: false
+          events: dayEvents
         });
-        showMore.push(false);
+        showMoreArray.push(false);
       }
 
       for (let j = 1; j <= nextDays; j++) {
         daysArray.push({
           date: j,
           isOutOfMonth: true,
-          events: [],
-          showEvents: false
+          events: []
         });
-        showMore.push(false);
+        showMoreArray.push(false);
       }
 
-      return daysArray;
-    });
+      days.value = daysArray;
+      showMore.value = showMoreArray;
+    };
+
+    watch([currentMonth, currentYear], calculateDays, { immediate: true });
 
     const prevMonth = () => {
-      if (currentMonth.value === 0) {
+      currentMonth.value--;
+      if (currentMonth.value < 0) {
         currentMonth.value = 11;
         currentYear.value--;
-      } else {
-        currentMonth.value--;
       }
     };
 
     const nextMonth = () => {
-      if (currentMonth.value === 11) {
+      currentMonth.value++;
+      if (currentMonth.value > 11) {
         currentMonth.value = 0;
         currentYear.value++;
-      } else {
-        currentMonth.value++;
       }
     };
 
-    const showMore = reactive([]);
-
     const toggleShowMore = (index) => {
-      showMore[index] = !showMore[index];
-    };
-
-    const addEvent = (newEvent) => {
-      events.push(newEvent);
+      showMore.value[index] = !showMore.value[index];
     };
 
     return {
@@ -230,8 +208,6 @@ export default {
       eventDescription,
       showModal,
       showModalEntrevista,
-      showPublishVacancyDialog, 
-      publishVacancyDialog, 
       currentMonth,
       currentYear,
       weekdays,
@@ -247,20 +223,6 @@ export default {
       toggleDayEvents,
       currentCalendarDaysComponent
     };
-  },
-  methods: {
-    updateFormValid(valid) {
-      this.formValid = valid;
-    },
-    submitForm(){
-        const form = this.$refs.form.$refs.form
-        if(form.validate()){
-          if(window.location.href.includes("agenda-empresa"))
-            alert("Formulário salvo na agenda");
-        } else {
-            alert('Preencha os campos corretamente');
-        }
-    }
   }
 };
 </script>
@@ -375,7 +337,7 @@ body {
 }
 
 .out-of-month {
-  background-color: rgb(217, 217, 217);
+  background-color: rgb(167, 167, 167);
 }
 
 @media (max-width: 700px) {

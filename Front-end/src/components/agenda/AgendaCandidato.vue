@@ -8,9 +8,10 @@
       </div>
       <div class="calendar-body">
         <div class="calendar-weekdays">
-          <div v-for="(day, index) in (display.width.value <= 700 ? shortweekdays : weekdays)" :key="index">
+          <div v-for="(day, index) in weekdaysToShow" :key="index">
             {{ day }}
           </div>
+
         </div>
         <component :is="currentCalendarDaysComponent" :days="days" :dayStyle="dayStyle" :eventStyle="eventStyle"
           :showMore="showMore" :showModal="showModal" :toggleShowMore="toggleShowMore"
@@ -29,7 +30,7 @@ import Modal from './ModalEvent.vue';
 import ModalEntrevista from './ModalInserirEntrevista.vue';
 import CalendarDays from './CalendarDays.vue';
 import CalendarDaysMedia from './CalendarDaysMedia.vue';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 
 export default {
@@ -39,8 +40,14 @@ export default {
     CalendarDaysMedia,
     CalendarDays
   },
+  props: {
+    dayStyle: {
+      type: Function,
+      required: true
+    }
+  },
   setup() {
-    const display = useDisplay(); 
+    const display = useDisplay();
     const isModalVisible = ref(false);
     const isModalEntrevistaVisible = ref(false);
     const eventTitle = ref('');
@@ -83,12 +90,6 @@ export default {
       { date: '2024-08-12', title: 'Entrevista', description: 'Olha só que descrição grande... Olha só como eu não sei mais o que escrever aqui lalalalala. Ta bom Cludia?', type: 'event' },
       { date: '2024-08-12', title: 'Entrevista', description: 'Aqui é a ultima descrição uhullll', type: 'event' },
       { date: '2024-08-20', title: 'Entrevista', description: 'Descrição do evento 2', type: 'event' },
-      { date: '2024-08-22', title: 'Entrevista', description: 'Descrição do evento 3', type: 'event' },
-      { date: '2024-08-17', title: 'Entrevista', description: 'Descrição do evento 4', type: 'event' },
-      { date: '2024-08-28', title: 'Entrevista', description: 'Descrição do evento 5', type: 'event' },
-      { date: '2024-08-29', title: 'Entrevista', description: 'Descrição do evento 6', type: 'event' },
-      { date: '2024-08-26', title: 'Entrevista', description: 'Descrição do evento 7', type: 'event' },
-      { date: '2024-08-26', title: 'Entrevista', description: 'Descrição do evento 7', type: 'event' },
     ]);
     const eventStyle = (event) => {
       return {
@@ -109,7 +110,11 @@ export default {
       return date.toLocaleString('pt-BR', { month: 'long' }).toUpperCase() + ' ' + currentYear.value;
     });
 
-    const days = computed(() => {
+    
+    const days = ref([]);
+    const showMore = ref([]);
+
+    const calculateDays = () => {
       const firstDay = new Date(currentYear.value, currentMonth.value, 1);
       const lastDay = new Date(currentYear.value, currentMonth.value + 1, 0);
       const prevLastDay = new Date(currentYear.value, currentMonth.value, 0);
@@ -121,16 +126,15 @@ export default {
       const nextDays = 7 - lastDayIndex - 1;
 
       const daysArray = [];
-      const showMore = reactive([]);
+      const showMoreArray = [];
 
       for (let x = firstDayIndex; x > 0; x--) {
         daysArray.push({
           date: daysInPrevMonth - x + 1,
           isOutOfMonth: true,
-          events: [],
-          showEvents: false
+          events: []
         });
-        showMore.push(false);
+        showMoreArray.push(false);
       }
 
       for (let i = 1; i <= daysInMonth; i++) {
@@ -139,26 +143,25 @@ export default {
         daysArray.push({
           date: i,
           isOutOfMonth: false,
-          events: dayEvents,
-          showEvents: false
+          events: dayEvents
         });
-        showMore.push(false);
+        showMoreArray.push(false);
       }
 
       for (let j = 1; j <= nextDays; j++) {
         daysArray.push({
           date: j,
           isOutOfMonth: true,
-          events: [],
-          showEvents: false
+          events: []
         });
-        showMore.push(false);
+        showMoreArray.push(false);
       }
 
-      return { daysArray, showMore };
-    });
+      days.value = daysArray;
+      showMore.value = showMoreArray;
+    };
 
-    const { daysArray, showMore } = days.value;
+    watch([currentMonth, currentYear], calculateDays, { immediate: true });
 
     const prevMonth = () => {
       currentMonth.value--;
@@ -177,7 +180,7 @@ export default {
     };
 
     const toggleShowMore = (index) => {
-      showMore[index] = !showMore[index];
+      showMore.value[index] = !showMore.value[index];
     };
 
     return {
@@ -193,7 +196,7 @@ export default {
       weekdays,
       shortweekdays,
       formattedMonthYear,
-      days: daysArray,
+      days,
       prevMonth,
       nextMonth,
       eventStyle,
