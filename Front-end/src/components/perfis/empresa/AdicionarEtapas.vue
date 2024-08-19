@@ -14,10 +14,12 @@
                             <v-text-field label="Nome da etapa" required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <v-date-input label="Início" required></v-date-input>
+                            <v-text-field v-model="startDate" :rules="startDateRules"
+                                label="Início" type="date" density="compact" required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <v-date-input label="Fim" required></v-date-input>
+                            <v-text-field v-model="endDate" :rules="endDateRules" 
+                                label="Fim" type="date" density="compact" required></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -61,6 +63,10 @@ import { VDateInput } from 'vuetify/labs/VDateInput';
 export default {
     data: () => ({
         dialog: false,
+        startDate: '',
+        endDate: '',
+        startDateRules: [(v) => !!v || "Data inicial requerida"],
+        endDateRules: [(v) => !!v || "Data final requerida"],
     }),
     components: {
         VDateInput,
