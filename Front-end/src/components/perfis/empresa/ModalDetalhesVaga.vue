@@ -115,7 +115,7 @@
                                 <v-btn class="bt-primario" @click="showPublishVacancyDialog">Editar vaga</v-btn>
                                 <v-dialog v-model="publishVacancyDialog" max-width="700">
                                     <v-card>
-                                        <v-card-title class="headline">Publicação de vaga</v-card-title>
+                                        <v-card-title class="headline">Editar de vaga</v-card-title>
                                         <FormPublicacaoVaga ref="form" @updateFormValid="updateFormValid" />
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
