@@ -3,7 +3,7 @@
     <div class="botoes-estilo">
       <v-btn @click="showModalEntrevista"
         class="v-btn--size-x-large bg-purple-darken-4 v-btn--density-comfortable me-2">Entrevista</v-btn>
-      <v-btn class="v-btn--size-x-large v-btn--density-comfortable" variant="outlined">Vaga</v-btn>
+      <v-btn @click="showPublishVacancyDialog" class="v-btn--size-x-large v-btn--density-comfortable" variant="outlined">Vaga</v-btn>
     </div>
     <div class="calendar">
       <div class="calendar-header">
@@ -24,6 +24,17 @@
           @update:isVisible="isModalVisible = $event" />
         <ModalEntrevista :isVisible="isModalEntrevistaVisible" @save-event="addEvent"
           @update:isVisible="isModalEntrevistaVisible = $event" />
+        <v-dialog v-model="publishVacancyDialog" max-width="700">
+            <v-card>
+                <v-card-title class="headline">Publicação de vaga</v-card-title>
+                <FormPublicacaoVaga ref="form" @updateFormValid="updateFormValid"/>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="deep-purple-darken-2" @click="publishVacancyDialog = false">Fechar</v-btn>
+                <v-btn class="bt-salvar" :disabled="!formValid" variant="tonal" @click="submitForm">Salvar</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
       </div>
     </div>
   </v-container>
@@ -44,6 +55,11 @@ export default {
     CalendarDaysMedia,
     CalendarDays
   },
+  data() {
+    return {
+      formValid: false,
+    }
+  },
   setup() {
     const display = useDisplay();
     const isModalVisible = ref(false);
@@ -59,6 +75,12 @@ export default {
 
     const showModalEntrevista = () => {
       isModalEntrevistaVisible.value = true;
+    };
+
+    const publishVacancyDialog = ref(false);
+
+    const showPublishVacancyDialog = () => {
+      publishVacancyDialog.value = true;
     };
 
     const toggleDayEvents = (index) => {
@@ -208,6 +230,8 @@ export default {
       eventDescription,
       showModal,
       showModalEntrevista,
+      showPublishVacancyDialog, 
+      publishVacancyDialog, 
       currentMonth,
       currentYear,
       weekdays,
@@ -224,6 +248,20 @@ export default {
       currentCalendarDaysComponent
     };
   },
+  methods: {
+    updateFormValid(valid) {
+      this.formValid = valid;
+    },
+    submitForm(){
+        const form = this.$refs.form.$refs.form
+        if(form.validate()){
+          if(window.location.href.includes("agenda-empresa"))
+            alert("Formulário salvo na agenda");
+        } else {
+            alert('Preencha os campos corretamente');
+        }
+    }
+  }
 };
 </script>
 
@@ -241,6 +279,12 @@ export default {
   border-radius: 5px;
   overflow: hidden;
   margin: 30px 30px 0px;
+}
+
+.bt-salvar {
+    background-color: #6200EA;
+    color: white;
+    border-color: #6200EA;
 }
 
 body {

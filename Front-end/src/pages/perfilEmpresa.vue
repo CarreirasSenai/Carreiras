@@ -1,5 +1,7 @@
 <template>
-    <Navbar />
-    <FotoCapaEmpresa />
-    <VagasPerfilEmpresa />
+    <div>
+        <Navbar />
+        <FotoCapaEmpresa />
+        <VagasPerfilEmpresa />
+    </div>
 </template>
