@@ -33,15 +33,34 @@
           <div class="vagas-cadastradas rounded">
             <p>Vagas Cadastradas</p>
             <p>Data de postagem</p>
-            <span style="color: #DB0000;">1 Strike</span>
+            <span style="color: #ff0008;">1 Strike</span>
           </div>
             <v-expansion-panels>
               <v-expansion-panel
                 v-for="i in 3"
-                :key="i"
-                text="Lorem ipsum dolor sit amet"
-                title="Item"
-              ></v-expansion-panel>
+                :key="i">
+                <v-expansion-panel-title class="vagas-panel-title">
+                    <v-row>
+                      <v-col class="d-flex justify-start" cols="6">
+                        <p>Analista de Suporte ao Usuário Junior</p>
+                      </v-col>
+                      <v-col>
+                        <p>21/08/2024</p>
+                      </v-col>
+                    </v-row>
+                </v-expansion-panel-title>
+                <v-expansion-panel-text class="vagas-panel-text">
+                  <div class="vagas-text">
+                    <p><strong>Nível do cargo:</strong> Júnior</p>
+                    <p><strong>Habilidades exigidas:</strong> HTML, CSS, 2 anos de experiência com Java.</p>
+                    <p><strong>Descrição:</strong> Buscamos um profissional que esteja disposto a aprender e busque melhorar suas habilidades no dia-a-dia.</p>
+                  </div>
+                  <div class="buttons-container mt-3 mb-2">
+                    <v-btn class="bg-red-accent-4 me-2" density="comfortable">Strike</v-btn>
+                    <v-btn class="bg-purple-darken-4 me-2" density="comfortable">Aprovar</v-btn>
+                  </div>
+                </v-expansion-panel-text>
+              </v-expansion-panel>
             </v-expansion-panels>
         </div>
       </div>
@@ -136,6 +155,29 @@
   padding: 15px 10px;
 }
 
+.vagas-panel-title {
+  border: 1px solid #3A1C76; 
+  color: #000;
+}
+
+.vagas-panel-text {
+  border: 1px solid #3A1C76; 
+  border-top: none;
+}
+
+.vagas-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
 @media (max-width: 768px) {
   .busca {
     display: flex;
@@ -153,11 +195,17 @@
   .empresa-info {
     padding: 10px 15px;
 
-    div{
-      p{
-        font-size: 14px;
-      }
+    p {
+      text-align: center;
+      font-size: 13px;
     }
+  }
+
+  .vagas-cadastradas {
+      p, span {
+        text-align: center;
+        font-size: 15px;
+      }
   }
 
   .status {
