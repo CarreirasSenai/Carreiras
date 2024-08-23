@@ -24,127 +24,58 @@
       </div>
 
       <div class="list-candidato">
-        <div class="card-do-candidato rounded">
-          <div class="corpo-card-candidato">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>Fulano da Silva dos Santos</h3>
-              <span>Analista de testes</span>
-            </div>
-          </div>
-          <div>
-            <ul class="habilidades-candidato">
-              <li>HTML</li>
-              <li>CSS</li>
-              <li>JavaScript</li>
-              <li>Java</li>
-              <li>MySQL</li>
-            </ul>
-          </div>
-          <div>
-            <a href="/perfil-candidato">
-              <v-icon
-                class="perfil-candidato-link"
-                icon="mdi-arrow-top-right"
-                color="black"
-              />
-            </a>
-          </div>
-        </div>
-        <div class="card-do-candidato rounded">
-          <div class="corpo-card-candidato">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>Relâmpago Mauesck</h3>
-              <span>Tech Lead</span>
-            </div>
-          </div>
-          <div>
-            <ul class="habilidades-candidato">
-              <li>HTML</li>
-              <li>SCSS</li>
-              <li>Angular</li>
-              <li>C#</li>
-              <li>SQL Server</li>
-            </ul>
-          </div>
-          <div>
-            <a href="/perfil-candidato">
-              <v-icon
-                class="perfil-candidato-link"
-                icon="mdi-arrow-top-right"
-                color="black"
-              />
-            </a>
-          </div>
-        </div>
-        <div class="card-do-candidato rounded">
-          <div class="corpo-card-candidato">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>Chat GPT</h3>
-              <span>Desenvolvedor de Sistemas</span>
-            </div>
-          </div>
-          <div>
-            <ul class="habilidades-candidato">
-              <li>HTML</li>
-              <li>SCSS</li>
-              <li>Angular</li>
-              <li>C#</li>
-              <li>SQL Server</li>
-            </ul>
-          </div>
-          <div>
-            <a href="/perfil-candidato">
-              <v-icon
-                class="perfil-candidato-link"
-                icon="mdi-arrow-top-right"
-                color="black"
-              />
-            </a>
-          </div>
-        </div>
-        <div class="card-do-candidato rounded">
-          <div class="corpo-card-candidato">
-            <v-avatar color="surface-variant ma-3" size="50"></v-avatar>
-            <div>
-              <h3>Casimiro Miguel</h3>
-              <span>Torcedor do Vasco</span>
-            </div>
-          </div>
-          <div>
-            <ul class="habilidades-candidato">
-              <li>HTML</li>
-              <li>SCSS</li>
-              <li>Angular</li>
-              <li>C#</li>
-              <li>SQL Server</li>
-            </ul>
-          </div>
-          <div>
-            <a href="/perfil-candidato">
-              <v-icon
-                class="perfil-candidato-link"
-                icon="mdi-arrow-top-right"
-                color="black"
-              />
-            </a>
-          </div>
-        </div>
+        <v-row v-for="n in 6" :key="n" class="list-empresa-row">
+          <v-col cols="12">
+            <v-card class="card-do-candidato rounded">
+              <v-row align="center" no-gutters>
+                  <v-col cols="3" class="text-center">
+                    <v-avatar color="surface-variant" size="60">
+                      <v-icon class="empresa-foto">mdi-account-circle</v-icon>
+                    </v-avatar>
+                  </v-col>
+                  <v-col cons="3">
+                    <h3>Fulano da Silva dos Santos</h3>
+                    <span>Analista de testes</span>
+                  </v-col>
+                <v-col cons="3">
+                  <div>
+                    <ul class="habilidades-candidato">
+                      <li>HTML</li>
+                      <li>CSS</li>
+                      <li>JavaScript</li>
+                      <li>Java</li>
+                      <li>MySQL</li>
+                    </ul>
+                  </div>
+                </v-col>
+                <v-col cols="2">
+                  <a href="/perfil-candidato">
+                    <v-icon
+                      class="perfil-candidato-link"
+                      icon="mdi-arrow-top-right"
+                      color="black"
+                    />
+                  </a>
+                </v-col>
+                <v-col cons="3" class="text-right">
+                  <div class="locaCor"><MenuAdminEmpresa /></div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
       </div>
     </v-container>
   </div>
 </template>
+
 <script>
 export default {
   data() {},
 };
 </script>
 <style lang="scss" scoped>
-// *{
-//     border: 1px solid red;
-// }
+
 .main-container {
   background-color: #e1d6f6;
   display: flex;

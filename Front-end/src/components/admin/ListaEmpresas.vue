@@ -65,6 +65,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
 .main-container {
   background-color: #e1d6f6;
   display: flex;
@@ -72,6 +73,7 @@ export default {
   align-items: center;
   flex-direction: column;
 }
+
 .v-card-text {
   padding: 30px 40px 30px 20px !important;
   flex: 1 1 auto;
