@@ -18,7 +18,7 @@
           </v-card-text>
         </div>
       </div>
-      <div class="empresa-info rounded my-2">
+      <div class="empresa-info rounded">
         <div>
           <v-avatar color="surface-variant" size="60">
               <v-icon>mdi-account-circle</v-icon>
@@ -37,16 +37,18 @@
           </div>
             <v-expansion-panels>
               <v-expansion-panel
-                v-for="i in 3"
+                v-for="i in 5"
                 :key="i">
                 <v-expansion-panel-title class="vagas-panel-title">
                     <v-row>
-                      <v-col class="d-flex justify-start" cols="6">
-                        <p>Analista de Suporte ao Usuário Junior</p>
-                      </v-col>
-                      <v-col>
-                        <p>21/08/2024</p>
-                      </v-col>
+                      <div class="linha-vaga">
+                        <v-col cols="6">
+                          <p>Analista de Suporte ao Usuário Junior</p>
+                        </v-col>
+                        <v-col>
+                          <p>21/08/2024</p>
+                        </v-col>
+                      </div>
                     </v-row>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text class="vagas-panel-text">
@@ -56,8 +58,8 @@
                     <p><strong>Descrição:</strong> Buscamos um profissional que esteja disposto a aprender e busque melhorar suas habilidades no dia-a-dia.</p>
                   </div>
                   <div class="buttons-container mt-3 mb-2">
-                    <v-btn class="bg-red-accent-4 me-2" density="comfortable">Strike</v-btn>
-                    <v-btn class="bg-purple-darken-4 me-2" density="comfortable">Aprovar</v-btn>
+                    <v-btn class="bg-red-accent-4 me-2" density="compact">Strike</v-btn>
+                    <v-btn class="bg-purple-darken-4 me-2" density="compact">Aprovar</v-btn>
                   </div>
                 </v-expansion-panel-text>
               </v-expansion-panel>
@@ -95,7 +97,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 
 .status {
@@ -115,7 +117,7 @@
   background-color: #FAFAFA;
   width: 95%;
   padding: 10px 30px;
-  border: .5px solid #3A1C76;
+  border: 1px solid #3A1C76;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -132,9 +134,9 @@
   justify-content: center;
   background-color: #fafafa;
   width: 95%;
-  padding: 35px 20px;
-  margin: 15px auto;
-  border: .5px solid #3A1C76;
+  padding: 20px 10px;
+  margin: 0 auto 15px auto;
+  border: 1px solid #3A1C76;
 }
 
 .vagas-cadastradas-container {
@@ -158,6 +160,13 @@
 .vagas-panel-title {
   border: 1px solid #3A1C76; 
   color: #000;
+}
+
+.linha-vaga {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 15px 10px;
 }
 
 .vagas-panel-text {
@@ -206,6 +215,11 @@
         text-align: center;
         font-size: 15px;
       }
+  }
+
+  .linha-vaga {
+      font-size: 14px;
+      text-align: center;
   }
 
   .status {
