@@ -24,19 +24,19 @@
       </div>
 
       <div class="list-candidato">
-        <v-row v-for="n in 6" :key="n" class="list-empresa-row">
+        <v-row v-for="n in 6" :key="n" class="list-candidato-row">
           <v-col cols="12">
             <v-card class="card-do-candidato rounded">
               <v-row align="center" no-gutters>
-                  <v-col cols="3" class="text-center">
-                    <v-avatar color="surface-variant" size="60">
-                      <v-icon class="empresa-foto">mdi-account-circle</v-icon>
-                    </v-avatar>
-                  </v-col>
-                  <v-col cons="3">
-                    <h3>Fulano da Silva dos Santos</h3>
-                    <span>Analista de testes</span>
-                  </v-col>
+                <v-col cols="3" class="text-center">
+                  <v-avatar color="surface-variant" size="60">
+                    <v-icon class="empresa-foto">mdi-account-circle</v-icon>
+                  </v-avatar>
+                </v-col>
+                <v-col cons="3">
+                  <h3>Fulano da Silva dos Santos</h3>
+                  <span>Analista de testes</span>
+                </v-col>
                 <v-col cons="3">
                   <div>
                     <ul class="habilidades-candidato">
@@ -57,9 +57,6 @@
                     />
                   </a>
                 </v-col>
-                <v-col cons="3" class="text-right">
-                  <div class="locaCor"><MenuAdminEmpresa /></div>
-                </v-col>
               </v-row>
             </v-card>
           </v-col>
@@ -75,7 +72,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
 .main-container {
   background-color: #e1d6f6;
   display: flex;
@@ -84,24 +80,51 @@ export default {
   flex-direction: column;
 }
 
+.v-card-text {
+  padding: 30px 40px 30px 20px !important;
+  flex: 1 1 auto;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.0178571429em;
+  opacity: var(--v-card-text-opacity, 1);
+  text-transform: none;
+}
+
+.candidato-foto {
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+}
+
 .list-candidato {
-  display: inherit;
-  flex-direction: inherit;
-  gap: 15px;
-  width: 100%;
-  padding: 30px 50px;
+  width: 95%;
+  padding: 10px 0;
 }
 
 .card-do-candidato {
   background-color: white;
-  padding: 20px 10px;
+  border-radius: 8px;
+  padding: 10px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 100rem;
-  flex-wrap: wrap;
-  max-width: 100%;
-  position: relative;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.busca {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+}
+
+.candidato-nome {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.procurar-candidatos {
+  width: 450px;
 }
 
 .corpo-card-candidato {
@@ -109,6 +132,12 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.locaCor {
+  padding: 5px;
+  margin: 15px;
+  font-weight: 700;
 }
 
 .habilidades-candidato {
@@ -126,13 +155,6 @@ export default {
   }
 }
 
-.perfil-candidato-link {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
-}
-
 .card-candidato {
   display: flex;
   flex-direction: column;
@@ -140,15 +162,62 @@ export default {
   width: 90%;
 }
 
+.perfil-candidato-link {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
+
 .skills {
   width: 100%;
   display: flex;
 }
 
-.v-slide-group {
-  :deep(.v-slide-group__content) {
+.v-btn__content {
+  font-size: 12px !important;
+  font-weight: bold !important;
+  color: black !important;
+}
+// Responsividade para telas menores
+@media (max-width: 768px) {
+  .main-container {
+    padding: 10px;
+  }
+
+  .procurar-candidatos {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .list-candidato-row {
+    margin-bottom: 10px;
+  }
+
+  .card-do-candidato {
+    flex-direction: row;
+    padding: 10px;
+  }
+
+  .candidato-nome {
+    font-size: 12px;
+  }
+
+  .locaCor {
+    padding: 5px;
+    margin: 15px;
+  }
+
+  .v-card-text {
+    padding: 10px 15px 5px !important;
+  }
+
+  .busca {
     display: flex;
-    justify-content: center;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 15px;
   }
 }
 </style>

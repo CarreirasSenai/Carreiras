@@ -5,6 +5,7 @@
       <div class="text-center mt-4">
         <h1>Lista de Empresas</h1>
       </div>
+
       <div class="busca">
         <div class="procurar-empresas">
           <v-card-text>
@@ -65,7 +66,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
 .main-container {
   background-color: #e1d6f6;
   display: flex;
@@ -102,10 +102,6 @@ export default {
   display: flex;
   align-items: center;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
-}
-
-.procurar-empresas {
-  width: 450px;
 }
 
 .busca {
