@@ -26,28 +26,26 @@
       <div class="list-candidato">
         <v-row v-for="n in 6" :key="n" class="list-candidato-row">
           <v-col cols="12">
-            <v-card class="card-do-candidato rounded">
+            <v-card class="card-do-candidato">
               <v-row align="center" no-gutters>
                 <v-col cols="3" class="text-center">
                   <v-avatar color="surface-variant" size="60">
-                    <v-icon class="empresa-foto">mdi-account-circle</v-icon>
+                    <v-icon>mdi-account-circle</v-icon>
                   </v-avatar>
                 </v-col>
-                <v-col cons="3">
-                  <h3>Fulano da Silva dos Santos</h3>
-                  <span>Analista de testes</span>
+                <v-col cons="5">
+                  <h3 class="candidato-nome">Fulano da Silva dos Santos</h3>
+                  <span class="usuario-funcao">Analista de testes</span>
                 </v-col>
-                <v-col cons="3">
-                  <div>
-                    <ul class="habilidades-candidato">
-                      <li>HTML</li>
-                      <li>CSS</li>
-                      <li>JavaScript</li>
-                      <li>Java</li>
-                      <li>MySQL</li>
-                    </ul>
-                  </div>
-                </v-col>
+                <div class="locaCor">
+                  <ul class="habilidades-candidato">
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>JavaScript</li>
+                    <li>Java</li>
+                    <li>MySQL</li>
+                  </ul>
+                </div>
                 <v-col cols="2">
                   <a href="/perfil-candidato">
                     <v-icon
@@ -90,12 +88,6 @@ export default {
   text-transform: none;
 }
 
-.candidato-foto {
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: row-reverse;
-}
-
 .list-candidato {
   width: 95%;
   padding: 10px 0;
@@ -123,6 +115,11 @@ export default {
   font-weight: 600;
 }
 
+.usuario-funcao {
+  font-size: 14px;
+  color: #666;
+}
+
 .procurar-candidatos {
   width: 450px;
 }
@@ -136,8 +133,7 @@ export default {
 
 .locaCor {
   padding: 5px;
-  margin: 15px;
-  font-weight: 700;
+  margin: 10px;
 }
 
 .habilidades-candidato {
@@ -145,11 +141,12 @@ export default {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin: 15px auto;
+  margin: 16px auto;
+  font-size: 15px;
 
   li {
     background-color: #adadad;
-    padding: 5px 25px;
+    padding: 1px 10px;
     border-radius: 10px;
     user-select: none;
   }
@@ -167,11 +164,6 @@ export default {
   top: 0;
   right: 0;
   margin: 10px;
-}
-
-.skills {
-  width: 100%;
-  display: flex;
 }
 
 .v-btn__content {
@@ -198,9 +190,30 @@ export default {
     flex-direction: row;
     padding: 10px;
   }
+  
+  .habilidades-candidato {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px auto;
+    font-size: 12px;
+
+    li {
+      background-color: #adadad;
+      padding: 1px 10px;
+      border-radius: 10px;
+      user-select: none;
+    }
+  }
 
   .candidato-nome {
-    font-size: 12px;
+    font-size: 17px;
+  }
+
+  .usuario-funcao {
+    font-size: 18px;
+    color: #666;
   }
 
   .locaCor {
