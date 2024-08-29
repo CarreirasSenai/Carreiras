@@ -53,6 +53,11 @@
                     <!-- <NavbarLogado /> -->
                     <div class="user-account-avatar d-flex align-center ga-2" v-if="user.visibilidadeLogado">
                         <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.user.email }}</h1>
+                        <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center div-btn-links">
+                            <button @click="redirectToHome">Home</button>
+                            <button>Sobre o Carreiras</button>
+                            <button>Contate-nos</button>
+                        </div>
                         <v-menu min-width="200px" rounded>
                             <template v-slot:activator="{ props }">
                                 <v-btn icon v-bind="props">

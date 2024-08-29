@@ -41,6 +41,7 @@
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
                     <v-text-field
+                      v-mask="'(##) ####-####'"
                       v-model="telefone"
                       :rules="telefoneRules"
                       label="Telefone"
@@ -50,6 +51,7 @@
                   </v-col>
                   <v-col cols="12" sm="3" md="3" lg="3">
                     <v-text-field
+                      v-mask="'(##) #####-####'"
                       v-model="celular"
                       :rules="celularRules"
                       label="Celular"
@@ -61,6 +63,8 @@
               <v-row>
                 <v-col cols="12" sm="3" md="3" lg="3">
                    <v-text-field
+                      v-mask="'##.###.###/####-##'"
+                      maxlength="18"
                       v-model="cnpj"
                       :rules="cnpjRules"
                       label="CNPJ"
@@ -79,6 +83,8 @@
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
                    <v-text-field
+                      v-mask="'#####-###'"
+                      maxlength="9"
                       v-model="cep"
                       :rules="cepRules"
                       label="CEP"
@@ -103,6 +109,7 @@
                       label="Complemento"
                       bg-color="#F7F7F7"
                       density="compact"
+                      readonly
                     ></v-text-field>
                 </v-col>
                 <v-col>
@@ -112,6 +119,7 @@
                       label="Endereço"
                       bg-color="#F7F7F7"
                       density="compact"
+                      readonly
                     ></v-text-field>
                 </v-col>
               </v-row>
@@ -123,6 +131,7 @@
                       label="Bairro"
                       bg-color="#F7F7F7"
                       density="compact"
+                      readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
@@ -132,6 +141,7 @@
                       label="Cidade"
                       bg-color="#F7F7F7"
                       density="compact"
+                      readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
@@ -163,32 +173,41 @@
                     ></v-text-field>
                 </v-col>
                 <v-row>
-                  <v-col cols="12" sm="6" md="6" lg="6">
+                  <v-col cols="11" sm="4" md="4" lg="4">
                       <v-text-field
                         v-model="contatoRA"
                         :rules="contatoRARules"
                         label="Contato RA"
-
                         bg-color="#F7F7F7"
                         density="compact"
                       ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="3" md="3" lg="3">
+                  <v-col cols="11" sm="4" md="4" lg="4">
                     <v-text-field
-                      v-model="senha"
-                      :rules="senhaRules"
+                       v-model="senha"
+                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[senhaRules.senhaRequired, senhaRules.senhaMin]"
+                      :type="show1 ? 'text' : 'password'"
+                      class="input-group--focused"
                       label="Senha"
-                      bg-color="#F7F7F7"
+                      name="senha"
+                      counter
+                      @click:append="show1 = !show1"
                       density="compact"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="3" md="3" lg="3">
+                  <v-col cols="11" sm="4" md="4" lg="4">
                     <v-text-field
                       v-model="repSenha"
-                      :rules="repSenhaRules"
+                      :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[senhaRules.repSenhaRequired, senhaRules.repSenhaMin]"
+                      :type="show2 ? 'text' : 'password'"
+                      class="input-group--focused"
                       label="Repetir senha"
-                      bg-color="#F7F7F7"
+                      name="rep-senha"
+                      counter
                       density="compact"
+                      @click:append="show2 = !show2"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -230,6 +249,14 @@ export default {
       contatoRA: '',
       senha: '',
       repSenha: '',
+      show1: false,
+      show2: false,
+      senhaRules: {
+          senhaRequired: value => !!value || 'Senha requerida',
+          repSenhaRequired: value => !!value || 'Repetir senha requerida',
+          senhaMin: v => v.length >= 8 || 'Senha deve ter pelo menos 8 caracteres',
+          repSenhaMin: v => v.length >= 8 || 'Repetir senha deve ter pelo menos 8 caracteres'
+      },
       razaoSocialRules: [(v) => !!v || 'Razão social requerida'],
       nomeFantasiaRules: [(v) => !!v || 'Nome fantasia requerido'],
       emailRules: [(v) => !!v || 'E-mail requerido',
@@ -239,12 +266,10 @@ export default {
         (v) => v.length >= 10 || "Telefone deve ter pelo menos 10 caracteres"],
       celularRules: [(v) => !!v || 'Celular requerido',
         (v) => v.length >= 10 || "Celular deve ter pelo menos 10 caracteres"],
-      cnpjRules: [(v) => !!v || 'CNPJ requerido',
-        (v) => /^\d+$/.test(v) || "CNPJ deve conter apenas números"],
+      cnpjRules: [(v) => !!v || 'CNPJ requerido'],
       inscricaoEstadualRules: [(v) => !!v || 'Inscrição estadual requerida'],
       cepRules: [(v) => !!v || 'CEP requerido',
-        (v) => v.length === 8 || "CEP deve ter 8 caracteres",
-        (v) => /^\d+$/.test(v) || "CEP deve conter apenas números",],
+        (v) => v.length === 9 || "CEP deve ter 9 caracteres"],
       numeroRules: [(v) => !!v || 'Número requerido', 
       (v) => v.length >= 1 || "Nº Casa deve ter pelo menos 1 caractere",],
       enderecoRules: [(v) => !!v || "Endereço Requerido",
@@ -259,8 +284,6 @@ export default {
       estadoRules: [(v) => !!v || 'Estado requerido'],
       responsavelLegalRules: [(v) => !!v || 'Responsável legal requerido'],
       responsavelAdmRules: [(v) => !!v || 'Responsável administrativo requerido'],
-      senhaRules: [(v) => !!v || 'Senha requerida'],
-      repSenhaRules: [(v) => !!v || 'Repetir senha requerido'],
       items: [
         'Amazonas', 
         'Amapá',
