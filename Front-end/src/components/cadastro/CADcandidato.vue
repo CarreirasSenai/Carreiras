@@ -25,17 +25,17 @@
                     density="compact"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="phone" :rules="phoneRules" label="Telefone" bg-color="#F7F7F7"
+                  <v-text-field v-model="phone" :rules="phoneRules" v-mask="'(##) ####-####'" label="Telefone" bg-color="#F7F7F7"
                     density="compact"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="cellphone" :rules="cellphoneRules" label="Celular" bg-color="#F7F7F7"
+                  <v-text-field v-model="cellphone" :rules="cellphoneRules" v-mask="'(##) #####-####'" label="Celular" bg-color="#F7F7F7"
                     density="compact"></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="cpf" :rules="cpfRules" label="CPF" bg-color="#F7F7F7"
+                  <v-text-field v-mask="'###.###.###-##'" v-model="cpf" :rules="cpfRules" label="CPF" bg-color="#F7F7F7"
                     density="compact"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
@@ -71,12 +71,30 @@
                     density="compact"></v-select>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="password" :rules="passwordRules" label="Senha" bg-color="#F7F7F7"
-                    density="compact" type="password"></v-text-field>
+                  <v-text-field v-model="senha"
+                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[senhaRules.repSenhaRequired, senhaRules.repSenhaMin]"
+                      :type="show1 ? 'text' : 'password'"
+                      class="input-group--focused"
+                      label="Repetir senha"
+                      name="rep-senha"
+                      counter
+                      density="compact"
+                      @click:append="show1 = !show1">
+                  </v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="confirmPassword" :rules="confirmPasswordRules" label="Repetir Senha"
-                    bg-color="#F7F7F7" density="compact" type="password"></v-text-field>
+                  <v-text-field  v-model="repSenha"
+                      :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[senhaRules.repSenhaRequired, senhaRules.repSenhaMin]"
+                      :type="show2 ? 'text' : 'password'"
+                      class="input-group--focused"
+                      label="Repetir senha"
+                      name="rep-senha"
+                      counter
+                      density="compact"
+                      @click:append="show2 = !show2">
+                  </v-text-field>
                 </v-col>
               </v-row>
               <div class="sign-in-buttons d-flex justify-center my-4">
@@ -90,40 +108,40 @@
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
-
   <!-- Alerta PopUp -->
-  <v-dialog max-width="500">
-    <template v-slot:activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps" color="surface-variant" text="Open Dialog" variant="flat" id="btnAlertaCadastro"
-        class="d-none"></v-btn>
-    </template>
-
-    <template v-slot:default="{ isActive }">
-      <v-card title="Ops!" class="text-purple-darken-4" v-if="resposta === false">
-        <v-card-text class="text-center text-h7 text-black border-sm pa-10">
-          {{ mensagemErro }}
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text="ok" @click="isActive.value = false"></v-btn>
-        </v-card-actions>
-      </v-card>
-      <v-card class="text-purple-darken-4" v-else-if="resposta === true">
-        <v-card-title>Zuuuuuuuuu 🐝</v-card-title>
-        <v-card-text class="text-center text-h7 text-black border-sm pa-10">
-          Cadastro realizado com sucesso! Agora você é uma abelinha do carreiras <span class="mdi mdi-check-bold text-green text-h6"></span>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
-          <v-btn text="Entrar na Conta" @click="isActive.value = false" class="bg-purple-darken-4">
-            <a href="/login" class="text-white">Entrar na Conta</a>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </template>
-  </v-dialog>
+    <div>
+      <v-dialog max-width="500">
+        <template v-slot:activator="{ props: activatorProps }">
+          <v-btn v-bind="activatorProps" color="surface-variant" text="Open Dialog" variant="flat" id="btnAlertaCadastro"
+            class="d-none"></v-btn>
+        </template>
+        <template v-slot:default="{ isActive }">
+          <v-card title="Ops!" class="text-purple-darken-4" v-if="resposta === false">
+            <v-card-text class="text-center text-h7 text-black border-sm pa-10">
+              {{ mensagemErro }}
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text="ok" @click="isActive.value = false"></v-btn>
+            </v-card-actions>
+          </v-card>
+          <v-card class="text-purple-darken-4" v-else-if="resposta === true">
+            <v-card-title>Zuuuuuuuuu 🐝</v-card-title>
+            <v-card-text class="text-center text-h7 text-black border-sm pa-10">
+              Cadastro realizado com sucesso! Agora você é uma abelinha do carreiras <span class="mdi mdi-check-bold text-green text-h6"></span>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
+              <v-btn text="Entrar na Conta" @click="isActive.value = false" class="bg-purple-darken-4">
+                <a href="/login" class="text-white">Entrar na Conta</a>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
+    </div>
+  </v-container>
 </template>
 
 <script>
@@ -146,8 +164,10 @@ export default {
       bairro: 'Bairro Bonito',
       cidade: 'Bonita',
       estado: 'SC',
-      password: '12345678Ww@',
-      confirmPassword: '12345678Ww@',
+      show1: false,
+      show2: false,
+      senha: '12345678Ww@',
+      repSenha: '12345678Ww@',
       resposta: false,
       mensagemErro: '',
 
@@ -169,19 +189,16 @@ export default {
       ],
       cellphoneRules: [
         (v) => !!v || "Celular requerido",
-        (v) => v.length >= 10 || "Celular deve ter pelo menos 10 caracteres",
-        (v) => /^\d+$/.test(v) || "Celular deve conter apenas números",
+        (v) => v.length == 15 || "Celular deve ter pelo menos 15 caracteres"
       ],
       phoneRules: [
         (v) => !!v || "Telefone requerido",
-        (v) => v.length >= 10 || "Telefone deve ter pelo menos 10 caracteres",
-        (v) => /^\d+$/.test(v) || "Telefone deve conter apenas números",
+        (v) => v.length == 14 || "Telefone deve ter pelo menos 14 caracteres"
       ],
 
       cpfRules: [
         (v) => !!v || "CPF Requerido",
-        (v) => v.length === 11 || "CPF deve ter 11 caracteres",
-        (v) => /^\d+$/.test(v) || "CPF deve conter apenas números",
+        (v) => v.length === 14 || "CPF deve ter 14 caracteres",
       ],
 
       confirmcepRules: [
@@ -219,20 +236,26 @@ export default {
         (v) => !!v || "Estado Requerido"
       ],
 
-      passwordRules: [
-        (v) => !!v || "Senha Requerida",
-        (v) => v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
-        (v) =>
-          /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(
-            v
-          ) ||
-          "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
-      ],
+      // passwordRules: [
+      //   (v) => !!v || "Senha Requerida",
+      //   (v) => v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
+      //   (v) =>
+      //     /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(
+      //       v
+      //     ) ||
+      //     "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
+      // ],
+      senhaRules: {
+          senhaRequired: value => !!value || 'Senha requerida',
+          repSenhaRequired: value => !!value || 'Repetir senha requerida',
+          senhaMin: v => v.length >= 8 || 'Senha deve ter pelo menos 8 caracteres',
+          repSenhaMin: v => v.length >= 8 || 'Repetir senha deve ter pelo menos 8 caracteres'
+      },
 
-      confirmPasswordRules: [
-        (v) => !!v || "Repetir Senha Requerida",
-        (v) => v === this.password || "Senhas não coincidem",
-      ],
+      // confirmPasswordRules: [
+      //   (v) => !!v || "Repetir Senha Requerida",
+      //   (v) => v === this.password || "Senhas não coincidem",
+      // ],
       items: [
         'SC',
         'SP',
