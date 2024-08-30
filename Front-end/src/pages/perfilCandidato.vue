@@ -17,6 +17,21 @@
 import Curriculo from '@/components/perfis/candidato/Curriculo.vue';
 import InformacoesPessoais from '@/components/perfis/candidato/InformacoesPessoais.vue';
 import LinksCandidato from '@/components/perfis/candidato/LinksCandidato.vue';
+import { onMounted } from 'vue';
+import { useCandidatoStore } from '@/stores/candidato';
+
+const candidatoStore = useCandidatoStore();
+
+onMounted(() => {
+    candidatoStore.loadStateFromStorage();
+
+    if (candidatoStore.visibilidadeLogado) {
+        console.log('Usuário está logado');
+        console.log(candidatoStore.user);
+    } else {
+        console.log('Usuário não está logado');
+    }
+});
 </script>
 
 <style>

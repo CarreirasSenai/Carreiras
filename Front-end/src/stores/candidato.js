@@ -11,10 +11,11 @@ export const useCandidatoStore = defineStore('candidato', {
         },
         visibilidadeNaoLogado: true,
         visibilidadeLogado: false,
-        router: useRouter(),
     }),
     actions: {
         async userLogado() {
+            const router = useRouter();  // Use o useRouter dentro de actions
+
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidato/read`, {
                     withCredentials: true
@@ -23,19 +24,34 @@ export const useCandidatoStore = defineStore('candidato', {
                 this.user.initials = this.extrairIniciais(response.data.usuario.nome_completo);
                 this.user.fullName = response.data.usuario.nome_completo;
                 this.user.email = response.data.usuario.email;
+                this.user.id = response.data.usuario.id;
                 this.visibilidadeNaoLogado = false;
                 this.visibilidadeLogado = true;
 
-                console.log('Usuário autenticado!', response.data);
+                localStorage.setItem('user', JSON.stringify(this.user));
+                localStorage.setItem('visibilidadeLogado', JSON.stringify(this.visibilidadeLogado));
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
-                this.router.push('/');
+                router.push('/');
             }
         },
         extrairIniciais(nomeCompleto) {
             const iniciais = nomeCompleto.split(' ').map((n) => n[0]).join('');
             return iniciais.toUpperCase();
+        },
+        loadStateFromStorage() {
+            const userData = localStorage.getItem('user');
+            const visibilidadeLogado = localStorage.getItem('visibilidadeLogado');
+
+            if (userData) {
+                this.user = JSON.parse(userData);
+            }
+
+            if (visibilidadeLogado) {
+                this.visibilidadeLogado = JSON.parse(visibilidadeLogado);
+                this.visibilidadeNaoLogado = !this.visibilidadeLogado;
+            }
         }
     }
 })
