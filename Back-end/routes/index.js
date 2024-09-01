@@ -8,21 +8,21 @@ const { json } = require('body-parser');
 const DataHora = require('../services/dataHora');
 const Candidato = require('../controller/candidato');
 const Vaga = require('../controller/vaga');
-const Nodemailer = require('../services/nodemailer');
+const RedefinirSenha = require('../controller/redefinirSenha');
 
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
 router.post('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
-router.post('/candidato/update', authMiddleware, Candidato.updateUser);
+router.post('/candidato/update', Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);
 
-// rotas nodemailer
-router.post('/enviar/codigo', Nodemailer.enviarCodigo);
-router.post('/validar/codigo', Nodemailer.validarCodigo);
+// rotas redefinir senha
+router.post('/enviar/codigo', RedefinirSenha.enviarCodigo);
+router.post('/validar/codigo', RedefinirSenha.validarCodigo);
 
 // rota logout
 router.get('/logout', (req, res) => {

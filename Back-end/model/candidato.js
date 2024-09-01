@@ -24,17 +24,30 @@ exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
                 return callback(new Error('Este CPF já foi cadastrado!'), null);
             }
 
+            // db.query(
+            //     'INSERT INTO user_candidato (nome_social, nome_completo, email, telefone, celular, cpf, cep, rua, numero, complemento, bairro, cidade, estado, senha, profissao, grupo, data_atu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            //     [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, profissao, grupo, dataAtu],
+            //     (err, result) => {
+
+            //         if (err) {
+            //             // Se houver um erro na inserção, retornar o erro no callback
+            //             console.log(err);
+            //             return callback(err, null);
+            //         }
+            //         // Se a inserção for bem-sucedida, retornar o ID do novo registro
+            //         callback(null, result.insertId);
+            //     }
+            // );
+            
             db.query(
                 'INSERT INTO user_candidato (nome_social, nome_completo, email, telefone, celular, cpf, cep, rua, numero, complemento, bairro, cidade, estado, senha, profissao, grupo, data_atu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                 [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, profissao, grupo, dataAtu],
                 (err, result) => {
 
                     if (err) {
-                        // Se houver um erro na inserção, retornar o erro no callback
                         console.log(err);
                         return callback(err, null);
                     }
-                    // Se a inserção for bem-sucedida, retornar o ID do novo registro
                     callback(null, result.insertId);
                 }
             );
@@ -54,8 +67,19 @@ exports.getUser = (id, callback) => {
 };
 
 // Login
-exports.getLogin = (email, password, callback) => {
-    db.query('SELECT * FROM user_candidato WHERE email = ? AND senha = ?', [email, password], (err, rows) => {
+// exports.getLogin = (email, password, callback) => {
+//     db.query('SELECT * FROM user_candidato WHERE email = ? AND senha = ?', [email, password], (err, rows) => {
+//         if (err) {
+//             return callback(err, null);
+//         }
+
+//         // Retorna o primeiro usuário encontrado ou null se nenhum usuário for encontrado
+//         return callback(null, rows.length > 0 ? rows[0] : null);
+//     });
+// };
+
+exports.getLogin = (email, callback) => {
+    db.query('SELECT * FROM user_candidato WHERE email = ?', [email], (err, rows) => {
         if (err) {
             return callback(err, null);
         }

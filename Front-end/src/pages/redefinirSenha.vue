@@ -48,12 +48,14 @@
                     <!-- form redefinir -->
                     <v-card class="elevation-12" rounded="xl" v-if="formRedefinir">
                         <v-card-text class="text-center">
-                            <v-form class="ma-5 text-center d-flex flex-column ga-2" @submit.prevent="redefinirSenha">
-                                <!-- <v-form class="ma-5 text-center" @submit.prevent="redefinirSenha"> -->
-                                <h3 class="text-center mb-2 text-h6 text-sm-h5 font-weight-bold	">Crie uma Nova Senha</h3>
-                                <v-text-field v-model="novaSenha" label="Nova senha"></v-text-field>
-                                <v-text-field v-model="confirmaSenha" label="Confirme a senha"></v-text-field>
-                                <v-btn elevation="0" class="bg-purple-darken-4" @click="redefinirSenha" block>Salvar</v-btn>
+                            <v-form class="ma-5 text-start d-flex flex-column ga-2" @submit.prevent="redefinirSenha">
+                                <h3 class="text-center mb-2 text-h6 text-sm-h5 font-weight-bold	">Crie uma Nova Senha
+                                </h3>
+                                <v-text-field v-model="novaSenha" label="Nova senha"
+                                    :rules="rules.novaSenha"></v-text-field>
+                                <v-text-field v-model="confirmaSenha" label="Confirme a senha"
+                                    :rules="rules.confirmaSenha"></v-text-field>
+                                <v-btn elevation="0" class="bg-purple-darken-4" block type="submit">Salvar</v-btn>
                                 <v-btn variant="text" to="/" block>cancelar</v-btn>
                             </v-form>
                         </v-card-text>
@@ -63,7 +65,7 @@
         </v-container>
 
         <v-snackbar color="error" v-model="snackbar" :timeout="4000">
-            Código de verificação incorreto. Insira o código novamente.
+            {{ mensagem }}
         </v-snackbar>
     </div>
 </template>
@@ -74,19 +76,32 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            email: 'carreirassenai@gmail.com',
+            email: 'thiago@gmail.com',
             emailRules: [
                 (v) => !!v || 'E-mail requerido',
                 (v) => /.+@.+\..+/.test(v) || 'E-mail deve ser válido',
             ],
+            grupo: '',
             formEnviar: true,
             formValidar: false,
             formRedefinir: false,
             validating: false,
             codigo: '',
             snackbar: false,
-            novaSenha: '',
-            confirmaSenha: ''
+            novaSenha: 'Thiago1#',
+            confirmaSenha: 'Thiago1#',
+            rules: {
+                novaSenha: [
+                    (v) => !!v || 'Campo obrigatório.',
+                    (v) => /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(v) || 'A senha deve ter 8 dígitos ou mais, 1 letra maiúscula, 1 caractere especial e 1 número.'
+                ],
+                confirmaSenha: [
+                    (v) => !!v || 'Campo obrigatório.',
+                    (v) => v === this.novaSenha || 'As senhas não são iguais.'
+                ]
+            },
+            mensagem: '',
+            dados: [],
         };
     },
     methods: {
@@ -95,6 +110,7 @@ export default {
             try {
                 const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/enviar/codigo`, {
                     email: this.email,
+                    grupo: this.grupo
                 }, { withCredentials: true });
 
                 this.formEnviar = false;
@@ -102,7 +118,9 @@ export default {
 
                 console.log(response.data);
             } catch (error) {
-                console.error('Erro', error.response);
+                console.error('Erro', error.response.data);
+                this.snackbar = true;
+                this.mensagem = 'Não há usuário com este endereço de E-mail.';
             }
         },
 
@@ -116,16 +134,25 @@ export default {
             try {
                 const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/validar/codigo`, {
                     email: this.email,
+                    grupo: this.grupo,
                     codigo: this.codigo
                 }, { withCredentials: true });
 
                 this.formValidar = false;
                 this.formRedefinir = true;
 
-                console.log(response.data);
+                for (var key in response.data) {
+                    this.dados[key] = response.data[key];
+                }
+
+                for (var key in this.dados) {
+                    console.log('dados', this.dados[key]);
+                }
+
             } catch (error) {
                 console.error('Erro', error.response.data);
                 this.validating = true;
+                this.mensagem = 'Código de verificação incorreto. Insira o código novamente.';
                 setTimeout(() => {
                     this.validating = false;
                     this.snackbar = true;
@@ -133,10 +160,33 @@ export default {
             }
         },
 
-        async redefinirSenha() {
-            alert('');
+        async redefinirSenha(event) {
+            const results = await event;            
+
+            // alert(JSON.stringify(results, null, 2))
+            // alert(this.novaSenha + '\n' + this.confirmaSenha)
+
+            if (results.valid === true) {                
+                console.log('Dados antes de enviar:', this.dados);  // Verifique aqui
+
+                try {
+                    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/${this.grupo}/update`, {
+                        dados: this.dados,
+                        novaSenha: this.novaSenha
+                    }, { withCredentials: true });
+
+                    console.log(response.data);
+
+                    // for (var key in response.data) {
+                    //     console.log(response.data[key])
+                    // }
+                } catch (error) {
+                    console.error('Erro', error.response.data);
+                }
+            }
         },
 
+        // envia para cadastro do user em questao na url
         goToSignUp() {
             if (window.location.href.includes("candidato")) {
                 window.location.href = "cadastro-candidato"
@@ -147,13 +197,7 @@ export default {
     },
     mounted() {
         this.$route.query.resposta;
+        this.grupo = this.$route.query.resposta;
     },
 };
-
 </script>
-
-<style>
-* {
-    /* border: 1px solid red; */
-}
-</style>
