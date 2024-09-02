@@ -27,6 +27,7 @@ export const useCandidatoStore = defineStore('candidato', {
                 this.visibilidadeLogado = true;
 
                 console.log('Usuário autenticado!', response.data);
+                console.log('Id do User:', response.data.usuario.id);
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
