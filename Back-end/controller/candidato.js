@@ -1,5 +1,5 @@
 const Candidato = require('../model/candidato');
-const DataHora = require('./dataHora');
+const DataHora = require('../services/dataHora');
 
 // Create
 exports.createUser = (req, res) => {
