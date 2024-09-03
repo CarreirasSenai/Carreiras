@@ -1,30 +1,32 @@
 <template>
-  <div class="sobre-nos">
-    <h1>Sobre Nós</h1>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet
-      nulla auctor, vestibulum magna sed, convallis ex.
-    </p>
-    <ul>
-      <li>
-        <strong>Missão:</strong> Desenvolver soluções inovadoras e eficazes para
-        nossos clientes.
-      </li>
-      <li>
-        <strong>Visão:</strong> Ser líderes no mercado de tecnologia e inovação.
-      </li>
-      <li>
-        <strong>Valores:</strong> Inovação, qualidade, respeito e compromisso.
-      </li>
-    </ul>
+  <div>
+    <Navbar />
+    <div class="sobre-nos">
+      <h1>Sobre Nós</h1>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet
+        nulla auctor, vestibulum magna sed, convallis ex.
+      </p>
+      <ul>
+        <li>
+          <strong>Missão:</strong> Desenvolver soluções inovadoras e eficazes
+          para nossos clientes.
+        </li>
+        <li>
+          <strong>Visão:</strong> Ser líderes no mercado de tecnologia e
+          inovação.
+        </li>
+        <li>
+          <strong>Valores:</strong> Inovação, qualidade, respeito e compromisso.
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-import Sobre from '@/pages/Sobre.vue';
-
 export default {
-  components: { Sobre },
+  data() {},
 };
 </script>
 
