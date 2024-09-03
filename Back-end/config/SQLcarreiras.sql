@@ -136,16 +136,15 @@ CREATE TABLE vagas_etapas (
 );
 
 CREATE TABLE perfil (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    descricao VARCHAR(255),
-    formacao VARCHAR(100),
-    curso VARCHAR(100),
-    habilidades VARCHAR(255),
-    experiencia VARCHAR(255),
-    portfolio TEXT,
-    id_user INT NOT NULL,
-    data_atu DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (id_user) REFERENCES user_candidato(id)
+  id int NOT NULL AUTO_INCREMENT,
+  id_user int NOT NULL,
+  descricao VARCHAR(255),
+  foto_perfil VARCHAR(255),
+  foto_backgound VARCHAR(255),
+  data_atu datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY id_user (id_user),
+  CONSTRAINT perfil_ibfk_1 FOREIGN KEY (id_user) REFERENCES user_candidato (id)
 );
 
 CREATE TABLE vagas_candidatadas (

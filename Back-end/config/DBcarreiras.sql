@@ -212,18 +212,16 @@ DROP TABLE IF EXISTS `perfil`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `perfil` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `descricao` varchar(255) DEFAULT NULL,
-  `formacao` varchar(100) DEFAULT NULL,
-  `curso` varchar(100) DEFAULT NULL,
-  `habilidades` varchar(255) DEFAULT NULL,
-  `experiencia` varchar(255) DEFAULT NULL,
-  `portfolio` text,
   `id_user` int NOT NULL,
+  `descricao` VARCHAR(255),
+  `foto_perfil` VARCHAR(255),
+  `foto_backgound` VARCHAR(255),
   `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_user` (`id_user`),
   CONSTRAINT `perfil_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user_candidato` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
