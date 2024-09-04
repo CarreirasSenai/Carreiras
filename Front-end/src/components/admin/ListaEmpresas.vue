@@ -1,59 +1,57 @@
 <template>
-  <div style="height: 100%">
-    <Navbar />
-    <v-container fluid class="fill-height main-container">
-      <div class="text-center mt-4">
-        <h1>Lista de Empresas</h1>
-      </div>
-
-      <div class="busca">
-        <div class="procurar-empresas">
-          <v-card-text>
-            <v-text-field
-              :loading="loading"
-              append-inner-icon="mdi-magnify"
-              density="compact"
-              label="Procure uma Empresa."
-              variant="solo"
-              hide-details
-              single-line
-              @click:append-inner="onClick"
-            />
-          </v-card-text>
+    <div style="height: 100%">
+      <Navbar />
+      <v-container fluid class="fill-height main-container">
+        <div class="text-center mt-4">
+          <h1>Lista de Empresas</h1>
         </div>
-      </div>
-
-      <div class="list-empresa">
-        <v-row v-for="n in 6" :key="n" class="list-empresa-row">
-          <v-col cols="12">
-            <v-card class="card-da-empresa">
-              <v-row align="center" no-gutters>
-                <v-col cols="3" class="text-center">
-                  <v-avatar color="surface-variant" size="60">
-                    <v-icon class="empresa-foto">mdi-account-circle</v-icon>
-                  </v-avatar>
-                </v-col>
-                <v-col cons="3">
-                  <h3 class="empresa-nome">TOTVS - Sistemas Inteligentes</h3>
-                </v-col>
-                <v-col cols="2">
-                  <p class="localizacao-empresa">
-                    <strong>Localização: </strong> Joinville
-                  </p>
-                </v-col>
-                <v-col cols="2">
-                  <p class="status"></p>
-                </v-col>
-                <v-col cons="3" class="text-right">
-                  <div class="locaCor"><MenuAdminEmpresa /></div>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-      </div>
-    </v-container>
-  </div>
+        <div class="busca">
+          <div class="procurar-empresas">
+            <v-card-text>
+              <v-text-field
+                :loading="loading"
+                append-inner-icon="mdi-magnify"
+                density="compact"
+                label="Procure uma Empresa."
+                variant="solo"
+                hide-details
+                single-line
+                @click:append-inner="onClick"
+              />
+            </v-card-text>
+          </div>
+        </div>
+        <div class="list-empresa">
+          <v-row v-for="n in 6" :key="n" class="list-empresa-row">
+            <v-col cols="12">
+              <v-card class="card-da-empresa">
+                <v-row align="center" no-gutters>
+                  <v-col cols="3" class="text-center">
+                    <v-avatar color="surface-variant" size="60">
+                      <v-icon class="empresa-foto">mdi-account-circle</v-icon>
+                    </v-avatar>
+                  </v-col>
+                  <v-col cons="3">
+                    <h3 class="empresa-nome">TOTVS - Sistemas Inteligentes</h3>
+                  </v-col>
+                  <v-col cols="2">
+                    <p class="localizacao-empresa">
+                      <strong>Localização: </strong> Joinville
+                    </p>
+                  </v-col>
+                  <v-col cols="2">
+                    <p class="status"></p>
+                  </v-col>
+                  <v-col cons="3" class="text-right">
+                    <div class="locaCor"><MenuAdminEmpresa /></div>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </v-col>
+          </v-row>
+        </div>
+      </v-container>
+    </div>
 </template>
 
 <script>
