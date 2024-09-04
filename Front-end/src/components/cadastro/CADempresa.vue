@@ -84,13 +84,14 @@
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
                    <v-text-field
-                      v-mask="'#####-###'"
-                      maxlength="9"
+                      v-mask="'########'"
+                      maxlength="8"
                       v-model="cep"
                       :rules="cepRules"
                       label="CEP"
                       bg-color="#F7F7F7"
                       density="compact"
+                      @blur="retornarInformacoesCep"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="2" md="2" lg="2">
@@ -119,6 +120,7 @@
                       label="Endereço"
                       bg-color="#F7F7F7"
                       density="compact"
+                      readonly
                     ></v-text-field>
                 </v-col>
               </v-row>
@@ -130,6 +132,7 @@
                       label="Bairro"
                       bg-color="#F7F7F7"
                       density="compact"
+                      readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
@@ -139,6 +142,7 @@
                       label="Cidade"
                       bg-color="#F7F7F7"
                       density="compact"
+                      readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
@@ -224,6 +228,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -266,7 +272,7 @@ export default {
       cnpjRules: [(v) => !!v || 'CNPJ requerido'],
       inscricaoEstadualRules: [(v) => !!v || 'Inscrição estadual requerida'],
       cepRules: [(v) => !!v || 'CEP requerido',
-        (v) => v.length === 9 || "CEP deve ter 9 caracteres"],
+        (v) => v.length === 8 || "CEP deve ter 8 caracteres"],
       numeroRules: [(v) => !!v || 'Número requerido', 
       (v) => v.length >= 1 || "Nº Casa deve ter pelo menos 1 caractere",],
       enderecoRules: [(v) => !!v || "Endereço Requerido",
@@ -291,6 +297,23 @@ export default {
       ]
     };
   },
+  methods: {
+    async retornarInformacoesCep(){
+      if(this.cep !== "" && this.cep.length == 8) {
+        try {
+          const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
+          this.endereco = response.data.street,
+          this.bairro = response.data.neighborhood,
+          this.cidade = response.data.city,
+          this.estado = response.data.state
+        }
+        catch (error) {
+          console.log("Houve um erro ao validar o CEP. Erro: ", error);
+          alert("Erro ao processar o CEP. Envie um cep válido ou tente novamente.")
+        }
+      }
+    }
+  }
 };
 </script>
 

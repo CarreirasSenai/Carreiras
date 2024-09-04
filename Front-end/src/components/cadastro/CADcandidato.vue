@@ -82,6 +82,8 @@
                     label="CEP"
                     bg-color="#F7F7F7"
                     density="compact"
+                    v-mask="'########'"
+                    @blur="retornarInformacoesCep"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
@@ -91,6 +93,7 @@
                     label="Rua"
                     bg-color="#F7F7F7"
                     density="compact"
+                    readonly
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -120,6 +123,7 @@
                     label="Bairro"
                     bg-color="#F7F7F7"
                     density="compact"
+                    readonly
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
@@ -129,6 +133,7 @@
                     label="Cidade"
                     bg-color="#F7F7F7"
                     density="compact"
+                    readonly
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -406,6 +411,21 @@ export default {
 
       return valor;
     },
+    async retornarInformacoesCep(){
+      if(this.cep !== "" && this.cep.length == 8) {
+        try {
+          const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
+          this.rua = response.data.street,
+          this.bairro = response.data.neighborhood,
+          this.cidade = response.data.city,
+          this.estado = response.data.state
+        }
+        catch (error) {
+          console.log("Houve um erro ao validar o CEP. Erro: ", error);
+          alert("Erro ao processar o CEP. Envie um cep válido ou tente novamente.")
+        }
+      }
+    }
   },
 };
 </script>
