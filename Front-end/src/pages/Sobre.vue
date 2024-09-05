@@ -1,60 +1,92 @@
 <template>
-  <div>
+  <v-app>
     <Navbar />
-    <div class="sobre-nos">
-      <div class="header">
-        <h1>Sobre Nós</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet
-          nulla auctor, vestibulum magna sed, convallis ex.
-        </p>
-      </div>
-      <div class="missao-visao-valores">
-        <div class="missao">
-          <h2>Missão</h2>
-          <p>
-            Desenvolver soluções inovadoras e eficazes para nossos clientes.
-          </p>
-        </div>
-        <div class="visao">
-          <h2>Visão</h2>
-          <p>
-            Ser líderes no mercado de tecnologia e inovação.
-          </p>
-        </div>
-        <div class="valores">
-          <h2>Valores</h2>
-          <ul>
-            <li>Inovação</li>
-            <li>Qualidade</li>
-            <li>Respeito</li>
-            <li>Compromisso</li>
-          </ul>
-        </div>
-      </div>
-      <div class="equipe">
-        <h2>Nossa Equipe</h2>
-        <div class="membros-equipe">
-          <div class="membro-equipe">
-            <img src="" alt="Foto do membro da equipe">
-            <h3>Nome do membro da equipe</h3>
-            <p>Cargo do membro da equipe</p>
-          </div>
-          <div class="membro-equipe">
-            <img src="" alt="Foto do membro da equipe">
-            <h3>Nome do membro da equipe</h3>
-            <p>Cargo do membro da equipe</p>
-          </div>
-          <!-- Adicione mais membros da equipe aqui -->
-        </div>
-      </div>
-    </div>
-  </div>
+    <v-container class="sobre-nos">
+      <!-- Seção de cabeçalho com fundo escurecido para melhor contraste -->
+      <v-row class="header" align="center" justify="center">
+        <v-col cols="12" class="text-center">
+          <h1>Sobre Carreiras</h1>
+        </v-col>
+      </v-row>
+
+      <!-- Missão, Visão e Valores -->
+      <v-row class="missao-visao-valores" justify="space-between">
+        <v-col cols="12" md="4" class="missao">
+          <v-hover v-slot:default="{ isHovering }">
+            <v-card :elevation="isHovering ? 8 : 2" class="hover-card">
+              <v-card-title class="primary--text">Missão</v-card-title>
+              <v-card-text>
+                Desenvolver soluções inovadoras e eficazes para nossos clientes.
+              </v-card-text>
+            </v-card>
+          </v-hover>
+        </v-col>
+        <v-col cols="12" md="4" class="visao">
+          <v-hover v-slot:default="{ isHovering }">
+            <v-card :elevation="isHovering ? 8 : 2" class="hover-card">
+              <v-card-title class="primary--text">Visão</v-card-title>
+              <v-card-text>
+                Ser líderes no mercado de tecnologia e inovação.
+              </v-card-text>
+            </v-card>
+          </v-hover>
+        </v-col>
+        <v-col cols="12" md="4" class="valores">
+          <v-hover v-slot:default="{ isHovering }">
+            <v-card :elevation="isHovering ? 8 : 2" class="hover-card">
+              <v-card-title class="primary--text">Valores</v-card-title>
+              <v-card-text>
+                <ul>
+                  <li>Inovação</li>
+                  <li>Qualidade</li>
+                  <li>Respeito</li>
+                  <li>Compromisso</li>
+                </ul>
+              </v-card-text>
+            </v-card>
+          </v-hover>
+        </v-col>
+      </v-row>
+
+      <!-- Divisor para separar as seções -->
+      <v-divider class="my-12"></v-divider>
+
+      <!-- Seção de equipe -->
+      <v-row class="equipe" align="center" justify="center">
+        <v-col cols="12" class="text-center">
+          <h2>Nossa Equipe</h2>
+          <p>Conheça os profissionais que fazem tudo acontecer</p>
+        </v-col>
+        <v-row class="membros-equipe" justify="space-between">
+          <v-col v-for="(member, index) in equipe" :key="index" cols="12" md="3" class="membro-equipe">
+            <v-hover v-slot:default="{ isHovering }">
+              <v-card :elevation="isHovering ? 8 : 2" class="text-center team-card">
+                <v-avatar size="90" class="my-2">
+                  <v-img :alt="member.name" :src="member.photo"></v-img>
+                </v-avatar>
+                <v-card-title>{{ member.name }}</v-card-title>
+                <v-card-text>{{ member.position }}</v-card-text>
+              </v-card>
+            </v-hover>
+          </v-col>
+        </v-row>
+      </v-row>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
 export default {
-  data() {},
+  data() {
+    return {
+      equipe: [
+        { name: "Paula Rossini", position: "Gerente de Projetos", photo: "https://cdn.vuetifyjs.com/images/john.jpg" },
+        { name: "Rodrigo Neves", position: "Desenvolvedor Full-Stack", photo: "https://cdn.vuetifyjs.com/images/john.jpg" },
+        { name: "Felipe Wisbeck", position: "Analista de Sistemas", photo: "https://cdn.vuetifyjs.com/images/john.jpg" },
+        { name: "Thiago Mauesck", position: "Especialista em Segurança", photo: "https://cdn.vuetifyjs.com/images/john.jpg" }
+      ]
+    };
+  },
 };
 </script>
 
@@ -62,41 +94,39 @@ export default {
 .sobre-nos {
   max-width: 1200px;
   margin: 40px auto;
-  text-align: center;
 }
 
 .header {
-  background-image: url('imagem-de-fundo.jpg');
+  background-image: url("imagem-de-fundo.jpg");
   background-size: cover;
   background-position: center;
-  height: 200px;
+  height: 300px;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .header h1 {
   font-size: 48px;
+  font-weight: bold;
 }
 
 .missao-visao-valores {
-  display: flex;
-  justify-content: space-between;
   margin-top: 40px;
 }
 
-.missao, .visao, .valores {
-  width: 30%;
-  background-color: #f7f7f7;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.hover-card {
+  transition: box-shadow 0.3s ease;
 }
 
-.missao h2, .visao h2, .valores h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
+.team-card {
+  transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
 }
 
 .valores ul {
@@ -113,27 +143,7 @@ export default {
   margin-top: 40px;
 }
 
-.membros-equipe {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
 .membro-equipe {
-  width: 20%;
-  margin: 20px;
   text-align: center;
-}
-
-.membro-equipe img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-.membro-equipe h3 {
-  font-size: 18px;
-  margin-bottom: 5px;
 }
 </style>
