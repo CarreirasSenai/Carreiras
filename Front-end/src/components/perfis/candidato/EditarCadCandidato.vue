@@ -96,6 +96,7 @@
                         label="Rua"
                         variant="underlined"
                         :disabled="isDisabled"
+                        readonly
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -125,6 +126,7 @@
                         label="Bairro"
                         variant="underlined"
                         :disabled="isDisabled"
+                        readonly
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
@@ -134,6 +136,7 @@
                         label="Cidade"
                         variant="underlined"
                         :disabled="isDisabled"
+                        readonly
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -158,6 +161,7 @@
                         :append-icon = "showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                         :type="showPassword ? 'text' : 'password'"
                         @click:append="showPassword = !showPassword"
+                        counter
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
@@ -170,6 +174,7 @@
                         :append-icon = "showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
                         :type="showRePassword ? 'text' : 'password'"
                         @click:append="showRePassword = !showRePassword"
+                        counter
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -348,7 +353,7 @@ export default {
       }
     },
     async retornarInformacoesCep(){
-      if(this.cep !== "" && this.cep.length == 8) {
+      if(this.cep !== "" && this.cep.length === 8) {
         try {
           const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
           this.rua = response.data.street,

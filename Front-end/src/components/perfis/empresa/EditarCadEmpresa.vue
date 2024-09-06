@@ -82,11 +82,13 @@
                     </v-col>
                     <v-col cols="12" sm="4" md="4" lg="4">
                       <v-text-field
+                        v-mask="'########'"
+                        maxlength="8"
                         v-model="cep"
                         :rules="cepRules"
                         label="CEP"
                         variant="underlined"
-                        v-mask="'########'"
+                        @blur="retornarInformacoesCep"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="2" md="2" lg="2">
@@ -112,6 +114,7 @@
                         :rules="enderecoRules"
                         label="Endereço"
                         variant="underlined"
+                        readonly
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -122,6 +125,7 @@
                         :rules="bairroRules"
                         label="Bairro"
                         variant="underlined"
+                        readonly
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
@@ -130,6 +134,7 @@
                         :rules="cidadeRules"
                         label="Cidade"
                         variant="underlined"
+                        readonly
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="6" lg="6">
@@ -155,6 +160,7 @@
                         :rules="responsavelAdmRules"
                         label="Responsável administrativo (RA)"
                         variant="underlined"
+                        counter
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -168,17 +174,25 @@
                     <v-col cols="12" sm="3" md="3" lg="3">
                       <v-text-field
                         v-model="senha"
-                        :rules="senhaRules"
+                        :rules="[senhaRules.senhaRequired, senhaRules.senhaMin]"
                         label="Senha"
                         variant="underlined"
+                        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                        :type="showPassword ? 'text' : 'password'"
+                        @click:append="showPassword = !showPassword"
+                        counter
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
                       <v-text-field
                         v-model="repSenha"
-                        :rules="repSenhaRules"
+                        :rules="[senhaRules.repSenhaRequired, senhaRules.repSenhaMin, senhaRules.confirmSenha]"
                         label="Repetir senha"
                         variant="underlined"
+                        :append-icon="showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
+                        :type="showRePassword ? 'text' : 'password'"
+                        @click:append="showRePassword = !showRePassword"
+                        counter
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -209,28 +223,32 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      razaoSocial: "",
-      nomeFantasia: "",
-      email: "",
-      telefone: "",
-      celular: "",
-      cnpj: "",
-      inscricaoEstadual: "",
-      cep: "",
-      numero: "",
-      complemento: "",
-      endereco: "",
-      bairro: "",
-      cidade: "",
-      estado: "",
-      responsavelLegal: "",
-      responsavelAdm: "",
-      contatoRA: "",
-      senha: "",
-      repSenha: "",
+      razaoSocial: '',
+      nomeFantasia: '',
+      email: '',
+      telefone: '',
+      celular: '',
+      cnpj: '',
+      inscricaoEstadual: '',
+      cep: '',
+      numero: '',
+      complemento: '',
+      endereco: '',
+      bairro: '',
+      cidade: '',
+      estado: '',
+      responsavelLegal: '',
+      responsavelAdm: '',
+      contatoRA: '',
+      senha: '',
+      repSenha: '',
+      showPassword: false,
+      showRePassword: false,
       razaoSocialRules: [(v) => !!v || "Razão social requerida"],
       nomeFantasiaRules: [(v) => !!v || "Nome fantasia requerido"],
       emailRules: [
@@ -277,8 +295,13 @@ export default {
       responsavelAdmRules: [
         (v) => !!v || "Responsável administrativo requerido",
       ],
-      senhaRules: [(v) => !!v || "Senha requerida"],
-      repSenhaRules: [(v) => !!v || "Repetir senha requerido"],
+      senhaRules: {
+          senhaRequired: value => !!value || 'Senha requerida',
+          repSenhaRequired: value => !!value || 'Repetir senha requerida',
+          senhaMin: v => v.length >= 8 || 'Senha deve ter pelo menos 8 caracteres',
+          repSenhaMin: v => v.length >= 8 || 'Repetir senha deve ter pelo menos 8 caracteres',
+          confirmSenha: (v) => v === this.senha && v.length === this.senha.length || "Senhas não coincidem"
+      },
       items: [
         "Amazonas",
         "Amapá",
@@ -290,5 +313,22 @@ export default {
       dialog: false,
     };
   },
+  methods: {
+    async retornarInformacoesCep(){
+      if(this.cep !== "" && this.cep.length === 8) {
+        try {
+          const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
+          this.endereco = response.data.street,
+          this.bairro = response.data.neighborhood,
+          this.cidade = response.data.city,
+          this.estado = response.data.state
+        }
+        catch (error) {
+          console.log("Houve um erro ao validar o CEP. Erro: ", error);
+          alert("Erro ao processar o CEP. Envie um cep válido ou tente novamente.")
+        }
+      }
+    }
+  }
 };
 </script>

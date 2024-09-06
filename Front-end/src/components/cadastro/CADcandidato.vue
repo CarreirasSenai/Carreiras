@@ -151,33 +151,34 @@
                 <v-col cols="12" sm="4" md="4" lg="4">
                   <v-text-field
                     v-model="senha"
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[senhaRules.senhaRequired, senhaRules.senhaMin]"
-                    :type="show1 ? 'text' : 'password'"
+                    :type="showPassword ? 'text' : 'password'"
                     class="input-group--focused"
                     label="Senha"
                     name="senha"
                     counter
                     density="compact"
-                    @click:append="show1 = !show1"
+                    @click:append="showPassword = !showPassword"
                   >
                   </v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
                   <v-text-field
                     v-model="repSenha"
-                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :append-icon="showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[
                       senhaRules.repSenhaRequired,
                       senhaRules.repSenhaMin,
+                      senhaRules.confirmSenha
                     ]"
-                    :type="show2 ? 'text' : 'password'"
+                    :type="showRePassword ? 'text' : 'password'"
                     class="input-group--focused"
                     label="Repetir senha"
                     name="rep-senha"
                     counter
                     density="compact"
-                    @click:append="show2 = !show2"
+                    @click:append="showRePassword = !showRePassword"
                   >
                   </v-text-field>
                 </v-col>
@@ -273,8 +274,8 @@ export default {
       bairro: "Bairro Bonito",
       cidade: "Bonita",
       estado: "SC",
-      show1: false,
-      show2: false,
+      showPassword: false,
+      showRePassword: false,
       senha: "12345678Ww@",
       repSenha: "12345678Ww@",
       resposta: false,
@@ -359,6 +360,7 @@ export default {
           v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
         repSenhaMin: (v) =>
           v.length >= 8 || "Repetir senha deve ter pelo menos 8 caracteres",
+        confirmSenha: (v) => v === this.senha || "Senhas não coincidem"
       },
 
       // confirmPasswordRules: [
@@ -412,7 +414,7 @@ export default {
       return valor;
     },
     async retornarInformacoesCep(){
-      if(this.cep !== "" && this.cep.length == 8) {
+      if(this.cep !== "" && this.cep.length === 8) {
         try {
           const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
           this.rua = response.data.street,

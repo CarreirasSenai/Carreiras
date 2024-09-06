@@ -186,29 +186,29 @@
                   <v-col cols="11" sm="4" md="4" lg="4">
                     <v-text-field
                        v-model="senha"
-                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                       :rules="[senhaRules.senhaRequired, senhaRules.senhaMin]"
-                      :type="show1 ? 'text' : 'password'"
+                      :type="showPassword ? 'text' : 'password'"
                       class="input-group--focused"
                       label="Senha"
                       name="senha"
                       counter
-                      @click:append="show1 = !show1"
+                      @click:append="showPassword = !showPassword"
                       density="compact"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="11" sm="4" md="4" lg="4">
                     <v-text-field
                       v-model="repSenha"
-                      :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                      :rules="[senhaRules.repSenhaRequired, senhaRules.repSenhaMin]"
-                      :type="show2 ? 'text' : 'password'"
+                      :append-icon="showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[senhaRules.repSenhaRequired, senhaRules.repSenhaMin, senhaRules.confirmSenha]"
+                      :type="showRePassword ? 'text' : 'password'"
                       class="input-group--focused"
                       label="Repetir senha"
                       name="rep-senha"
                       counter
                       density="compact"
-                      @click:append="show2 = !show2"
+                      @click:append="showRePassword = !showRePassword"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -252,13 +252,14 @@ export default {
       contatoRA: '',
       senha: '',
       repSenha: '',
-      show1: false,
-      show2: false,
+      showPassword: false,
+      showRePassword: false,
       senhaRules: {
           senhaRequired: value => !!value || 'Senha requerida',
           repSenhaRequired: value => !!value || 'Repetir senha requerida',
           senhaMin: v => v.length >= 8 || 'Senha deve ter pelo menos 8 caracteres',
-          repSenhaMin: v => v.length >= 8 || 'Repetir senha deve ter pelo menos 8 caracteres'
+          repSenhaMin: v => v.length >= 8 || 'Repetir senha deve ter pelo menos 8 caracteres',
+          confirmSenha: (v) => v === this.senha && v.length === this.senha.length || "Senhas não coincidem"
       },
       razaoSocialRules: [(v) => !!v || 'Razão social requerida'],
       nomeFantasiaRules: [(v) => !!v || 'Nome fantasia requerido'],
@@ -299,7 +300,7 @@ export default {
   },
   methods: {
     async retornarInformacoesCep(){
-      if(this.cep !== "" && this.cep.length == 8) {
+      if(this.cep !== "" && this.cep.length === 8) {
         try {
           const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
           this.endereco = response.data.street,
