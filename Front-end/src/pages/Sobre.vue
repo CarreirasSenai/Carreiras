@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <Navbar />
+
     <v-container class="sobre-nos">
       <!-- Seção de cabeçalho com fundo escurecido para melhor contraste -->
       <v-row class="header" align="center" justify="center">
@@ -13,7 +14,10 @@
       <v-row class="missao-visao-valores" justify="space-between">
         <v-col cols="12" md="4" class="missao">
           <v-hover v-slot:default="{ isHovering }">
-            <v-card :elevation="isHovering ? 8 : 2" class="hover-card">
+            <v-card
+              :elevation="isHovering ? 8 : 2"
+              class="hover-card card-tamanho"
+            >
               <v-card-title class="primary--text">Missão</v-card-title>
               <v-card-text>
                 Desenvolver soluções inovadoras e eficazes para nossos clientes.
@@ -23,7 +27,10 @@
         </v-col>
         <v-col cols="12" md="4" class="visao">
           <v-hover v-slot:default="{ isHovering }">
-            <v-card :elevation="isHovering ? 8 : 2" class="hover-card">
+            <v-card
+              :elevation="isHovering ? 8 : 2"
+              class="hover-card card-tamanho"
+            >
               <v-card-title class="primary--text">Visão</v-card-title>
               <v-card-text>
                 Ser líderes no mercado de tecnologia e inovação.
@@ -33,7 +40,10 @@
         </v-col>
         <v-col cols="12" md="4" class="valores">
           <v-hover v-slot:default="{ isHovering }">
-            <v-card :elevation="isHovering ? 8 : 2" class="hover-card">
+            <v-card
+              :elevation="isHovering ? 8 : 2"
+              class="hover-card card-tamanho"
+            >
               <v-card-title class="primary--text">Valores</v-card-title>
               <v-card-text>
                 <ul>
@@ -58,9 +68,18 @@
           <p>Conheça os profissionais que fazem tudo acontecer</p>
         </v-col>
         <v-row class="membros-equipe" justify="space-between">
-          <v-col v-for="(member, index) in equipe" :key="index" cols="12" md="3" class="membro-equipe">
+          <v-col
+            v-for="(member, index) in equipe"
+            :key="index"
+            cols="12"
+            md="3"
+            class="membro-equipe"
+          >
             <v-hover v-slot:default="{ isHovering }">
-              <v-card :elevation="isHovering ? 8 : 2" class="text-center team-card">
+              <v-card
+                :elevation="isHovering ? 8 : 2"
+                class="text-center team-card"
+              >
                 <v-avatar size="90" class="my-2">
                   <v-img :alt="member.name" :src="member.photo"></v-img>
                 </v-avatar>
@@ -80,17 +99,40 @@ export default {
   data() {
     return {
       equipe: [
-        { name: "Paula Rossini", position: "Gerente de Projetos", photo: "https://cdn.vuetifyjs.com/images/john.jpg" },
-        { name: "Rodrigo Neves", position: "Desenvolvedor Full-Stack", photo: "https://cdn.vuetifyjs.com/images/john.jpg" },
-        { name: "Felipe Wisbeck", position: "Analista de Sistemas", photo: "https://cdn.vuetifyjs.com/images/john.jpg" },
-        { name: "Thiago Mauesck", position: "Especialista em Segurança", photo: "https://cdn.vuetifyjs.com/images/john.jpg" }
-      ]
+        {
+          name: "Paula Rossini",
+          position: "Gerente de Projetos",
+          photo: "https://cdn.vuetifyjs.com/images/john.jpg",
+        },
+        {
+          name: "Rodrigo Neves",
+          position: "Desenvolvedor Full-Stack",
+          photo: "https://cdn.vuetifyjs.com/images/john.jpg",
+        },
+        {
+          name: "Felipe Wisbeck",
+          position: "Analista de Sistemas",
+          photo: "https://cdn.vuetifyjs.com/images/john.jpg",
+        },
+        {
+          name: "Thiago Mauesck",
+          position: "Especialista em Segurança",
+          photo: "https://cdn.vuetifyjs.com/images/john.jpg",
+        },
+      ],
     };
   },
 };
 </script>
 
 <style scoped>
+.card-tamanho {
+  height: 250px; /* ajuste a altura conforme necessário */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .sobre-nos {
   max-width: 1200px;
   margin: 40px auto;
@@ -100,7 +142,7 @@ export default {
   background-image: url("imagem-de-fundo.jpg");
   background-size: cover;
   background-position: center;
-  height: 300px;
+  height: 150px;
   color: white;
   display: flex;
   justify-content: center;
