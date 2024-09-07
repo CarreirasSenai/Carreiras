@@ -51,8 +51,8 @@
                             <v-form class="ma-5 text-start d-flex flex-column ga-2" @submit.prevent="redefinirSenha">
                                 <h3 class="text-center mb-2 text-h6 text-sm-h5 font-weight-bold	">Crie uma Nova Senha
                                 </h3>
-                                <v-text-field v-model="novaSenha" label="Nova senha"
-                                    :rules="rules.novaSenha" type="password"></v-text-field>
+                                <v-text-field v-model="novaSenha" label="Nova senha" :rules="rules.novaSenha"
+                                    type="password"></v-text-field>
                                 <v-text-field v-model="confirmaSenha" label="Confirme a senha"
                                     :rules="rules.confirmaSenha" type="password"></v-text-field>
                                 <v-btn elevation="0" class="bg-purple-darken-4" block type="submit">Salvar</v-btn>
@@ -142,15 +142,7 @@ export default {
                 this.formRedefinir = true;
 
                 this.dados = response.data.dados;
-                console.log(this.dados);                
-
-                // for (var key in response.data) {
-                //     this.dados[key] = response.data[key];
-                // }
-
-                // for (var key in this.dados) {
-                //     console.log('dados', this.dados[key]);
-                // }
+                console.log(this.dados);
 
             } catch (error) {
                 console.error('Erro', error.response.data);
@@ -166,12 +158,12 @@ export default {
         async redefinirSenha(event) {
             console.clear()
 
-            const results = await event;            
+            const results = await event;
 
             // alert(JSON.stringify(results, null, 2))
             // alert(this.novaSenha + '\n' + this.confirmaSenha)
 
-            if (results.valid === true) {                
+            if (results.valid === true) {
                 console.log('Dados antes de enviar:', this.dados);  // Verifique aqui
 
                 try {

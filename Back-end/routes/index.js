@@ -9,6 +9,7 @@ const DataHora = require('../services/dataHora');
 const Candidato = require('../controller/candidato');
 const Vaga = require('../controller/vaga');
 const RedefinirSenha = require('../controller/redefinirSenha');
+const Formacao = require('../controller/formacoes');
 
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
@@ -16,6 +17,9 @@ router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
 router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
+
+// rotas formacoes
+router.post('/formacao/create', Formacao.formacaoCreate);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);
