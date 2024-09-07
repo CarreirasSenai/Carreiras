@@ -1,5 +1,4 @@
 <template>
-    <EditarInfoCandidato />
     <div class="div-infos">
         <v-expansion-panels v-model="panel">
             <v-col cols="12" md="12">
@@ -128,8 +127,6 @@
 </template>
 
 <script>
-import EditarDescCandidato from './EditarDescCandidato.vue';
-
 export default {
     data() { // Estado inicial do componente
         return {

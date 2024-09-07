@@ -1,11 +1,11 @@
 const transporter = require('../services/nodemailer');
 const RedefinirSenha = require('../model/redefinirSenha');
+const bcrypt = require('bcrypt');
+const DataHora = require('../services/dataHora');
 
 exports.enviarCodigo = (req, res) => {
     // Recebe o email da requisição
     const { email, grupo } = req.body;
-
-    console.log('controller');
 
     RedefinirSenha.validaUser(email, grupo, (err, dados) => {
         if (err) {
@@ -66,27 +66,21 @@ exports.enviarCodigo = (req, res) => {
 }
 
 exports.validarCodigo = (req, res) => {
-    // Email do user e código enviado
-    // const dados = {
-    //     email: req.body.email,
-    //     codigo: req.body.codigo
-    // }
-
     const { email, grupo, codigo } = req.body;
     console.log(email);
     console.log(grupo);
     console.log(codigo);
-    
+
     RedefinirSenha.validaUser(email, grupo, (err, dados) => {
         if (err) {
             console.log(err.message);
             return res.status(500).json({ error: err.message });
         }
-        
+
         if (dados === null) {
             return res.status(401).json({ error: 'Não há usuário com este e-mail!' });
         }
-        
+
         console.log(req.session.redefinicao)
 
         // Válida o código e o email
@@ -96,9 +90,25 @@ exports.validarCodigo = (req, res) => {
             return res.status(404).json({ error: 'Código incorreto!' })
         }
     });
-    // if (dados.email === req.session.redefinicao.email && dados.codigo === req.session.redefinicao.codigo) {
-    //     return res.json({ success: true })
-    // } else {
-    //     return res.status(404).json({ error: 'Código incorreto!' })
-    // }
 }
+
+exports.redefinirSenha = async (req, res) => {
+    const { dados, novaSenha } = req.body;
+
+    // Gerar um salt e hash a senha
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(novaSenha, saltRounds);
+
+    // Hora e data da atualização
+    const dataAtu = DataHora.dataHora();
+
+    RedefinirSenha.redefinirSenha(dados, hashedPassword, dataAtu, (err, result) => {
+        if (err) {
+            console.log(err.message);
+            return res.status(500).json({ error: err.message });
+        } else {
+            console.log(result);            
+            res.json({ success: true, result: result });
+        }
+    });
+};

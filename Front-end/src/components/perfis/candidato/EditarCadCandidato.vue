@@ -2,7 +2,8 @@
     <div class="text-center">
         <v-dialog v-model="dialog" max-width="800px">
             <template v-slot:activator="{ props: activatorProps }">
-                <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Cadastro</v-btn>
+                <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar
+                    Cadastro</v-btn>
             </template>
 
             <v-container>
@@ -10,7 +11,17 @@
                     <v-col cols="12">
                         <v-form class="my-4" @submit.prevent="atualizarCadastro">
                             <v-card title="Informações Pessoais" class="pa-2">
-                                <v-card-text style="max-height: 70vh;" class="overflow-auto">
+                                <v-card-text style="max-height: 60vh;" class="overflow-auto">
+                                    <v-row>
+                                        <v-col cols="12" sm="6" md="6" lg="6">
+                                            <v-autocomplete label="Área de Atuação" v-model="area"
+                                                :items="listaSegmentos" variant="underlined"></v-autocomplete>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="6" lg="6">
+                                            <v-autocomplete label="Profissão ou Cargo Desejado" v-model="profissao"
+                                                :items="listaProfissoes" variant="underlined"></v-autocomplete>
+                                        </v-col>
+                                    </v-row>
                                     <v-row>
                                         <v-col cols="12" sm="6" md="6" lg="6">
                                             <v-text-field v-model="nomeSocial" :rules="nomeSocialRules"
@@ -75,26 +86,21 @@
                                             <v-select v-model="estado" :rules="estadoRules" :items="items"
                                                 label="Estado" variant="underlined" :disabled="isDisabled"></v-select>
                                         </v-col>
-                                        <v-col cols="12" sm="3" md="3" lg="3">
-                                            <v-text-field v-model="password" :rules="passwordRules" label="Senha"
-                                                variant="underlined" :disabled="isDisabled"
-                                                type="password"></v-text-field>
+                                        <v-col cols="12" sm="6" md="6" lg="6">
+                                            <v-btn to="/redefinir-senha?resposta=candidato" text="Redefinir Senha"
+                                                append-icon="mdi-arrow-top-right-thick" block></v-btn>
                                         </v-col>
-                                        <v-col cols="12" sm="3" md="3" lg="3">
-                                            <v-text-field v-model="confirmPassword" :rules="confirmPasswordRules"
-                                                label="Repetir Senha" variant="underlined" :disabled="isDisabled"
-                                                type="password"></v-text-field>
-                                        </v-col>
-                                    </v-row>
+                                    </v-row>                                    
                                 </v-card-text>
 
                                 <v-divider></v-divider>
 
-                                <v-card-actions class="d-flex justify-end">
+                                <v-card-actions>
+                                    <v-btn text="Excluir" variant="text"
+                                        @click="dialog = false, deletarConta()"></v-btn>
                                     <v-spacer></v-spacer>
-
                                     <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
-                                    <v-btn text="Salvar" color="Enviar" variant="tonal" class="bg-purple-darken-4"
+                                    <v-btn text="Atualizar" color="Enviar" variant="tonal" class="bg-purple-darken-4"
                                         @click="atualizarCadastro"></v-btn>
                                 </v-card-actions>
                             </v-card>
@@ -104,34 +110,43 @@
             </v-container>
         </v-dialog>
     </div>
+    <v-snackbar :color="color" v-model="snackbar" :timeout="6000">
+        <div class="text-center">{{ mensagem }}</div>
+    </v-snackbar>
 </template>
 
 <script>
 import axios from 'axios';
+import { useCandidatoStore } from '@/stores/candidato';
+import listaProfissoes from '@/assets/profissoes.json';
+import listaSegmentos from '@/assets/segmentos.json';
 
 export default {
     data() {
         return {
-            nomeSocial: 'Thiago',
-            nomeCompleto: 'Thiag Lima',
-            email: 'thiago@gmail.com',
-            phone: '4700000000',
-            cellphone: '47000000000',
-            cpf: '00000000000',
-            cep: "00000000",
-            confirmcep: '',
-            rua: 'Rua Bonita',
-            numCasa: '00',
-            complemento: 'cabana',
-            bairro: 'Bairro Bonito',
-            cidade: 'Bonita',
-            estado: 'SC',
-            password: '12345678Ww@',
-            confirmPassword: '12345678Ww@',
-            resposta: false,
-            mensagemErro: '',
+            id: useCandidatoStore().dadosUser.usuario.id,
+            nomeSocial: useCandidatoStore().dadosUser.usuario.nome_social,
+            nomeCompleto: useCandidatoStore().dadosUser.usuario.nome_completo,
+            email: useCandidatoStore().dadosUser.usuario.email,
+            phone: useCandidatoStore().dadosUser.usuario.telefone,
+            cellphone: useCandidatoStore().dadosUser.usuario.celular,
+            cpf: useCandidatoStore().dadosUser.usuario.cpf,
+            cep: useCandidatoStore().dadosUser.usuario.cep,
+            rua: useCandidatoStore().dadosUser.usuario.rua,
+            numCasa: useCandidatoStore().dadosUser.usuario.numero,
+            complemento: useCandidatoStore().dadosUser.usuario.complemento,
+            bairro: useCandidatoStore().dadosUser.usuario.bairro,
+            cidade: useCandidatoStore().dadosUser.usuario.cidade,
+            estado: useCandidatoStore().dadosUser.usuario.estado,
+            area: useCandidatoStore().dadosUser.usuario.area,
+            profissao: useCandidatoStore().dadosUser.usuario.profissao,
             isDisabled: false,
             dialog: false,
+            mensagem: '',
+            color: '',
+            snackbar: false,
+            listaProfissoes: listaProfissoes,
+            listaSegmentos: listaSegmentos,
 
             nomeSocialRules: [
                 (v) => !!v || "Nome Social Requerido",
@@ -223,12 +238,18 @@ export default {
                 'RS',
                 'RN'
             ]
+
         };
+    },
+    computed: {
+        user() { return useCandidatoStore(); },
     },
     methods: {
         async atualizarCadastro() {
+            console.clear();
             try {
-                const response = await axios.post('http://localhost:4000/update/create', {
+                const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update`, {
+                    id: this.id,
                     nomeSocial: this.nomeSocial,
                     nomeCompleto: this.nomeCompleto,
                     email: this.email,
@@ -243,19 +264,49 @@ export default {
                     cidade: this.cidade,
                     estado: this.estado,
                     password: this.password,
-                });
+                    profissao: this.profissao,
+                    area: this.area,
+                }, { withCredentials: true });
 
-                this.resposta = true;
-                console.log('Atalização bem-sucedida', response.data);
-                document.getElementById('btnAlertaCadastro').click();
+                this.mensagem = 'Cadastro atualizado com Sucesso!';
+                this.color = 'success';
+                this.snackbar = true;
+
+                console.info('%cAtualização bem-sucedida ✔👌', 'color: lightgreen; padding: 20px 0;', response.data);
 
             } catch (error) {
-                this.resposta = false;
-                console.error('Erro ao atualizar o cadastro', error.response.data.error);
-                this.mensagemErro = error.response.data.error;
-                document.getElementById('btnAlertaCadastro').click();
+                this.mensagem = 'Erro na atualização do Cadastro!';
+                this.color = 'error';
+                this.snackbar = true;
+                console.error('Erro ao atualizar o cadastro', error.response.data);
+            }
+        },
+
+        async deletarConta() {
+            console.clear();
+            console.log(this.id);
+
+            try {
+                const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/candidato/delete`, {
+                    data: { id: this.id }, // Envia dados com a requisição DELETE
+                    withCredentials: true, // Garante que cookies são enviados
+                });
+
+                this.mensagem = 'Sua conta foi deletada 🙄!';
+                this.color = 'warning';
+                this.snackbar = true;
+
+                console.info('%Exclusão bem-sucedida 🙄', 'color: lightyellow; padding: 20px 0;', response.data);
+
+            } catch (error) {
+                this.mensagem = 'Erro na exclusão da Conta!';
+                this.color = 'error';
+                this.snackbar = true;
+                console.error('Erro ao excluir a conta', error.response.data);
             }
         },
     },
 };
 </script>
+
+<style></style>

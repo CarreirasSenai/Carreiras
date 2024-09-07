@@ -11,72 +11,68 @@
             <v-form class="my-4" @submit.prevent="enviarCadastro">
               <v-row>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-text-field v-model="nomeSocial" :rules="nomeSocialRules" label="Nome Social" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-autocomplete label="Área de Atuação" v-model="area" :items="listaSegmentos"
+                    variant="underlined"></v-autocomplete>
+                </v-col>
+                <v-col cols="12" sm="6" md="6" lg="6">
+                  <v-autocomplete label="Profissão ou Cargo Desejado" v-model="profissao" :items="listaProfissoes"
+                    variant="underlined"></v-autocomplete>
+                </v-col>
+                <v-col cols="12" sm="6" md="6" lg="6">
+                  <v-text-field v-model="nomeSocial" :rules="nomeSocialRules" label="Nome Social"
+                    variant="underlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
                   <v-text-field v-model="nomeCompleto" :rules="nomeCompletoRules" label="Nome Completo"
-                    bg-color="#F7F7F7" density="compact"></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-text-field v-model="email" :rules="emailRules" label="E-mail" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="phone" :rules="phoneRules" label="Telefone" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="cellphone" :rules="cellphoneRules" label="Celular" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="cpf" :rules="cpfRules" label="CPF" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="cep" :rules="confirmcepRules" label="CEP" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                    variant="underlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-text-field v-model="rua" :rules="ruaRules" label="Rua" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="numCasa" :rules="confirmnumeroRules" label="Nº" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field v-model="email" :rules="emailRules" label="E-mail" variant="underlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="complemento" :rules="complementoRules" label="Complemento" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field v-model="phone" :rules="phoneRules" label="Telefone"
+                    variant="underlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="bairro" :rules="bairroRules" label="Bairro" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field v-model="cellphone" :rules="cellphoneRules" label="Celular"
+                    variant="underlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="cidade" :rules="cidadeRules" label="Cidade" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field v-model="cpf" :rules="cpfRules" label="CPF" variant="underlined"></v-text-field>
                 </v-col>
-              </v-row>
-              <v-row>
+                <v-col cols="12" sm="3" md="3" lg="3">
+                  <v-text-field v-model="cep" :rules="confirmcepRules" label="CEP" variant="underlined"></v-text-field>
+                </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-select v-model="estado" :rules="estadoRules" :items="items" label="Estado" bg-color="#F7F7F7"
-                    density="compact"></v-select>
+                  <v-text-field v-model="rua" :rules="ruaRules" label="Rua" variant="underlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="password" :rules="passwordRules" label="Senha" bg-color="#F7F7F7"
-                    density="compact" type="password"></v-text-field>
+                  <v-text-field v-model="numCasa" :rules="confirmnumeroRules" label="Nº"
+                    variant="underlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3" lg="3">
+                  <v-text-field v-model="complemento" :rules="complementoRules" label="Complemento"
+                    variant="underlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3" lg="3">
+                  <v-text-field v-model="bairro" :rules="bairroRules" label="Bairro"
+                    variant="underlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3" lg="3">
+                  <v-text-field v-model="cidade" :rules="cidadeRules" label="Cidade"
+                    variant="underlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="6" lg="6">
+                  <v-select v-model="estado" :rules="estadoRules" :items="items" label="Estado"
+                    variant="underlined"></v-select>
+                </v-col>
+                <v-col cols="12" sm="3" md="3" lg="3">
+                  <v-text-field v-model="password" :rules="passwordRules" label="Senha" variant="underlined"
+                    type="password"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
                   <v-text-field v-model="confirmPassword" :rules="confirmPasswordRules" label="Repetir Senha"
-                    bg-color="#F7F7F7" density="compact" type="password"></v-text-field>
+                    variant="underlined" type="password"></v-text-field>
                 </v-col>
               </v-row>
               <div class="sign-in-buttons d-flex justify-center my-4">
@@ -112,7 +108,8 @@
       <v-card class="text-purple-darken-4" v-else-if="resposta === true">
         <v-card-title>Zuuuuuuuuu 🐝</v-card-title>
         <v-card-text class="text-center text-h7 text-black border-sm pa-10">
-          Cadastro realizado com sucesso! Agora você é uma abelinha do carreiras <span class="mdi mdi-check-bold text-green text-h6"></span>
+          Cadastro realizado com sucesso! Agora você é uma abelinha do carreiras <span
+            class="mdi mdi-check-bold text-green text-h6"></span>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -128,6 +125,8 @@
 
 <script>
 import axios from 'axios';
+import listaProfissoes from '@/assets/profissoes.json';
+import listaSegmentos from '@/assets/segmentos.json';
 
 export default {
   data() {
@@ -148,8 +147,12 @@ export default {
       estado: 'SC',
       password: '12345678Ww@',
       confirmPassword: '12345678Ww@',
+      area: null,
+      profissao: null,
       resposta: false,
       mensagemErro: '',
+      listaProfissoes: listaProfissoes,
+      listaSegmentos: listaSegmentos,
 
       nomeSocialRules: [
         (v) => !!v || "Nome Social Requerido",
@@ -246,7 +249,7 @@ export default {
   methods: {
     async enviarCadastro() {
       try {
-        const response = await axios.post('http://localhost:4000/candidato/create', {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/candidato/create`, {
           nomeSocial: this.nomeSocial,
           nomeCompleto: this.nomeCompleto,
           email: this.email,
@@ -261,6 +264,8 @@ export default {
           cidade: this.cidade,
           estado: this.estado,
           password: this.password,
+          profissao: this.profissao,
+          area: this.area
         });
 
         this.resposta = true;

@@ -52,9 +52,9 @@
                                 <h3 class="text-center mb-2 text-h6 text-sm-h5 font-weight-bold	">Crie uma Nova Senha
                                 </h3>
                                 <v-text-field v-model="novaSenha" label="Nova senha"
-                                    :rules="rules.novaSenha"></v-text-field>
+                                    :rules="rules.novaSenha" type="password"></v-text-field>
                                 <v-text-field v-model="confirmaSenha" label="Confirme a senha"
-                                    :rules="rules.confirmaSenha"></v-text-field>
+                                    :rules="rules.confirmaSenha" type="password"></v-text-field>
                                 <v-btn elevation="0" class="bg-purple-darken-4" block type="submit">Salvar</v-btn>
                                 <v-btn variant="text" to="/" block>cancelar</v-btn>
                             </v-form>
@@ -101,7 +101,7 @@ export default {
                 ]
             },
             mensagem: '',
-            dados: [],
+            dados: '',
         };
     },
     methods: {
@@ -141,13 +141,16 @@ export default {
                 this.formValidar = false;
                 this.formRedefinir = true;
 
-                for (var key in response.data) {
-                    this.dados[key] = response.data[key];
-                }
+                this.dados = response.data.dados;
+                console.log(this.dados);                
 
-                for (var key in this.dados) {
-                    console.log('dados', this.dados[key]);
-                }
+                // for (var key in response.data) {
+                //     this.dados[key] = response.data[key];
+                // }
+
+                // for (var key in this.dados) {
+                //     console.log('dados', this.dados[key]);
+                // }
 
             } catch (error) {
                 console.error('Erro', error.response.data);
@@ -161,6 +164,8 @@ export default {
         },
 
         async redefinirSenha(event) {
+            console.clear()
+
             const results = await event;            
 
             // alert(JSON.stringify(results, null, 2))
@@ -170,16 +175,13 @@ export default {
                 console.log('Dados antes de enviar:', this.dados);  // Verifique aqui
 
                 try {
-                    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/${this.grupo}/update`, {
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/redefinir/senha`, {
                         dados: this.dados,
                         novaSenha: this.novaSenha
                     }, { withCredentials: true });
 
                     console.log(response.data);
 
-                    // for (var key in response.data) {
-                    //     console.log(response.data[key])
-                    // }
                 } catch (error) {
                     console.error('Erro', error.response.data);
                 }

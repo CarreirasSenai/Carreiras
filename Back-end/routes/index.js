@@ -12,9 +12,9 @@ const RedefinirSenha = require('../controller/redefinirSenha');
 
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
-router.post('/candidato/delete', authMiddleware, Candidato.deleteUser);
+router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
-router.post('/candidato/update', Candidato.updateUser);
+router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
 
 // rotas vagas
@@ -23,6 +23,7 @@ router.get('/vaga/pesquisa', Vaga.buscarVaga);
 // rotas redefinir senha
 router.post('/enviar/codigo', RedefinirSenha.enviarCodigo);
 router.post('/validar/codigo', RedefinirSenha.validarCodigo);
+router.put('/redefinir/senha', RedefinirSenha.redefinirSenha);
 
 // rota logout
 router.get('/logout', (req, res) => {

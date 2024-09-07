@@ -4,17 +4,16 @@ const bcrypt = require('bcrypt');
 
 // Create
 exports.createUser = async (req, res) => {
-    const { nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password } = req.body;
+    const { nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao } = req.body;
 
     // Gerar um salt e hash a senha
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const dataAtu = DataHora.dataHora();
-    const profissao = 'indefinida';
     const grupo = 'candidato';
 
-    Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, hashedPassword, profissao, grupo, dataAtu, (err, insertId) => {
+    Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, hashedPassword, area, profissao, grupo, dataAtu, (err, insertId) => {
         if (err) {
             console.log(err.message);
             return res.status(500).json({ error: err.message });
@@ -25,25 +24,11 @@ exports.createUser = async (req, res) => {
 };
 
 // Login
-// exports.login = (req, res) => {
-//     const { email, password } = req.body;
-
-//     Candidato.getLogin(email, password, (err, user) => {
-//         if (err) {
-//             return res.status(500).json({ error: err.message });
-//         }
-
-//         if (user === null) {
-//             return res.status(401).json({ error: 'Email ou senha incorretos!' });
-//         } else {
-//             req.session.usuario = user;
-//             res.json({ success: true, user: user });
-//         }
-//     });
-// };
-
 exports.login = (req, res) => {
     const { email, password } = req.body;
+
+    console.log(email, password);
+
 
     Candidato.getLogin(email, (err, user) => {
         if (err) {
@@ -52,7 +37,7 @@ exports.login = (req, res) => {
 
         if (user === null) {
             return res.status(401).json({ error: 'Email ou senha incorretos!' });
-        
+
         } else {
             // Comparar a senha fornecida com o hash armazenado
             bcrypt.compare(password, user.senha, (err, isMatch) => {
@@ -75,10 +60,6 @@ exports.login = (req, res) => {
 // Read / Autenticar
 exports.getUser = (req, res) => {
 
-    if (!req.session.usuario) {
-        return res.status(401).json({ error: 'Usuário não autenticado!' });
-    }
-
     usuario_id = req.session.usuario.id;
 
     Candidato.getUser(usuario_id, (err, usuario) => {
@@ -96,22 +77,33 @@ exports.getUser = (req, res) => {
 };
 
 // Update
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
+    const { id, nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao } = req.body;
     console.log('\n updateUser:');
     console.log(req.body);
 
+    const dataAtu = DataHora.dataHora();
+    const grupo = 'candidato';
 
-    // res.json({ error: true });
+    Candidato.updateUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, dataAtu, id, (err, success) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
 
-    // Candidato.updateUser(id, nome, email, senha, foto, descricao, (success) => {
-    //     res.redirect('/editarPerfil');
-    // });
+        res.status(200).json({ success: 'Cadastro Atualizado!' });
+    });
 };
 
 // Delete
 exports.deleteUser = (req, res) => {
     const { id } = req.body;
-    Candidato.deleteUser(id, (success) => {
-        res.redirect('/');
+    console.log(id);
+
+    Candidato.deleteUser(id, (err, success) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        res.status(200).json({ success: 'Usuário Deletado!' });
     });
 };

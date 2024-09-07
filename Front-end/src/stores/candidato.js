@@ -12,6 +12,7 @@ export const useCandidatoStore = defineStore('candidato', {
         visibilidadeNaoLogado: true,
         visibilidadeLogado: false,
         router: useRouter(),
+        dadosUser: ''
     }),
     actions: {
         async userLogado() {
@@ -26,8 +27,10 @@ export const useCandidatoStore = defineStore('candidato', {
                 this.visibilidadeNaoLogado = false;
                 this.visibilidadeLogado = true;
 
-                console.log('Usuário autenticado!', response.data);
-                console.log('Id do User:', response.data.usuario.id);
+                console.log('Usuário autenticado!');
+
+                this.dadosUser = response.data;
+                console.log("Dados do User: ", this.dadosUser);
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
