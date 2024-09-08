@@ -8,9 +8,8 @@ exports.formacaoCreate = (id, { dados }, dataAtu, callback) => {
             if (err) {
                 console.log(err);
                 return callback(err, null);
-
             } else if (result) {
-                console.log(result);
+                // console.log(result);
                 return callback(null, result.insertId);
             }
 
@@ -21,7 +20,7 @@ exports.formacaoCreate = (id, { dados }, dataAtu, callback) => {
 exports.formacaoRead = (id, callback) => {
     db.query('select * from formacao where id_candidato = ?', [id], (err, result) => {
         if (err) {
-            // console.log(err.message);
+            console.log(err.message);
             return callback(null, err.message);
         } else if (result) {
             // console.log(result);

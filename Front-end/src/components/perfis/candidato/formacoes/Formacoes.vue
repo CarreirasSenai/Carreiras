@@ -13,7 +13,7 @@
                             <v-card-subtitle>{{ items.nivel }}</v-card-subtitle>
                             <v-card-text>{{ items.lugar }}<br> {{ items.inicio }} a {{ items.termino
                                 }}</v-card-text>
-                            <EditarFormacoes />
+                            <EditarFormacoes :MostrarFormacoes="mostrarFormacoes" :IdFormacao="items.id"/>
                         </v-card>
                     </v-col>
                 </v-row>
@@ -37,7 +37,7 @@ export default {
                     inicio: null,
                     termino: null
                 }
-            ]
+            ],
         };
     },
     mounted() {

@@ -27,8 +27,7 @@ exports.createUser = async (req, res) => {
 exports.login = (req, res) => {
     const { email, password } = req.body;
 
-    console.log(email, password);
-
+    // console.log(email, password);
 
     Candidato.getLogin(email, (err, user) => {
         if (err) {
@@ -71,7 +70,7 @@ exports.getUser = (req, res) => {
             return res.status(404).json({ error: 'Usuário não encontrado!' });
         }
 
-        console.log(req.session);
+        // console.log(req.session);
         res.json({ success: true, usuario: usuario });
     });
 };
@@ -90,7 +89,7 @@ exports.updateUser = async (req, res) => {
             return res.status(500).json({ error: err.message });
         }
 
-        res.status(200).json({ success: 'Cadastro Atualizado!' });
+        return res.status(200).json({ success: 'Cadastro Atualizado!' });
     });
 };
 

@@ -85,17 +85,13 @@ exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
         data_atu = ?
         WHERE id = ?`,
         [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, dataAtu, id], (err, result) => {
-            // if (err) throw err;
-            // callback(result.affectedRows > 0);
-
             if (err) {
                 console.log(err);
                 return callback(err, null);
             } else if (result) {
-                console.log(result);
+                // console.log(result);
                 return callback(null, result.affectedRows > 0);
             }
-
         });
 };
 
@@ -106,7 +102,7 @@ exports.deleteUser = (id, callback) => {
             console.log(err);
             return callback(err, null);
         } else if (result) {
-            console.log(result);
+            // console.log(result);
             return callback(null, result.affectedRows > 0);
         }
     });

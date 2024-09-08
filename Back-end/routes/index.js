@@ -21,6 +21,7 @@ router.get('/candidato/read', authMiddleware, Candidato.getUser);
 // rotas formacoes
 router.post('/formacao/create', Formacao.formacaoCreate);
 router.get('/formacao/read', Formacao.formacaoRead);
+// router.delete('/formacao/delete', Formacao.formacaoDelete);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);
