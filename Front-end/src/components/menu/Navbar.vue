@@ -99,7 +99,6 @@
 <script>
 import axios from 'axios';
 import { useCandidatoStore } from '@/stores/candidato';
-import MenuMobile from './MenuMobile.vue';
 
 export default {
     data: () => ({

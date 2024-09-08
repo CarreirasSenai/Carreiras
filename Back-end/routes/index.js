@@ -20,6 +20,7 @@ router.get('/candidato/read', authMiddleware, Candidato.getUser);
 
 // rotas formacoes
 router.post('/formacao/create', Formacao.formacaoCreate);
+router.get('/formacao/read', Formacao.formacaoRead);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);

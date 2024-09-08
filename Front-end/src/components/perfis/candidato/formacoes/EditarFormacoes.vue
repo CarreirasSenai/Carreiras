@@ -58,8 +58,6 @@
 }
 
 .bt-edit {
-    // background-color: #6732d2;
-    // color: white;
     text-transform: uppercase;
     margin: 10px 20px;
 }

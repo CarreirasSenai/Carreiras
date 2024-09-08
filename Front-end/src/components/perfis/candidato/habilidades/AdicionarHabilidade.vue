@@ -18,8 +18,6 @@
                             <v-text-field label="Insira uma Habilidade" required></v-text-field>
                         </v-col>
                     </v-row>
-
-                    <!-- <small class="text-caption text-medium-emphasis">*Indica os campos obrigatórios</small> -->
                 </v-card-text>
 
                 <v-divider></v-divider>
@@ -29,26 +27,12 @@
 
                     <v-btn text="Fechar" variant="plain" @click="dialog = false"></v-btn>
 
-                    <v-btn color="Enviar" text="Salvar" variant="tonal" @click="dialog = false"></v-btn>
+                    <v-btn text="Salvar" variant="tonal"></v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
     </div>
 </template>
-
-<style lang="scss" scoped>
-.div-button-edit {
-    display: flex;
-    justify-content: end;
-}
-
-.bt-add {
-    background-color: #6732d2;
-    color: white;
-    // margin: 10px 20px;
-    border-color: #6732d2;
-}
-</style>
 
 <script>
 export default {

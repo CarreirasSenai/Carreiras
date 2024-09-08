@@ -27,12 +27,12 @@
                             </v-col>
 
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="form.inicio" type="date" label="Início" :rules="[rules.inicio]"
+                                <v-text-field v-model="form.inicio" type="month" label="Início" :rules="[rules.inicio]"
                                     required></v-text-field>
                             </v-col>
 
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="form.fim" type="date" label="Fim" :rules="[rules.fim]"
+                                <v-text-field v-model="form.fim" type="month" label="Fim" :rules="[rules.fim]"
                                     required></v-text-field>
                             </v-col>
                         </v-row>
@@ -68,8 +68,8 @@ export default {
             nivel: 'Ensino Superior (Graduação)',
             formacao: 'Analise e Desenvolvimento de Sistemas',
             unidade: 'Unisenai',
-            inicio: '2024-09-01',
-            fim: '2024-09-01'
+            inicio: '2024-09',
+            fim: '2024-09'
         },
         rules: {
             nivel: value => !!value || 'O campo Nível é obrigatório.',
@@ -79,6 +79,12 @@ export default {
             fim: value => !!value || 'O campo Fim é obrigatório.',
         }
     }),
+    props: {
+        MostrarFormacoes: {
+            type: Function,
+            required: true
+        }
+    },
     methods: {
         async criarFormacao(event) {
             console.clear();
@@ -98,6 +104,8 @@ export default {
 
                     this.dialog = false;
 
+                    this.MostrarFormacoes();
+
                 } catch (error) {
                     console.error('Erro', error.response.data);
                 }
@@ -106,18 +114,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.div-button-edit {
-    display: flex;
-    justify-content: end;
-}
-
-.bt-add {
-    background-color: #6732d2;
-    color: white;
-    // margin: 10px 20px;
-    border-color: #6732d2;
-    // text-transform: uppercase !important;
-}
-</style>

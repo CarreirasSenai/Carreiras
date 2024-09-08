@@ -10,10 +10,22 @@ exports.formacaoCreate = (id, { dados }, dataAtu, callback) => {
                 return callback(err, null);
 
             } else if (result) {
-                console.log(result);                
+                console.log(result);
                 return callback(null, result.insertId);
             }
 
         }
     );
+}
+
+exports.formacaoRead = (id, callback) => {
+    db.query('select * from formacao where id_candidato = ?', [id], (err, result) => {
+        if (err) {
+            // console.log(err.message);
+            return callback(null, err.message);
+        } else if (result) {
+            // console.log(result);
+            return callback(null, result);
+        }
+    });
 }
