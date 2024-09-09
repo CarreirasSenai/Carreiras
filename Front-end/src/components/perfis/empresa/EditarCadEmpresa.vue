@@ -114,7 +114,6 @@
                         :rules="enderecoRules"
                         label="Endereço"
                         variant="underlined"
-                        readonly
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -125,7 +124,6 @@
                         :rules="bairroRules"
                         label="Bairro"
                         variant="underlined"
-                        readonly
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
@@ -134,7 +132,6 @@
                         :rules="cidadeRules"
                         label="Cidade"
                         variant="underlined"
-                        readonly
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="6" lg="6">

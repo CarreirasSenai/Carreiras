@@ -93,7 +93,6 @@
                     label="Rua"
                     bg-color="#F7F7F7"
                     density="compact"
-                    readonly
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -123,7 +122,6 @@
                     label="Bairro"
                     bg-color="#F7F7F7"
                     density="compact"
-                    readonly
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
@@ -133,7 +131,6 @@
                     label="Cidade"
                     bg-color="#F7F7F7"
                     density="compact"
-                    readonly
                   ></v-text-field>
                 </v-col>
               </v-row>

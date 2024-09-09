@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO malicioso ( ͡° ͜ʖ ͡°): Adicionar API de CEP e readonly nos campos que vão ser preenchidos -->
   <v-container fluid class="signup-container fill-height">
     <v-row style="margin: 0;" justify="center" align="center">
       <v-col cols="12" sm="9" md="10" lg="11">
@@ -120,7 +119,6 @@
                       label="Endereço"
                       bg-color="#F7F7F7"
                       density="compact"
-                      readonly
                     ></v-text-field>
                 </v-col>
               </v-row>
@@ -132,7 +130,6 @@
                       label="Bairro"
                       bg-color="#F7F7F7"
                       density="compact"
-                      readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
@@ -142,7 +139,6 @@
                       label="Cidade"
                       bg-color="#F7F7F7"
                       density="compact"
-                      readonly
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">

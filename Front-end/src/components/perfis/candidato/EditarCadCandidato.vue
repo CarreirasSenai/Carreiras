@@ -96,7 +96,6 @@
                         label="Rua"
                         variant="underlined"
                         :disabled="isDisabled"
-                        readonly
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -126,7 +125,6 @@
                         label="Bairro"
                         variant="underlined"
                         :disabled="isDisabled"
-                        readonly
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
@@ -136,7 +134,6 @@
                         label="Cidade"
                         variant="underlined"
                         :disabled="isDisabled"
-                        readonly
                       ></v-text-field>
                     </v-col>
                   </v-row>
