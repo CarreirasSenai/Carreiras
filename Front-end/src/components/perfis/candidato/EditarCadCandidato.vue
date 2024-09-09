@@ -90,7 +90,7 @@
                                             <v-btn to="/redefinir-senha?resposta=candidato" text="Redefinir Senha"
                                                 append-icon="mdi-arrow-top-right-thick" block></v-btn>
                                         </v-col>
-                                    </v-row>                                    
+                                    </v-row>
                                 </v-card-text>
 
                                 <v-divider></v-divider>
@@ -295,6 +295,10 @@ export default {
                 this.mensagem = 'Sua conta foi deletada 🙄!';
                 this.color = 'warning';
                 this.snackbar = true;
+
+                setTimeout(() => {
+                    this.$router.push('/');
+                }, 5000);
 
                 console.info('%Exclusão bem-sucedida 🙄', 'color: lightyellow; padding: 20px 0;', response.data);
 

@@ -19,9 +19,10 @@ router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
 
 // rotas formacoes
-router.post('/formacao/create', Formacao.formacaoCreate);
-router.get('/formacao/read', Formacao.formacaoRead);
-// router.delete('/formacao/delete', Formacao.formacaoDelete);
+router.post('/formacao/create', authMiddleware, Formacao.formacaoCreate);
+router.get('/formacao/read', authMiddleware, Formacao.formacaoRead);
+router.delete('/formacao/delete/:id', authMiddleware, Formacao.formacaoDelete);
+router.put('/formacao/update/', authMiddleware, Formacao.formacaoUpdate);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);

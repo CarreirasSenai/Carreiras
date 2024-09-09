@@ -17,23 +17,23 @@
                         <v-row dense>
                             <v-col cols="12" md="12">
                                 <v-autocomplete v-model="form.nivel" label="Nível" :items="niveisFormacao"
-                                    :rules="[rules.nivel]" required></v-autocomplete>
+                                    :rules="[rules.nivel]"></v-autocomplete>
 
                                 <v-text-field v-model="form.formacao" label="Formação" :rules="[rules.formacao]"
-                                    required></v-text-field>
+                                    v-if="!isFormacaoHidden"></v-text-field>
 
-                                <v-text-field v-model="form.unidade" label="Unidade de Ensino" :rules="[rules.unidade]"
-                                    required></v-text-field>
+                                <v-text-field v-model="form.unidade" label="Unidade de Ensino"
+                                    :rules="[rules.unidade]"></v-text-field>
                             </v-col>
 
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="form.inicio" type="month" label="Início" :rules="[rules.inicio]"
-                                    required></v-text-field>
+                                <v-text-field v-model="form.inicio" type="month" label="Início"
+                                    :rules="[rules.inicio]"></v-text-field>
                             </v-col>
 
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="form.fim" type="month" label="Fim" :rules="[rules.fim]"
-                                    required></v-text-field>
+                                <v-text-field v-model="form.fim" type="month" label="Fim"
+                                    :rules="[rules.fim]"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -65,11 +65,11 @@ export default {
             "Pós-Doutorado"
         ],
         form: {
-            nivel: 'Ensino Superior (Graduação)',
-            formacao: 'Analise e Desenvolvimento de Sistemas',
-            unidade: 'Unisenai',
-            inicio: '2024-09',
-            fim: '2024-09'
+            nivel: '',
+            formacao: '',
+            unidade: '',
+            inicio: '',
+            fim: ''
         },
         rules: {
             nivel: value => !!value || 'O campo Nível é obrigatório.',
@@ -83,6 +83,16 @@ export default {
         MostrarFormacoes: {
             type: Function,
             required: true
+        }
+    },
+    computed: {
+        isFormacaoHidden() {
+            // Define os níveis que devem ocultar o campo
+            const niveisOcultos = [
+                "Ensino Fundamental",
+                "Ensino Médio"
+            ];
+            return niveisOcultos.includes(this.form.nivel);
         }
     },
     methods: {

@@ -11,13 +11,15 @@
                         <v-card variant="tonal">
                             <v-card-title>{{ items.nome }}</v-card-title>
                             <v-card-subtitle>{{ items.nivel }}</v-card-subtitle>
-                            <v-card-text>{{ items.lugar }}<br> {{ items.inicio }} a {{ items.termino
-                                }}</v-card-text>
-                            <EditarFormacoes :MostrarFormacoes="mostrarFormacoes" :IdFormacao="items.id"/>
+                            <v-card-text>
+                                {{ items.lugar }} <br>
+                                {{ formatarData(items.inicio) }} - {{ formatarData(items.termino) }}
+                            </v-card-text>
+                            <EditarFormacoes :MostrarFormacoes="mostrarFormacoes" :Formacoes="items" />
                         </v-card>
                     </v-col>
                 </v-row>
-                <AdicionarFormacao :MostrarFormacoes="mostrarFormacoes"/>
+                <AdicionarFormacao :MostrarFormacoes="mostrarFormacoes" />
             </v-expansion-panel-text>
         </v-expansion-panel>
     </v-col>
@@ -31,11 +33,11 @@ export default {
         return {
             formacoes: [
                 {
-                    nome: null,
-                    nivel: null,
-                    lugar: null,
-                    inicio: null,
-                    termino: null
+                    nome: '',
+                    nivel: '',
+                    lugar: '',
+                    inicio: '',
+                    termino: ''
                 }
             ],
         };
@@ -47,7 +49,8 @@ export default {
         async mostrarFormacoes() {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/formacao/read`, {
-                }, { withCredentials: true });
+                    withCredentials: true
+                });
 
                 console.log('Array de Formações:', response.data);
                 this.formacoes = response.data.result;
@@ -56,6 +59,17 @@ export default {
                 console.error('Erro', error.response.data);
             }
         },
+
+        formatarData(data) {
+            if (data && data.length === 7) {
+                const [ano, mes] = data.split('-');
+                const date = new Date(ano, mes - 1);
+                const mesFormatado = ('0' + (date.getMonth() + 1)).slice(-2);
+
+                return `${mesFormatado}/${ano}`;
+            }
+            return data;
+        }
     }
 };
 </script>
