@@ -149,7 +149,7 @@
                   <v-text-field
                     v-model="senha"
                     :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[senhaRules.senhaRequired, senhaRules.senhaMin]"
+                    :rules="[senhaRules.senhaRequired, senhaRules.senhaMin, senhaRules.senhaComplexa]"
                     :type="showPassword ? 'text' : 'password'"
                     class="input-group--focused"
                     label="Senha"
@@ -167,7 +167,8 @@
                     :rules="[
                       senhaRules.repSenhaRequired,
                       senhaRules.repSenhaMin,
-                      senhaRules.confirmSenha
+                      senhaRules.confirmSenha,
+                      senhaRules.senhaComplexa
                     ]"
                     :type="showRePassword ? 'text' : 'password'"
                     class="input-group--focused"
@@ -357,13 +358,10 @@ export default {
           v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
         repSenhaMin: (v) =>
           v.length >= 8 || "Repetir senha deve ter pelo menos 8 caracteres",
-        confirmSenha: (v) => v === this.senha || "Senhas não coincidem"
+        confirmSenha: (v) => v === this.senha || "Senhas não coincidem",
+        senhaComplexa: (v) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(v) ||
+          "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
       },
-
-      // confirmPasswordRules: [
-      //   (v) => !!v || "Repetir Senha Requerida",
-      //   (v) => v === this.password || "Senhas não coincidem",
-      // ],
       items: ["SC", "SP", "RJ", "PR", "RS", "RN"],
     };
   },

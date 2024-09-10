@@ -315,6 +315,7 @@ export default {
   },
   methods: {
     async atualizarCadastro() {
+      this.cpf = this.limparMascaraValores(this.cpf);
       try {
         const response = await axios.post(
           "http://localhost:4000/update/create",
@@ -348,6 +349,13 @@ export default {
         this.mensagemErro = error.response.data.error;
         document.getElementById("btnAlertaCadastro").click();
       }
+    },
+    limparMascaraValores(valor) {
+      if (valor !== "") {
+        valor = valor.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
+      }
+
+      return valor;
     },
     async retornarInformacoesCep(){
       if(this.cep !== "" && this.cep.length === 8) {

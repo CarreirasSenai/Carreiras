@@ -309,6 +309,13 @@ export default {
           alert("Erro ao processar o CEP. Envie um cep válido ou tente novamente.")
         }
       }
+    },
+    limparMascaraValores(valor) {
+      if (valor !== "") {
+        valor = valor.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
+      }
+
+      return valor;
     }
   }
 };
