@@ -8,7 +8,7 @@
             <v-expansion-panel-text>
                 <v-row>
                     <v-col cols="12" lg="6" md="12" sm="12" class="bloco" v-for="items in formacoes" :key="items">
-                        <v-card variant="tonal">
+                        <v-card variant="tonal" style="min-height: 133px;">
                             <v-card-title>{{ items.nome }}</v-card-title>
                             <v-card-subtitle>{{ items.nivel }}</v-card-subtitle>
                             <v-card-text>

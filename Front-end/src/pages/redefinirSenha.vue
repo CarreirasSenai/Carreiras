@@ -64,8 +64,8 @@
             </v-row>
         </v-container>
 
-        <v-snackbar color="error" v-model="snackbar" :timeout="4000">
-            {{ mensagem }}
+        <v-snackbar :color="snackbarColor" v-model="snackbar" :timeout="4000">
+            <div class="text-center">{{ mensagem }}</div>
         </v-snackbar>
     </div>
 </template>
@@ -88,6 +88,7 @@ export default {
             validating: false,
             codigo: '',
             snackbar: false,
+            snackbarColor: '',
             novaSenha: 'Thiago1#',
             confirmaSenha: 'Thiago1#',
             rules: {
@@ -119,6 +120,7 @@ export default {
                 console.log(response.data);
             } catch (error) {
                 console.error('Erro', error.response.data);
+                this.snackbarColor = 'error';
                 this.snackbar = true;
                 this.mensagem = 'Não há usuário com este endereço de E-mail.';
             }
@@ -138,8 +140,12 @@ export default {
                     codigo: this.codigo
                 }, { withCredentials: true });
 
-                this.formValidar = false;
-                this.formRedefinir = true;
+                this.validating = true;
+                setTimeout(() => {
+                    this.validating = false;
+                    this.formValidar = false;
+                    this.formRedefinir = true;
+                }, 2000)
 
                 this.dados = response.data.dados;
                 console.log(this.dados);
@@ -150,6 +156,7 @@ export default {
                 this.mensagem = 'Código de verificação incorreto. Insira o código novamente.';
                 setTimeout(() => {
                     this.validating = false;
+                    this.snackbarColor = 'error';
                     this.snackbar = true;
                 }, 2000)
             }
@@ -172,7 +179,15 @@ export default {
                         novaSenha: this.novaSenha
                     }, { withCredentials: true });
 
-                    console.log(response.data);
+                    this.snackbarColor = 'success';
+                    this.snackbar = true;
+                    this.mensagem = 'Senha redefinida com sucesso!';
+
+                    setTimeout(() => {
+                        this.$router.push({ path: '/login', query: { resposta: this.grupo } });
+                    }, 2000)
+
+                    console.log('Senha Redefinida!', response.data);
 
                 } catch (error) {
                     console.error('Erro', error.response.data);

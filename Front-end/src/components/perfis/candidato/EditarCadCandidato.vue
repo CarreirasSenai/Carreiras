@@ -97,7 +97,7 @@
 
                                 <v-card-actions>
                                     <v-btn text="Excluir" variant="text"
-                                        @click="dialog = false, deletarConta()"></v-btn>
+                                        @click="dialog = false, modalDelete = true"></v-btn>
                                     <v-spacer></v-spacer>
                                     <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
                                     <v-btn text="Atualizar" color="Enviar" variant="tonal" class="bg-purple-darken-4"
@@ -110,6 +110,22 @@
             </v-container>
         </v-dialog>
     </div>
+
+    <v-dialog max-width="500" v-model="modalDelete">
+        <v-card title="Confirme a Exclusão da Conta">
+            <v-card-text>
+                Tem certeza que deseja excluir sua conta? Todos os seus dados serão apagados e não será possível
+                recuperá-los!
+                <!-- Melhoria: Sistema de feedbacks dos users -->
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn variant="tonal" text="Cancelar" @click="modalDelete = false"></v-btn>
+                <v-btn variant="tonal" class="bg-error" text="Excluir Conta" @click="deletarConta"></v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
     <v-snackbar :color="color" v-model="snackbar" :timeout="6000">
         <div class="text-center">{{ mensagem }}</div>
     </v-snackbar>
@@ -142,6 +158,7 @@ export default {
             profissao: useCandidatoStore().dadosUser.usuario.profissao,
             isDisabled: false,
             dialog: false,
+            modalDelete: false,
             mensagem: '',
             color: '',
             snackbar: false,
@@ -297,8 +314,9 @@ export default {
                 this.snackbar = true;
 
                 setTimeout(() => {
-                    this.$router.push('/');
-                }, 5000);
+                    // this.$router.push('/'); 
+                    window.location.href = '/'; // Deixe este! Eu sei o motivo...
+                }, 2000);
 
                 console.info('%Exclusão bem-sucedida 🙄', 'color: lightyellow; padding: 20px 0;', response.data);
 

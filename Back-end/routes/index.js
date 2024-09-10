@@ -10,6 +10,8 @@ const Candidato = require('../controller/candidato');
 const Vaga = require('../controller/vaga');
 const RedefinirSenha = require('../controller/redefinirSenha');
 const Formacao = require('../controller/formacoes');
+const Curso = require('../controller/cursos');
+const Perfil = require('../controller/perfil');
 
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
@@ -23,6 +25,15 @@ router.post('/formacao/create', authMiddleware, Formacao.formacaoCreate);
 router.get('/formacao/read', authMiddleware, Formacao.formacaoRead);
 router.delete('/formacao/delete/:id', authMiddleware, Formacao.formacaoDelete);
 router.put('/formacao/update/', authMiddleware, Formacao.formacaoUpdate);
+
+// rotas cursos
+router.post('/curso/create',  Curso.cursoCreate);
+router.get('/curso/read',  Curso.cursoRead);
+router.delete('/curso/delete/:id',  Curso.cursoDelete);
+router.put('/curso/update/',  Curso.cursoUpdate);
+
+// rotas perfil
+router.post('/perfil/create',  Perfil.createPerfil);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);

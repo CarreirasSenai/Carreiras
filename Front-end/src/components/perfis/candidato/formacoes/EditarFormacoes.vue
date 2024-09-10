@@ -10,7 +10,7 @@
                 <v-card>
                     <v-card-title class="d-flex align-center ga-2 cor-primaria">
                         <i class="mdi mdi-school"></i>
-                        Adicionar Formação
+                        Editar Formação
                     </v-card-title>
                     <v-card-text class="text-start">
                         <v-row dense>
