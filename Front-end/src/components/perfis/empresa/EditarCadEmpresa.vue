@@ -299,14 +299,12 @@ export default {
           repSenhaMin: v => v.length >= 8 || 'Repetir senha deve ter pelo menos 8 caracteres',
           confirmSenha: (v) => v === this.senha && v.length === this.senha.length || "Senhas não coincidem"
       },
-      items: [
-        "Amazonas",
-        "Amapá",
-        "Santa Catarina",
-        "Paraná",
-        "Rio Grande do Sul",
-        "São Paulo",
-      ],
+      items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
+                'CE', 'DF', 'ES', 'GO', 'MA',
+                'MT', 'MS', 'MG', 'PA', 'PB',
+                'PR', 'PE', 'PI', 'RJ', 'RN',
+                'RS', 'RO', 'RR', 'SC', 'SP',
+                'SE', 'TO'],
       dialog: false,
     };
   },

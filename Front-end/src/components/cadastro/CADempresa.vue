@@ -284,14 +284,12 @@ export default {
       estadoRules: [(v) => !!v || 'Estado requerido'],
       responsavelLegalRules: [(v) => !!v || 'Responsável legal requerido'],
       responsavelAdmRules: [(v) => !!v || 'Responsável administrativo requerido'],
-      items: [
-        'Amazonas', 
-        'Amapá',
-        'Santa Catarina', 
-        'Paraná', 
-        'Rio Grande do Sul', 
-        'São Paulo'
-      ]
+      items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
+                'CE', 'DF', 'ES', 'GO', 'MA',
+                'MT', 'MS', 'MG', 'PA', 'PB',
+                'PR', 'PE', 'PI', 'RJ', 'RN',
+                'RS', 'RO', 'RR', 'SC', 'SP',
+                'SE', 'TO'],
     };
   },
   methods: {

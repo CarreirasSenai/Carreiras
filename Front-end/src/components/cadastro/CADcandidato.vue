@@ -362,7 +362,12 @@ export default {
         senhaComplexa: (v) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(v) ||
           "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
       },
-      items: ["SC", "SP", "RJ", "PR", "RS", "RN"],
+      items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
+                'CE', 'DF', 'ES', 'GO', 'MA',
+                'MT', 'MS', 'MG', 'PA', 'PB',
+                'PR', 'PE', 'PI', 'RJ', 'RN',
+                'RS', 'RO', 'RR', 'SC', 'SP',
+                'SE', 'TO'],
     };
   },
   methods: {
