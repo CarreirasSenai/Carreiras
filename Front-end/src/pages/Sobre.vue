@@ -1,66 +1,70 @@
 <template>
   <v-app>
-    <Navbar />
+    <Navbar/>
 
     <v-container class="sobre-nos">
-      <!-- Seção de cabeçalho com fundo escurecido para melhor contraste -->
-      <v-row class="header" align="center" justify="center">
-        <v-col cols="12" class="text-center">
-          <h1>Sobre Carreiras</h1>
-        </v-col>
-      </v-row>
+      <div class="login-container fill-height">
+        <!-- Seção de cabeçalho com fundo escurecido para melhor contraste -->
+        <v-row class="header" align="center" justify="center">
+          <v-col cols="12" class="text-center">
+            <h1>Carreiras</h1>
+          </v-col>
+        </v-row>
 
-      <!-- Missão, Visão e Valores -->
-      <v-row class="missao-visao-valores" justify="space-between">
-        <v-col cols="12" md="4" class="missao">
-          <v-hover v-slot:default="{ isHovering }">
-            <v-card
-              :elevation="isHovering ? 8 : 2"
-              class="hover-card card-tamanho"
-            >
-              <v-card-title class="primary--text">Missão</v-card-title>
-              <v-card-text>
-                Desenvolver soluções inovadoras e eficazes para nossos clientes.
-              </v-card-text>
-            </v-card>
-          </v-hover>
-        </v-col>
-        <v-col cols="12" md="4" class="visao">
-          <v-hover v-slot:default="{ isHovering }">
-            <v-card
-              :elevation="isHovering ? 8 : 2"
-              class="hover-card card-tamanho"
-            >
-              <v-card-title class="primary--text">Visão</v-card-title>
-              <v-card-text>
-                Ser líderes no mercado de tecnologia e inovação.
-              </v-card-text>
-            </v-card>
-          </v-hover>
-        </v-col>
-        <v-col cols="12" md="4" class="valores">
-          <v-hover v-slot:default="{ isHovering }">
-            <v-card
-              :elevation="isHovering ? 8 : 2"
-              class="hover-card card-tamanho"
-            >
-              <v-card-title class="primary--text">Valores</v-card-title>
-              <v-card-text>
-                <ul>
-                  <li>Inovação</li>
-                  <li>Qualidade</li>
-                  <li>Respeito</li>
-                  <li>Compromisso</li>
-                </ul>
-              </v-card-text>
-            </v-card>
-          </v-hover>
-        </v-col>
-      </v-row>
+        <!-- Missão, Visão e Valores -->
+        <v-row class="missao-visao-valores" justify="space-between">
+          <v-col cols="12" md="4" class="missao">
+            <v-hover v-slot:default="{ isHovering }">
+              <v-card
+                :elevation="isHovering ? 8 : 2"
+                class="hover-card card-tamanho"
+              >
+                <v-card-title class="primary--text">Missão</v-card-title>
+                <v-card-text>
+                  Desenvolver soluções inovadoras e eficazes para nossos
+                  clientes.
+                </v-card-text>
+              </v-card>
+            </v-hover>
+          </v-col>
 
-      <!-- Divisor para separar as seções -->
-      <v-divider class="my-12"></v-divider>
+          <v-col cols="12" md="4" class="visao">
+            <v-hover v-slot:default="{ isHovering }">
+              <v-card
+                :elevation="isHovering ? 8 : 2"
+                class="hover-card card-tamanho"
+              >
+                <v-card-title class="primary--text">Visão</v-card-title>
+                <v-card-text>
+                  Ser líderes no mercado de tecnologia e inovação.
+                </v-card-text>
+              </v-card>
+            </v-hover>
+          </v-col>
 
+          <v-col cols="12" md="4" class="valores">
+            <v-hover v-slot:default="{ isHovering }">
+              <v-card
+                :elevation="isHovering ? 8 : 2"
+                class="hover-card card-tamanho"
+              >
+                <v-card-title class="primary--text">Valores</v-card-title>
+                <v-card-text>
+                  <ul>
+                    <li>Inovação</li>
+                    <li>Qualidade</li>
+                    <li>Respeito</li>
+                    <li>Compromisso</li>
+                  </ul>
+                </v-card-text>
+              </v-card>
+            </v-hover>
+          </v-col>
+        </v-row>
+      </div>
+    </v-container>
+
+    <v-container>
       <!-- Seção de equipe -->
       <v-row class="equipe" align="center" justify="center">
         <v-col cols="12" class="text-center">
@@ -139,7 +143,6 @@ export default {
 }
 
 .header {
-  background-image: url("imagem-de-fundo.jpg");
   background-size: cover;
   background-position: center;
   height: 150px;
@@ -161,6 +164,14 @@ export default {
 
 .hover-card {
   transition: box-shadow 0.3s ease;
+}
+.hover-card {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.hover-card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
 }
 
 .team-card {
