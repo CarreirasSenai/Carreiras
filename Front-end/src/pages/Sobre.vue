@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Navbar/>
+    <Navbar />
 
     <v-container class="sobre-nos">
       <div class="login-container fill-height">
@@ -10,6 +10,23 @@
             <h1>Carreiras</h1>
           </v-col>
         </v-row>
+
+       <div>
+  <v-row class="align-center">
+    <v-col cols="4" class="pr-4">
+      <v-img class="carreiras-logo" src="../assets/logoSobre-removebg-preview.png" />
+    </v-col>
+    <v-col cols="8">
+      <v-card class="pa-4">
+        <v-card-title class="text-h5">Top 10 Australian beaches</v-card-title>
+        <v-card-text>
+          <!-- Add some text here to describe the image -->
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
+</div>
 
         <!-- Missão, Visão e Valores -->
         <v-row class="missao-visao-valores" justify="space-between">
@@ -130,6 +147,10 @@ export default {
 </script>
 
 <style scoped>
+.carreiras-logo {
+  width: 200px;
+  height: 300px;
+}
 .card-tamanho {
   height: 250px; /* ajuste a altura conforme necessário */
   display: flex;
