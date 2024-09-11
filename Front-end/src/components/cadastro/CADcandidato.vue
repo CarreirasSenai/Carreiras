@@ -3,7 +3,11 @@
     <v-row style="margin: 0" justify="center">
       <v-col cols="12" sm="9" md="10" lg="11">
         <div class="logo-container text-center">
-          <img class="carreiras-logo" src="/src/assets/Logo_branco.png" alt="Logo do Carreiras" />
+          <img
+            class="carreiras-logo"
+            src="/src/assets/Logo_branco.png"
+            alt="Logo do Carreiras"
+          />
         </div>
         <v-card class="px-4 elevation-12 signup-card" rounded="xl">
           <v-card-text>
@@ -11,145 +15,269 @@
             <v-form class="my-4" @submit.prevent="enviarCadastro">
               <v-row>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-text-field v-model="nomeSocial" :rules="nomeSocialRules" label="Nome Social" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="nomeSocial"
+                    :rules="nomeSocialRules"
+                    label="Nome Social"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-text-field v-model="nomeCompleto" :rules="nomeCompletoRules" label="Nome Completo"
-                    bg-color="#F7F7F7" density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="nomeCompleto"
+                    :rules="nomeCompletoRules"
+                    label="Nome Completo"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-text-field v-model="email" :rules="emailRules" label="E-mail" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="email"
+                    :rules="emailRules"
+                    label="E-mail"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="phone" :rules="phoneRules" label="Telefone" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="phone"
+                    :rules="phoneRules"
+                    v-mask="'(##) ####-####'"
+                    label="Telefone"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="cellphone" :rules="cellphoneRules" label="Celular" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="cellphone"
+                    :rules="cellphoneRules"
+                    v-mask="'(##) #####-####'"
+                    label="Celular"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="cpf" :rules="cpfRules" label="CPF" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-mask="'###.###.###-##'"
+                    v-model="cpf"
+                    :rules="cpfRules"
+                    label="CPF"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="cep" :rules="confirmcepRules" label="CEP" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="cep"
+                    :rules="confirmcepRules"
+                    label="CEP"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                    v-mask="'########'"
+                    @blur="retornarInformacoesCep"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-text-field v-model="rua" :rules="ruaRules" label="Rua" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="rua"
+                    :rules="ruaRules"
+                    label="Rua"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="numCasa" :rules="confirmnumeroRules" label="Nº" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="numCasa"
+                    :rules="confirmnumeroRules"
+                    label="Nº"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="complemento" :rules="complementoRules" label="Complemento" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="complemento"
+                    :rules="complementoRules"
+                    label="Complemento"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="bairro" :rules="bairroRules" label="Bairro" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="bairro"
+                    :rules="bairroRules"
+                    label="Bairro"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="cidade" :rules="cidadeRules" label="Cidade" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                  <v-text-field
+                    v-model="cidade"
+                    :rules="cidadeRules"
+                    label="Cidade"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-select v-model="estado" :rules="estadoRules" :items="items" label="Estado" bg-color="#F7F7F7"
-                    density="compact"></v-select>
+                <v-col cols="12" sm="4" md="4" lg="4">
+                  <v-select
+                    v-model="estado"
+                    :rules="estadoRules"
+                    :items="items"
+                    label="Estado"
+                    bg-color="#F7F7F7"
+                    density="compact"
+                  ></v-select>
                 </v-col>
-                <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="password" :rules="passwordRules" label="Senha" bg-color="#F7F7F7"
-                    density="compact" type="password"></v-text-field>
+                <v-col cols="12" sm="4" md="4" lg="4">
+                  <v-text-field
+                    v-model="senha"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="[senhaRules.senhaRequired, senhaRules.senhaMin, senhaRules.senhaComplexa]"
+                    :type="showPassword ? 'text' : 'password'"
+                    class="input-group--focused"
+                    label="Senha"
+                    name="senha"
+                    counter
+                    density="compact"
+                    @click:append="showPassword = !showPassword"
+                  >
+                  </v-text-field>
                 </v-col>
-                <v-col cols="12" sm="3" md="3" lg="3">
-                  <v-text-field v-model="confirmPassword" :rules="confirmPasswordRules" label="Repetir Senha"
-                    bg-color="#F7F7F7" density="compact" type="password"></v-text-field>
+                <v-col cols="12" sm="4" md="4" lg="4">
+                  <v-text-field
+                    v-model="repSenha"
+                    :append-icon="showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="[
+                      senhaRules.repSenhaRequired,
+                      senhaRules.repSenhaMin,
+                      senhaRules.confirmSenha,
+                      senhaRules.senhaComplexa
+                    ]"
+                    :type="showRePassword ? 'text' : 'password'"
+                    class="input-group--focused"
+                    label="Repetir senha"
+                    name="rep-senha"
+                    counter
+                    density="compact"
+                    @click:append="showRePassword = !showRePassword"
+                  >
+                  </v-text-field>
                 </v-col>
               </v-row>
               <div class="sign-in-buttons d-flex justify-center my-4">
-                <v-btn lass="adm-btn" class="bg-purple-darken-4 me-2" @click="enviarCadastro">Cadastrar</v-btn>
+                <v-btn
+                  lass="adm-btn"
+                  class="bg-purple-darken-4 me-2"
+                  @click="enviarCadastro"
+                  >Cadastrar</v-btn
+                >
               </div>
             </v-form>
             <div class="got-account-container my-3">
-              <p>Já criou sua conta? <a href="/empresa-candidato">Faça o login aqui</a></p>
+              <p>
+                Já criou sua conta?
+                <a href="/empresa-candidato">Faça o login aqui</a>
+              </p>
             </div>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
+    <!-- Alerta PopUp -->
+    <div>
+      <v-dialog max-width="500">
+        <template v-slot:activator="{ props: activatorProps }">
+          <v-btn
+            v-bind="activatorProps"
+            color="surface-variant"
+            text="Open Dialog"
+            variant="flat"
+            id="btnAlertaCadastro"
+            class="d-none"
+          ></v-btn>
+        </template>
+        <template v-slot:default="{ isActive }">
+          <v-card
+            title="Ops!"
+            class="text-purple-darken-4"
+            v-if="resposta === false"
+          >
+            <v-card-text class="text-center text-h7 text-black border-sm pa-10">
+              {{ mensagemErro }}
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text="ok" @click="isActive.value = false"></v-btn>
+            </v-card-actions>
+          </v-card>
+          <v-card class="text-purple-darken-4" v-else-if="resposta === true">
+            <v-card-title>Zuuuuuuuuu 🐝</v-card-title>
+            <v-card-text class="text-center text-h7 text-black border-sm pa-10">
+              Cadastro realizado com sucesso! Agora você é uma abelinha do
+              carreiras
+              <span class="mdi mdi-check-bold text-green text-h6"></span>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
+              <v-btn
+                text="Entrar na Conta"
+                @click="isActive.value = false"
+                class="bg-purple-darken-4"
+              >
+                <a href="/login" class="text-white">Entrar na Conta</a>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
+    </div>
   </v-container>
-
-  <!-- Alerta PopUp -->
-  <v-dialog max-width="500">
-    <template v-slot:activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps" color="surface-variant" text="Open Dialog" variant="flat" id="btnAlertaCadastro"
-        class="d-none"></v-btn>
-    </template>
-
-    <template v-slot:default="{ isActive }">
-      <v-card title="Ops!" class="text-purple-darken-4" v-if="resposta === false">
-        <v-card-text class="text-center text-h7 text-black border-sm pa-10">
-          {{ mensagemErro }}
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text="ok" @click="isActive.value = false"></v-btn>
-        </v-card-actions>
-      </v-card>
-      <v-card class="text-purple-darken-4" v-else-if="resposta === true">
-        <v-card-title>Zuuuuuuuuu 🐝</v-card-title>
-        <v-card-text class="text-center text-h7 text-black border-sm pa-10">
-          Cadastro realizado com sucesso! Agora você é uma abelinha do carreiras <span class="mdi mdi-check-bold text-green text-h6"></span>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
-          <v-btn text="Entrar na Conta" @click="isActive.value = false" class="bg-purple-darken-4">
-            <a href="/login" class="text-white">Entrar na Conta</a>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </template>
-  </v-dialog>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      nomeSocial: 'Thiago',
-      nomeCompleto: 'Thiag Lima',
-      email: 'thiago@gmail.com',
-      phone: '4700000000',
-      cellphone: '47000000000',
-      cpf: '00000000000',
+      nomeSocial: "Thiago",
+      nomeCompleto: "Thiag Lima",
+      email: "thiago@gmail.com",
+      phone: "4700000000",
+      cellphone: "47000000000",
+      cpf: "00000000000",
       cep: "00000000",
-      confirmcep: '',
-      rua: 'Rua Bonita',
-      numCasa: '00',
-      complemento: 'cabana',
-      bairro: 'Bairro Bonito',
-      cidade: 'Bonita',
-      estado: 'SC',
-      password: '12345678Ww@',
-      confirmPassword: '12345678Ww@',
+      confirmcep: "",
+      rua: "Rua Bonita",
+      numCasa: "00",
+      complemento: "cabana",
+      bairro: "Bairro Bonito",
+      cidade: "Bonita",
+      estado: "SC",
+      showPassword: false,
+      showRePassword: false,
+      senha: "12345678Ww@",
+      repSenha: "12345678Ww@",
       resposta: false,
-      mensagemErro: '',
+      mensagemErro: "",
 
       nomeSocialRules: [
         (v) => !!v || "Nome Social Requerido",
@@ -169,19 +297,16 @@ export default {
       ],
       cellphoneRules: [
         (v) => !!v || "Celular requerido",
-        (v) => v.length >= 10 || "Celular deve ter pelo menos 10 caracteres",
-        (v) => /^\d+$/.test(v) || "Celular deve conter apenas números",
+        (v) => v.length == 15 || "Celular deve ter pelo menos 15 caracteres",
       ],
       phoneRules: [
         (v) => !!v || "Telefone requerido",
-        (v) => v.length >= 10 || "Telefone deve ter pelo menos 10 caracteres",
-        (v) => /^\d+$/.test(v) || "Telefone deve conter apenas números",
+        (v) => v.length == 14 || "Telefone deve ter pelo menos 14 caracteres",
       ],
 
       cpfRules: [
         (v) => !!v || "CPF Requerido",
-        (v) => v.length === 11 || "CPF deve ter 11 caracteres",
-        (v) => /^\d+$/.test(v) || "CPF deve conter apenas números",
+        (v) => v.length === 14 || "CPF deve ter 14 caracteres",
       ],
 
       confirmcepRules: [
@@ -215,65 +340,94 @@ export default {
         (v) => v.length >= 3 || "Cidade deve ter pelo menos 3 caracteres",
       ],
 
-      estadoRules: [
-        (v) => !!v || "Estado Requerido"
-      ],
+      estadoRules: [(v) => !!v || "Estado Requerido"],
 
-      passwordRules: [
-        (v) => !!v || "Senha Requerida",
-        (v) => v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
-        (v) =>
-          /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(
-            v
-          ) ||
+      // passwordRules: [
+      //   (v) => !!v || "Senha Requerida",
+      //   (v) => v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
+      //   (v) =>
+      //     /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(
+      //       v
+      //     ) ||
+      //     "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
+      // ],
+      senhaRules: {
+        senhaRequired: (value) => !!value || "Senha requerida",
+        repSenhaRequired: (value) => !!value || "Repetir senha requerida",
+        senhaMin: (v) =>
+          v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
+        repSenhaMin: (v) =>
+          v.length >= 8 || "Repetir senha deve ter pelo menos 8 caracteres",
+        confirmSenha: (v) => v === this.senha || "Senhas não coincidem",
+        senhaComplexa: (v) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(v) ||
           "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
-      ],
-
-      confirmPasswordRules: [
-        (v) => !!v || "Repetir Senha Requerida",
-        (v) => v === this.password || "Senhas não coincidem",
-      ],
-      items: [
-        'SC',
-        'SP',
-        'RJ',
-        'PR',
-        'RS',
-        'RN'
-      ]
+      },
+      items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
+                'CE', 'DF', 'ES', 'GO', 'MA',
+                'MT', 'MS', 'MG', 'PA', 'PB',
+                'PR', 'PE', 'PI', 'RJ', 'RN',
+                'RS', 'RO', 'RR', 'SC', 'SP',
+                'SE', 'TO'],
     };
   },
   methods: {
     async enviarCadastro() {
+      this.cpf = this.limparMascaraValores(this.cpf);
+      this.phone = this.limparMascaraValores(this.phone);
+      this.cellphone = this.limparMascaraValores(this.cellphone);
       try {
-        const response = await axios.post('http://localhost:4000/candidato/create', {
-          nomeSocial: this.nomeSocial,
-          nomeCompleto: this.nomeCompleto,
-          email: this.email,
-          phone: this.phone,
-          cellphone: this.cellphone,
-          cpf: this.cpf,
-          cep: this.cep,
-          rua: this.rua,
-          numCasa: this.numCasa,
-          complemento: this.complemento,
-          bairro: this.bairro,
-          cidade: this.cidade,
-          estado: this.estado,
-          password: this.password,
-        });
+        const response = await axios.post(
+          "http://localhost:4000/candidato/create",
+          {
+            nomeSocial: this.nomeSocial,
+            nomeCompleto: this.nomeCompleto,
+            email: this.email,
+            phone: this.phone,
+            cellphone: this.cellphone,
+            cpf: this.cpf,
+            cep: this.cep,
+            rua: this.rua,
+            numCasa: this.numCasa,
+            complemento: this.complemento,
+            bairro: this.bairro,
+            cidade: this.cidade,
+            estado: this.estado,
+            password: this.senha,
+          }
+        );
 
         this.resposta = true;
-        console.log('Cadastro bem-sucedido', response.data);
-        document.getElementById('btnAlertaCadastro').click();
-
+        console.log("Cadastro bem-sucedido", response.data);
+        document.getElementById("btnAlertaCadastro").click();
       } catch (error) {
         this.resposta = false;
-        console.error('Erro no cadastro', error.response.data.error);
+        console.error("Erro no cadastro", error.response.data.error);
         this.mensagemErro = error.response.data.error;
-        document.getElementById('btnAlertaCadastro').click();
+        document.getElementById("btnAlertaCadastro").click();
       }
     },
+    limparMascaraValores(valor) {
+      if (valor !== "") {
+        valor = valor.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
+      }
+
+      return valor;
+    },
+    async retornarInformacoesCep(){
+      if(this.cep !== "" && this.cep.length === 8) {
+        try {
+          const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
+          this.rua = response.data.street,
+          this.bairro = response.data.neighborhood,
+          this.cidade = response.data.city,
+          this.estado = response.data.state
+        }
+        catch (error) {
+          console.log("Houve um erro ao validar o CEP. Erro: ", error);
+          alert("Erro ao processar o CEP. Envie um cep válido ou tente novamente.")
+        }
+      }
+    }
   },
 };
 </script>

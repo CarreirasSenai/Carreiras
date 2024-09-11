@@ -41,6 +41,7 @@
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
                     <v-text-field
+                      v-mask="'(##) ####-####'"
                       v-model="telefone"
                       :rules="telefoneRules"
                       label="Telefone"
@@ -50,6 +51,7 @@
                   </v-col>
                   <v-col cols="12" sm="3" md="3" lg="3">
                     <v-text-field
+                      v-mask="'(##) #####-####'"
                       v-model="celular"
                       :rules="celularRules"
                       label="Celular"
@@ -61,6 +63,8 @@
               <v-row>
                 <v-col cols="12" sm="3" md="3" lg="3">
                    <v-text-field
+                      v-mask="'##.###.###/####-##'"
+                      maxlength="18"
                       v-model="cnpj"
                       :rules="cnpjRules"
                       label="CNPJ"
@@ -79,11 +83,14 @@
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
                    <v-text-field
+                      v-mask="'########'"
+                      maxlength="8"
                       v-model="cep"
                       :rules="cepRules"
                       label="CEP"
                       bg-color="#F7F7F7"
                       density="compact"
+                      @blur="retornarInformacoesCep"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="2" md="2" lg="2">
@@ -163,32 +170,41 @@
                     ></v-text-field>
                 </v-col>
                 <v-row>
-                  <v-col cols="12" sm="6" md="6" lg="6">
+                  <v-col cols="11" sm="4" md="4" lg="4">
                       <v-text-field
                         v-model="contatoRA"
                         :rules="contatoRARules"
                         label="Contato RA"
-
                         bg-color="#F7F7F7"
                         density="compact"
                       ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="3" md="3" lg="3">
+                  <v-col cols="11" sm="4" md="4" lg="4">
                     <v-text-field
-                      v-model="senha"
-                      :rules="senhaRules"
+                       v-model="senha"
+                      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[senhaRules.senhaRequired, senhaRules.senhaMin]"
+                      :type="showPassword ? 'text' : 'password'"
+                      class="input-group--focused"
                       label="Senha"
-                      bg-color="#F7F7F7"
+                      name="senha"
+                      counter
+                      @click:append="showPassword = !showPassword"
                       density="compact"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="3" md="3" lg="3">
+                  <v-col cols="11" sm="4" md="4" lg="4">
                     <v-text-field
                       v-model="repSenha"
-                      :rules="repSenhaRules"
+                      :append-icon="showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[senhaRules.repSenhaRequired, senhaRules.repSenhaMin, senhaRules.confirmSenha]"
+                      :type="showRePassword ? 'text' : 'password'"
+                      class="input-group--focused"
                       label="Repetir senha"
-                      bg-color="#F7F7F7"
+                      name="rep-senha"
+                      counter
                       density="compact"
+                      @click:append="showRePassword = !showRePassword"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -208,6 +224,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -230,21 +248,28 @@ export default {
       contatoRA: '',
       senha: '',
       repSenha: '',
+      showPassword: false,
+      showRePassword: false,
+      senhaRules: {
+          senhaRequired: value => !!value || 'Senha requerida',
+          repSenhaRequired: value => !!value || 'Repetir senha requerida',
+          senhaMin: v => v.length >= 8 || 'Senha deve ter pelo menos 8 caracteres',
+          repSenhaMin: v => v.length >= 8 || 'Repetir senha deve ter pelo menos 8 caracteres',
+          confirmSenha: (v) => v === this.senha && v.length === this.senha.length || "Senhas não coincidem"
+      },
       razaoSocialRules: [(v) => !!v || 'Razão social requerida'],
       nomeFantasiaRules: [(v) => !!v || 'Nome fantasia requerido'],
       emailRules: [(v) => !!v || 'E-mail requerido',
         (v) => /.+@.+\..+/.test(v) || 'E-mail precisa ser válido',
         (v) => v.length <= 254 || "E-mail deve ter no máximo 254 caracteres"],
       telefoneRules: [(v) => !!v || 'Telefone requerido',
-        (v) => v.length >= 10 || "Telefone deve ter pelo menos 10 caracteres"],
+        (v) => v.length == 14 || "Telefone deve ter pelo menos 14 caracteres"],
       celularRules: [(v) => !!v || 'Celular requerido',
-        (v) => v.length >= 10 || "Celular deve ter pelo menos 10 caracteres"],
-      cnpjRules: [(v) => !!v || 'CNPJ requerido',
-        (v) => /^\d+$/.test(v) || "CNPJ deve conter apenas números"],
+        (v) => v.length == 15 || "Celular deve ter pelo menos 15 caracteres"],
+      cnpjRules: [(v) => !!v || 'CNPJ requerido'],
       inscricaoEstadualRules: [(v) => !!v || 'Inscrição estadual requerida'],
       cepRules: [(v) => !!v || 'CEP requerido',
-        (v) => v.length === 8 || "CEP deve ter 8 caracteres",
-        (v) => /^\d+$/.test(v) || "CEP deve conter apenas números",],
+        (v) => v.length === 8 || "CEP deve ter 8 caracteres"],
       numeroRules: [(v) => !!v || 'Número requerido', 
       (v) => v.length >= 1 || "Nº Casa deve ter pelo menos 1 caractere",],
       enderecoRules: [(v) => !!v || "Endereço Requerido",
@@ -259,18 +284,38 @@ export default {
       estadoRules: [(v) => !!v || 'Estado requerido'],
       responsavelLegalRules: [(v) => !!v || 'Responsável legal requerido'],
       responsavelAdmRules: [(v) => !!v || 'Responsável administrativo requerido'],
-      senhaRules: [(v) => !!v || 'Senha requerida'],
-      repSenhaRules: [(v) => !!v || 'Repetir senha requerido'],
-      items: [
-        'Amazonas', 
-        'Amapá',
-        'Santa Catarina', 
-        'Paraná', 
-        'Rio Grande do Sul', 
-        'São Paulo'
-      ]
+      items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
+                'CE', 'DF', 'ES', 'GO', 'MA',
+                'MT', 'MS', 'MG', 'PA', 'PB',
+                'PR', 'PE', 'PI', 'RJ', 'RN',
+                'RS', 'RO', 'RR', 'SC', 'SP',
+                'SE', 'TO'],
     };
   },
+  methods: {
+    async retornarInformacoesCep(){
+      if(this.cep !== "" && this.cep.length === 8) {
+        try {
+          const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
+          this.endereco = response.data.street,
+          this.bairro = response.data.neighborhood,
+          this.cidade = response.data.city,
+          this.estado = response.data.state
+        }
+        catch (error) {
+          console.log("Houve um erro ao validar o CEP. Erro: ", error);
+          alert("Erro ao processar o CEP. Envie um cep válido ou tente novamente.")
+        }
+      }
+    },
+    limparMascaraValores(valor) {
+      if (valor !== "") {
+        valor = valor.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
+      }
+
+      return valor;
+    }
+  }
 };
 </script>
 

@@ -33,6 +33,7 @@ import App from './App.vue';
 import router from './router';
 import vuetify from './plugins/vuetify'; // Importa a configuração do Vuetify
 import { i18n } from './plugins/i18n'; // Importa a configuração do i18n
+import VueTheMask from 'vue-the-mask';
 import './styles/keyframes.css';
 
 const pinia = createPinia();
@@ -43,6 +44,7 @@ app.use(router);
 app.use(vuetify);
 app.use(pinia);
 app.use(i18n);
+app.use(VueTheMask);
 
 app.mount('#app');
 

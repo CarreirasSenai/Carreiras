@@ -10,7 +10,11 @@
                 <h1 class="text-center ma-5">Faça o Login</h1>
 
                 <v-text-field v-model="email" label="E-mail" type="email"></v-text-field>
-                <v-text-field v-model="password" label="Senha" type="password"></v-text-field>
+                <v-text-field v-model="password" 
+                :append-icon= "showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword ? 'text' : 'password'"
+                @click:append="showPassword = !showPassword" 
+                label="Senha"></v-text-field>
 
                 <div class="text-center text-red d-none mb-4" id="aviso-invalido">Email ou senha inválidos.</div>
 
@@ -46,6 +50,7 @@ export default {
         (v) => /.+@.+\..+/.test(v) || 'E-mail deve ser válido',
       ],
       password: '12345678Ww@',
+      showPassword: false,
       passwordRules: [(v) => !!v || 'Senha requerida'],
       resposta: this.$route.query.resposta,
     };
@@ -84,7 +89,4 @@ export default {
 </script>
 
 <style scoped>
-* {
-  /* border: 1px solid red; */
-}
 </style>
