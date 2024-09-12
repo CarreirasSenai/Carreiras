@@ -28,7 +28,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
 
-                        <v-btn text="Limpar" variant="plain" @click="form.foto = null, form.capa = null"
+                        <v-btn text="Remover" variant="plain" @click="submitDelete"
                             class="border-red-accent-4"></v-btn>
                         <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
                         <v-btn text="Salvar" color="Enviar" variant="tonal" type="submit"
@@ -60,6 +60,41 @@ export default {
     },
     methods: {
         async submit(event) {
+            console.clear();
+            console.log(this.form);
+
+            const dados = await event;
+
+            // alert(JSON.stringify(dados, null, 2))
+
+            const foto = this.form.foto === null ? this.user.dadosUser.foto : this.form.foto;
+            const capa = this.form.capa === null ? this.user.dadosUser.capa : this.form.capa;
+
+            if (dados.valid === true) {
+                const formData = new FormData();
+                formData.append('foto', foto);
+                formData.append('capa', capa);
+
+                try {
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/perfil/update`, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        },
+                        withCredentials: true
+                    });
+
+                    console.log(response.data);
+                    this.dialog = false;
+                    this.user.userLogado();
+
+                } catch (error) {
+                    console.error('Erro', error.response.data);
+                }
+            }
+
+        },
+
+        async submitDelete(event) {
             console.clear();
             console.log(this.form);
 

@@ -34,18 +34,3 @@ exports.perfilUpdate = (fotoNome, capaNome, grupo, id, callback) => {
         }
     });
 };
-
-
-// exports.perfilRead = (id, grupo, callback) => {
-//     db.query(`select * from perfil where id_${grupo} = ?`, [id], (err, rows) => {
-//         if (err) {
-//             console.log(err.message);
-//             return callback(err.message, null);
-
-//         } else if (rows.length > 0) {
-
-//             console.log(rows[0]);
-//             return callback(null, rows[0]);
-//         }
-//     });
-// }

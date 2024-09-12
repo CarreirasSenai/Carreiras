@@ -1,9 +1,9 @@
 <template>
     <div class="div-capa-foto">
-        <img class="capa" src="/src/assets/capa (1).png">
+        <img class="capa" :src="user.user.capa">
         <div class="pos-capa"></div>
-        <div class="div-foto-perfil">
-            <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
+        <div class="div-foto-perfil text-center">
+            <img :src="user.user.foto" class="foto-perfil" alt="Foto de Perfil">
             <h3 class="cor-primaria">{{ user.dadosUser.nome_completo }}</h3>
             <h4 class="text-grey-darken-2"> {{ user.dadosUser.profissao }} </h4>
             <MenuEditarCandidato style="height: 20px !important;" class="d-flex align-center" />
@@ -17,10 +17,6 @@ import { useCandidatoStore } from '@/stores/candidato';
 export default {
     data: () => ({
         dialog: false,
-        form: {
-            foto: null,
-            capa: null
-        }
     }),
     mounted() {
         const user = useCandidatoStore();

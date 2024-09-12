@@ -7,10 +7,10 @@ exports.perfilUpdate = (req, res) => {
         return res.status(400).send('Nenhum arquivo foi enviado.');
     }
 
-    // const id = req.session.usuario.id;
-    // const grupo = req.session.usuario.grupo;
-    const id = 1;
-    const grupo = 'candidato';
+    const id = req.session.usuario.id;
+    const grupo = req.session.usuario.grupo;
+    // const id = 1;
+    // const grupo = 'candidato';
     const foto = req.files.foto; // Acessa a foto
     const capa = req.files.capa; // Acessa a capa
 
@@ -40,18 +40,3 @@ exports.perfilUpdate = (req, res) => {
         }
     });
 };
-
-// exports.perfilRead = (req, res) => {
-//     // const id = req.session.usuario.id;
-//     // const grupo = req.session.usuario.grupo;
-//     const id = 1;
-//     const grupo = 'candidato';
-
-//     Perfil.perfilRead(id, grupo, (err, result) => {
-//         if (err) {
-//             return res.status(500).json({ error: err.message });
-//         } else if (result) {
-//             return res.status(200).json({ sucess: true, perfil: result });
-//         }
-//     });
-// }

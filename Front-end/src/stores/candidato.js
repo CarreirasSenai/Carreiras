@@ -7,15 +7,18 @@ export const useCandidatoStore = defineStore('candidato', {
         user: {
             initials: '',
             fullName: '',
-            email: ''
+            email: '',
+            foto: '',
+            capa: '',
         },
         visibilidadeNaoLogado: true,
         visibilidadeLogado: false,
+        dadosUser: '',
         router: useRouter(),
-        dadosUser: ''
     }),
     actions: {
         async userLogado() {
+            console.clear();
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidato/read`, {
                     withCredentials: true
@@ -24,6 +27,10 @@ export const useCandidatoStore = defineStore('candidato', {
                 this.user.initials = this.extrairIniciais(response.data.usuario.nome_completo);
                 this.user.fullName = response.data.usuario.nome_completo;
                 this.user.email = response.data.usuario.email;
+
+                this.user.foto = response.data.usuario.foto === null ? '/src/assets/avatar.png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${response.data.usuario.foto}`;
+                this.user.capa = response.data.usuario.capa === null ? '/src/assets/capa (1).png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${response.data.usuario.capa}`;
+
                 this.visibilidadeNaoLogado = false;
                 this.visibilidadeLogado = true;
 
@@ -34,7 +41,12 @@ export const useCandidatoStore = defineStore('candidato', {
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
-                this.router.push('/');
+
+                // this.router.push('/');
+                if (this.visibilidadeNaoLogado === false) { // Deixe assim !!! 🙄
+                    window.location.href = '/';
+                }
+
             }
         },
         extrairIniciais(nomeCompleto) {
