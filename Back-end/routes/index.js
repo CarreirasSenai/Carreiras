@@ -17,6 +17,9 @@ router.post('/candidato/create', Candidato.createUser);
 router.post('/candidato/update', Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
 
+// rotas empresa
+router.post('/empresa/create'); 
+
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);
 
