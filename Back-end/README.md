@@ -28,3 +28,4 @@ Tratamento de Erros:
 500: INTERNAL SERVER ERROR.
 
 // modificações feita no db (area e profissao)
+// o perfil deve ser criado na hora da criação do usuario, assim só sera preciso fazer o update do perfil

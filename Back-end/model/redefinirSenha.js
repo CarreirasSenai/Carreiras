@@ -14,13 +14,13 @@ exports.validaUser = (email, grupo, callback) => {
     });
 }
 
-exports.redefinirSenha = (dados, senha, dataAtu, callback) => {
+exports.redefinirSenha = (dados, senha, callback) => {
     console.log('\nRedefinir Senha Model');
 
     const id = dados.id;
     const grupo = dados.grupo;
 
-    db.query(`update user_${grupo} set senha = ?, data_atu = ? where id = ?`, [senha, dataAtu, id], (err, result) => {
+    db.query(`update user_${grupo} set senha = ? where id = ?`, [senha, id], (err, result) => {
 
         if (err) {
             console.log(err);

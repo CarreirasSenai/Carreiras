@@ -29,7 +29,7 @@ export const useCandidatoStore = defineStore('candidato', {
 
                 console.log('Usuário autenticado!');
 
-                this.dadosUser = response.data;
+                this.dadosUser = response.data.usuario;
                 console.log("Dados do User: ", this.dadosUser);
 
             } catch (error) {

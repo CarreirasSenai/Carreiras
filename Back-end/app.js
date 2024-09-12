@@ -22,6 +22,9 @@ app.use(cors({
   credentials: true // Permitir envio de cookies
 }));
 
+//habilitando upload de arquivos
+app.use(fileupload());
+
 // Configura o body-parser para analisar application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -34,9 +37,6 @@ app.set('view engine', 'ejs');
 // Configura o Express.js para servir arquivos estáticos da pasta 'public'
 //app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
-
-//habilitando upload de arquivos
-app.use(fileupload());
 
 // Use suas rotas
 app.use('/', routes);

@@ -1,7 +1,6 @@
 const transporter = require('../services/nodemailer');
 const RedefinirSenha = require('../model/redefinirSenha');
 const bcrypt = require('bcrypt');
-const DataHora = require('../services/dataHora');
 
 exports.enviarCodigo = (req, res) => {
     // Recebe o email da requisição
@@ -99,10 +98,7 @@ exports.redefinirSenha = async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(novaSenha, saltRounds);
 
-    // Hora e data da atualização
-    const dataAtu = DataHora.dataHora();
-
-    RedefinirSenha.redefinirSenha(dados, hashedPassword, dataAtu, (err, result) => {
+    RedefinirSenha.redefinirSenha(dados, hashedPassword, (err, result) => {
         if (err) {
             console.log(err.message);
             return res.status(500).json({ error: err.message });

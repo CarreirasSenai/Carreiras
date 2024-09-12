@@ -1,12 +1,10 @@
 const Formacao = require('../model/formacoes');
-const DataHora = require('../services/dataHora');
 
 exports.formacaoCreate = (req, res) => {
     const id = req.session.usuario.id;
     const dados = req.body;
-    const dataAtu = DataHora.dataHora();
 
-    Formacao.formacaoCreate(id, dados, dataAtu, (err, result) => {
+    Formacao.formacaoCreate(id, dados, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else if (result) {
@@ -43,9 +41,8 @@ exports.formacaoDelete = (req, res) => {
 
 exports.formacaoUpdate = (req, res) => {
     const { dados } = req.body;
-    const dataAtu = DataHora.dataHora();
 
-    Formacao.formacaoUpdate(dados, dataAtu, (err, result) => {
+    Formacao.formacaoUpdate(dados, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else if (result) {

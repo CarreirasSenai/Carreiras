@@ -140,22 +140,22 @@ import listaSegmentos from '@/assets/segmentos.json';
 export default {
     data() {
         return {
-            id: useCandidatoStore().dadosUser.usuario.id,
-            nomeSocial: useCandidatoStore().dadosUser.usuario.nome_social,
-            nomeCompleto: useCandidatoStore().dadosUser.usuario.nome_completo,
-            email: useCandidatoStore().dadosUser.usuario.email,
-            phone: useCandidatoStore().dadosUser.usuario.telefone,
-            cellphone: useCandidatoStore().dadosUser.usuario.celular,
-            cpf: useCandidatoStore().dadosUser.usuario.cpf,
-            cep: useCandidatoStore().dadosUser.usuario.cep,
-            rua: useCandidatoStore().dadosUser.usuario.rua,
-            numCasa: useCandidatoStore().dadosUser.usuario.numero,
-            complemento: useCandidatoStore().dadosUser.usuario.complemento,
-            bairro: useCandidatoStore().dadosUser.usuario.bairro,
-            cidade: useCandidatoStore().dadosUser.usuario.cidade,
-            estado: useCandidatoStore().dadosUser.usuario.estado,
-            area: useCandidatoStore().dadosUser.usuario.area,
-            profissao: useCandidatoStore().dadosUser.usuario.profissao,
+            id: useCandidatoStore().dadosUser.id,
+            nomeSocial: useCandidatoStore().dadosUser.nome_social,
+            nomeCompleto: useCandidatoStore().dadosUser.nome_completo,
+            email: useCandidatoStore().dadosUser.email,
+            phone: useCandidatoStore().dadosUser.telefone,
+            cellphone: useCandidatoStore().dadosUser.celular,
+            cpf: useCandidatoStore().dadosUser.cpf,
+            cep: useCandidatoStore().dadosUser.cep,
+            rua: useCandidatoStore().dadosUser.rua,
+            numCasa: useCandidatoStore().dadosUser.numero,
+            complemento: useCandidatoStore().dadosUser.complemento,
+            bairro: useCandidatoStore().dadosUser.bairro,
+            cidade: useCandidatoStore().dadosUser.cidade,
+            estado: useCandidatoStore().dadosUser.estado,
+            area: useCandidatoStore().dadosUser.area,
+            profissao: useCandidatoStore().dadosUser.profissao,
             isDisabled: false,
             dialog: false,
             modalDelete: false,
@@ -288,6 +288,8 @@ export default {
                 this.mensagem = 'Cadastro atualizado com Sucesso!';
                 this.color = 'success';
                 this.snackbar = true;
+
+                this.user.userLogado(); 
 
                 console.info('%cAtualização bem-sucedida ✔👌', 'color: lightgreen; padding: 20px 0;', response.data);
 

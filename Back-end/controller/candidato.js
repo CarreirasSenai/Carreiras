@@ -1,5 +1,4 @@
 const Candidato = require('../model/candidato');
-const DataHora = require('../services/dataHora');
 const bcrypt = require('bcrypt');
 
 // Create
@@ -10,10 +9,9 @@ exports.createUser = async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const dataAtu = DataHora.dataHora();
     const grupo = 'candidato';
 
-    Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, hashedPassword, area, profissao, grupo, dataAtu, (err, insertId) => {
+    Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, hashedPassword, area, profissao, grupo, (err, insertId) => {
         if (err) {
             console.log(err.message);
             return res.status(500).json({ error: err.message });
@@ -76,15 +74,14 @@ exports.getUser = (req, res) => {
 };
 
 // Update
-exports.updateUser = async (req, res) => {
+exports.updateUser = (req, res) => {
     const { id, nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao } = req.body;
     console.log('\n updateUser:');
     console.log(req.body);
 
-    const dataAtu = DataHora.dataHora();
     const grupo = 'candidato';
 
-    Candidato.updateUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, dataAtu, id, (err, success) => {
+    Candidato.updateUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, (err, success) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }

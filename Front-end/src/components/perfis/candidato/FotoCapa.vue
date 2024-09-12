@@ -4,16 +4,34 @@
         <div class="pos-capa"></div>
         <div class="div-foto-perfil">
             <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
-            <h3 class="cor-primaria">Nome do Elemento</h3>
-            <h4 class="text-grey-darken-2">Desenvolvedor Full Stack</h4>       
-            <MenuEditarCandidato style="height: 20px !important;" class="d-flex align-center"/>     
+            <h3 class="cor-primaria">{{ user.dadosUser.nome_completo }}</h3>
+            <h4 class="text-grey-darken-2"> {{ user.dadosUser.profissao }} </h4>
+            <MenuEditarCandidato style="height: 20px !important;" class="d-flex align-center" />
         </div>
     </div>
 </template>
 
 <script>
-import MenuEditarCandidato from './MenuEditarCandidato.vue';
+import { useCandidatoStore } from '@/stores/candidato';
 
+export default {
+    data: () => ({
+        dialog: false,
+        form: {
+            foto: null,
+            capa: null
+        }
+    }),
+    mounted() {
+        const user = useCandidatoStore();
+        user.userLogado();
+    },
+    computed: {
+        user() {
+            return useCandidatoStore();
+        }
+    },
+}
 </script>
 
 <style lang="scss" scoped>

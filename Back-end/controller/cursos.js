@@ -1,12 +1,10 @@
 const Curso = require('../model/cursos');
-const DataHora = require('../services/dataHora');
 
 exports.cursoCreate = (req, res) => {
     const id = req.session.usuario.id;
     const dados = req.body;
-    const dataAtu = DataHora.dataHora();
 
-    Curso.cursoCreate(id, dados, dataAtu, (err, result) => {
+    Curso.cursoCreate(id, dados, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else if (result) {
@@ -43,9 +41,8 @@ exports.cursoDelete = (req, res) => {
 
 exports.cursoUpdate = (req, res) => {
     const { dados } = req.body;
-    const dataAtu = DataHora.dataHora();
 
-    Curso.cursoUpdate(dados, dataAtu, (err, result) => {
+    Curso.cursoUpdate(dados, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else if (result) {

@@ -27,13 +27,14 @@ router.delete('/formacao/delete/:id', authMiddleware, Formacao.formacaoDelete);
 router.put('/formacao/update/', authMiddleware, Formacao.formacaoUpdate);
 
 // rotas cursos
-router.post('/curso/create',  Curso.cursoCreate);
-router.get('/curso/read',  Curso.cursoRead);
-router.delete('/curso/delete/:id',  Curso.cursoDelete);
-router.put('/curso/update/',  Curso.cursoUpdate);
+router.post('/curso/create', authMiddleware, Curso.cursoCreate);
+router.get('/curso/read', authMiddleware, Curso.cursoRead);
+router.delete('/curso/delete/:id', authMiddleware, Curso.cursoDelete);
+router.put('/curso/update/', authMiddleware, Curso.cursoUpdate);
 
 // rotas perfil
-router.post('/perfil/create',  Perfil.createPerfil);
+router.put('/perfil/update', Perfil.perfilUpdate);
+// router.get('/perfil/read', Perfil.perfilRead);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);

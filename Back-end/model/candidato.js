@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 // Create
-exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao, grupo, dataAtu, callback) => {
+exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao, grupo, callback) => {
 
     // Verificar se o email já existe
     db.query('SELECT * FROM user_candidato WHERE email = ?', [email], (err, results) => {
@@ -25,8 +25,8 @@ exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
             }
 
             db.query(
-                'INSERT INTO user_candidato (nome_social, nome_completo, email, telefone, celular, cpf, cep, rua, numero, complemento, bairro, cidade, estado, senha, area, profissao, grupo, data_atu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao, grupo, dataAtu],
+                'INSERT INTO user_candidato (nome_social, nome_completo, email, telefone, celular, cpf, cep, rua, numero, complemento, bairro, cidade, estado, senha, area, profissao, grupo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao, grupo],
                 (err, result) => {
 
                     if (err) {
@@ -64,7 +64,7 @@ exports.getLogin = (email, callback) => {
 };
 
 // Update
-exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, dataAtu, id, callback) => {
+exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, callback) => {
     db.query(`UPDATE user_candidato 
         SET nome_social = ?, 
         nome_completo = ?, 
@@ -81,10 +81,9 @@ exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
         estado = ?,
         area = ?,
         profissao = ?, 
-        grupo = ?, 
-        data_atu = ?
+        grupo = ?
         WHERE id = ?`,
-        [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, dataAtu, id], (err, result) => {
+        [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id], (err, result) => {
             if (err) {
                 console.log(err);
                 return callback(err, null);

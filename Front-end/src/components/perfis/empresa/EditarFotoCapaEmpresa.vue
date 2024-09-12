@@ -6,36 +6,98 @@
                 <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0">Editar Foto e Capa</v-btn>
             </template>
 
-            <v-card title="Editar Foto e Capa">
-                <v-card-text>
-                    <v-row dense>
-                        <v-col cols="12" md="12">
-                            <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp"
-                                label="Foto de perfil" placeholder="Foto de perfil" prepend-icon="mdi-camera">
-                            </v-file-input>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp" label="Foto de capa"
-                                placeholder="Foto de capa" prepend-icon="mdi-camera">
-                            </v-file-input>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
+            <v-form @submit.prevent="submit">
+                <v-card title="Editar Foto e Capa">
+                    <v-card-text>
+                        <v-row dense>
+                            <v-col cols="12" md="12">
+                                <v-file-input v-model="form.foto" accept="image/png, image/jpeg, image/bmp"
+                                    label="Foto de perfil" placeholder="Foto de perfil" prepend-icon="mdi-camera">
+                                </v-file-input>
+                            </v-col>
+                            <v-col cols="12" md="12">
+                                <v-file-input v-model="form.capa" accept="image/png, image/jpeg, image/bmp"
+                                    label="Foto de capa" placeholder="Foto de capa" prepend-icon="mdi-camera">
+                                </v-file-input>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
 
-                <v-divider></v-divider>
+                    <v-divider></v-divider>
 
-                <v-card-actions>
-                    <v-spacer></v-spacer>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
 
-                    <v-btn text="Limpar" variant="plain" @click="dialog = false" class="border-red-accent-4"></v-btn>
-                    <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
-                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false"
-                        class="bg-purple-darken-4"></v-btn>
-                </v-card-actions>
-            </v-card>
+                        <v-btn text="Limpar" variant="plain" @click="form.foto = null, form.capa = null"
+                            class="border-red-accent-4"></v-btn>
+                        <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
+                        <v-btn text="Salvar" color="Enviar" variant="tonal" type="submit"
+                            class="bg-purple-darken-4"></v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-form>
         </v-dialog>
     </div>
 </template>
+
+
+<script>
+import { usePerfilStore } from '@/stores/perfil';
+import axios from 'axios';
+
+export default {
+    data: () => ({
+        dialog: false,
+        form: {
+            foto: null,
+            capa: null,
+            descricao: ''
+        }
+    }),
+    computed: {
+        perfil() {
+            return usePerfilStore();
+        }
+    },
+    methods: {
+        async submit(event) {
+            console.clear();
+            const dados = await event;
+
+            // alert(JSON.stringify(dados, null, 2))
+
+            const foto = this.form.foto === null ? this.perfil.dados.foto : this.form.foto;
+            const capa = this.form.capa === null ? this.perfil.dados.capa : this.form.capa;
+            const descricao = this.form.descricao === null ? this.perfil.dados.descricao : this.form.descricao;
+
+            if (dados.valid === true) {
+                const formData = new FormData();
+                formData.append('foto', foto);
+                formData.append('capa', capa);
+                formData.append('descricao', descricao);
+
+                try {
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/perfil/update`, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        },
+                        withCredentials: true
+                    });
+
+                    console.log(response.data);
+                    this.dialog = false;
+                    this.perfil.mostrarPerfil();
+                
+                } catch (error) {
+                    console.error('Erro', error.response.data);
+                }
+            }
+
+        }
+    }
+
+}
+</script>
 
 <style lang="scss" scoped>
 .mdi {
@@ -56,22 +118,3 @@
     top: 115px;
 }
 </style>
-
-<script>
-import profissoes from '@/assets/profissoes.json';
-
-export default {
-    data: () => ({
-        dialog: false,
-        profissoes: profissoes,
-    }),
-    methods: {
-        // Função para filtrar profissões com base na entrada do usuário
-        filterProfissoes(item, queryText) {
-            // Converte o item e a consulta para minúsculas para comparação
-            const query = queryText.toLowerCase();
-            return item.toLowerCase().includes(query);
-        }
-    }
-}
-</script>

@@ -1,10 +1,10 @@
 <template>
     <div class="div-capa-foto rounded-b-xl elevation-2" id="foto-capa">
-        <img class="capa" src="/src/assets/capa (1).png">
+        <img class="capa" :src="perfil.form.capa">
         <div class="pos-capa">
             <div class="div-foto-perfil">
                 <div class="position-relative">
-                    <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
+                    <img :src="perfil.form.foto" class="foto-perfil" alt="Foto de Perfil">
                 </div>
                 <div>
                     <h3 class="cor-primaria">Nome da Empresa</h3>
@@ -12,21 +12,30 @@
                     <MenuEditarEmpresa style="height: 20px !important;" class="d-flex align-center" />
                 </div>
             </div>
-            <div class="descricao text-grey-darken-4 pb-5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea
-                commodo consequat. et dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris
-                nisi ut aliquip ex ea commodo consequat. et dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            <div class="descricao text-grey-darken-4 pb-5" style="min-height: 200px;">
+                {{ perfil.form.descricao }}
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import MenuEditarEmpresa from './MenuEditarEmpresa.vue';
+import { usePerfilStore } from '@/stores/perfil';
+
+export default {
+    data: () => ({
+        dialog: false,
+    }),
+    computed: {
+        perfil() {
+            return usePerfilStore();
+        }
+    },
+    mounted() {
+        const perfil = this.perfil;
+        perfil.mostrarPerfil();
+    },
+}
 </script>
 
 <style lang="scss" scoped>

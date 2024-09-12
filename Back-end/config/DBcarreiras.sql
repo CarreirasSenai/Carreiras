@@ -1,3 +1,7 @@
+create database carreiras;
+
+use carreiras;
+
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: carreiras
@@ -23,14 +27,14 @@ DROP TABLE IF EXISTS `agendamento`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `agendamento` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT, 
   `titulo` varchar(100) NOT NULL,
   `vaga` varchar(45) NOT NULL,
   `data` date NOT NULL,
   `hora` time NOT NULL,
   `id_empresa` int NOT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
   KEY `id_candidato` (`id_candidato`),
@@ -62,7 +66,7 @@ CREATE TABLE `curso` (
   `inicio` varchar(7) NOT NULL,
   `termino` varchar(7) NOT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
   CONSTRAINT `curso_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
@@ -95,7 +99,7 @@ CREATE TABLE `experiencia` (
   `inicio` varchar(7) NOT NULL,
   `termino` varchar(7) NOT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
   CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
@@ -126,7 +130,7 @@ CREATE TABLE `formacao` (
   `inicio` varchar(7) DEFAULT NULL,
   `termino` varchar(7) DEFAULT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
   CONSTRAINT `formacao_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
@@ -154,7 +158,7 @@ CREATE TABLE `habilidade` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
   CONSTRAINT `habilidade_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
@@ -184,7 +188,7 @@ CREATE TABLE `mensagem` (
   `envio` datetime NOT NULL,
   `id_empresa` int NOT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
   KEY `id_candidato` (`id_candidato`),
@@ -216,7 +220,7 @@ CREATE TABLE `perfil` (
   `capa` text,
   `id_candidato` int DEFAULT NULL,
   `id_empresa` int DEFAULT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `perfil_ibfk_1` (`id_candidato`),
   KEY `perfil_ibfk_2` (`id_empresa`),
   CONSTRAINT `perfil_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE,
@@ -249,7 +253,7 @@ CREATE TABLE `user_admin` (
   `senha` varchar(250) NOT NULL,
   `celular` varchar(20) DEFAULT NULL,
   `grupo` varchar(5) NOT NULL,
-  `data_atu` datetime DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -289,7 +293,7 @@ CREATE TABLE `user_candidato` (
   `area` varchar(150) NOT NULL,
   `profissao` varchar(200) DEFAULT NULL,
   `grupo` varchar(9) NOT NULL,
-  `data_atu` datetime DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `cpf` (`cpf`)
@@ -334,8 +338,10 @@ CREATE TABLE `user_empresa` (
   `contato_responsavel` varchar(20) DEFAULT NULL,
   `senha` varchar(250) NOT NULL,
   `grupo` varchar(7) NOT NULL,
-  `data_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cnpj` (`cnpj`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -368,7 +374,7 @@ CREATE TABLE `vagas` (
   `habilidades_extras` text,
   `beneficios` text,
   `id_empresa` int NOT NULL,
-  `data_atu` datetime DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
   CONSTRAINT `vagas_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`) ON DELETE CASCADE
@@ -395,7 +401,7 @@ CREATE TABLE `vagas_candidatadas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_user` int NOT NULL,
   `id_vaga` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_user` (`id_user`),
   KEY `id_vaga` (`id_vaga`),
@@ -427,7 +433,7 @@ CREATE TABLE `vagas_etapas` (
   `data_termino` date NOT NULL,
   `id_vaga` int NOT NULL,
   `id_empresa` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_vaga` (`id_vaga`),
   KEY `id_empresa` (`id_empresa`),
