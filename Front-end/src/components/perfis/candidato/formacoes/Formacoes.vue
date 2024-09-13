@@ -18,6 +18,7 @@
                             <EditarFormacoes :MostrarFormacoes="mostrarFormacoes" :Formacoes="items" />
                         </v-card>
                     </v-col>
+                    <span v-if="!formacoes.length" class="ma-4">Adicione uma formação.</span>
                 </v-row>
                 <AdicionarFormacao :MostrarFormacoes="mostrarFormacoes" />
             </v-expansion-panel-text>

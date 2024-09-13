@@ -34,3 +34,15 @@ exports.perfilUpdate = (fotoNome, capaNome, grupo, id, callback) => {
         }
     });
 };
+
+exports.descricaoUpdate = (descricao, grupo, id, callback) => {
+    db.query(`update user_${grupo} set descricao = ? where id = ?`, [descricao, id], (err, result) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+        } else if (result) {
+            console.log(result);
+            return callback(null, result.affectedRows > 0);
+        }
+    });
+};

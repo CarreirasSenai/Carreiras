@@ -12,6 +12,7 @@ const RedefinirSenha = require('../controller/redefinirSenha');
 const Formacao = require('../controller/formacoes');
 const Curso = require('../controller/cursos');
 const Perfil = require('../controller/perfil');
+const Experiencia = require('../controller/experiencias');
 
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
@@ -19,6 +20,9 @@ router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
 router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
+
+// rotas perfil
+router.put('/perfil/update', Perfil.perfilUpdate);
 
 // rotas formacoes
 router.post('/formacao/create', authMiddleware, Formacao.formacaoCreate);
@@ -32,8 +36,11 @@ router.get('/curso/read', authMiddleware, Curso.cursoRead);
 router.delete('/curso/delete/:id', authMiddleware, Curso.cursoDelete);
 router.put('/curso/update/', authMiddleware, Curso.cursoUpdate);
 
-// rotas perfil
-router.put('/perfil/update', Perfil.perfilUpdate);
+// rotas experiencias
+router.post('/experiencia/create', Experiencia.experienciaCreate);
+router.get('/experiencia/read', Experiencia.experienciaRead);
+router.delete('/experiencia/delete/:id', Experiencia.experienciaDelete);
+// router.put('/experiencia/update/', Experiencia.e);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);

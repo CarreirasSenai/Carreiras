@@ -111,9 +111,7 @@ export default {
                     }, { withCredentials: true });
 
                     console.log(response.data);
-
                     this.dialog = false;
-
                     this.MostrarFormacoes();
 
                 } catch (error) {

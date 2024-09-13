@@ -65,17 +65,23 @@ export default {
     data: () => ({
         dialog: false,
         form: {
-            cargo: '',
-            empresa: '',
-            contrato: '',
+            cargo: 'Analista de Sistemas',
+            empresa: 'TOTVS',
+            contrato: 'CLT',
             atividades: ['Criação de Interfaces', 'Controle de Estoque', 'Gestão de Pessoas'],
-            inicio: '',
-            fim: ''
+            inicio: '2024-12',
+            fim: '2024-12'
         },
         rules: {
             geral: value => !!value || 'O campo é obrigatório.',
         }
     }),
+    props: {
+        MostrarExperiencias: {
+            type: Function,
+            required: true
+        }
+    },
     methods: {
         async submitCreate(event) {
             console.clear();
@@ -86,20 +92,18 @@ export default {
             if (dados.valid === true) {
                 console.log(this.form);
 
-                // try {
-                //     const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/curso/create`, {
-                //         dados: this.form,
-                //     }, { withCredentials: true });
+                try {
+                    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/experiencia/create`, {
+                        dados: this.form,
+                    }, { withCredentials: true });
 
-                //     console.log(response.data);
+                    console.log(response.data);
+                    this.dialog = false;
+                    this.MostrarExperiencias();
 
-                //     this.dialog = false;
-
-                //     this.MostrarFormacoes();
-
-                // } catch (error) {
-                //     console.error('Erro', error.response.data);
-                // }
+                } catch (error) {
+                    console.error('Erro', error.response.data);
+                }
             }
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="div-infos">
-        <v-expansion-panels v-model="panel">
+        <v-expansion-panels>
             <Descricao />
             <Formacoes />
             <Cursos />
@@ -15,14 +15,6 @@ import Formacoes from './formacoes/Formacoes.vue';
 import Cursos from './cursos/Cursos.vue';
 import Experiencias from './experiencias/Experiencias.vue';
 import Habilidades from './habilidades/Habilidades.vue';
-
-export default {
-    data() {
-        return {
-            panel: [0], // não exclua!
-        };
-    },
-};
 </script>
 
 <style>

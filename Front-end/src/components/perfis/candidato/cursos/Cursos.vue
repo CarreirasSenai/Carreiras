@@ -17,6 +17,7 @@
                             <EditarCursos :MostrarFormacoes="mostrarFormacoes" :Formacoes="items" />
                         </v-card>
                     </v-col>
+                    <span v-if="!formacoes.length" class="ma-4">Adicione um curso.</span>
                 </v-row>
                 <AdicionarCurso :MostrarFormacoes="mostrarFormacoes" />
             </v-expansion-panel-text>
