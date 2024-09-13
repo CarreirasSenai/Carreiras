@@ -42,10 +42,7 @@ export const useCandidatoStore = defineStore('candidato', {
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
 
-                // this.router.push('/');
-                if (this.visibilidadeNaoLogado === false) { // Deixe assim !!! 🙄
-                    window.location.href = '/';
-                }
+                this.router.push('/');
 
             }
         },

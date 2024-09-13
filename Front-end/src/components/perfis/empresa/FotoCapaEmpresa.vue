@@ -1,10 +1,10 @@
 <template>
     <div class="div-capa-foto rounded-b-xl elevation-2" id="foto-capa">
-        <img class="capa" :src="perfil.form.capa">
+        <img class="capa" src="/src/assets/capa (1).png">
         <div class="pos-capa">
             <div class="div-foto-perfil">
                 <div class="position-relative">
-                    <img :src="perfil.form.foto" class="foto-perfil" alt="Foto de Perfil">
+                    <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
                 </div>
                 <div>
                     <h3 class="cor-primaria">Nome da Empresa</h3>
@@ -13,27 +13,20 @@
                 </div>
             </div>
             <div class="descricao text-grey-darken-4 pb-5" style="min-height: 200px;">
-                {{ perfil.form.descricao }}
+                
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { usePerfilStore } from '@/stores/perfil';
-
 export default {
     data: () => ({
         dialog: false,
     }),
     computed: {
-        perfil() {
-            return usePerfilStore();
-        }
     },
     mounted() {
-        const perfil = this.perfil;
-        perfil.mostrarPerfil();
     },
 }
 </script>

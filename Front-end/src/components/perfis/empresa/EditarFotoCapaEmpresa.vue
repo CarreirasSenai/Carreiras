@@ -42,7 +42,6 @@
 
 
 <script>
-import { usePerfilStore } from '@/stores/perfil';
 import axios from 'axios';
 
 export default {
@@ -55,45 +54,8 @@ export default {
         }
     }),
     computed: {
-        perfil() {
-            return usePerfilStore();
-        }
     },
     methods: {
-        async submit(event) {
-            console.clear();
-            const dados = await event;
-
-            // alert(JSON.stringify(dados, null, 2))
-
-            const foto = this.form.foto === null ? this.perfil.dados.foto : this.form.foto;
-            const capa = this.form.capa === null ? this.perfil.dados.capa : this.form.capa;
-            const descricao = this.form.descricao === null ? this.perfil.dados.descricao : this.form.descricao;
-
-            if (dados.valid === true) {
-                const formData = new FormData();
-                formData.append('foto', foto);
-                formData.append('capa', capa);
-                formData.append('descricao', descricao);
-
-                try {
-                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/perfil/update`, formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        },
-                        withCredentials: true
-                    });
-
-                    console.log(response.data);
-                    this.dialog = false;
-                    this.perfil.mostrarPerfil();
-                
-                } catch (error) {
-                    console.error('Erro', error.response.data);
-                }
-            }
-
-        }
     }
 
 }

@@ -34,7 +34,6 @@ router.put('/curso/update/', authMiddleware, Curso.cursoUpdate);
 
 // rotas perfil
 router.put('/perfil/update', Perfil.perfilUpdate);
-// router.get('/perfil/read', Perfil.perfilRead);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);

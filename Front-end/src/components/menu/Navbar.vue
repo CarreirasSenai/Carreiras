@@ -1,7 +1,7 @@
 <template>
     <div>
         <ChatLayout ref="chatLayout" />
-        <ProgressLoader ref="showProgress"/>
+        <ProgressLoader ref="showProgress" />
         <v-container>
             <v-app-bar scroll-behavior="elevate">
                 <div class="navbar-container position-relative">
@@ -27,7 +27,8 @@
                             </div>
                             <v-menu :location="location">
                                 <template v-slot:activator="{ props }">
-                                    <v-btn v-bind="props" class="bg-deep-purple-accent-3 pa-2 ma-2 elevation-2 rounded-xl">
+                                    <v-btn v-bind="props"
+                                        class="bg-deep-purple-accent-3 pa-2 ma-2 elevation-2 rounded-xl">
                                         <div class="d-flex align-center ga-2">
                                             <v-icon>mdi-menu-down</v-icon>
                                             Conta
@@ -56,17 +57,13 @@
                         <v-menu min-width="200px" rounded>
                             <template v-slot:activator="{ props }">
                                 <v-btn icon v-bind="props">
-                                    <v-avatar color="brown" size="45">
-                                        <span class="text-h5">{{ user.user.initials }}</span>
-                                    </v-avatar>
+                                    <v-avatar v-if="user.user.foto" :image="user.user.foto" size="45"></v-avatar>
                                 </v-btn>
                             </template>
                             <v-card>
                                 <v-card-text>
                                     <div class="mx-auto text-center">
-                                        <v-avatar color="brown">
-                                            <span class="text-h5">{{ user.user.initials }}</span>
-                                        </v-avatar>
+                                        <v-avatar v-if="user.user.foto" :image="user.user.foto" size="45"></v-avatar>
                                         <h3>{{ user.user.fullName }}</h3>
                                         <p class="text-caption mt-1">
                                             {{ user.user.email }}
@@ -84,7 +81,8 @@
                                         <v-divider class="my-2"></v-divider>
                                         <v-btn variant="text" rounded @click='redirectToProfile'>Perfil</v-btn>
                                         <v-divider class="mt-2 mb-4"></v-divider>
-                                        <v-btn variant="text" rounded prepend-icon="mdi-logout" @click="logout">Sair</v-btn>
+                                        <v-btn variant="text" rounded prepend-icon="mdi-logout"
+                                            @click="logout">Sair</v-btn>
                                     </div>
                                 </v-card-text>
                             </v-card>
@@ -157,8 +155,9 @@ export default {
                     withCredentials: true  // Importante: enviar cookies com a requisição
                 });
                 console.log(response.data);
-                window.location.reload();
-                this.$router.push('/');
+
+                window.location.href = '/';
+
             } catch (error) {
                 console.error('Erro ao efetuar Logout', error.response);
             }
