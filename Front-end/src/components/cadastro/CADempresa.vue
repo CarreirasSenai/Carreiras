@@ -151,7 +151,7 @@
                     density="compact"
                   ></v-select>
                 </v-col>
-                <v-col cols="12" sm="6" md="6" lg="6">
+                <v-col cols="12" sm="4" md="4" lg="4">
                     <v-text-field
                       v-model="responsavelLegal"
                       :rules="responsavelLegalRules"
@@ -160,7 +160,17 @@
                       density="compact"
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="6" lg="6">
+                <v-col cols="12" sm="4" md="4" lg="4">
+                    <v-text-field
+                      v-model="cpfResponsavel"
+                      :rules="cpfResponsavelRules"
+                      v-mask="'###.###.###-##'"
+                      label="CPF do responsável legal"
+                      bg-color="#F7F7F7"
+                      density="compact"
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4" md="4" lg="4">
                     <v-text-field
                       v-model="responsavelAdm"
                       :rules="responsavelAdmRules"
@@ -244,6 +254,7 @@ export default {
       cidade: '',
       estado: '',
       responsavelLegal: '',
+      cpfResponsavel: '',
       responsavelAdm: '',
       contatoRA: '',
       senha: '',
@@ -283,6 +294,10 @@ export default {
       ],
       estadoRules: [(v) => !!v || 'Estado requerido'],
       responsavelLegalRules: [(v) => !!v || 'Responsável legal requerido'],
+      cpfResponsavelRules: [
+        (v) => !!v || "CPF Requerido",
+        (v) => v.length === 14 || "CPF deve ter 14 caracteres",
+      ],
       responsavelAdmRules: [(v) => !!v || 'Responsável administrativo requerido'],
       items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
                 'CE', 'DF', 'ES', 'GO', 'MA',

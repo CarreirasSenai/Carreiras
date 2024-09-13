@@ -143,7 +143,7 @@
                         variant="underlined"
                       ></v-select>
                     </v-col>
-                    <v-col cols="12" sm="6" md="6" lg="6">
+                    <v-col cols="12" sm="4" md="4" lg="4">
                       <v-text-field
                         v-model="responsavelLegal"
                         :rules="responsavelLegalRules"
@@ -151,7 +151,17 @@
                         variant="underlined"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="6" lg="6">
+                    <v-col cols="12" sm="4" md="4" lg="4">
+                      <v-text-field
+                        v-model="cpfResponsavel"
+                        :rules="cpfResponsavelRules"
+                        v-mask="'###.###.###-##'"
+                        label="CPF do responsável legal"
+                        bg-color="#F7F7F7"
+                        density="compact"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="4" md="4" lg="4">
                       <v-text-field
                         v-model="responsavelAdm"
                         :rules="responsavelAdmRules"
