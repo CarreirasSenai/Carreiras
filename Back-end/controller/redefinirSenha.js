@@ -42,7 +42,6 @@ exports.enviarCodigo = (req, res) => {
                 Caso você não tenha feito a solicitação, desconsidere este e-mail. <br> <br>
                 Atenciosamente, Carreiras.<br> <br>
                 <small><a href="https://www.carreiras.com.br" target="_blank">www.carreiras.com.br</a></small> <br> <br>
-                <img src="https://p16-capcut-sign-va.ibyteimg.com/tos-maliva-v-be9c48-us/ogEA4yO0ABAAmo65FJIBCfhgZDzn2XATBNuqNE~tplv-nhvfeczskr-1:250:0.webp?lk3s=44acef4b&x-expires=1737834910&x-signature=4Q6YZ0H6WjN7HLqEDXUGxNGr%2Fq0%3D">
             </div>
             `;
 

@@ -14,6 +14,7 @@ const Curso = require('../controller/cursos');
 const Perfil = require('../controller/perfil');
 const Experiencia = require('../controller/experiencias');
 const Habilidade = require('../controller/habilidades');
+const VerificarConta = require('../controller/verificarConta');
 
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
@@ -56,6 +57,9 @@ router.get('/vaga/pesquisa', Vaga.buscarVaga);
 router.post('/enviar/codigo', RedefinirSenha.enviarCodigo);
 router.post('/validar/codigo', RedefinirSenha.validarCodigo);
 router.put('/redefinir/senha', RedefinirSenha.redefinirSenha);
+
+// rota verificar conta
+router.get('/verifica-conta', VerificarConta.verificarConta);
 
 // rota logout
 router.get('/logout', (req, res) => {

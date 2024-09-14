@@ -1,5 +1,7 @@
 const Candidato = require('../model/candidato');
 const bcrypt = require('bcrypt');
+const { gerarToken } = require('../services/gerarToken');
+const transporter = require('../services/nodemailer');
 
 // Create
 exports.createUser = async (req, res) => {
@@ -11,13 +13,37 @@ exports.createUser = async (req, res) => {
 
     const grupo = 'candidato';
 
-    Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, hashedPassword, area, profissao, grupo, (err, insertId) => {
-        if (err) {
-            console.log(err.message);
-            return res.status(500).json({ error: err.message });
-        }
+    const token = gerarToken(); // Gera o token
+    const linkVerificacao = `${process.env.BACKEND_URL}/verifica-conta?grupo=candidato&email=${email}&token=${token}`;
+    const corpo =
+        `
+            <div style="font-family: Arial, Helvetica, sans-serif;">
+                <h1>Carreiras  🐝</h1> <br>
+                Clique no link para ativar sua conta: <a target="_blank" href="${linkVerificacao}">clique aqui.</a> <br> <br>
+                <small><a href="https://www.carreiras.com.br" target="_blank">www.carreiras.com.br</a></small> <br> <br>
+            </div>
+    `;
 
-        res.json({ success: true, userId: insertId });
+    // Disparar e-mail
+    async function main() {
+        const info = await transporter.sendMail({
+            from: '"Carreiras" <carreirassenai@gmail.com>',
+            to: email,
+            subject: "Ativação de Conta",
+            html: corpo
+        });
+
+        console.log("Email de validação de conta enviado para:", info.accepted);
+    }
+    main().catch(console.error); // Executa a função
+
+    Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, hashedPassword, area, profissao, grupo, token, (err, insertId) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+
+        } if (insertId) {
+            return res.json({ success: true, userId: insertId });
+        }
     });
 };
 
@@ -27,14 +53,13 @@ exports.login = (req, res) => {
 
     // console.log(email, password);
 
-    Candidato.getLogin(email, (err, user) => {
+    Candidato.getLogin(email, (err, user, status) => {
         if (err) {
             return res.status(500).json({ error: err.message });
-        }
-
-        if (user === null) {
+        } else if (status) {
+            return res.status(401).json({ aviso: status });
+        } else if (user === null) {
             return res.status(401).json({ error: 'Email ou senha incorretos!' });
-
         } else {
             // Comparar a senha fornecida com o hash armazenado
             bcrypt.compare(password, user.senha, (err, isMatch) => {

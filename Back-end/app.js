@@ -41,7 +41,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Use suas rotas
 app.use('/', routes);
 
-const port = process.env.BACKEND_URL || 4000;
+// Extrair a porta da URL de BACKEND_URL
+const backendUrl = new URL(process.env.BACKEND_URL || 'http://localhost:4000');
+const port = backendUrl.port || 4000; // Se não tiver uma porta definida, usa 4000 como fallback
+
 app.listen(port, () => {
-  console.log(`Server is running in http://localhost:${port}`);
+  console.log(`Server is running at ${backendUrl.origin}`);
 });

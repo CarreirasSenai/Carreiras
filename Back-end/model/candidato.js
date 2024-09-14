@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 // Create
-exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao, grupo, callback) => {
+exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao, grupo, token, callback) => {
 
     // Verificar se o email já existe
     db.query('SELECT * FROM user_candidato WHERE email = ?', [email], (err, results) => {
@@ -25,8 +25,8 @@ exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
             }
 
             db.query(
-                'INSERT INTO user_candidato (nome_social, nome_completo, email, telefone, celular, cpf, cep, rua, numero, complemento, bairro, cidade, estado, senha, area, profissao, grupo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao, grupo],
+                'INSERT INTO user_candidato (nome_social, nome_completo, email, telefone, celular, cpf, cep, rua, numero, complemento, bairro, cidade, estado, senha, area, profissao, grupo, token_ativacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao, grupo, token],
                 (err, result) => {
 
                     if (err) {
@@ -53,13 +53,16 @@ exports.getUser = (id, callback) => {
 
 // Login
 exports.getLogin = (email, callback) => {
-    db.query('SELECT * FROM user_candidato WHERE email = ?', [email], (err, rows) => {
+    db.query('SELECT * FROM user_candidato WHERE email = ? AND verificado = ?', [email, 1], (err, rows) => {
         if (err) {
-            return callback(err, null);
+            console.log(err);
+            return callback(err, null, null);
+        } else if (rows.length > 0) {
+            return callback(null, rows[0], null);
+        } else {
+            console.log('Conta não Verificada!');
+            return callback(null, null, 'Conta não Verificada!');
         }
-
-        // Retorna o primeiro usuário encontrado ou null se nenhum usuário for encontrado
-        return callback(null, rows.length > 0 ? rows[0] : null);
     });
 };
 

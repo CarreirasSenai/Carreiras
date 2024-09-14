@@ -108,14 +108,12 @@
       <v-card class="text-purple-darken-4" v-else-if="resposta === true">
         <v-card-title>Zuuuuuuuuu 🐝</v-card-title>
         <v-card-text class="text-center text-h7 text-black border-sm pa-10">
-          Cadastro realizado com sucesso! Agora você é uma abelinha do carreiras <span
-            class="mdi mdi-check-bold text-green text-h6"></span>
+          Cadastro realizado com sucesso! <br> <br> Enviamos um link de verificação no seu e-mail.
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
-          <v-btn text="Entrar na Conta" @click="isActive.value = false" class="bg-purple-darken-4">
-            <a href="/login" class="text-white">Entrar na Conta</a>
+          <v-btn text="Entrar na Conta" @click="isActive.value = false" to="/login" class="bg-purple-darken-4">
           </v-btn>
         </v-card-actions>
       </v-card>
