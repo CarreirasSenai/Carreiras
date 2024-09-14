@@ -77,9 +77,11 @@
                                             Agenda
                                         </v-btn>
                                         <v-divider class="my-2"></v-divider>
-                                        <v-btn variant="text" @click="triggerAbrirChatHome">Chat</v-btn>
-                                        <v-divider class="my-2"></v-divider>
-                                        <v-btn variant="text" rounded @click='redirectToProfile'>Perfil</v-btn>
+                                        <!-- <v-btn variant="text" @click="triggerAbrirChatHome">Chat</v-btn>
+                                        <v-divider class="my-2"></v-divider> -->
+                                        <v-btn variant="text" rounded>Minhas Vagas</v-btn>
+                                        <v-divider class="mt-2 mb-4"></v-divider>
+                                        <v-btn variant="text" rounded @click='redirectToProfile'>Curriculo</v-btn>
                                         <v-divider class="mt-2 mb-4"></v-divider>
                                         <v-btn variant="text" rounded prepend-icon="mdi-logout"
                                             @click="logout">Sair</v-btn>

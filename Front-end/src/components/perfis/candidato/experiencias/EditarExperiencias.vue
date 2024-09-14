@@ -39,7 +39,7 @@
                             </v-col>
 
                             <v-col cols="12" md="6">
-                                <v-text-field v-model="form.fim" type="month" label="Fim"
+                                <v-text-field v-model="form.termino" type="month" label="Fim"
                                     :rules="[rules.geral]"></v-text-field>
                             </v-col>
                         </v-row>
@@ -73,7 +73,7 @@ export default {
             contrato: '',
             atividades: [],
             inicio: '',
-            fim: ''
+            termino: ''
         },
         rules: {
             geral: value => !!value || 'O campo é obrigatório.',
@@ -96,7 +96,7 @@ export default {
         this.form.contrato = this.Experiencias.contrato;
         this.form.atividades = this.Experiencias.atividades;
         this.form.inicio = this.Experiencias.inicio;
-        this.form.fim = this.Experiencias.termino;
+        this.form.termino = this.Experiencias.termino;
     },
     methods: {
         async deletarExperiencia() {
@@ -124,7 +124,7 @@ export default {
                 console.log(this.form);
 
                 try {
-                    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/experiencia/create`, {
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/experiencia/update`, {
                         dados: this.form,
                     }, { withCredentials: true });
 

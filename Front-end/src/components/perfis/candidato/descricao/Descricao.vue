@@ -28,9 +28,3 @@ export default {
     },
 }
 </script>
-
-<style>
-* {
-    /* border: 1px solid red; */
-}
-</style>

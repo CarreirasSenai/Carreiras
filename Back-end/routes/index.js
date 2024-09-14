@@ -13,6 +13,7 @@ const Formacao = require('../controller/formacoes');
 const Curso = require('../controller/cursos');
 const Perfil = require('../controller/perfil');
 const Experiencia = require('../controller/experiencias');
+const Habilidade = require('../controller/habilidades');
 
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
@@ -22,7 +23,7 @@ router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
 
 // rotas perfil
-router.put('/perfil/update', Perfil.perfilUpdate);
+router.put('/perfil/update', authMiddleware, Perfil.perfilUpdate);
 
 // rotas formacoes
 router.post('/formacao/create', authMiddleware, Formacao.formacaoCreate);
@@ -37,10 +38,16 @@ router.delete('/curso/delete/:id', authMiddleware, Curso.cursoDelete);
 router.put('/curso/update/', authMiddleware, Curso.cursoUpdate);
 
 // rotas experiencias
-router.post('/experiencia/create', Experiencia.experienciaCreate);
-router.get('/experiencia/read', Experiencia.experienciaRead);
-router.delete('/experiencia/delete/:id', Experiencia.experienciaDelete);
-// router.put('/experiencia/update/', Experiencia.e);
+router.post('/experiencia/create', authMiddleware, Experiencia.experienciaCreate);
+router.get('/experiencia/read', authMiddleware, Experiencia.experienciaRead);
+router.delete('/experiencia/delete/:id', authMiddleware, Experiencia.experienciaDelete);
+router.put('/experiencia/update/', authMiddleware, Experiencia.experienciaUpdate);
+
+// rotas habilidades
+router.post('/habilidade/create', authMiddleware, Habilidade.habilidadeCreate);
+router.get('/habilidade/read', authMiddleware, Habilidade.habilidadeRead);
+router.delete('/habilidade/delete/:id', authMiddleware, Habilidade.habilidadeDelete);
+router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);

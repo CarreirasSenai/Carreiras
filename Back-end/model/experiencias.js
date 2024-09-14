@@ -41,3 +41,21 @@ exports.experienciaDelete = (id, callback) => {
         }
     });
 };
+
+
+exports.experienciaUpdate = ({ dados }, callback) => {
+    const { cargo, empresa, contrato, atividades, inicio, termino, id } = dados;
+
+    db.query('update experiencia set cargo = ?, empresa = ?, contrato = ?, atividades = ?, inicio = ?, termino = ? where id = ?',
+        [cargo, empresa, contrato, JSON.stringify(atividades), inicio, termino, id], (err, result) => {
+            if (err) {
+                console.log(err);
+                return callback(err, null);
+
+            } else if (result) {
+                console.log(result);
+                return callback(null, result.affectedRows > 0);
+            }
+        }
+    );
+};
