@@ -199,8 +199,8 @@ export default {
 }
 
 .careers-logo {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   border-radius: 10px;
 }
 
@@ -296,12 +296,6 @@ export default {
 
 .logo-intro-container {
   margin-bottom: 40px;
-}
-
-.careers-logo {
-  width: 400px;
-  height: 400px;
-  border-radius: 10px;
 }
 
 .intro-card {
