@@ -6,7 +6,8 @@ const transporter = require('../services/nodemailer');
 // Create
 exports.createUser = async (req, res) => {
     const { nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao } = req.body;
-
+    console.log(req.body);
+    
     // Gerar um salt e hash a senha
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);

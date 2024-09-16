@@ -81,7 +81,7 @@
                     density="compact"></v-select>
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
-                  <v-text-field v-model="senha" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  <v-text-field v-model="password" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[senhaRules.senhaRequired, senhaRules.senhaMin, senhaRules.senhaComplexa]"
                     :type="showPassword ? 'text' : 'password'" class="input-group--focused" label="Senha" name="senha"
                     counter density="compact" @click:append="showPassword = !showPassword">
@@ -170,7 +170,7 @@ export default {
       estado: "SC",
       showPassword: false,
       showRePassword: false,
-      senha: "12345678Ww@",
+      password: "12345678Ww@",
       repSenha: "12345678Ww@",
       area: null,
       profissao: null,
@@ -259,7 +259,7 @@ export default {
           v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
         repSenhaMin: (v) =>
           v.length >= 8 || "Repetir senha deve ter pelo menos 8 caracteres",
-        confirmSenha: (v) => v === this.senha || "Senhas não coincidem",
+        confirmSenha: (v) => v === this.password || "Senhas não coincidem",
         senhaComplexa: (v) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(v) ||
           "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
       },
