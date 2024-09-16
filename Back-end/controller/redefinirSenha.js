@@ -1,11 +1,10 @@
 const transporter = require('../services/nodemailer');
 const RedefinirSenha = require('../model/redefinirSenha');
+const bcrypt = require('bcrypt');
 
 exports.enviarCodigo = (req, res) => {
     // Recebe o email da requisição
     const { email, grupo } = req.body;
-
-    console.log('controller');
 
     RedefinirSenha.validaUser(email, grupo, (err, dados) => {
         if (err) {
@@ -34,17 +33,37 @@ exports.enviarCodigo = (req, res) => {
             // Mensagem do email de redefinição
             const corpo =
                 `
-            <div style="font-family: Arial, Helvetica, sans-serif;">
-                <!-- <img style="width: 200px; margin: 10px;" src="http://localhost:3000/src/assets/logo.png"> -->
-                <h1>Carreiras  🐝</h1>
-                <strong>Olá, Tudo bem? <br> <br></strong>
-                Foi solicitado uma redefinição de senha para este endereço de e-mail. <br> <br>
-                O código para redefinição é <strong>${codigo}</strong> <br> <br>
-                Caso você não tenha feito a solicitação, desconsidere este e-mail. <br> <br>
-                Atenciosamente, Carreiras.<br> <br>
-                <small><a href="https://www.carreiras.com.br" target="_blank">www.carreiras.com.br</a></small> <br> <br>
-                <img src="https://p16-capcut-sign-va.ibyteimg.com/tos-maliva-v-be9c48-us/ogEA4yO0ABAAmo65FJIBCfhgZDzn2XATBNuqNE~tplv-nhvfeczskr-1:250:0.webp?lk3s=44acef4b&x-expires=1737834910&x-signature=4Q6YZ0H6WjN7HLqEDXUGxNGr%2Fq0%3D">
-            </div>
+                <div style="font-family: Arial, Helvetica, sans-serif; 
+                    text-align: center; 
+                    display: flex; 
+                    flex-direction: column; 
+                    justify-content: center; 
+                    align-items: center;">
+                    <div style="text-align: center;
+                    width: 100%;">
+                        <hr>
+                        <h1 style="color: #333;">Carreiras 🐝</h1>
+                        <div style="background: linear-gradient(to right, #6f00ff, #9341ff);
+                            padding: 50px;
+                            color: white;
+                            box-shadow: 0 1px 4px #333;">
+                            <div>Foi solicitado uma redefinição de senha para este endereço de e-mail.</div>
+                            <br><br>
+                            <div>O código para redefinição é</div>
+                            <strong>${codigo}</strong>
+                            <br><br><br>
+                            <div>Caso você não tenha feito a solicitação, desconsidere este e-mail.</div>
+                            <br><br>
+                            <div>
+                                Atenciosamente, Carreiras. <br>
+                                <small><a href="https://www.carreiras.com.br" target="_blank"
+                                        style="color: white;">www.carreiras.com.br</a></small>
+                            </div>
+                        </div>
+                        <br>
+                        <hr>
+                    </div>
+                </div>
             `;
 
             // Função ASSÍNCRONA!! para disparar email
@@ -66,27 +85,21 @@ exports.enviarCodigo = (req, res) => {
 }
 
 exports.validarCodigo = (req, res) => {
-    // Email do user e código enviado
-    // const dados = {
-    //     email: req.body.email,
-    //     codigo: req.body.codigo
-    // }
-
     const { email, grupo, codigo } = req.body;
     console.log(email);
     console.log(grupo);
     console.log(codigo);
-    
+
     RedefinirSenha.validaUser(email, grupo, (err, dados) => {
         if (err) {
             console.log(err.message);
             return res.status(500).json({ error: err.message });
         }
-        
+
         if (dados === null) {
             return res.status(401).json({ error: 'Não há usuário com este e-mail!' });
         }
-        
+
         console.log(req.session.redefinicao)
 
         // Válida o código e o email
@@ -96,9 +109,22 @@ exports.validarCodigo = (req, res) => {
             return res.status(404).json({ error: 'Código incorreto!' })
         }
     });
-    // if (dados.email === req.session.redefinicao.email && dados.codigo === req.session.redefinicao.codigo) {
-    //     return res.json({ success: true })
-    // } else {
-    //     return res.status(404).json({ error: 'Código incorreto!' })
-    // }
 }
+
+exports.redefinirSenha = async (req, res) => {
+    const { dados, novaSenha } = req.body;
+
+    // Gerar um salt e hash a senha
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(novaSenha, saltRounds);
+
+    RedefinirSenha.redefinirSenha(dados, hashedPassword, (err, result) => {
+        if (err) {
+            console.log(err.message);
+            return res.status(500).json({ error: err.message });
+        } else {
+            console.log(result);
+            res.json({ success: true, result: result });
+        }
+    });
+};

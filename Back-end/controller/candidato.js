@@ -1,58 +1,99 @@
 const Candidato = require('../model/candidato');
-const DataHora = require('../services/dataHora');
 const bcrypt = require('bcrypt');
+const { gerarToken } = require('../services/gerarToken');
+const transporter = require('../services/nodemailer');
 
 // Create
 exports.createUser = async (req, res) => {
-    const { nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password } = req.body;
+    const { nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao } = req.body;
 
     // Gerar um salt e hash a senha
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const dataAtu = DataHora.dataHora();
-    const profissao = 'indefinida';
     const grupo = 'candidato';
 
-    Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, hashedPassword, profissao, grupo, dataAtu, (err, insertId) => {
-        if (err) {
-            console.log(err.message);
-            return res.status(500).json({ error: err.message });
-        }
+    const token = gerarToken(); // Gera o token
+    const linkVerificacao = `${process.env.BACKEND_URL}/verifica-conta?grupo=candidato&email=${email}&token=${token}`;
+    const corpo =
+        `
+        <div style="font-family: Arial, Helvetica, sans-serif; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;">
+            <div style="text-align: center; width: 100%;">
+                <hr>
+                <h1 style="color: #333;">Carreiras 🐝</h1>
+                <div style="background: linear-gradient(to right, #6f00ff, #9341ff);
+                    padding: 50px;
+                    color: white;
+                    box-shadow: 0 1px 4px #333;">
+                    <div>
+                        <div>Clique no botão para ativar sua conta</div>
+                        <br><br>
+                        <a target="_blank" href="${linkVerificacao}" style="color: white;
+                        box-shadow: 0 1px 4px #333;
+                        padding: 10px;
+                        text-decoration: none;
+                        border-radius: 10px;
+                        width: 100px;
+                        font-weight: bold;
+                        font-size: small;
+                        background-color: #6f00ff;">
+                            Ativar Conta
+                        </a>
+                        <br><br><br><br>
+                        <small>
+                            <a target="_blank" href="https://www.carreiras.com.br" style="color: white;">
+                                www.carreiras.com.br
+                            </a>
+                        </small>
+                    </div>
+                </div>
+                <br>
+                <hr>
+            </div>
+        </div>
+    `;
 
-        res.json({ success: true, userId: insertId });
+    // Disparar e-mail
+    async function main() {
+        const info = await transporter.sendMail({
+            from: '"Carreiras" <carreirassenai@gmail.com>',
+            to: email,
+            subject: "Ativação de Conta",
+            html: corpo
+        });
+
+        console.log("Email de validação de conta enviado para:", info.accepted);
+    }
+    main().catch(console.error); // Executa a função
+
+    Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, hashedPassword, area, profissao, grupo, token, (err, insertId) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+
+        } if (insertId) {
+            return res.json({ success: true, userId: insertId });
+        }
     });
 };
 
 // Login
-// exports.login = (req, res) => {
-//     const { email, password } = req.body;
-
-//     Candidato.getLogin(email, password, (err, user) => {
-//         if (err) {
-//             return res.status(500).json({ error: err.message });
-//         }
-
-//         if (user === null) {
-//             return res.status(401).json({ error: 'Email ou senha incorretos!' });
-//         } else {
-//             req.session.usuario = user;
-//             res.json({ success: true, user: user });
-//         }
-//     });
-// };
-
 exports.login = (req, res) => {
     const { email, password } = req.body;
 
-    Candidato.getLogin(email, (err, user) => {
+    // console.log(email, password);
+
+    Candidato.getLogin(email, (err, user, status) => {
         if (err) {
             return res.status(500).json({ error: err.message });
-        }
-
-        if (user === null) {
+        } else if (status) {
+            return res.status(401).json({ aviso: status });
+        } else if (user === null) {
             return res.status(401).json({ error: 'Email ou senha incorretos!' });
-        
         } else {
             // Comparar a senha fornecida com o hash armazenado
             bcrypt.compare(password, user.senha, (err, isMatch) => {
@@ -75,10 +116,6 @@ exports.login = (req, res) => {
 // Read / Autenticar
 exports.getUser = (req, res) => {
 
-    if (!req.session.usuario) {
-        return res.status(401).json({ error: 'Usuário não autenticado!' });
-    }
-
     usuario_id = req.session.usuario.id;
 
     Candidato.getUser(usuario_id, (err, usuario) => {
@@ -90,28 +127,38 @@ exports.getUser = (req, res) => {
             return res.status(404).json({ error: 'Usuário não encontrado!' });
         }
 
-        console.log(req.session);
+        // console.log(req.session);
         res.json({ success: true, usuario: usuario });
     });
 };
 
 // Update
 exports.updateUser = (req, res) => {
+    const { id, nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao } = req.body;
     console.log('\n updateUser:');
     console.log(req.body);
 
+    const grupo = 'candidato';
 
-    // res.json({ error: true });
+    Candidato.updateUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, (err, success) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
 
-    // Candidato.updateUser(id, nome, email, senha, foto, descricao, (success) => {
-    //     res.redirect('/editarPerfil');
-    // });
+        return res.status(200).json({ success: 'Cadastro Atualizado!' });
+    });
 };
 
 // Delete
 exports.deleteUser = (req, res) => {
     const { id } = req.body;
-    Candidato.deleteUser(id, (success) => {
-        res.redirect('/');
+    console.log(id);
+
+    Candidato.deleteUser(id, (err, success) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        res.status(200).json({ success: 'Usuário Deletado!' });
     });
 };

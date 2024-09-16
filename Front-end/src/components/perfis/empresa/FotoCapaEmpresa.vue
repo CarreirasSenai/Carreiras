@@ -12,21 +12,23 @@
                     <MenuEditarEmpresa style="height: 20px !important;" class="d-flex align-center" />
                 </div>
             </div>
-            <div class="descricao text-grey-darken-4 pb-5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea
-                commodo consequat. et dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris
-                nisi ut aliquip ex ea commodo consequat. et dolore magnaaliqua. Ut enim ad minim veniam, quis nostrud
-                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            <div class="descricao text-grey-darken-4 pb-5" style="min-height: 200px;">
+                
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import MenuEditarEmpresa from './MenuEditarEmpresa.vue';
+export default {
+    data: () => ({
+        dialog: false,
+    }),
+    computed: {
+    },
+    mounted() {
+    },
+}
 </script>
 
 <style lang="scss" scoped>

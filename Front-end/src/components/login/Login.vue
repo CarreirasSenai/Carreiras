@@ -16,7 +16,7 @@
                 @click:append="showPassword = !showPassword" 
                 label="Senha"></v-text-field>
 
-                <div class="text-center text-red d-none mb-4" id="aviso-invalido">Email ou senha inválidos.</div>
+                <div class="text-center text-red mb-4" id="aviso-invalido" v-if="mensagem">{{ mensagem }}</div>
 
                 <v-btn class="bg-purple-darken-4" @click="login" block>Continuar</v-btn>
               </v-form>
@@ -53,6 +53,7 @@ export default {
       showPassword: false,
       passwordRules: [(v) => !!v || 'Senha requerida'],
       resposta: this.$route.query.resposta,
+      mensagem: '',
     };
   },
   methods: {
@@ -67,14 +68,14 @@ export default {
         this.$router.push('/');
       } catch (error) {
         console.error('Erro no login', error.response.data);
-        document.getElementById('aviso-invalido').classList.add('d-block');
+        this.mensagem = error.response.data.aviso ? 'Verifique sua conta para entrar!' : 'Email ou senha inválidos.';
       }
     },
     goToSignUp() {
       if (window.location.href.includes("candidato")) {
-        this.$router.push({ path: '/cadastro-candidato'});
+        this.$router.push({ path: '/cadastro-candidato' });
       } else {
-        this.$router.push({ path: '/cadastro-empresa'});
+        this.$router.push({ path: '/cadastro-empresa' });
       }
     },
     respostaGrupo() {

@@ -51,10 +51,10 @@
                             <v-form class="ma-5 text-start d-flex flex-column ga-2" @submit.prevent="redefinirSenha">
                                 <h3 class="text-center mb-2 text-h6 text-sm-h5 font-weight-bold	">Crie uma Nova Senha
                                 </h3>
-                                <v-text-field v-model="novaSenha" label="Nova senha"
-                                    :rules="rules.novaSenha"></v-text-field>
+                                <v-text-field v-model="novaSenha" label="Nova senha" :rules="rules.novaSenha"
+                                    type="password"></v-text-field>
                                 <v-text-field v-model="confirmaSenha" label="Confirme a senha"
-                                    :rules="rules.confirmaSenha"></v-text-field>
+                                    :rules="rules.confirmaSenha" type="password"></v-text-field>
                                 <v-btn elevation="0" class="bg-purple-darken-4" block type="submit">Salvar</v-btn>
                                 <v-btn variant="text" to="/" block>cancelar</v-btn>
                             </v-form>
@@ -64,8 +64,8 @@
             </v-row>
         </v-container>
 
-        <v-snackbar color="error" v-model="snackbar" :timeout="4000">
-            {{ mensagem }}
+        <v-snackbar :color="snackbarColor" v-model="snackbar" :timeout="4000">
+            <div class="text-center">{{ mensagem }}</div>
         </v-snackbar>
     </div>
 </template>
@@ -88,6 +88,7 @@ export default {
             validating: false,
             codigo: '',
             snackbar: false,
+            snackbarColor: '',
             novaSenha: 'Thiago1#',
             confirmaSenha: 'Thiago1#',
             rules: {
@@ -101,7 +102,7 @@ export default {
                 ]
             },
             mensagem: '',
-            dados: [],
+            dados: '',
         };
     },
     methods: {
@@ -119,6 +120,7 @@ export default {
                 console.log(response.data);
             } catch (error) {
                 console.error('Erro', error.response.data);
+                this.snackbarColor = 'error';
                 this.snackbar = true;
                 this.mensagem = 'Não há usuário com este endereço de E-mail.';
             }
@@ -138,16 +140,15 @@ export default {
                     codigo: this.codigo
                 }, { withCredentials: true });
 
-                this.formValidar = false;
-                this.formRedefinir = true;
+                this.validating = true;
+                setTimeout(() => {
+                    this.validating = false;
+                    this.formValidar = false;
+                    this.formRedefinir = true;
+                }, 2000)
 
-                for (var key in response.data) {
-                    this.dados[key] = response.data[key];
-                }
-
-                for (var key in this.dados) {
-                    console.log('dados', this.dados[key]);
-                }
+                this.dados = response.data.dados;
+                console.log(this.dados);
 
             } catch (error) {
                 console.error('Erro', error.response.data);
@@ -155,31 +156,39 @@ export default {
                 this.mensagem = 'Código de verificação incorreto. Insira o código novamente.';
                 setTimeout(() => {
                     this.validating = false;
+                    this.snackbarColor = 'error';
                     this.snackbar = true;
                 }, 2000)
             }
         },
 
         async redefinirSenha(event) {
-            const results = await event;            
+            console.clear()
+
+            const results = await event;
 
             // alert(JSON.stringify(results, null, 2))
             // alert(this.novaSenha + '\n' + this.confirmaSenha)
 
-            if (results.valid === true) {                
+            if (results.valid === true) {
                 console.log('Dados antes de enviar:', this.dados);  // Verifique aqui
 
                 try {
-                    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/${this.grupo}/update`, {
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/redefinir/senha`, {
                         dados: this.dados,
                         novaSenha: this.novaSenha
                     }, { withCredentials: true });
 
-                    console.log(response.data);
+                    this.snackbarColor = 'success';
+                    this.snackbar = true;
+                    this.mensagem = 'Senha redefinida com sucesso!';
 
-                    // for (var key in response.data) {
-                    //     console.log(response.data[key])
-                    // }
+                    setTimeout(() => {
+                        this.$router.push({ path: '/login', query: { resposta: this.grupo } });
+                    }, 2000)
+
+                    console.log('Senha Redefinida!', response.data);
+
                 } catch (error) {
                     console.error('Erro', error.response.data);
                 }

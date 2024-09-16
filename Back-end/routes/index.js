@@ -9,13 +9,46 @@ const DataHora = require('../services/dataHora');
 const Candidato = require('../controller/candidato');
 const Vaga = require('../controller/vaga');
 const RedefinirSenha = require('../controller/redefinirSenha');
+const Formacao = require('../controller/formacoes');
+const Curso = require('../controller/cursos');
+const Perfil = require('../controller/perfil');
+const Experiencia = require('../controller/experiencias');
+const Habilidade = require('../controller/habilidades');
+const VerificarConta = require('../controller/verificarConta');
 
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
-router.post('/candidato/delete', authMiddleware, Candidato.deleteUser);
+router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
-router.post('/candidato/update', Candidato.updateUser);
+router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
+
+// rotas perfil
+router.put('/perfil/update', authMiddleware, Perfil.perfilUpdate);
+
+// rotas formacoes
+router.post('/formacao/create', authMiddleware, Formacao.formacaoCreate);
+router.get('/formacao/read', authMiddleware, Formacao.formacaoRead);
+router.delete('/formacao/delete/:id', authMiddleware, Formacao.formacaoDelete);
+router.put('/formacao/update/', authMiddleware, Formacao.formacaoUpdate);
+
+// rotas cursos
+router.post('/curso/create', authMiddleware, Curso.cursoCreate);
+router.get('/curso/read', authMiddleware, Curso.cursoRead);
+router.delete('/curso/delete/:id', authMiddleware, Curso.cursoDelete);
+router.put('/curso/update/', authMiddleware, Curso.cursoUpdate);
+
+// rotas experiencias
+router.post('/experiencia/create', authMiddleware, Experiencia.experienciaCreate);
+router.get('/experiencia/read', authMiddleware, Experiencia.experienciaRead);
+router.delete('/experiencia/delete/:id', authMiddleware, Experiencia.experienciaDelete);
+router.put('/experiencia/update/', authMiddleware, Experiencia.experienciaUpdate);
+
+// rotas habilidades
+router.post('/habilidade/create', authMiddleware, Habilidade.habilidadeCreate);
+router.get('/habilidade/read', authMiddleware, Habilidade.habilidadeRead);
+router.delete('/habilidade/delete/:id', authMiddleware, Habilidade.habilidadeDelete);
+router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);
@@ -23,6 +56,10 @@ router.get('/vaga/pesquisa', Vaga.buscarVaga);
 // rotas redefinir senha
 router.post('/enviar/codigo', RedefinirSenha.enviarCodigo);
 router.post('/validar/codigo', RedefinirSenha.validarCodigo);
+router.put('/redefinir/senha', RedefinirSenha.redefinirSenha);
+
+// rota verificar conta
+router.get('/verifica-conta', VerificarConta.verificarConta);
 
 // rota logout
 router.get('/logout', (req, res) => {
