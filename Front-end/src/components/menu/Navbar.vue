@@ -228,8 +228,7 @@ export default {
 }
 
 .div-btn-links button:hover {
-    background-color: #6200EA;
+    background-color: #5600cf;
     color: white;
-    transition: background-color 0.5s ease-in-out;
 }
 </style>

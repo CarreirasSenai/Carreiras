@@ -68,7 +68,7 @@ export default {
         this.$router.push('/');
       } catch (error) {
         console.error('Erro no login', error.response.data);
-        this.mensagem = error.response.data.aviso ? 'Verifique sua conta para entrar!' : 'Email ou senha inválidos.';
+        this.mensagem = error.response.data.aviso;
       }
     },
     goToSignUp() {

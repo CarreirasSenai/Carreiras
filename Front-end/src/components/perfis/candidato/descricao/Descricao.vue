@@ -6,7 +6,7 @@
                 <h3>Sobre mim</h3>
             </v-card-title>
             <v-card-text class="mx-4" style="padding-bottom: 60px;">
-                <span v-html="user.dadosUser.descricao ? user.dadosUser.descricao : 'Adicione uma Descrição.'"></span>
+                <span v-html="user.dadosUser.descricao ? user.dadosUser.descricao : 'Adicione uma descrição.'"></span>
                 <EditarDescCandidato />
             </v-card-text>
         </v-card>

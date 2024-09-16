@@ -18,7 +18,6 @@
 </template>
 
 <script>
-// import axios from 'axios';
 import { useCandidatoStore } from '@/stores/candidato';
 import { usePesquisaVaga } from '@/stores/pesquisaVaga';
 

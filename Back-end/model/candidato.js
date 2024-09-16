@@ -53,15 +53,26 @@ exports.getUser = (id, callback) => {
 
 // Login
 exports.getLogin = (email, callback) => {
-    db.query('SELECT * FROM user_candidato WHERE email = ? AND verificado = ?', [email, 1], (err, rows) => {
+    db.query('SELECT * FROM user_candidato WHERE email = ?', [email], (err, rows) => {
         if (err) {
             console.log(err);
             return callback(err, null, null);
+            
         } else if (rows.length > 0) {
-            return callback(null, rows[0], null);
+            db.query('SELECT * FROM user_candidato WHERE email = ? AND verificado = ?', [email, 1], (err, rows) => {
+                if (err) {
+                    console.log(err);
+                    return callback(err, null, null);
+                } else if (rows.length > 0) {
+                    return callback(null, rows[0], null);
+                } else {
+                    console.log('Conta não Verificada!');
+                    return callback(null, null, 'Conta não Verificada!');
+                }
+            });
         } else {
-            console.log('Conta não Verificada!');
-            return callback(null, null, 'Conta não Verificada!');
+            console.log('Não há cadastro com este e-mail!');
+            return callback(null, null, 'Não há cadastro com este e-mail!');
         }
     });
 };

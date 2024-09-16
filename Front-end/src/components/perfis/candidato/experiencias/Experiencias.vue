@@ -3,7 +3,7 @@
         <v-expansion-panel>
             <v-expansion-panel-title>
                 <i class="mdi mdi-briefcase cor-primaria mr-2"></i>
-                <h3>Experiências Profissionais</h3>
+                <h3>Experiências</h3>
             </v-expansion-panel-title>
             <v-expansion-panel-text>
                 <v-row>
@@ -26,7 +26,7 @@
                             <EditarExperiencias :MostrarExperiencias="mostrarExperiencias" :Experiencias="items"/>
                         </v-card>
                     </v-col>
-                    <span v-if="!formacoes.length" class="ma-4">Adicione uma Experiências.</span>
+                    <span v-if="!formacoes.length" class="ma-4">Adicione uma experiência.</span>
                 </v-row>
                 <AdicionarExperiencia :MostrarExperiencias="mostrarExperiencias"/>
             </v-expansion-panel-text>

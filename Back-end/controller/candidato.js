@@ -94,7 +94,7 @@ exports.login = (req, res) => {
         } else if (status) {
             return res.status(401).json({ aviso: status });
         } else if (user === null) {
-            return res.status(401).json({ error: 'Email ou senha incorretos!' });
+            return res.status(401).json({ aviso: 'Email ou senha incorretos!' });
         } else {
             // Comparar a senha fornecida com o hash armazenado
             bcrypt.compare(password, user.senha, (err, isMatch) => {
@@ -106,7 +106,7 @@ exports.login = (req, res) => {
                     req.session.usuario = user;
                     res.json({ success: true, user: user });
                 } else {
-                    res.status(401).json({ error: 'Email ou senha incorretos!' });
+                    res.status(401).json({ aviso: 'Email ou senha incorretos!' });
                 }
             });
         }
