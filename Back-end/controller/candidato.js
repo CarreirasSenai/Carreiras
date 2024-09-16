@@ -17,11 +17,45 @@ exports.createUser = async (req, res) => {
     const linkVerificacao = `${process.env.BACKEND_URL}/verifica-conta?grupo=candidato&email=${email}&token=${token}`;
     const corpo =
         `
-            <div style="font-family: Arial, Helvetica, sans-serif;">
-                <h1>Carreiras  🐝</h1> <br>
-                Clique no link para ativar sua conta: <a target="_blank" href="${linkVerificacao}">clique aqui.</a> <br> <br>
-                <small><a href="https://www.carreiras.com.br" target="_blank">www.carreiras.com.br</a></small> <br> <br>
+        <div style="font-family: Arial, Helvetica, sans-serif; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;">
+            <div style="text-align: center; width: 100%;">
+                <hr>
+                <h1 style="color: #333;">Carreiras 🐝</h1>
+                <div style="background: linear-gradient(to right, #6f00ff, #9341ff);
+                    padding: 50px;
+                    color: white;
+                    box-shadow: 0 1px 4px #333;">
+                    <div>
+                        <div>Clique no botão para ativar sua conta</div>
+                        <br><br>
+                        <a target="_blank" href="${linkVerificacao}" style="color: white;
+                        box-shadow: 0 1px 4px #333;
+                        padding: 10px;
+                        text-decoration: none;
+                        border-radius: 10px;
+                        width: 100px;
+                        font-weight: bold;
+                        font-size: small;
+                        background-color: #6f00ff;">
+                            Ativar Conta
+                        </a>
+                        <br><br><br><br>
+                        <small>
+                            <a target="_blank" href="https://www.carreiras.com.br" style="color: white;">
+                                www.carreiras.com.br
+                            </a>
+                        </small>
+                    </div>
+                </div>
+                <br>
+                <hr>
             </div>
+        </div>
     `;
 
     // Disparar e-mail

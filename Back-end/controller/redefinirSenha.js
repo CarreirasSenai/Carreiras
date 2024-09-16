@@ -33,16 +33,37 @@ exports.enviarCodigo = (req, res) => {
             // Mensagem do email de redefinição
             const corpo =
                 `
-            <div style="font-family: Arial, Helvetica, sans-serif;">
-                <!-- <img style="width: 200px; margin: 10px;" src="http://localhost:3000/src/assets/logo.png"> -->
-                <h1>Carreiras  🐝</h1>
-                <strong>Olá, Tudo bem? <br> <br></strong>
-                Foi solicitado uma redefinição de senha para este endereço de e-mail. <br> <br>
-                O código para redefinição é <strong>${codigo}</strong> <br> <br>
-                Caso você não tenha feito a solicitação, desconsidere este e-mail. <br> <br>
-                Atenciosamente, Carreiras.<br> <br>
-                <small><a href="https://www.carreiras.com.br" target="_blank">www.carreiras.com.br</a></small> <br> <br>
-            </div>
+                <div style="font-family: Arial, Helvetica, sans-serif; 
+                    text-align: center; 
+                    display: flex; 
+                    flex-direction: column; 
+                    justify-content: center; 
+                    align-items: center;">
+                    <div style="text-align: center;
+                    width: 100%;">
+                        <hr>
+                        <h1 style="color: #333;">Carreiras 🐝</h1>
+                        <div style="background: linear-gradient(to right, #6f00ff, #9341ff);
+                            padding: 50px;
+                            color: white;
+                            box-shadow: 0 1px 4px #333;">
+                            <div>Foi solicitado uma redefinição de senha para este endereço de e-mail.</div>
+                            <br><br>
+                            <div>O código para redefinição é</div>
+                            <strong>${codigo}</strong>
+                            <br><br><br>
+                            <div>Caso você não tenha feito a solicitação, desconsidere este e-mail.</div>
+                            <br><br>
+                            <div>
+                                Atenciosamente, Carreiras. <br>
+                                <small><a href="https://www.carreiras.com.br" target="_blank"
+                                        style="color: white;">www.carreiras.com.br</a></small>
+                            </div>
+                        </div>
+                        <br>
+                        <hr>
+                    </div>
+                </div>
             `;
 
             // Função ASSÍNCRONA!! para disparar email
@@ -102,7 +123,7 @@ exports.redefinirSenha = async (req, res) => {
             console.log(err.message);
             return res.status(500).json({ error: err.message });
         } else {
-            console.log(result);            
+            console.log(result);
             res.json({ success: true, result: result });
         }
     });
