@@ -1,4 +1,4 @@
-exports.dataHora = (req, res) => {
+exports.dataHora = () => {
     const agora = new Date();
 
     const ano = agora.getFullYear();

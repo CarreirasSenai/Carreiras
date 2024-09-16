@@ -2,12 +2,7 @@
   <div class="text-center">
     <v-dialog v-model="dialog" max-width="800px">
       <template v-slot:activator="{ props: activatorProps }">
-        <v-btn
-          variant="text"
-          v-bind="activatorProps"
-          class="w-100 rounded-0 justify-start"
-          >Editar Cadastro</v-btn
-        >
+        <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Cadastro</v-btn>
       </template>
 
       <v-container>
@@ -18,182 +13,90 @@
                 <v-card-text style="max-height: 70vh" class="overflow-auto">
                   <v-row>
                     <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field
-                        v-model="nomeSocial"
-                        :rules="nomeSocialRules"
-                        label="Nome Social"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                      ></v-text-field>
+                      <v-autocomplete label="Área de Atuação" v-model="area" :items="listaSegmentos"
+                        variant="underlined"></v-autocomplete>
                     </v-col>
                     <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field
-                        v-model="nomeCompleto"
-                        :rules="nomeCompletoRules"
-                        label="Nome Completo"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                      ></v-text-field>
+                      <v-autocomplete label="Profissão ou Cargo Desejado" v-model="profissao" :items="listaProfissoes"
+                        variant="underlined"></v-autocomplete>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field
-                        v-model="email"
-                        :rules="emailRules"
-                        label="E-mail"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="phone"
-                        :rules="phoneRules"
-                        label="Telefone"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                        v-mask="'(##) ####-####'"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="cellphone"
-                        :rules="cellphoneRules"
-                        label="Celular"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                        v-mask="'(##) #####-####'"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="cpf"
-                        :rules="cpfRules"
-                        label="CPF"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                        v-mask="'###.###.###-##'"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="cep"
-                        :rules="confirmcepRules"
-                        label="CEP"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                        v-mask="'########'"
-                        @blur="retornarInformacoesCep"
-                      ></v-text-field>
+                      <v-text-field v-model="nomeSocial" :rules="nomeSocialRules" label="Nome Social"
+                        variant="underlined" :disabled="isDisabled"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field
-                        v-model="rua"
-                        :rules="ruaRules"
-                        label="Rua"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="numCasa"
-                        :rules="confirmnumeroRules"
-                        label="Nº"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="complemento"
-                        :rules="complementoRules"
-                        label="Complemento"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="bairro"
-                        :rules="bairroRules"
-                        label="Bairro"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="cidade"
-                        :rules="cidadeRules"
-                        label="Cidade"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                      ></v-text-field>
+                      <v-text-field v-model="nomeCompleto" :rules="nomeCompletoRules" label="Nome Completo"
+                        variant="underlined" :disabled="isDisabled"></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-select
-                        v-model="estado"
-                        :rules="estadoRules"
-                        :items="items"
-                        label="Estado"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                      ></v-select>
+                      <v-text-field v-model="email" :rules="emailRules" label="E-mail" variant="underlined"
+                        :disabled="isDisabled"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="password"
-                        :rules="passwordRules"
-                        label="Senha"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                        :append-icon = "showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                        :type="showPassword ? 'text' : 'password'"
-                        @click:append="showPassword = !showPassword"
-                        counter
-                      ></v-text-field>
+                      <v-text-field v-model="phone" :rules="phoneRules" label="Telefone" variant="underlined"
+                        :disabled="isDisabled" v-mask="'(##) ####-####'"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="confirmPassword"
-                        :rules="confirmPasswordRules"
-                        label="Repetir Senha"
-                        variant="underlined"
-                        :disabled="isDisabled"
-                        :append-icon = "showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
-                        :type="showRePassword ? 'text' : 'password'"
-                        @click:append="showRePassword = !showRePassword"
-                        counter
-                      ></v-text-field>
+                      <v-text-field v-model="cellphone" :rules="cellphoneRules" label="Celular" variant="underlined"
+                        :disabled="isDisabled" v-mask="'(##) #####-####'"></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="3" md="3" lg="3">
+                      <v-text-field v-model="cpf" :rules="cpfRules" label="CPF" variant="underlined"
+                        :disabled="isDisabled" v-mask="'###.###.###-##'"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="3" md="3" lg="3">
+                      <v-text-field v-model="cep" :rules="confirmcepRules" label="CEP" variant="underlined"
+                        :disabled="isDisabled" v-mask="'########'" @blur="retornarInformacoesCep"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="6" lg="6">
+                      <v-text-field v-model="rua" :rules="ruaRules" label="Rua" variant="underlined"
+                        :disabled="isDisabled"></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="3" md="3" lg="3">
+                      <v-text-field v-model="numCasa" :rules="confirmnumeroRules" label="Nº" variant="underlined"
+                        :disabled="isDisabled"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="3" md="3" lg="3">
+                      <v-text-field v-model="complemento" :rules="complementoRules" label="Complemento"
+                        variant="underlined" :disabled="isDisabled"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="3" md="3" lg="3">
+                      <v-text-field v-model="bairro" :rules="bairroRules" label="Bairro" variant="underlined"
+                        :disabled="isDisabled"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="3" md="3" lg="3">
+                      <v-text-field v-model="cidade" :rules="cidadeRules" label="Cidade" variant="underlined"
+                        :disabled="isDisabled"></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="6" lg="6">
+                      <v-select v-model="estado" :rules="estadoRules" :items="items" label="Estado" variant="underlined"
+                        :disabled="isDisabled"></v-select>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="6" lg="6">
+                      <v-btn to="/redefinir-senha?resposta=candidato" text="Redefinir Senha"
+                        append-icon="mdi-arrow-top-right-thick" block></v-btn>
                     </v-col>
                   </v-row>
                 </v-card-text>
 
                 <v-divider></v-divider>
 
-                <v-card-actions class="d-flex justify-end">
+                <v-card-actions>
+                  <v-btn text="Excluir" variant="text" @click="dialog = false, modalDelete = true"></v-btn>
                   <v-spacer></v-spacer>
-
-                  <v-btn
-                    text="Fechar"
-                    variant="outlined"
-                    @click="dialog = false"
-                  ></v-btn>
-                  <v-btn
-                    text="Salvar"
-                    color="Enviar"
-                    variant="tonal"
-                    class="bg-purple-darken-4"
-                    @click="atualizarCadastro"
-                  ></v-btn>
+                  <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
+                  <v-btn text="Atualizar" color="Enviar" variant="tonal" class="bg-purple-darken-4"
+                    @click="atualizarCadastro"></v-btn>
                 </v-card-actions>
               </v-card>
             </v-form>
@@ -202,36 +105,60 @@
       </v-container>
     </v-dialog>
   </div>
+
+  <v-dialog max-width="500" v-model="modalDelete">
+    <v-card title="Confirme a Exclusão da Conta">
+      <v-card-text>
+        Tem certeza que deseja excluir sua conta? Todos os seus dados serão apagados e não será possível
+        recuperá-los!
+        <!-- Melhoria: Sistema de feedbacks dos users -->
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn variant="tonal" text="Cancelar" @click="modalDelete = false"></v-btn>
+        <v-btn variant="tonal" class="bg-error" text="Excluir Conta" @click="deletarConta"></v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <v-snackbar :color="color" v-model="snackbar" :timeout="6000">
+    <div class="text-center">{{ mensagem }}</div>
+  </v-snackbar>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
+import { useCandidatoStore } from '@/stores/candidato';
+import listaProfissoes from '@/assets/profissoes.json';
+import listaSegmentos from '@/assets/segmentos.json';
 
 export default {
   data() {
     return {
-      nomeSocial: "Thiago",
-      nomeCompleto: "Thiag Lima",
-      email: "thiago@gmail.com",
-      phone: "4700000000",
-      cellphone: "47000000000",
-      cpf: "0000000000000",
-      cep: "00000000",
-      confirmcep: "",
-      rua: "Rua Bonita",
-      numCasa: "00",
-      complemento: "cabana",
-      bairro: "Bairro Bonito",
-      cidade: "Bonita",
-      estado: "SC",
-      password: "12345678Ww@",
-      confirmPassword: "12345678Ww@",
-      resposta: false,
-      mensagemErro: "",
+      id: useCandidatoStore().dadosUser.id,
+      nomeSocial: useCandidatoStore().dadosUser.nome_social,
+      nomeCompleto: useCandidatoStore().dadosUser.nome_completo,
+      email: useCandidatoStore().dadosUser.email,
+      phone: useCandidatoStore().dadosUser.telefone,
+      cellphone: useCandidatoStore().dadosUser.celular,
+      cpf: useCandidatoStore().dadosUser.cpf,
+      cep: useCandidatoStore().dadosUser.cep,
+      rua: useCandidatoStore().dadosUser.rua,
+      numCasa: useCandidatoStore().dadosUser.numero,
+      complemento: useCandidatoStore().dadosUser.complemento,
+      bairro: useCandidatoStore().dadosUser.bairro,
+      cidade: useCandidatoStore().dadosUser.cidade,
+      estado: useCandidatoStore().dadosUser.estado,
+      area: useCandidatoStore().dadosUser.area,
+      profissao: useCandidatoStore().dadosUser.profissao,
       isDisabled: false,
       dialog: false,
-      showPassword: false,
-      showRePassword: false,
+      modalDelete: false,
+      mensagem: '',
+      color: '',
+      snackbar: false,
+      listaProfissoes: listaProfissoes,
+      listaSegmentos: listaSegmentos,
 
       nomeSocialRules: [
         (v) => !!v || "Nome Social Requerido",
@@ -311,50 +238,89 @@ export default {
         (v) => v === this.password || "Senhas não coincidem",
       ],
       items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
-                'CE', 'DF', 'ES', 'GO', 'MA',
-                'MT', 'MS', 'MG', 'PA', 'PB',
-                'PR', 'PE', 'PI', 'RJ', 'RN',
-                'RS', 'RO', 'RR', 'SC', 'SP',
-                'SE', 'TO'],
+        'CE', 'DF', 'ES', 'GO', 'MA',
+        'MT', 'MS', 'MG', 'PA', 'PB',
+        'PR', 'PE', 'PI', 'RJ', 'RN',
+        'RS', 'RO', 'RR', 'SC', 'SP',
+        'SE', 'TO'],
     };
   },
+  
+  computed: {
+    user() { return useCandidatoStore(); },
+  },
+
   methods: {
+
     async atualizarCadastro() {
+      console.clear();
       this.cpf = this.limparMascaraValores(this.cpf);
       try {
-        const response = await axios.post(
-          "http://localhost:4000/update/create",
-          {
-            nomeSocial: this.nomeSocial,
-            nomeCompleto: this.nomeCompleto,
-            email: this.email,
-            phone: this.phone,
-            cellphone: this.cellphone,
-            cpf: this.cpf,
-            cep: this.cep,
-            rua: this.rua,
-            numCasa: this.numCasa,
-            complemento: this.complemento,
-            bairro: this.bairro,
-            cidade: this.cidade,
-            estado: this.estado,
-            password: this.password,
-          }
-        );
+        const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update`, {
+          id: this.id,
+          nomeSocial: this.nomeSocial,
+          nomeCompleto: this.nomeCompleto,
+          email: this.email,
+          phone: this.phone,
+          cellphone: this.cellphone,
+          cpf: this.cpf,
+          cep: this.cep,
+          rua: this.rua,
+          numCasa: this.numCasa,
+          complemento: this.complemento,
+          bairro: this.bairro,
+          cidade: this.cidade,
+          estado: this.estado,
+          password: this.password,
+          profissao: this.profissao,
+          area: this.area,
+        }, { withCredentials: true });
 
-        this.resposta = true;
-        console.log("Atualização bem-sucedida", response.data);
-        document.getElementById("btnAlertaCadastro").click();
+        this.mensagem = 'Cadastro atualizado com Sucesso!';
+        this.color = 'success';
+        this.snackbar = true;
+
+        this.user.userLogado();
+
+        console.info('%cAtualização bem-sucedida ✔👌', 'color: lightgreen; padding: 20px 0;', response.data);
+
       } catch (error) {
-        this.resposta = false;
-        console.error(
-          "Erro ao atualizar o cadastro",
-          error.response.data.error
-        );
-        this.mensagemErro = error.response.data.error;
-        document.getElementById("btnAlertaCadastro").click();
+        this.mensagem = 'Erro na atualização do Cadastro!';
+        this.color = 'error';
+        this.snackbar = true;
+        console.error('Erro ao atualizar o cadastro', error.response.data);
       }
     },
+
+    async deletarConta() {
+      console.clear();
+      console.log(this.id);
+
+      try {
+        const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/candidato/delete`, {
+          data: { id: this.id }, // Envia dados com a requisição DELETE
+          withCredentials: true, // Garante que cookies são enviados
+        });
+
+        this.mensagem = 'Sua conta foi deletada 🙄!';
+        this.color = 'warning';
+        this.snackbar = true;
+
+        setTimeout(() => {
+          // this.$router.push('/'); 
+          window.location.href = '/'; // Deixe este! Eu sei o motivo...
+        }, 2000);
+
+        console.info('%Exclusão bem-sucedida 🙄', 'color: lightyellow; padding: 20px 0;', response.data);
+
+      } catch (error) {
+        this.mensagem = 'Erro na exclusão da Conta!';
+        this.color = 'error';
+        this.snackbar = true;
+        console.error('Erro ao excluir a conta', error.response.data);
+      }
+    },
+
     limparMascaraValores(valor) {
       if (valor !== "") {
         valor = valor.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
@@ -362,14 +328,15 @@ export default {
 
       return valor;
     },
-    async retornarInformacoesCep(){
-      if(this.cep !== "" && this.cep.length === 8) {
+
+    async retornarInformacoesCep() {
+      if (this.cep !== "" && this.cep.length === 8) {
         try {
           const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
           this.rua = response.data.street,
-          this.bairro = response.data.neighborhood,
-          this.cidade = response.data.city,
-          this.estado = response.data.state
+            this.bairro = response.data.neighborhood,
+            this.cidade = response.data.city,
+            this.estado = response.data.state
         }
         catch (error) {
           console.log("Houve um erro ao validar o CEP. Erro: ", error);

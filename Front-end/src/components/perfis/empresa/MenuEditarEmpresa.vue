@@ -19,9 +19,6 @@
 </template>
 
 <script>
-import EditarCadEmpresa from './EditarCadEmpresa.vue';
-import EditarFotoCapaEmpresa from './EditarFotoCapaEmpresa.vue';
-
 export default {
     data: () => ({
         // items: [
@@ -32,9 +29,3 @@ export default {
     }),
 }
 </script>
-
-<style>
-* {
-    /* border: 1px solid red; */
-}
-</style>

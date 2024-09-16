@@ -31,6 +31,8 @@ export const usePesquisaVaga = defineStore('pesquisaVaga', {
         },
 
         async pesquisar() {
+            console.log(1);
+            
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/pesquisa`, {
                     pesquisa: this.pesquisa,
@@ -43,7 +45,7 @@ export const usePesquisaVaga = defineStore('pesquisaVaga', {
 
             } catch (error) {
                 console.log('Erro ao enviar busca!', error.response);
-            };
+            }
         },
     }
 })

@@ -1,5 +1,4 @@
 CREATE DATABASE  IF NOT EXISTS `carreiras` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
 USE `carreiras`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
@@ -33,12 +32,12 @@ CREATE TABLE `agendamento` (
   `hora` time NOT NULL,
   `id_empresa` int NOT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
   KEY `id_candidato` (`id_candidato`),
-  CONSTRAINT `agendamento_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`),
-  CONSTRAINT `agendamento_ibfk_2` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`)
+  CONSTRAINT `agendamento_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `agendamento_ibfk_2` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -61,16 +60,15 @@ DROP TABLE IF EXISTS `curso`;
 CREATE TABLE `curso` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
-  `nivel` varchar(100) NOT NULL,
   `lugar` varchar(100) NOT NULL,
-  `inicio` date NOT NULL,
-  `termino` date NOT NULL,
+  `inicio` varchar(7) NOT NULL,
+  `termino` varchar(7) NOT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
-  CONSTRAINT `curso_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `curso_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,6 +77,7 @@ CREATE TABLE `curso` (
 
 LOCK TABLES `curso` WRITE;
 /*!40000 ALTER TABLE `curso` DISABLE KEYS */;
+INSERT INTO `curso` VALUES (5,'Espanhol Panamenho','Duolingo','2024-09','2024-12',1,'2024-09-13 08:41:21');
 /*!40000 ALTER TABLE `curso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,15 +92,16 @@ CREATE TABLE `experiencia` (
   `id` int NOT NULL AUTO_INCREMENT,
   `cargo` varchar(100) NOT NULL,
   `empresa` varchar(100) NOT NULL,
+  `atividades` json DEFAULT NULL,
   `contrato` varchar(100) NOT NULL,
-  `inicio` date NOT NULL,
-  `termino` date NOT NULL,
+  `inicio` varchar(7) NOT NULL,
+  `termino` varchar(7) NOT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
-  CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,6 +110,7 @@ CREATE TABLE `experiencia` (
 
 LOCK TABLES `experiencia` WRITE;
 /*!40000 ALTER TABLE `experiencia` DISABLE KEYS */;
+INSERT INTO `experiencia` VALUES (6,'Desenvolvedor','Links','[\"Acompanhamento do ciclo total de desenvolvimento\", \"Planejamento\", \"Prototipagem\", \"Frontend\", \"Backend\", \"Testes\", \"Implantação\", \"Documentação\", \"Suporte\", \"Infra\"]','PJ','2024-12','2024-12',1,'2024-09-13 16:50:38'),(10,'Analista de Sistemas','TOTVS','[\"Criação de Interfaces\", \"Controle de Estoque\", \"Gestão de Pessoas\"]','CLT','2024-12','2024-12',1,'2024-09-13 16:51:00');
 /*!40000 ALTER TABLE `experiencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -125,14 +126,14 @@ CREATE TABLE `formacao` (
   `nome` varchar(100) NOT NULL,
   `nivel` varchar(100) NOT NULL,
   `lugar` varchar(100) NOT NULL,
-  `inicio` date NOT NULL,
-  `termino` date NOT NULL,
+  `inicio` varchar(7) DEFAULT NULL,
+  `termino` varchar(7) DEFAULT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
-  CONSTRAINT `formacao_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `formacao_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,13 +154,13 @@ DROP TABLE IF EXISTS `habilidade`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `habilidade` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
+  `habilidades` json DEFAULT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
-  CONSTRAINT `habilidade_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `habilidade_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,6 +169,7 @@ CREATE TABLE `habilidade` (
 
 LOCK TABLES `habilidade` WRITE;
 /*!40000 ALTER TABLE `habilidade` DISABLE KEYS */;
+INSERT INTO `habilidade` VALUES (1,'[\"vue\", \"js\", \"ts\", \"java\", \"react\", \"next\", \"c#\", \"cobra\", \"cavalo\", \"morcego\", \"simples\", \"otimista\", \"trabaiado\", \"jovem\", \"me da um emprego como dev?\"]',1,'2024-09-13 20:45:32');
 /*!40000 ALTER TABLE `habilidade` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,12 +187,12 @@ CREATE TABLE `mensagem` (
   `envio` datetime NOT NULL,
   `id_empresa` int NOT NULL,
   `id_candidato` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
   KEY `id_candidato` (`id_candidato`),
-  CONSTRAINT `mensagem_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`),
-  CONSTRAINT `mensagem_ibfk_2` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`)
+  CONSTRAINT `mensagem_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `mensagem_ibfk_2` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -211,18 +213,17 @@ DROP TABLE IF EXISTS `perfil`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `perfil` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `descricao` varchar(255) DEFAULT NULL,
-  `formacao` varchar(100) DEFAULT NULL,
-  `curso` varchar(100) DEFAULT NULL,
-  `habilidades` varchar(255) DEFAULT NULL,
-  `experiencia` varchar(255) DEFAULT NULL,
-  `portfolio` text,
-  `id_user` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `id_user` (`id_user`),
-  CONSTRAINT `perfil_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user_candidato` (`id`)
+  `id` int NOT NULL,
+  `descricao` varchar(1000) DEFAULT NULL,
+  `foto` text,
+  `capa` text,
+  `id_candidato` int DEFAULT NULL,
+  `id_empresa` int DEFAULT NULL,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `perfil_ibfk_1` (`id_candidato`),
+  KEY `perfil_ibfk_2` (`id_empresa`),
+  CONSTRAINT `perfil_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `perfil_ibfk_2` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -251,7 +252,10 @@ CREATE TABLE `user_admin` (
   `senha` varchar(250) NOT NULL,
   `celular` varchar(20) DEFAULT NULL,
   `grupo` varchar(5) NOT NULL,
-  `data_atu` datetime DEFAULT CURRENT_TIMESTAMP,
+  `descricao` varchar(1000) DEFAULT NULL,
+  `foto` varchar(200) DEFAULT NULL,
+  `capa` varchar(200) DEFAULT NULL,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -274,6 +278,8 @@ DROP TABLE IF EXISTS `user_candidato`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_candidato` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `verificado` tinyint(1) DEFAULT '0',
+  `token_ativacao` varchar(64) DEFAULT NULL,
   `nome_social` varchar(100) NOT NULL,
   `nome_completo` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -288,14 +294,17 @@ CREATE TABLE `user_candidato` (
   `cidade` varchar(45) NOT NULL,
   `estado` char(2) NOT NULL,
   `senha` varchar(250) NOT NULL,
+  `area` varchar(150) NOT NULL,
   `profissao` varchar(200) DEFAULT NULL,
   `grupo` varchar(9) NOT NULL,
-  `data_atu` datetime DEFAULT CURRENT_TIMESTAMP,
+  `descricao` text,
+  `foto` varchar(200) DEFAULT NULL,
+  `capa` varchar(200) DEFAULT NULL,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `nome_completo` (`nome_completo`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `cpf` (`cpf`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -304,7 +313,7 @@ CREATE TABLE `user_candidato` (
 
 LOCK TABLES `user_candidato` WRITE;
 /*!40000 ALTER TABLE `user_candidato` DISABLE KEYS */;
-INSERT INTO `user_candidato` VALUES (1,'Thiago','Thiag Lima','thiago@gmail.com','4700000000','47000000000','00000000000','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','12345678Ww@','indefinida','candidato','2024-07-29 19:23:41');
+INSERT INTO `user_candidato` VALUES (1,0,NULL,'Thiago','Thiag Lima','thiago@gmail.com','4700000000','47000000000','00000000000','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','$2b$10$g8l1I0FQkEjsU0H1q1uG.OQOvNJUtee6kgwZzhlHJy5K7L1OWC6JK','Tecnologia da Informação','programador node.js','candidato','<h1><font color=\"#00bd97\">Hello World!</font></h1><div><font color=\"#000000\">Muito prazer eu me chamo Zezinho, sou formado em Sistemas da Informação e ja trabalhei em grandes projetos, em empresas como: <b>Nubank, PicPay e Mercado Pago</b>. Atualmente estou trabalhando em uma mina de carvão na zona leste da cidade e buscando uma nova oportunidade de emprego na área de tecnologia.</font></div>','perfil-foto-userId-1.jpg','perfil-capa-userId-1.jpg','2024-09-14 08:18:33');
 /*!40000 ALTER TABLE `user_candidato` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -336,8 +345,13 @@ CREATE TABLE `user_empresa` (
   `contato_responsavel` varchar(20) DEFAULT NULL,
   `senha` varchar(250) NOT NULL,
   `grupo` varchar(7) NOT NULL,
-  `data_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  `descricao` text,
+  `foto` varchar(200) DEFAULT NULL,
+  `capa` varchar(200) DEFAULT NULL,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cnpj` (`cnpj`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -370,10 +384,10 @@ CREATE TABLE `vagas` (
   `habilidades_extras` text,
   `beneficios` text,
   `id_empresa` int NOT NULL,
-  `data_atu` datetime DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
-  CONSTRAINT `vagas_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`)
+  CONSTRAINT `vagas_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -397,12 +411,12 @@ CREATE TABLE `vagas_candidatadas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_user` int NOT NULL,
   `id_vaga` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_user` (`id_user`),
   KEY `id_vaga` (`id_vaga`),
-  CONSTRAINT `vagas_candidatadas_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user_candidato` (`id`),
-  CONSTRAINT `vagas_candidatadas_ibfk_2` FOREIGN KEY (`id_vaga`) REFERENCES `vagas` (`id`)
+  CONSTRAINT `vagas_candidatadas_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `vagas_candidatadas_ibfk_2` FOREIGN KEY (`id_vaga`) REFERENCES `vagas` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -429,12 +443,12 @@ CREATE TABLE `vagas_etapas` (
   `data_termino` date NOT NULL,
   `id_vaga` int NOT NULL,
   `id_empresa` int NOT NULL,
-  `data_atu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_vaga` (`id_vaga`),
   KEY `id_empresa` (`id_empresa`),
-  CONSTRAINT `vagas_etapas_ibfk_1` FOREIGN KEY (`id_vaga`) REFERENCES `vagas` (`id`),
-  CONSTRAINT `vagas_etapas_ibfk_2` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`)
+  CONSTRAINT `vagas_etapas_ibfk_1` FOREIGN KEY (`id_vaga`) REFERENCES `vagas` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `vagas_etapas_ibfk_2` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -456,4 +470,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-29 19:29:49
+-- Dump completed on 2024-09-16  3:56:52

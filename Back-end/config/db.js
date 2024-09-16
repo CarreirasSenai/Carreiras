@@ -6,6 +6,7 @@ const db = mysql.createConnection({
   user: process.env.DB_USER || 'root', // Nome de usuário do banco de dados
   password: process.env.DB_PASS || 'root', // Senha do banco de dados
   database: process.env.DB_NAME || 'carreiras', // Nome do banco de dados
+  port: process.env.DB_PORT || 3306,
   charset: 'utf8mb4' // Especifique a codificação UTF-8
 });
 

@@ -22,6 +22,9 @@ app.use(cors({
   credentials: true // Permitir envio de cookies
 }));
 
+//habilitando upload de arquivos
+app.use(fileupload());
+
 // Configura o body-parser para analisar application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -35,13 +38,13 @@ app.set('view engine', 'ejs');
 //app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-//habilitando upload de arquivos
-app.use(fileupload());
-
 // Use suas rotas
 app.use('/', routes);
 
-const port = process.env.BACKEND_URL || 4000;
+// Extrair a porta da URL de BACKEND_URL
+const backendUrl = new URL(process.env.BACKEND_URL || 'http://localhost:4000');
+const port = backendUrl.port || 4000; // Se não tiver uma porta definida, usa 4000 como fallback
+
 app.listen(port, () => {
-  console.log(`Server is running in http://localhost:${port}`);
+  console.log(`Server is running at ${backendUrl.origin}`);
 });

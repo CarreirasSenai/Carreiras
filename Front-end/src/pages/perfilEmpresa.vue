@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Navbar />
+        <!-- <Navbar /> -->
         <FotoCapaEmpresa />
         <VagasPerfilEmpresa />
     </div>
