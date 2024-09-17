@@ -15,6 +15,7 @@ const Perfil = require('../controller/perfil');
 const Experiencia = require('../controller/experiencias');
 const Habilidade = require('../controller/habilidades');
 const VerificarConta = require('../controller/verificarConta');
+const Entrevista = require('../controller/entrevista')
 
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
@@ -71,5 +72,7 @@ router.get('/logout', (req, res) => {
         res.json({ success: "Logout feito com sucesso!" });
     });
 });
+
+router.get('/entrevista/list_vagas', Entrevista.getByIdUser);
 
 module.exports = router;

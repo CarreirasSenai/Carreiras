@@ -11,7 +11,6 @@
           <div v-for="(day, index) in weekdaysToShow" :key="index">
             {{ day }}
           </div>
-
         </div>
         <component :is="currentCalendarDaysComponent" :days="days" :dayStyle="dayStyle" :eventStyle="eventStyle"
           :showMore="showMore" :showModal="showModal" :toggleShowMore="toggleShowMore"
@@ -32,6 +31,7 @@ import CalendarDays from './CalendarDays.vue';
 import CalendarDaysMedia from './CalendarDaysMedia.vue';
 import { ref, reactive, computed, watch } from 'vue';
 import { useDisplay } from 'vuetify';
+import axios from 'axios';
 
 export default {
   components: {
@@ -63,16 +63,6 @@ export default {
       isModalEntrevistaVisible.value = true;
     };
 
-    const addEvent = (event) => {
-      console.log('Event added:', event);
-    };
-
-    const toggleDayEvents = (index) => {
-      if (display.width.value <= 700) {
-        days.value[index].showEvents = !days.value[index].showEvents;
-      }
-    };
-
     const currentCalendarDaysComponent = computed(() => {
       return display.width.value <= 700 ? CalendarDaysMedia : CalendarDays;
     });
@@ -80,18 +70,23 @@ export default {
     const currentMonth = ref(new Date().getMonth());
     const currentYear = ref(new Date().getFullYear());
     const weekdays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-    const shortweekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
-    const events = reactive([
-      { date: '2024-08-12', title: 'Entrevista', description: 'Descrição do evento 1', type: 'event' },
-      { date: '2024-08-12', title: 'Entrevista', description: 'Vacas azuis caem do céu as sabados pra falar Jesus...', type: 'event' },
-      { date: '2024-08-12', title: 'Entrevista', description: 'O feijão é um alimento que causa gases. Boa sorte!', type: 'event' },
-      { date: '2024-08-12', title: 'Entrevista', description: 'Oi, meu nome é Paula e eu gosto de mais de laranjas e mais de sorvete.', type: 'event' },
-      { date: '2024-08-12', title: 'Entrevista', description: 'Aqui é onde o inferno queima as galinhas e deixam elas bem assadas. Uma diliça com Ç. Show de bola e coisa de velho.', type: 'event' },
-      { date: '2024-08-12', title: 'Entrevista', description: 'Olha só que descrição grande... Olha só como eu não sei mais o que escrever aqui lalalalala. Ta bom Cludia?', type: 'event' },
-      { date: '2024-08-12', title: 'Entrevista', description: 'Aqui é a ultima descrição uhullll', type: 'event' },
-      { date: '2024-08-20', title: 'Entrevista', description: 'Descrição do evento 2', type: 'event' },
-    ]);
-    const eventStyle = (event) => {
+    const events = reactive([]);
+
+    const fetchEvents = async () => {
+      try {
+        const month = String(currentMonth.value + 1).padStart(2, '0');
+        const year = currentYear.value;
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/entrevista/list_vagas`, {
+          params: { month, year }
+        });
+        events.splice(0, events.length, ...response.data);
+        calculateDays();
+      } catch (error) {
+        console.error('Erro ao buscar eventos:', error);
+      }
+    };
+
+    const eventStyle = () => {
       return {
         backgroundColor: 'rgba(104, 50, 210, 1)',
         color: 'white',
@@ -110,7 +105,6 @@ export default {
       return date.toLocaleString('pt-BR', { month: 'long' }).toUpperCase() + ' ' + currentYear.value;
     });
 
-    
     const days = ref([]);
     const showMore = ref([]);
 
@@ -161,7 +155,10 @@ export default {
       showMore.value = showMoreArray;
     };
 
-    watch([currentMonth, currentYear], calculateDays, { immediate: true });
+    watch([currentMonth, currentYear], () => {
+      fetchEvents();
+      calculateDays();
+    }, { immediate: true });
 
     const prevMonth = () => {
       currentMonth.value--;
@@ -194,7 +191,6 @@ export default {
       currentMonth,
       currentYear,
       weekdays,
-      shortweekdays,
       formattedMonthYear,
       days,
       prevMonth,
@@ -202,13 +198,12 @@ export default {
       eventStyle,
       showMore,
       toggleShowMore,
-      addEvent,
-      toggleDayEvents,
       currentCalendarDaysComponent
     };
   }
 };
 </script>
+
 
 <style scoped>
 .day {

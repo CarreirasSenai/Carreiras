@@ -18,9 +18,13 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col cols="12" sm="8">
+                                <v-col cols="12" sm="12">
                                     <v-select v-model="candidato" :rules="candidatoRules" :items="items"
                                         label="Candidato" density="compact"></v-select>
+                                </v-col>
+                                <v-col cols="12" sm="8">
+                                    <v-select v-model="vaga" :items="items"
+                                        label="Vaga" density="compact"></v-select>
                                 </v-col>
                                 <v-col cols="12" sm="4">
                                     <v-text-field type="datetime-local" v-model="data" :rules="dataRules"
@@ -41,6 +45,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     props: {
         isVisible: {
@@ -55,6 +61,7 @@ export default {
             descricao: '',
             data: '',
             candidato: '',
+            vaga: '',
             isValid: false,
             isLoading: false,
             tituloRules: [
@@ -71,6 +78,9 @@ export default {
             candidatoRules: [
                 (v) => !!v || "Candidato Requerido"
             ],
+            //VOLTAR
+            // COLOCAR DATA CANDIDATADAS
+            // COLOCAR vaga
             items: [
                 'João',
                 'Maria',
@@ -98,22 +108,37 @@ export default {
             this.descricao = '';
             this.data = '';
             this.candidato = '';
+            this.vaga = '';
             this.isValid = false;
         },
-        submitForm() {
+        async submitForm() {
             this.isLoading = true;
             if (this.isValid) {
+                const [datePart, timePart] = this.data.split('T');
                 const newEvent = {
-                    date: this.data,
+                    date: datePart,  
+                    time: timePart, 
                     title: this.titulo,
                     description: this.descricao,
-                    type: 'event',
                     candidate: this.candidato,
+                    vaga: this.vaga,
                 };
-                this.$emit('save-event', newEvent);
-                this.isLoading = false;
-                this.resetForm();
-                this.close();
+
+                try {
+                    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/agenda/entrevista/create`, newEvent);
+
+                    if (response.status === 200) {
+                        this.$emit('save-event', response.data);
+                        this.resetForm();
+                        this.close();
+                    } else {
+                        console.error('Erro ao criar a entrevista', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Erro na requisição', error);
+                } finally {
+                    this.isLoading = false;
+                }
             } else {
                 this.isLoading = false;
                 console.log("Formulário inválido");
@@ -124,9 +149,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.close{
+.close {
     padding: 10px;
 }
+
 .signup-card {
     margin: 0 auto;
     width: auto;
