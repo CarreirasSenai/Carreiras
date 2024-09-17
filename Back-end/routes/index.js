@@ -52,6 +52,7 @@ router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);
+router.post('/vaga/create', Vaga.vagaCreate);
 
 // rotas redefinir senha
 router.post('/enviar/codigo', RedefinirSenha.enviarCodigo);

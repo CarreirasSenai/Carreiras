@@ -4,4 +4,8 @@ exports.buscarVaga = (req, res) => {
 
     console.log(pesquisa);
     res.json({ sucess: true, pesquisa: pesquisa });
-};
+}
+
+exports.vagaCreate = (req, res) => {
+    console.log(req.body);
+}

@@ -112,18 +112,7 @@
                         <v-card-actions class="d-flex justify-space-between">
                             <div class="d-flex flex-wrap ga-2">
                                 <v-btn class="bt-primario">Inscrever-se</v-btn>
-                                <v-btn class="bt-primario" @click="showPublishVacancyDialog">Editar vaga</v-btn>
-                                <v-dialog v-model="publishVacancyDialog" max-width="700">
-                                    <v-card>
-                                        <v-card-title class="headline">Editar de vaga</v-card-title>
-                                        <FormPublicacaoVaga ref="form" @updateFormValid="updateFormValid" />
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-                                            <v-btn color="deep-purple-darken-2" text @click="publishVacancyDialog = false">Fechar</v-btn>
-                                            <v-btn class="bt-primario" :disabled="!formValid" variant="tonal" @click="submitForm">Salvar</v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                </v-dialog>
+                                <v-btn class="bt-primario">Editar vaga</v-btn>
                                 <small>O button alterna conforme o user logado.</small>
                             </div>
                             <div class="d-flex align-center justify-center ga-2">
@@ -144,26 +133,9 @@ export default {
     data() {
         return {
             dialog: false,
-            publishVacancyDialog: false,
-            formValid: '',
         }
     },
     methods: {
-        showPublishVacancyDialog(){
-            this.publishVacancyDialog = true;
-        },
-        updateFormValid(valid) {
-            this.formValid = valid;
-        },
-        submitForm(){
-            const form = this.$refs.form.$refs.form
-            if(form.validate()){
-            if(window.location.href.includes(""))
-                alert("Formulário editado na tela de home");
-            } else {
-                alert('Preencha os campos corretamente');
-            }
-        }
     }
 }
 </script>
