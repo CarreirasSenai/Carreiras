@@ -1,9 +1,9 @@
 <template>
     <div class="text-center div-button-edit">
-        <v-dialog v-model="dialog" max-width="600">
+        <v-dialog v-model="dialog" max-width="700">
             <template v-slot:activator="{ props: activatorProps }">
                 <v-btn class="bt-add" variant="outlined" v-bind="activatorProps">
-                    Nova
+                    Criar Vaga
                 </v-btn>
             </template>
 
@@ -49,30 +49,37 @@
                             </v-col>
                             <v-col cols="12" md="6">
                                 <v-combobox v-model="form.remuneracao" label="Remuneração"
-                                    prepend-inner-icon="mdi-currency-usd" :rules="[rules.geral]"></v-combobox>
+                                    prepend-inner-icon="mdi-currency-usd"></v-combobox>
                             </v-col>
                         </v-row>
                         <v-row dense>
                             <v-col cols="12">
                                 <v-combobox v-model="form.habsExigidas" chips closable-chips multiple
-                                    label="Habilidades Exigidas" messages="Insira um item teclando enter"
+                                    label="Habilidades Exigidas" hint="Escreva uma habilidade e tecle enter"
                                     :rules="[rules.geral]"></v-combobox>
                             </v-col>
                             <v-col cols="12">
                                 <v-combobox v-model="form.habsOpcionais" chips closable-chips multiple
-                                    label="Habilidades Opcionais" :rules="[rules.geral]"></v-combobox>
+                                    label="Habilidades Opcionais" hint="Escreva uma habilidade e tecle enter"
+                                    :rules="[rules.geral]"></v-combobox>
                             </v-col>
                         </v-row>
                         <v-row dense>
                             <v-col cols="12">
                                 <v-textarea v-model="form.descricao" rows="10" auto-grow
-                                    label="Descrição (Visão Geral da Vaga)"></v-textarea>
+                                    label="Descrição (Visão Geral da Vaga)" :rules="[rules.geral]"></v-textarea>
                             </v-col>
                         </v-row>
                         <v-row dense>
                             <v-col cols="12">
                                 <v-combobox v-model="form.etapas" chips closable-chips multiple label="Etapas da Vaga"
-                                    messages="Insira as etapas na ordem" :rules="[rules.geral]"></v-combobox>
+                                    hint="Escreva uma etapa e tecle enter" :rules="[rules.geral]"></v-combobox>
+                            </v-col>
+                        </v-row>
+                        <v-row dense>
+                            <v-col cols="12">
+                                <v-combobox v-model="form.questionario" chips closable-chips multiple
+                                    label="Questionário" hint="Escreva uma pergunta e tecle enter"></v-combobox>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -105,7 +112,8 @@ export default {
             habsExigidas: ['Pacote Office', 'Lógica de Programação', 'Trabalho em Equipe'],
             habsOpcionais: ['Malabarismo', 'Conserto de Veículos', 'Plantar Bananeira'],
             descricao: 'A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.',
-            etapas: ['Entrevista', 'Desafio', 'Call com Líder', 'Acordo']
+            etapas: ['Entrevista', 'Desafio', 'Call com Líder', 'Acordo'],
+            questionario: ['Há quantos anos você usa Excel no trabalho?', 'Fale sobre um projeto desafiador.']
         },
         rules: {
             geral: value => !!value || 'O campo obrigatório.'
@@ -118,6 +126,10 @@ export default {
             'Sergipe - SE', 'Tocantins - TO'],
     }),
     props: {
+        MostrarVagas: {
+            type: Function,
+            required: true
+        }
     },
     methods: {
         async submitCreate(event) {
@@ -133,8 +145,9 @@ export default {
                     }, { withCredentials: true });
 
                     console.log(response.data);
+                    this.MostrarVagas();
                     this.dialog = false;
-                    
+
                 } catch (error) {
                     console.error('Erro', error.response.data);
                 }
