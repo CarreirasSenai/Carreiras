@@ -37,7 +37,7 @@
               what we do, and we're looking for talented individuals to join
               our team.
             </v-card-text>
-            <v-btn class="primary" href="#"> Contate-nos! </v-btn>
+            <ModalContatenos />
           </v-card>
         </v-col>
       </v-row>

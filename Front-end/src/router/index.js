@@ -46,7 +46,6 @@ const router = createRouter({
     { path: '/login-admin', component: loginADM },
     { path: '/lista-de-usuarios', component: ListaDeUsuarios },
     { path: '/sobre', component: Sobre },
-   // { path: '/sobre', component: Sobre },
   ],
 });
 
