@@ -23,7 +23,7 @@ exports.createCompany = (razaoSocial, nomeFantasia, email, telefone, celular, cn
             + ' cpf_responsavel, contato_responsavel, senha, grupo, data_create) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'
             + ' ?, ?, ?)',
             [razaoSocial, nomeFantasia, cnpj, inscricaoEstadual, cep, endereco, numero, complemento, bairro, cidade,
-            estado, email, telefone, celular, responsavelLegal, cpfResponsavel, contatoRA, senha, grupo, 'CURRENT_DATE()'], (err, result) => {
+            estado, email, telefone, celular, responsavelLegal, cpfResponsavel, contatoRA, senha, grupo, dataAtu], (err, result) => {
                 if (err) {
                     console.log(err);
                     return callback(err, null);
