@@ -1,25 +1,52 @@
 <template>
-  <div class="text-center pa-4">
+  <div class="text pa-4">
     <div>
-      <v-btn class="primary" @click="dialog = true"> Contate-nos! </v-btn>
+      <v-btn class="primary bg-purple-darken-2" @click="dialog = true">
+        Contate-nos!
+      </v-btn>
     </div>
 
-    <v-dialog v-model="dialog">
-      <v-card>
-        <v-form fast-fail @submit.prevent>
-          <v-text-field
-            v-model="firstName"
-            :rules="firstNameRules"
-            label="First name"
-          ></v-text-field>
+    <v-dialog v-model="dialog" max-width="400" class="modal-container">
+      <v-card class="form-container">
+        <v-form fast-fail @submit.prevent="sendMessage">
+          <h2 class="text-h2 mb-2">Contate-nos!</h2>
+          <!-- // Adcionar o logo PRETO transparente ao meio do card entre titulo e descricacao, mudar cor de fundo dos inputs -->
+          <p class="text-subtitle-1 mb-4">Estamos ansiosos para ouvir de você! Por favor preencha o formulário abaixo para nos enviar uma mensagem. Nossa equipe de carreiras está ansiosa para se conectar com você4</p>
+
+          <v-divider class="mb-4"></v-divider>
 
           <v-text-field
-            v-model="lastName"
-            :rules="lastNameRules"
-            label="Last name"
+            v-model="email"
+            :rules="emailRules"
+            label="Email"
+            solo
+            dense
+            class="mb-2"
+            hint="Exemplo@gmail.com"
           ></v-text-field>
 
-          <v-btn class="mt-2" type="submit" block>Submit</v-btn>
+          <v-textarea
+            v-model="message"
+            :rules="messageRules"
+            label="Mensagem"
+            solo
+            dense
+            class="mb-2"
+            counter
+            :counter-value="message.length"
+          ></v-textarea>
+
+          <v-btn class="mt-2 primary bg-purple-darken-2" type="submit" block :loading="loading">
+            <v-icon>mdi-send</v-icon> Enviar Mensagem
+          </v-btn>
+
+          <v-alert v-if="success" type="success" class="mt-4">
+            Thank you for reaching out! We'll get back to you soon.
+          </v-alert>
+
+          <v-alert v-if="error" type="error" class="mt-4">
+            Oops, something went wrong. Please try again!
+          </v-alert>
         </v-form>
       </v-card>
     </v-dialog>
@@ -30,22 +57,66 @@
 export default {
   data: () => ({
     dialog: false,
-    firstName: "",
-    firstNameRules: [
+    loading: false,
+    success: false,
+    error: false,
+    email: "",
+    emailRules: [
       (value) => {
-        if (value?.length >= 3) return true;
+        if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) return true;
 
-        return "First name must be at least 3 characters.";
+        return "Email Invalido!";
       },
     ],
-    lastName: "123",
-    lastNameRules: [
+    message: "",
+    messageRules: [
       (value) => {
-        if (/[^0-9]/.test(value)) return true;
+        if (value?.length >= 10) return true;
 
-        return "Last name can not contain digits.";
+        return "A Mensagem deve ter no Minimo 10 letras";
       },
     ],
   }),
+  methods: {
+    sendMessage() {
+      this.loading = true;
+      // Send the message to the institution's careers email
+      const careersEmail = "careers@institution.com";
+      const subject = "Message from " + this.firstName + " " + this.lastName;
+      const body = this.message;
+
+      // You can use a library like EmailJS to send the email
+      // or make an API call to your backend to send the email
+      console.log("Sending email to " + careersEmail + " with subject " + subject + " and body " + body);
+
+      // Simulate a successful send
+      setTimeout(() => {
+        this.loading = false;
+        this.success = true;
+      }, 2000);
+
+      // Or simulate an error
+      // setTimeout(() => {
+      //   this.loading = false;
+      //   this.error = true;
+      // }, 2000);
+    },
+  },
 };
 </script>
+
+<style scoped lang="scss">
+
+.form-container {
+  padding: 20px 10px;
+}
+
+.v-btn {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.v-icon {
+  margin-right: 10px;
+}
+</style>

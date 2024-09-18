@@ -2,49 +2,51 @@
   <v-app>
     <Navbar />
 
-  <v-container class="sobre-nos" style="margin-bottom: 40px">
-  <div class="login-container fill-height">
-    <!-- Seção de cabeçalho com fundo escurecido para melhor contraste -->
-    <v-row class="header" align="center" justify="center">
-      <v-col cols="12" sm="10" md="8" class="text-center">
-        <h1 style="color: #1f1f1f">Sobre nós</h1>
-      </v-col>
-    </v-row>
+    <v-container class="sobre-nos" style="margin-bottom: 40px">
+      <div class="login-container fill-height">
+        <!-- Seção de cabeçalho com fundo escurecido para melhor contraste -->
+        <v-row class="header" align="center" justify="center">
+          <v-col cols="12" sm="10" md="8" class="text-center">
+            <h1 style="color: #1f1f1f">Sobre nós</h1>
+          </v-col>
+        </v-row>
 
-    <!-- Logo and Introduction Section -->
-    <div class="logo-intro-container" style="margin-bottom: 40px">
-      <v-row class="align-center">
-        <v-col cols="12" sm="6" md="4" class="pr-4">
-          <v-img
-            class="careers-logo"
-            src="../assets/logoSobre-removebg-preview.png"
-            alt="Careers Logo"
-          />
-        </v-col>
-        <v-col cols="12" sm="6" md="8">
-          <v-card class="intro-card pa-4">
-            <v-card-title class="text-h5">Explore Our Careers</v-card-title>
-            <v-card-text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              sit amet nulla auctor, vestibulum magna sed, convallis ex.
-              Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-              Cum sociis natoque penatibus et magnis dis parturient montes,
-              nascetur ridiculus mus.
-            </v-card-text>
-            <v-card-text>
-              Our team is dedicated to delivering innovative solutions that
-              exceed our customers' expectations. We're passionate about
-              what we do, and we're looking for talented individuals to join
-              our team.
-            </v-card-text>
-            <ModalContatenos />
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
-  </div>
-</v-container>
-    
+        <!-- Logo and Introduction Section -->
+        <div class="logo-intro-container" style="margin-bottom: 40px">
+          <v-row class="align-center">
+            <v-col cols="12" sm="6" md="4" class="pr-4">
+              <v-img
+                class="careers-logo"
+                src="../assets/logoSobre-removebg-preview.png"
+                alt="Careers Logo"
+              />
+            </v-col>
+            <v-col cols="12" sm="6" md="8">
+              <v-card class="intro-card pa-4">
+                <v-card-title class="text-h5">Explore Our Careers</v-card-title>
+                <v-card-text>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  sit amet nulla auctor, vestibulum magna sed, convallis ex.
+                  Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+                  Cum sociis natoque penatibus et magnis dis parturient montes,
+                  nascetur ridiculus mus.
+                </v-card-text>
+                <v-card-text>
+                  Our team is dedicated to delivering innovative solutions that
+                  exceed our customers' expectations. We're passionate about
+                  what we do, and we're looking for talented individuals to join
+                  our team.
+                </v-card-text>
+                <div class="botao text-left">
+                  <ModalContatenos />
+                </div>
+              </v-card>
+            </v-col>
+          </v-row>
+        </div>
+      </div>
+    </v-container>
+
     <v-divider class="my-12"></v-divider>
 
     <v-container>
@@ -157,7 +159,7 @@
         </v-row>
       </v-row>
     </v-container>
-      <Footer />
+    <Footer />
   </v-app>
 </template>
 
@@ -193,7 +195,6 @@ export default {
 </script>
 
 <style scoped>
-
 .logo-intro-container {
   margin-bottom: 40px;
 }
@@ -385,7 +386,6 @@ export default {
 }
 
 @media (max-width: 600px) {
-
   .careers-logo {
     width: 100px;
     height: 100px;
@@ -405,6 +405,5 @@ export default {
     color: #ffffff;
     cursor: pointer;
   }
-
 }
 </style>
