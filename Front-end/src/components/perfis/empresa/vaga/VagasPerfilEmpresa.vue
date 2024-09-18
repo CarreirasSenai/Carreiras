@@ -4,76 +4,75 @@
         <AdicionarVaga :MostrarVagas="mostrarVagas" />
     </div>
 
-    <v-divider class="ml-4 mr-4"></v-divider>
+    <!-- <v-divider class="ml-4 mr-4"></v-divider> -->
 
     <v-card>
-        <v-data-iterator :items="vagas" :items-per-page="3" :search="search">
+        <v-data-iterator :items="vagas" :items-per-page="6" :search="search">
             <template v-slot:header>
-                <v-toolbar class="px-2">
-                    <v-text-field v-model="search" density="comfortable" placeholder="Search"
-                        prepend-inner-icon="mdi-magnify" style="max-width: 300px;" variant="solo" clearable
-                        hide-details></v-text-field>
+                <v-toolbar>
+                    <v-text-field v-model="search" class="mt-2 mx-4" density="comfortable" placeholder="Pesquise uma vaga"
+                        prepend-inner-icon="mdi-magnify" variant="plain"></v-text-field>
                 </v-toolbar>
             </template>
 
             <template v-slot:default="{ items }">
-                <v-container class="pa-2" fluid>
-                    <v-row class="ma-1">
-                        <v-col cols="12" lg="4" md="6" sm="6" v-for="vaga in vagas" :key="vaga.id">
-                            <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
-                                <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
-                                    {{ vaga.titulo }}
-                                </v-card-title>
-                                <v-card-text class="pa-4" style="min-height: 120px;">
-                                    <v-row dense>
-                                        <v-col cols="6">
-                                            <p class="observavel">
-                                                <span class="mdi mdi-map-marker text-h6 text-grey-darken-1"></span>
-                                                &nbsp;{{ vaga.cidade }}, {{ vaga.estado }}
-                                            </p>
-                                        </v-col>
-                                        <v-col cols="6">
-                                            <p class="observavel">
-                                                <span class="mdi mdi-clipboard-text text-h6 text-grey-darken-1"></span>
-                                                &nbsp;{{ vaga.contrato }}
-                                            </p>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row dense>
-                                        <v-col cols="6">
-                                            <p class="observavel">
-                                                <span class="mdi mdi-laptop text-h6 text-grey-darken-1"></span>
-                                                &nbsp;{{ vaga.modalidade }}
-                                            </p>
-                                        </v-col>
-                                        <v-col cols="6">
-                                            <p class="observavel">
-                                                <span class="mdi mdi-currency-brl text-h6 text-grey-darken-1"></span>
-                                                &nbsp;{{ vaga.remuneracao }}
-                                            </p>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row dense>
-                                        <v-col cols="6">
-                                            <p class="observavel">
-                                                <span class="mdi mdi-medal text-h6 text-grey-darken-1"></span>
-                                                &nbsp;{{ vaga.nivel }}
-                                            </p>
-                                        </v-col>
-                                    </v-row>
-                                </v-card-text>
-                                <small
-                                    class="position-absolute top-0 right-0 ma-2 text-white observavel bg-deep-purple-accent-3 pa-1 rounded-lg elevation-2 data-vaga">
-                                    {{ formatarDataRelativa(vaga.data_atu) }}
-                                </small>
-                                <v-card-actions class="d-flex justify-space-between">
-                                    <ModalDetalhesVaga :Vagas="vaga" />
-                                    <ModalCandidatosVagas />
-                                </v-card-actions>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                </v-container>
+                <!-- <v-container class="pa-2" fluid> -->
+                <v-row class="ma-1">
+                    <v-col cols="12" lg="4" md="6" sm="6" v-for="item in items" :key="item.id">
+                        <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
+                            <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
+                                {{ item.raw.titulo }}
+                            </v-card-title>
+                            <v-card-text class="pa-4" style="min-height: 120px;">
+                                <v-row dense>
+                                    <v-col cols="6">
+                                        <p class="observavel">
+                                            <span class="mdi mdi-map-marker text-h6 text-grey-darken-1"></span>
+                                            &nbsp;{{ item.raw.cidade }}, {{ item.raw.estado }}
+                                        </p>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <p class="observavel">
+                                            <span class="mdi mdi-clipboard-text text-h6 text-grey-darken-1"></span>
+                                            &nbsp;{{ item.raw.contrato }}
+                                        </p>
+                                    </v-col>
+                                </v-row>
+                                <v-row dense>
+                                    <v-col cols="6">
+                                        <p class="observavel">
+                                            <span class="mdi mdi-laptop text-h6 text-grey-darken-1"></span>
+                                            &nbsp;{{ item.raw.modalidade }}
+                                        </p>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <p class="observavel">
+                                            <span class="mdi mdi-currency-brl text-h6 text-grey-darken-1"></span>
+                                            &nbsp;{{ item.raw.remuneracao }}
+                                        </p>
+                                    </v-col>
+                                </v-row>
+                                <v-row dense>
+                                    <v-col cols="6">
+                                        <p class="observavel">
+                                            <span class="mdi mdi-medal text-h6 text-grey-darken-1"></span>
+                                            &nbsp;{{ item.raw.nivel }}
+                                        </p>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                            <small
+                                class="position-absolute top-0 right-0 ma-2 text-white observavel bg-deep-purple-accent-3 pa-1 rounded-lg elevation-2 data-vaga">
+                                {{ formatarDataRelativa(item.raw.data_atu) }}
+                            </small>
+                            <v-card-actions class="d-flex justify-space-between">
+                                <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas"/>
+                                <ModalCandidatosVagas />
+                            </v-card-actions>
+                        </v-card>
+                    </v-col>
+                </v-row>
+                <!-- </v-container> -->
             </template>
 
             <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
@@ -120,7 +119,7 @@ export default {
                 console.error('Erro', error.response.data);
             }
         },
-        
+
         formatarDataRelativa(data) {
             const agora = new Date();
             const dataPassada = new Date(data);
@@ -159,6 +158,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+* {
+    // border: 1px solid red;
+}
+
 .box-shadow {
     box-shadow: 0 2px 4px gray;
 }

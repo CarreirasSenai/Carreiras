@@ -3,12 +3,12 @@
         <v-dialog v-model="dialog" max-width="700" persistent>
             <template v-slot:activator="{ props: activatorProps }">
                 <v-btn class="bg-deep-purple-accent-4" v-bind="activatorProps">
-                    Criar Vaga
+                    Editar Vaga
                 </v-btn>
             </template>
 
-            <v-form class="ma-5 text-start" @submit.prevent="submitCreate">
-                <v-card title="Publicação de Vaga">
+            <v-form class="ma-5 text-start" @submit.prevent="submitUpdate">
+                <v-card title="Editar de Vaga">
                     <v-card-text class="text-start overflow-auto" style="height: 70vh;">
                         <v-row dense>
                             <v-col cols="12" md="12">
@@ -85,6 +85,8 @@
                     </v-card-text>
                     <v-divider></v-divider>
                     <v-card-actions>
+                        <v-btn text="Excluir" color="error" @click="deletarVaga"></v-btn>
+                        <v-spacer></v-spacer>
                         <v-btn text="Fechar" variant="plain" @click="dialog = false"></v-btn>
                         <v-btn color="Enviar" text="Salvar" variant="tonal" type="submit"></v-btn>
                     </v-card-actions>
@@ -101,19 +103,20 @@ export default {
     data: () => ({
         dialog: false,
         form: {
-            titulo: 'Analista de Dados',
-            cep: '87775-435',
-            cidade: 'Joinville',
-            estado: 'SC',
-            contrato: 'CLT',
-            modalidade: 'Remoto',
-            nivel: 'Júnior',
-            remuneracao: '3.000,00',
-            habsExigidas: ['Pacote Office', 'Lógica de Programação', 'Trabalho em Equipe'],
-            habsOpcionais: ['Malabarismo', 'Conserto de Veículos', 'Plantar Bananeira'],
-            descricao: 'A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.',
-            etapas: ['Entrevista', 'Desafio', 'Call com Líder', 'Acordo'],
-            questionario: ['Há quantos anos você usa Excel no trabalho?', 'Fale sobre um projeto desafiador.']
+            id: '',
+            titulo: '',
+            cep: '',
+            cidade: '',
+            estado: '',
+            contrato: '',
+            modalidade: '',
+            nivel: '',
+            remuneracao: '',
+            habsExigidas: [],
+            habsOpcionais: [],
+            descricao: '',
+            etapas: [],
+            questionario: []
         },
         rules: {
             geral: value => !!value || 'O campo obrigatório.'
@@ -129,10 +132,45 @@ export default {
         MostrarVagas: {
             type: Function,
             required: true
-        }
+        },
+        Vagas: Object,
+    },
+    mounted() {
+        this.form.id = this.Vagas.raw.id;
+        this.form.titulo = this.Vagas.raw.titulo;
+        this.form.cep = this.Vagas.raw.cep;
+        this.form.cidade = this.Vagas.raw.cidade;
+        this.form.estado = this.Vagas.raw.estado;
+        this.form.contrato = this.Vagas.raw.contrato;
+        this.form.modalidade = this.Vagas.raw.modalidade;
+        this.form.nivel = this.Vagas.raw.nivel;
+        this.form.remuneracao = this.Vagas.raw.remuneracao;
+
+        // Remover os colchetes e as aspas da string e depois separar os valores por vírgula
+        this.form.habsExigidas = this.Vagas.raw.habilidades_exigidas
+            .replace(/[\[\]"]/g, '')
+            .split(', ')
+            .map(hab => hab.trim());
+
+        this.form.habsOpcionais = this.Vagas.raw.habilidades_opcionais
+            .replace(/[\[\]"]/g, '')
+            .split(', ')
+            .map(hab => hab.trim());
+
+        this.form.descricao = this.Vagas.raw.descricao;
+
+        this.form.etapas = this.Vagas.raw.etapas
+            .replace(/[\[\]"]/g, '')
+            .split(', ')
+            .map(etapa => etapa.trim());
+
+        this.form.questionario = this.Vagas.raw.questionario
+            .replace(/[\[\]"]/g, '')
+            .split(', ')
+            .map(quest => quest.trim());
     },
     methods: {
-        async submitCreate(event) {
+        async submitUpdate(event) {
             console.clear();
             const dados = await event;
 
@@ -140,7 +178,7 @@ export default {
 
             if (dados.valid === true) {
                 try {
-                    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/vaga/create`, {
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/vaga/update`, {
                         dados: this.form,
                     }, { withCredentials: true });
 
@@ -152,7 +190,22 @@ export default {
                     console.error('Erro', error.response.data);
                 }
             }
-        }
+        },
+        
+        async deletarVaga() {
+            try {
+                const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/vaga/delete/${this.form.id}`, {
+                    withCredentials: true,
+                });
+
+                console.log('Vaga Deletada!', response.data);
+                this.dialog = false;
+                this.MostrarVagas();
+
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
+        },
     }
 }
 </script>

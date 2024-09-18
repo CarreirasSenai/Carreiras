@@ -10,39 +10,41 @@
                     <v-col cols="12">
                         <v-card class="rounded-lg">
                             <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
-                                {{ this.Vagas.titulo }}
+                                {{ this.Vagas.raw.titulo }}
                             </v-card-title>
                             <v-card-text style="max-height: 60vh;"
                                 class="overflow-auto d-flex flex-column ga-2 pa-4 pl-6 pr-6">
                                 <div class="d-flex align-center ga-2 flex-wrap">
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Local:</div>
-                                    <div class="text-subtitle-1">{{ this.Vagas.cidade }}, {{ this.Vagas.estado }}</div>
+                                    <div class="text-subtitle-1">{{ this.Vagas.raw.cidade }}, {{ this.Vagas.raw.estado
+                                        }}</div>
                                 </div>
 
                                 <div class="d-flex align-center ga-2 flex-wrap">
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Contrato:</div>
-                                    <div class="text-subtitle-1">{{ this.Vagas.contrato }}</div>
+                                    <div class="text-subtitle-1">{{ this.Vagas.raw.contrato }}</div>
                                 </div>
 
                                 <div class="d-flex align-center ga-2 flex-wrap">
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Modalidade:</div>
-                                    <div class="text-subtitle-1">{{ this.Vagas.modalidade }}</div>
+                                    <div class="text-subtitle-1">{{ this.Vagas.raw.modalidade }}</div>
                                 </div>
 
-                                <div class="d-flex align-center ga-2 flex-wrap" v-if="this.Vagas.remuneracao">
+                                <div class="d-flex align-center ga-2 flex-wrap" v-if="this.Vagas.raw.remuneracao">
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Senioridade:</div>
-                                    <div class="text-subtitle-1">{{ this.Vagas.nivel }}</div>
+                                    <div class="text-subtitle-1">{{ this.Vagas.raw.nivel }}</div>
                                 </div>
 
                                 <div class="d-flex align-center ga-2 flex-wrap" v-if="this.Vagas.remuneracao">
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Remuneração:</div>
-                                    <div class="text-subtitle-1">{{ this.Vagas.remuneracao }}</div>
+                                    <div class="text-subtitle-1">{{ this.Vagas.raw.remuneracao }}</div>
                                 </div>
 
                                 <div class="d-flex align-center ga-2 flex-wrap">
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Habilidades Exigidas:
                                     </div>
-                                    <v-chip v-for="(habilidade, index) in JSON.parse(this.Vagas.habilidades_exigidas)"
+                                    <v-chip
+                                        v-for="(habilidade, index) in JSON.parse(this.Vagas.raw.habilidades_exigidas)"
                                         :key="index">
                                         {{ habilidade }}
                                     </v-chip>
@@ -51,7 +53,8 @@
                                 <div class="d-flex align-center ga-2 flex-wrap">
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Habilidades Opcionais:
                                     </div>
-                                    <v-chip v-for="(habilidade, index) in JSON.parse(this.Vagas.habilidades_opcionais)"
+                                    <v-chip
+                                        v-for="(habilidade, index) in JSON.parse(this.Vagas.raw.habilidades_opcionais)"
                                         :key="index">
                                         {{ habilidade }}
                                     </v-chip>
@@ -61,7 +64,7 @@
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Visão Geral da Vaga:
                                     </div>
                                     <div class="text-subtitle-1">
-                                        {{ this.Vagas.descricao }}
+                                        {{ this.Vagas.raw.descricao }}
                                     </div>
                                 </div>
 
@@ -71,7 +74,7 @@
                             <v-card-actions class="d-flex justify-space-between">
                                 <div class="d-flex flex-wrap ga-2">
                                     <v-btn class="bt-primario">Inscrever-se</v-btn>
-                                    <v-btn class="bt-primario">Editar vaga</v-btn>
+                                    <EditarVaga :MostrarVagas="MostrarVagas" :Vagas="Vagas"/>
                                     <small>O button alterna conforme o user logado.</small>
                                 </div>
                                 <div class="d-flex align-center justify-center ga-2">
@@ -95,11 +98,12 @@ export default {
         }
     },
     props: {
-        Vagas: Object
+        Vagas: Object,
+        MostrarVagas: {
+            type: Function,
+            required: true
+        }
     },
-    mounted() {
-
-    }
 }
 </script>
 
