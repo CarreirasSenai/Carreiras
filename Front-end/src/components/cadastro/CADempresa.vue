@@ -74,6 +74,7 @@
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
                    <v-text-field
+                      v-mask="'###.###.###.###'"
                       v-model="inscricaoEstadual"
                       :rules="inscricaoEstadualRules"
                       label="Inscrição estadual"
@@ -183,7 +184,7 @@
                   <v-col cols="11" sm="4" md="4" lg="4">
                       <v-text-field
                         v-model="contatoRA"
-                        :rules="contatoRARules"
+                        :rules="emailRules"
                         label="Contato RA"
                         bg-color="#F7F7F7"
                         density="compact"
@@ -220,7 +221,7 @@
                 </v-row>
               </v-row>
               <div class="sign-in-buttons d-flex justify-center my-4">
-                <v-btn class="adm-button bg-purple-darken-4 mt-4 mb-2" size="large">Salvar</v-btn>
+                <v-btn class="adm-button bg-purple-darken-4 mt-4 mb-2" size="large" @click="enviarCadastro()">Salvar</v-btn>
               </div>
             </v-form>
             <div class="got-account-container my-3">
@@ -345,6 +346,7 @@ export default {
       this.cnpj = this.limparMascaraValores(this.cnpj);
       this.celular = this.limparMascaraValores(this.celular);
       this.telefone = this.limparMascaraValores(this.telefone);
+      this.inscricaoEstadual = this.limparMascaraValores(this.inscricaoEstadual);
       this.cpfResponsavel = this.limparMascaraValores(this.cpfResponsavel);
       try {
         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/empresa/create`,

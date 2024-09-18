@@ -326,6 +326,8 @@ DROP TABLE IF EXISTS `user_empresa`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_empresa` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `verificado` tinyint(1) DEFAULT '0',
+  `token_ativacao` varchar(64) DEFAULT NULL,
   `razao_social` varchar(255) NOT NULL,
   `nome_fantasia` varchar(255) NOT NULL,
   `cnpj` char(14) NOT NULL,
@@ -342,7 +344,7 @@ CREATE TABLE `user_empresa` (
   `celular` varchar(20) DEFAULT NULL,
   `responsavel_legal` varchar(100) NOT NULL,
   `cpf_responsavel` char(11) NOT NULL,
-  `contato_responsavel` varchar(20) DEFAULT NULL,
+  `contato_responsavel` varchar(100) DEFAULT NULL,
   `senha` varchar(250) NOT NULL,
   `grupo` varchar(7) NOT NULL,
   `descricao` text,
