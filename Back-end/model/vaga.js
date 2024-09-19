@@ -30,6 +30,19 @@ exports.vagaRead = (id, callback) => {
     });
 };
 
+exports.vagaReadAll = (callback) => {
+    db.query('select * from vagas', (err, result) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+
+        } else if (result) {
+            console.log(result);
+            return callback(null, result);
+        }
+    });
+};
+
 exports.vagaUpdate = ({ dados }, callback) => {
     const { id, titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habsExigidas, habsOpcionais, descricao, etapas, questionario } = dados;
 

@@ -10,13 +10,12 @@
         <v-data-iterator :items="vagas" :items-per-page="6" :search="search">
             <template v-slot:header>
                 <v-toolbar>
-                    <v-text-field v-model="search" class="mt-2 mx-4" density="comfortable" placeholder="Pesquise uma vaga"
-                        prepend-inner-icon="mdi-magnify" variant="plain"></v-text-field>
+                    <v-text-field v-model="search" class="mt-2 mx-4" density="comfortable"
+                        placeholder="Pesquise uma vaga" prepend-inner-icon="mdi-magnify" variant="plain"></v-text-field>
                 </v-toolbar>
             </template>
 
             <template v-slot:default="{ items }">
-                <!-- <v-container class="pa-2" fluid> -->
                 <v-row class="ma-1">
                     <v-col cols="12" lg="4" md="6" sm="6" v-for="item in items" :key="item.id">
                         <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
@@ -33,30 +32,30 @@
                                     </v-col>
                                     <v-col cols="6">
                                         <p class="observavel">
-                                            <span class="mdi mdi-clipboard-text text-h6 text-grey-darken-1"></span>
-                                            &nbsp;{{ item.raw.contrato }}
-                                        </p>
-                                    </v-col>
-                                </v-row>
-                                <v-row dense>
-                                    <v-col cols="6">
-                                        <p class="observavel">
                                             <span class="mdi mdi-laptop text-h6 text-grey-darken-1"></span>
                                             &nbsp;{{ item.raw.modalidade }}
                                         </p>
                                     </v-col>
+                                </v-row>
+                                <v-row dense>
                                     <v-col cols="6">
                                         <p class="observavel">
-                                            <span class="mdi mdi-currency-brl text-h6 text-grey-darken-1"></span>
-                                            &nbsp;{{ item.raw.remuneracao }}
+                                            <span class="mdi mdi-clipboard-text text-h6 text-grey-darken-1"></span>
+                                            &nbsp;{{ item.raw.contrato }}
+                                        </p>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <p class="observavel">
+                                            <span class="mdi mdi-medal text-h6 text-grey-darken-1"></span>
+                                            &nbsp;{{ item.raw.nivel }}
                                         </p>
                                     </v-col>
                                 </v-row>
                                 <v-row dense>
                                     <v-col cols="6">
                                         <p class="observavel">
-                                            <span class="mdi mdi-medal text-h6 text-grey-darken-1"></span>
-                                            &nbsp;{{ item.raw.nivel }}
+                                            <span class="mdi mdi-currency-brl text-h6 text-grey-darken-1"></span>
+                                            &nbsp;{{ item.raw.remuneracao }}
                                         </p>
                                     </v-col>
                                 </v-row>
@@ -66,13 +65,12 @@
                                 {{ formatarDataRelativa(item.raw.data_atu) }}
                             </small>
                             <v-card-actions class="d-flex justify-space-between">
-                                <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas"/>
+                                <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
                                 <ModalCandidatosVagas />
                             </v-card-actions>
                         </v-card>
                     </v-col>
                 </v-row>
-                <!-- </v-container> -->
             </template>
 
             <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">

@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="pesquisa.visibilidadeHome" variant="elevated"
     class="text-center bg-deep-purple-accent-4 mb-3 pt-10 pb-10 pl-5 pr-5 rounded-lg elevation-2">
-    <h1 style="font-size: 4vh;">Encontre uma carreira para você {{ user.user.fullName }} !</h1>
+    <h1 style="font-size: 4vh;">Encontre uma carreira para você {{ user.user.fullName }}!</h1>
     <v-row>
       <v-card-text class="d-flex justify-center">
         <v-col cols="12" sm="8" md="8">

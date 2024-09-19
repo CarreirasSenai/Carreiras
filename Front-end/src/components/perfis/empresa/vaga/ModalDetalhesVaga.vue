@@ -35,7 +35,7 @@
                                     <div class="text-subtitle-1">{{ this.Vagas.raw.nivel }}</div>
                                 </div>
 
-                                <div class="d-flex align-center ga-2 flex-wrap" v-if="this.Vagas.remuneracao">
+                                <div class="d-flex align-center ga-2 flex-wrap" v-if="this.Vagas.raw.remuneracao">
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Remuneração:</div>
                                     <div class="text-subtitle-1">{{ this.Vagas.raw.remuneracao }}</div>
                                 </div>

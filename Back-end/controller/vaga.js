@@ -9,7 +9,7 @@ exports.buscarVaga = (req, res) => {
 
 exports.vagaCreate = (req, res) => {
     // const id = req.session.usuario.id;
-    const id = 1;
+    const id = 2;
     const dados = req.body;
 
     Vaga.vagaCreate(id, dados, (err, idVaga) => {
@@ -26,6 +26,16 @@ exports.vagaRead = (req, res) => {
     const id = 1;
 
     Vaga.vagaRead(id, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.status(200).json({ sucess: 'Vagas empresa:', result: result });
+        }
+    });
+}
+
+exports.vagaReadAll = (req, res) => {
+    Vaga.vagaReadAll((err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else if (result) {

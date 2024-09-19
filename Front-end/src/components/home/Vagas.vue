@@ -1,143 +1,184 @@
 <template>
-    <v-row>
-        <!-- <v-col cols="12" lg="4" md="6" sm="6" v-for="n in 9" :key="n"> -->
-        <v-col cols="12" lg="4" md="6" sm="6" v-for="vaga in vagas" :key="vaga.id">
-            <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
-                <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
-                    {{ vaga.vaga }}
-                </v-card-title>
-                <v-card-text class="pa-4" style="min-height: 120px;">
-                    <v-row>
-                        <v-col cols="6">
-                            <p class="observavel">
-                                <span class="mdi mdi-map-marker text-h6 text-grey-darken-1"></span>
-                                &nbsp;{{ vaga.local }}
-                            </p>
-                            <p class="observavel">
-                                <span class="mdi mdi-clipboard-text text-h6 text-grey-darken-1"></span>
-                                &nbsp;{{ vaga.contrato }}
-                            </p>
-                        </v-col>
-                        <v-col cols="6">
-                            <p class="observavel">
-                                <span class="mdi mdi-laptop text-h6 text-grey-darken-1"></span>
-                                &nbsp;{{ vaga.modalidade }}
-                            </p>
-                            <p class="observavel">
-                                <span class="mdi mdi-currency-usd text-h6 text-grey-darken-1"></span>
-                                &nbsp;{{ vaga.remuneracao }}
-                            </p>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <small
-                    class="position-absolute top-0 right-0 ma-2 text-white observavel bg-deep-purple-accent-3 pa-1 rounded-lg elevation-2 data-vaga">
-                    {{ vaga.data }}
-                </small>
-                <v-card-actions class="d-flex justify-space-between">
-                    <ModalDetalhesVaga />
-                    <div class="d-flex align-center justify-center ga-2">
-                        {{ vaga.empresa }}
-                        <img src="/src/assets/avatar.png" width="50px" class="rounded-circle">
-                    </div>
-                </v-card-actions>
-            </v-card>
-        </v-col>
-    </v-row>
+    <v-data-iterator :items="vagas" :items-per-page="12" :search="search">
+        <template v-slot:header>
+            <!-- <v-toolbar>
+                <v-text-field v-model="search" class="mt-2 mx-4" density="comfortable" placeholder="Pesquise uma vaga"
+                    prepend-inner-icon="mdi-magnify" variant="plain">
+                </v-text-field>
+            </v-toolbar> -->            
+        </template>
+
+        <template v-slot:default="{ items }">
+            <v-row>
+                <v-col cols="12" lg="4" md="6" sm="6" v-for="item in items" :key="item.id">
+                    <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
+                        <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
+                            {{ item.raw.titulo }}
+                        </v-card-title>
+                        <v-card-text class="pa-4" style="min-height: 120px;">
+                            <v-row dense>
+                                <v-col cols="6">
+                                    <p class="observavel">
+                                        <span class="mdi mdi-map-marker text-h6 text-grey-darken-1"></span>
+                                        &nbsp;{{ item.raw.cidade }}, {{ item.raw.estado }}
+                                    </p>
+                                </v-col>
+                                <v-col cols="6">
+                                    <p class="observavel">
+                                        <span class="mdi mdi-laptop text-h6 text-grey-darken-1"></span>
+                                        &nbsp;{{ item.raw.modalidade }}
+                                    </p>
+                                </v-col>
+                            </v-row>
+                            <v-row dense>
+                                <v-col cols="6">
+                                    <p class="observavel">
+                                        <span class="mdi mdi-clipboard-text text-h6 text-grey-darken-1"></span>
+                                        &nbsp;{{ item.raw.contrato }}
+                                    </p>
+                                </v-col>
+                                <v-col cols="6">
+                                    <p class="observavel">
+                                        <span class="mdi mdi-medal text-h6 text-grey-darken-1"></span>
+                                        &nbsp;{{ item.raw.nivel }}
+                                    </p>
+                                </v-col>
+                            </v-row>
+                            <v-row dense>
+                                <v-col cols="6">
+                                    <p class="observavel">
+                                        <span class="mdi mdi-currency-brl text-h6 text-grey-darken-1"></span>
+                                        &nbsp;{{ item.raw.remuneracao }}
+                                    </p>
+                                </v-col>
+                            </v-row>
+                        </v-card-text>
+                        <small
+                            class="position-absolute top-0 right-0 ma-2 text-white observavel bg-deep-purple-accent-3 pa-1 rounded-lg elevation-2 data-vaga">
+                            {{ formatarDataRelativa(item.raw.data_atu) }}
+                        </small>
+                        <v-card-actions class="d-flex justify-space-between">
+                            <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
+                            <div class="d-flex align-center justify-center ga-2">
+                                {{ item.raw.id_empresa }}
+                                <img src="/src/assets/avatar.png" width="50px" class="rounded-circle">
+                            </div>
+                        </v-card-actions>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </template>
+
+        <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+            <div class="d-flex align-center justify-center pa-4">
+                <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
+                    @click="prevPage"></v-btn>
+
+                <div class="mx-2 text-caption">
+                    Page {{ page }} of {{ pageCount }}
+                </div>
+
+                <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal"
+                    rounded @click="nextPage"></v-btn>
+            </div>
+        </template>
+    </v-data-iterator>
 </template>
 
 <script>
+import axios from 'axios';
+import { useCandidatoStore } from '@/stores/candidato';
+import { usePesquisaVaga } from '@/stores/pesquisaVaga';
+
 export default {
     data() {
         return {
-            vagas: [
-                {
-                    id: 1,
-                    vaga: 'Desenvolvedor Full Stack',
-                    local: 'Centro, São Paulo, São Paulo',
-                    contrato: 'CLT',
-                    modalidade: 'Remoto',
-                    remuneracao: 'R$ 7.000,00',
-                    empresa: 'Tech Innovators',
-                    data: '2 dias atrás'
-                },
-                {
-                    id: 2,
-                    vaga: 'Analista de Segurança da Informação',
-                    local: 'Vila Olímpia, São Paulo, São Paulo',
-                    contrato: 'CLT',
-                    modalidade: 'Híbrido',
-                    remuneracao: 'R$ 8.500,00',
-                    empresa: 'SecureTech',
-                    data: '4 dias atrás'
-                },
-                {
-                    id: 3,
-                    vaga: 'Engenheiro de Software',
-                    local: 'Savassi, Belo Horizonte, Minas Gerais',
-                    contrato: 'PJ',
-                    modalidade: 'Remoto',
-                    remuneracao: 'R$ 10.000,00',
-                    empresa: 'CodeWorks',
-                    data: '1 semana atrás'
-                },
-                {
-                    id: 4,
-                    vaga: 'Desenvolvedor Front-end',
-                    local: 'Botafogo, Rio de Janeiro, Rio de Janeiro',
-                    contrato: 'CLT',
-                    modalidade: 'Presencial',
-                    remuneracao: 'R$ 6.000,00',
-                    empresa: 'Web Solutions',
-                    data: '2 semanas atrás'
-                },
-                {
-                    id: 5,
-                    vaga: 'Cientista de Dados',
-                    local: 'Lourdes, Belo Horizonte, Minas Gerais',
-                    contrato: 'CLT',
-                    modalidade: 'Híbrido',
-                    remuneracao: 'R$ 12.000,00',
-                    empresa: 'Data Insights',
-                    data: '3 semanas atrás'
-                },
-                {
-                    id: 6,
-                    vaga: 'DevOps Engineer',
-                    local: 'Centro, Curitiba, Paraná',
-                    contrato: 'PJ',
-                    modalidade: 'Remoto',
-                    remuneracao: 'R$ 9.500,00',
-                    empresa: 'CloudTech',
-                    data: '5 dias atrás'
-                },
-            ],
-
+            vagas: [],
+            search: '',
         }
     },
 
     mounted() {
-        function observarEntrada(entries, observer) {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visivel');
-                    }, index * 10); // Ajuste o tempo conforme necessário
-                }
-            });
-        }
-
-        const observer = new IntersectionObserver(observarEntrada, {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.7
-        });
-
-        // Observar os elementos observavel
-        this.$el.querySelectorAll('.observavel').forEach((element) => {
-            observer.observe(element);
-        });
+        this.mostrarVagas();
     },
+
+    computed: {
+        user() { return useCandidatoStore(); },
+        pesquisa() { return usePesquisaVaga(); },
+    },
+
+    methods: {
+        async mostrarVagas() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read/all`, {
+                    withCredentials: true
+                });
+
+                this.vagas = response.data.result;
+
+                // Após os dados das vagas serem carregados, registre o IntersectionObserver
+                this.$nextTick(() => {
+                    function observarEntrada(entries, observer) {
+                        entries.forEach((entry, index) => {
+                            if (entry.isIntersecting) {
+                                setTimeout(() => {
+                                    entry.target.classList.add('visivel');
+                                }, index * 10); // Ajuste o tempo conforme necessário
+                            }
+                        });
+                    }
+
+                    const observer = new IntersectionObserver(observarEntrada, {
+                        root: null,
+                        rootMargin: '0px',
+                        threshold: 0.7
+                    });
+
+                    // Observar os elementos observavel
+                    this.$el.querySelectorAll('.observavel').forEach((element) => {
+                        observer.observe(element);
+                    });
+                });
+
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
+        },
+
+        formatarDataRelativa(data) {
+            const agora = new Date();
+            const dataPassada = new Date(data);
+
+            const diferencaTempo = agora - dataPassada;
+            const segundos = Math.floor(diferencaTempo / 1000);
+            const minutos = Math.floor(segundos / 60);
+            const horas = Math.floor(minutos / 60);
+            const dias = Math.floor(horas / 24);
+            const semanas = Math.floor(dias / 7);
+            const meses = Math.floor(dias / 30);
+            const anos = Math.floor(meses / 12);
+
+            if (dias === 0) {
+                return 'Hoje';
+            } else if (dias === 1) {
+                return 'Há 1 dia';
+            } else if (dias < 7) {
+                return `Há ${dias} dias`;
+            } else if (semanas === 1) {
+                return 'Há 1 semana';
+            } else if (semanas < 5) {
+                return `Há ${semanas} semanas`;
+            } else if (meses === 1) {
+                return 'Há 1 mês';
+            } else if (meses < 12) {
+                return `Há ${meses} meses`;
+            } else if (anos === 1) {
+                return 'Há 1 ano';
+            } else {
+                return `Há ${anos} anos`;
+            }
+        }
+    }
 };
 </script>
 

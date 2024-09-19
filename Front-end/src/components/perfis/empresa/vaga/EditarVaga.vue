@@ -18,8 +18,9 @@
                         </v-row>
                         <v-row dense>
                             <v-col cols="12" md="4">
-                                <v-text-field v-model="form.cep" label="CEP" prepend-inner-icon="mdi-map-marker"
-                                    :rules="[rules.geral]" maxlength="8"></v-text-field>
+                                <v-text-field v-model="form.cep" label="CEP" v-mask="'#####-###'"
+                                    prepend-inner-icon="mdi-map-marker" :rules="[rules.geral]"
+                                    maxlength="9"></v-text-field>
                             </v-col>
                             <v-col cols="12" md="4">
                                 <v-text-field v-model="form.cidade" label="Cidade"
@@ -191,7 +192,7 @@ export default {
                 }
             }
         },
-        
+
         async deletarVaga() {
             try {
                 const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/vaga/delete/${this.form.id}`, {
