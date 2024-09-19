@@ -52,6 +52,7 @@ router.delete('/habilidade/delete/:id', authMiddleware, Habilidade.habilidadeDel
 router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 
 // rotas empresa
+router.post('/empresa/login', Empresa.login);
 router.post('/empresa/create', Empresa.createCompany); 
 
 // rotas vagas

@@ -1,7 +1,7 @@
 const Empresa = require('../model/empresa');
 const bcrypt = require('bcrypt');
 const { gerarToken } = require('../services/gerarToken');
-const { transporter } = require('../services/nodemailer');
+const transporter = require('../services/nodemailer');
 
 exports.createCompany = async (req, res) => {
     const { razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep,
@@ -57,6 +57,7 @@ exports.createCompany = async (req, res) => {
         </div>
     `;
 
+    // Disparar e-mail
     async function main() {
         const info = await transporter.sendMail({
             from: '"Carreiras" <carreirassenai@gmail.com>',
@@ -71,11 +72,36 @@ exports.createCompany = async (req, res) => {
 
     Empresa.createCompany(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep,
         numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA,
-        hashedPassword, grupo, (err, insertId) => {
+        hashedPassword, grupo, token, (err, insertId) => {
             if (err) {
                 console.log(err.message);
                 return res.status(500).json({ error: err.message });
             }
             return res.status(200).json({ success: true, userId: insertId });
         });
+}
+
+//Login
+exports.login = (req, res) => {
+    const {email, password} = req.body;
+    Empresa.getLogin(email, (err, user, status) => {
+        if(err)
+            return res.status(500).json({ error: err.message });
+        else if(status)
+            return res.status(401).json({ aviso: status });
+        else if (user === null) 
+            return res.status(401).json({ aviso: 'Email ou senha incorretos!' });
+        else {
+            bcrypt.compare(password, user.senha, (err, isMatch) => {
+                if(err)
+                    return res.status(500).json({ error: err.message });
+                
+                    if(isMatch) {
+                        req.session.usuario = user;
+                        res.json({ success: true, user: user});
+                    } else 
+                        res.status(401).json({ aviso: 'Email ou senha incorretos!' });
+            })
+        }
+    })
 }
