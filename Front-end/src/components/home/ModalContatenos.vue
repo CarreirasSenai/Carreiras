@@ -9,9 +9,12 @@
     <v-dialog v-model="dialog" max-width="400" class="modal-container">
       <v-card class="form-container">
         <v-form fast-fail @submit.prevent="sendMessage">
-          <h2 class="text-h2 mb-2">Contate-nos!</h2>
-          <!-- // Adcionar o logo PRETO transparente ao meio do card entre titulo e descricacao, mudar cor de fundo dos inputs -->
-          <p class="text-subtitle-1 mb-4">Estamos ansiosos para ouvir de você! Por favor preencha o formulário abaixo para nos enviar uma mensagem. Nossa equipe de carreiras está ansiosa para se conectar com você4</p>
+          <div class="text-center mb-4">
+            <img class="carreiras-logo" src="../../assets/logo.png" />
+          </div>
+          <v-divider class="mb-4"></v-divider>
+
+          <p class="text-center" style="font-size: 25px;">Estamos ansiosos para ouvir você!</p>
 
           <v-divider class="mb-4"></v-divider>
 
@@ -23,6 +26,7 @@
             dense
             class="mb-2"
             hint="Exemplo@gmail.com"
+            background-color="#f7f7f7"
           ></v-text-field>
 
           <v-textarea
@@ -34,9 +38,15 @@
             class="mb-2"
             counter
             :counter-value="message.length"
+            background-color="#f7f7f7"
           ></v-textarea>
 
-          <v-btn class="mt-2 primary bg-purple-darken-2" type="submit" block :loading="loading">
+          <v-btn
+            class="mt-2 primary bg-purple-darken-2"
+            type="submit"
+            block
+            :loading="loading"
+          >
             <v-icon>mdi-send</v-icon> Enviar Mensagem
           </v-btn>
 
@@ -63,7 +73,8 @@ export default {
     email: "",
     emailRules: [
       (value) => {
-        if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) return true;
+        if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value))
+          return true;
 
         return "Email Invalido!";
       },
@@ -80,26 +91,23 @@ export default {
   methods: {
     sendMessage() {
       this.loading = true;
-      // Send the message to the institution's careers email
       const careersEmail = "careers@institution.com";
       const subject = "Message from " + this.firstName + " " + this.lastName;
       const body = this.message;
 
-      // You can use a library like EmailJS to send the email
-      // or make an API call to your backend to send the email
-      console.log("Sending email to " + careersEmail + " with subject " + subject + " and body " + body);
+      console.log(
+        "Sending email to " +
+          careersEmail +
+          " with subject " +
+          subject +
+          " and body " +
+          body
+      );
 
-      // Simulate a successful send
       setTimeout(() => {
         this.loading = false;
         this.success = true;
       }, 2000);
-
-      // Or simulate an error
-      // setTimeout(() => {
-      //   this.loading = false;
-      //   this.error = true;
-      // }, 2000);
     },
   },
 };
@@ -118,5 +126,11 @@ export default {
 
 .v-icon {
   margin-right: 10px;
+}
+
+.carreiras-logo {
+  margin-right: -30px;
+  width: 300px;
+  height: 100px;
 }
 </style>
