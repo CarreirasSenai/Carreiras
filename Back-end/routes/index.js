@@ -15,6 +15,7 @@ const Perfil = require('../controller/perfil');
 const Experiencia = require('../controller/experiencias');
 const Habilidade = require('../controller/habilidades');
 const VerificarConta = require('../controller/verificarConta');
+const Empresa = require('../controller/empresa');
 
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
@@ -49,6 +50,10 @@ router.post('/habilidade/create', authMiddleware, Habilidade.habilidadeCreate);
 router.get('/habilidade/read', authMiddleware, Habilidade.habilidadeRead);
 router.delete('/habilidade/delete/:id', authMiddleware, Habilidade.habilidadeDelete);
 router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
+
+// rotas empresa
+router.post('/empresa/login', Empresa.login);
+router.post('/empresa/create', Empresa.createCompany); 
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);

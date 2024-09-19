@@ -59,7 +59,10 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/candidato/login`, {
+        const urlLogin = window.location.href;
+        const path = urlLogin.includes("empresa") ? "empresa" : "candidato"
+
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/${path}/login`, {
           email: this.email,
           password: this.password
         }, { withCredentials: true });

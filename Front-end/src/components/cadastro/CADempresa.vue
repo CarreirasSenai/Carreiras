@@ -74,6 +74,7 @@
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
                    <v-text-field
+                      v-mask="'###.###.###.###'"
                       v-model="inscricaoEstadual"
                       :rules="inscricaoEstadualRules"
                       label="Inscrição estadual"
@@ -151,7 +152,7 @@
                     density="compact"
                   ></v-select>
                 </v-col>
-                <v-col cols="12" sm="6" md="6" lg="6">
+                <v-col cols="12" sm="4" md="4" lg="4">
                     <v-text-field
                       v-model="responsavelLegal"
                       :rules="responsavelLegalRules"
@@ -160,7 +161,17 @@
                       density="compact"
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="6" lg="6">
+                <v-col cols="12" sm="4" md="4" lg="4">
+                    <v-text-field
+                      v-model="cpfResponsavel"
+                      :rules="cpfResponsavelRules"
+                      v-mask="'###.###.###-##'"
+                      label="CPF do responsável legal"
+                      bg-color="#F7F7F7"
+                      density="compact"
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4" md="4" lg="4">
                     <v-text-field
                       v-model="responsavelAdm"
                       :rules="responsavelAdmRules"
@@ -173,7 +184,7 @@
                   <v-col cols="11" sm="4" md="4" lg="4">
                       <v-text-field
                         v-model="contatoRA"
-                        :rules="contatoRARules"
+                        :rules="emailRules"
                         label="Contato RA"
                         bg-color="#F7F7F7"
                         density="compact"
@@ -210,7 +221,7 @@
                 </v-row>
               </v-row>
               <div class="sign-in-buttons d-flex justify-center my-4">
-                <v-btn class="adm-button bg-purple-darken-4 mt-4 mb-2" size="large">Salvar</v-btn>
+                <v-btn class="adm-button bg-purple-darken-4 mt-4 mb-2" size="large" @click="enviarCadastro()">Salvar</v-btn>
               </div>
             </v-form>
             <div class="got-account-container my-3">
@@ -220,6 +231,37 @@
         </v-card>
       </v-col>
     </v-row>
+    <!-- Modal sucesso -->
+     <v-dialog max-width="500">
+      <template v-slot:activator="{ props: activatorProps }">
+        <v-btn v-bind="activatorProps" color="surface-variant" text="Open Dialog" variant="flat" id="btnAlertaCadastro"
+          class="d-none"></v-btn>
+      </template>
+
+      <template v-slot:default="{ isActive }">
+        <v-card title="Ops!" class="text-purple-darken-4" v-if="resposta === false">
+          <v-card-text class="text-center text-h7 text-black border-sm pa-10">
+            {{ mensagemErro }}
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text="ok" @click="isActive.value = false"></v-btn>
+          </v-card-actions>
+        </v-card>
+        <v-card class="text-purple-darken-4" v-else-if="resposta === true">
+          <v-card-title>Zuuuuuuuuu 🐝</v-card-title>
+          <v-card-text class="text-center text-h7 text-black border-sm pa-10">
+            Cadastro realizado com sucesso! <br> <br> Enviamos um link de verificação no seu e-mail.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
+            <v-btn text="Entrar na Conta" @click="isActive.value = false" to="/login" class="bg-purple-darken-4">
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -244,10 +286,13 @@ export default {
       cidade: '',
       estado: '',
       responsavelLegal: '',
+      cpfResponsavel: '',
       responsavelAdm: '',
       contatoRA: '',
       senha: '',
       repSenha: '',
+      resposta: false,
+      mensagemErro: '',
       showPassword: false,
       showRePassword: false,
       senhaRules: {
@@ -283,6 +328,10 @@ export default {
       ],
       estadoRules: [(v) => !!v || 'Estado requerido'],
       responsavelLegalRules: [(v) => !!v || 'Responsável legal requerido'],
+      cpfResponsavelRules: [
+        (v) => !!v || "CPF Requerido",
+        (v) => v.length === 14 || "CPF deve ter 14 caracteres",
+      ],
       responsavelAdmRules: [(v) => !!v || 'Responsável administrativo requerido'],
       items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
                 'CE', 'DF', 'ES', 'GO', 'MA',
@@ -293,6 +342,46 @@ export default {
     };
   },
   methods: {
+    async enviarCadastro(){
+      this.cnpj = this.limparMascaraValores(this.cnpj);
+      this.celular = this.limparMascaraValores(this.celular);
+      this.telefone = this.limparMascaraValores(this.telefone);
+      this.inscricaoEstadual = this.limparMascaraValores(this.inscricaoEstadual);
+      this.cpfResponsavel = this.limparMascaraValores(this.cpfResponsavel);
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/empresa/create`,
+          {
+            razaoSocial: this.razaoSocial,
+            nomeFantasia: this.nomeFantasia,
+            email: this.email,
+            telefone: this.telefone,
+            celular: this.celular,
+            cnpj: this.cnpj,
+            inscricaoEstadual: this.inscricaoEstadual,
+            cep: this.cep,
+            numero: this.numero,
+            complemento: this.complemento,
+            endereco: this.endereco,
+            bairro: this.bairro,
+            cidade: this.cidade,
+            estado: this.estado,
+            responsavelLegal: this.responsavelLegal,
+            cpfResponsavel: this.cpfResponsavel,
+            contatoRA: this.contatoRA,
+            senha: this.senha
+          }
+        );
+
+        this.resposta = true;
+        console.log("Cadastro bem sucedido!", response.data);
+        document.getElementById("btnAlertaCadastro").click();
+      } catch(error) {
+        this.resposta = false;
+        console.error("Erro no cadastro", error.response.data.error);
+        this.mensagemErro = error.response.data.error;
+        document.getElementById("btnAlertaCadastro").click();
+      }
+    },
     async retornarInformacoesCep(){
       if(this.cep !== "" && this.cep.length === 8) {
         try {
