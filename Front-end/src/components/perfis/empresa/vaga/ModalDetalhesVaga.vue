@@ -9,8 +9,12 @@
                 <v-row>
                     <v-col cols="12">
                         <v-card class="rounded-lg">
-                            <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
+                            <v-card-title
+                                class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel d-flex align-center">
+                                <v-btn size="small" class="mr-2" icon="mdi-share-variant" variant="tonal"></v-btn>
                                 {{ this.Vagas.raw.titulo }}
+                                <v-spacer></v-spacer>
+                                <v-btn size="small" icon="mdi-close" variant="tonal" @click="dialog = false"></v-btn>
                             </v-card-title>
                             <v-card-text style="max-height: 60vh;"
                                 class="overflow-auto d-flex flex-column ga-2 pa-4 pl-6 pr-6">
@@ -69,12 +73,11 @@
                                 </div>
 
                             </v-card-text>
-                            <span class="mdi mdi-close position-absolute top-0 right-0 mr-2"
-                                @click="dialog = false"></span>
+                            
                             <v-card-actions class="d-flex justify-space-between">
                                 <div class="d-flex flex-wrap ga-2">
                                     <v-btn class="bt-primario">Inscrever-se</v-btn>
-                                    <EditarVaga :MostrarVagas="MostrarVagas" :Vagas="Vagas"/>
+                                    <EditarVaga :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
                                     <small>O button alterna conforme o user logado.</small>
                                 </div>
                                 <div class="d-flex align-center justify-center ga-2">

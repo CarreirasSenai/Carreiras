@@ -1,12 +1,5 @@
 const Vaga = require("../model/vaga");
 
-exports.buscarVaga = (req, res) => {
-    // const { pesquisa } = req.body;
-    const pesquisa = 'Analista de Sistemas';
-    console.log(pesquisa);
-    res.json({ sucess: true, pesquisa: pesquisa });
-};
-
 exports.vagaCreate = (req, res) => {
     // const id = req.session.usuario.id;
     const id = 2;
@@ -66,6 +59,19 @@ exports.vagaDelete = (req, res) => {
             return res.status(404).json({ error: "Recurso não encontrado" });
         } else if (result) {
             return res.status(200).json({ sucess: true, result: result });
+        }
+    });
+};
+
+// vagas pesquisadas e filtradas
+exports.vagaPesquisa = (req, res) => {
+    const { dados } = req.query;
+
+    Vaga.vagaPesquisa(dados, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.status(200).json({ sucess: 'Vagas pesquisa:', result: result });
         }
     });
 };

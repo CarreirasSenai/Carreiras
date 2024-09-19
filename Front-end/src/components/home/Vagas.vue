@@ -1,17 +1,18 @@
 <template>
-    <v-data-iterator :items="vagas" :items-per-page="12" :search="search">
+    <v-data-iterator :items="vagas" :items-per-page="12" :search="search" v-if="vagas.length">
         <template v-slot:header>
             <!-- <v-toolbar>
                 <v-text-field v-model="search" class="mt-2 mx-4" density="comfortable" placeholder="Pesquise uma vaga"
                     prepend-inner-icon="mdi-magnify" variant="plain">
                 </v-text-field>
-            </v-toolbar> -->            
+            </v-toolbar> -->
         </template>
 
         <template v-slot:default="{ items }">
             <v-row>
                 <v-col cols="12" lg="4" md="6" sm="6" v-for="item in items" :key="item.id">
-                    <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
+                    <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;"
+                        :ref="item.id">
                         <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
                             {{ item.raw.titulo }}
                         </v-card-title>
@@ -45,10 +46,15 @@
                                 </v-col>
                             </v-row>
                             <v-row dense>
-                                <v-col cols="6">
-                                    <p class="observavel">
-                                        <span class="mdi mdi-currency-brl text-h6 text-grey-darken-1"></span>
-                                        &nbsp;{{ item.raw.remuneracao }}
+                                <v-col cols="12">
+                                    <!-- <span class="mdi mdi-school text-h4 mr-1"></span> -->
+                                    <p class="observavel overflow-hidden" style="white-space: nowrap;">
+                                        <v-chip size="small" variant="outlined" color="deep-purple-accent-4"
+                                            class="mr-2"
+                                            v-for="(habilidade, index) in JSON.parse(item.raw.habilidades_exigidas).slice(0, 3)"
+                                            :key="index">
+                                            {{ habilidade }}
+                                        </v-chip>
                                     </p>
                                 </v-col>
                             </v-row>
@@ -69,7 +75,7 @@
             </v-row>
         </template>
 
-        <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+        <template v-slot:footer="{ page, pageCount, prevPage, nextPage }" v-if="vagas.length > 12">
             <div class="d-flex align-center justify-center pa-4">
                 <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
                     @click="prevPage"></v-btn>
@@ -83,12 +89,18 @@
             </div>
         </template>
     </v-data-iterator>
+    <template v-if="!vagas.length">
+        <v-empty-state icon="mdi-magnify"
+            text="Tente ajustar seus termos ou filtros de pesquisa. Às vezes, termos menos específicos ou consultas mais amplas podem ajudá-lo a encontrar o que procura."
+            title="Não encontramos uma correspondência."></v-empty-state>
+    </template>
 </template>
 
 <script>
 import axios from 'axios';
 import { useCandidatoStore } from '@/stores/candidato';
 import { usePesquisaVaga } from '@/stores/pesquisaVaga';
+import { watch } from 'vue';
 
 export default {
     data() {
@@ -100,6 +112,15 @@ export default {
 
     mounted() {
         this.mostrarVagas();
+
+        const pesquisaStore = usePesquisaVaga();
+        watch(
+            () => pesquisaStore.pesquisa,
+            (newValue) => {
+                this.vagas = newValue;
+            },
+            { immediate: true } // Executa a função de callback imediatamente, com o valor atual da store
+        );
     },
 
     computed: {

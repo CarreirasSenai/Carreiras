@@ -51,7 +51,7 @@ router.delete('/habilidade/delete/:id', authMiddleware, Habilidade.habilidadeDel
 router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 
 // rotas vagas
-router.get('/vaga/pesquisa', Vaga.buscarVaga);
+router.get('/vaga/pesquisa', Vaga.vagaPesquisa);
 router.post('/vaga/create', Vaga.vagaCreate);
 router.get('/vaga/read', Vaga.vagaRead);
 router.get('/vaga/read/all', Vaga.vagaReadAll);

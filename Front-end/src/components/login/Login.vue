@@ -9,16 +9,16 @@
               <v-form class="ma-5 text-start" @submit.prevent="login">
                 <h1 class="text-center ma-5">Faça o Login</h1>
 
-                <v-text-field v-model="email" label="E-mail" type="email"></v-text-field>
+                <v-text-field v-model="email" label="E-mail" type="email" @keyup.enter="login"></v-text-field>
                 <v-text-field v-model="password" 
-                :append-icon= "showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :append-inner-icon= "showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
-                @click:append="showPassword = !showPassword" 
-                label="Senha"></v-text-field>
+                @click:append-inner="showPassword = !showPassword" 
+                label="Senha" @keyup.enter="login"></v-text-field>
 
                 <div class="text-center text-red mb-4" id="aviso-invalido" v-if="mensagem">{{ mensagem }}</div>
 
-                <v-btn class="bg-purple-darken-4" @click="login" block>Continuar</v-btn>
+                <v-btn class="bg-purple-darken-4" @click="login" @keyup.enter="login" block>Entrar</v-btn>
               </v-form>
               <v-row class="ma-2">
                 <v-col cols="6">
