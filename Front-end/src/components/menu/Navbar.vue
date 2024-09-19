@@ -5,7 +5,7 @@
         <v-container>
             <v-app-bar scroll-behavior="elevate">
                 <div class="navbar-container position-relative">
-                    <a href="/" class="d-flex justify-center align-center" style="z-index: 2;">
+                    <a href="/" class="d-flex justify-center align-center">
                         <img class="carreiras-logo" src="../../assets/logo.png">
                     </a>
                     <!-- <ADM / LOGIN /> -->
@@ -20,10 +20,10 @@
                     <!-- Aqui o Menu com opções visiveis que o sestito pediu e tbm a versão mob -->
                     <div v-if="user.visibilidadeNaoLogado">
                         <div v-if="visibilidadeMenuInicial" class="d-flex align-center ga-15">
-                            <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center div-btn-links">
-                                <button to="/">Home</button>
-                                <button>Sobre o Carreiras</button>
-                                <button>Contate-nos</button>
+                            <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center">
+                                <v-btn variant="text" rounded to="/" class="text-none">Home</v-btn>
+                                <v-btn variant="text" rounded to="/sobre" class="text-none">Sobre o Carreiras</v-btn>
+                                <v-btn variant="text" rounded to="/contato" class="text-none">Contate-nos</v-btn>
                             </div>
                             <v-menu :location="location">
                                 <template v-slot:activator="{ props }">

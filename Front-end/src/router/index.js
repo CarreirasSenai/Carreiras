@@ -16,6 +16,7 @@ import loginADM from '@/components/admin/loginADM.vue';
 import ListaDeUsuarios from '@/components/admin/ListaDeUsuarios.vue';
 import PerfilEmpresa from '@/pages/perfilEmpresa.vue';
 import ListaVagas from '@/components/admin/ListaVagas.vue';
+import DetalhesVaga from '@/pages/detalhesVaga.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,7 +44,8 @@ const router = createRouter({
     { path: '/lista-empresas', component: ListaEmpresas },
     { path: '/login-admin', component: loginADM },
     { path: '/lista-de-usuarios', component: ListaDeUsuarios },
-    { path: '/lista-vagas', component: ListaVagas}
+    { path: '/lista-vagas', component: ListaVagas},
+    { path: '/detalhes-vaga', component: DetalhesVaga}
   ],
 });
 

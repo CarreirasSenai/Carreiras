@@ -111,7 +111,7 @@ export default {
     methods: {
         async mostrarVagas() {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read/empresa`, {
                     withCredentials: true
                 });
 

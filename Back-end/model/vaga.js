@@ -18,6 +18,21 @@ exports.vagaCreate = (id, { dados }, callback) => {
 };
 
 exports.vagaRead = (id, callback) => {
+    console.log(id);
+
+    db.query('select * from vagas where id = ?', [id], (err, row) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+
+        } else if (row) {
+            console.log(row[0]);
+            return callback(null, row[0]);
+        }
+    });
+};
+
+exports.vagaReadEmpresa = (id, callback) => {
     db.query('select * from vagas where id_empresa = ?', [id], (err, result) => {
         if (err) {
             console.log(err);

@@ -15,10 +15,22 @@ exports.vagaCreate = (req, res) => {
 };
 
 exports.vagaRead = (req, res) => {
+    const { id } = req.query;
+
+    Vaga.vagaRead(id, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.status(200).json({ sucess: 'Vagas pesquisada:', result: result });
+        }
+    });
+}
+
+exports.vagaReadEmpresa = (req, res) => {
     // const id = req.session.usuario.id;
     const id = 1;
 
-    Vaga.vagaRead(id, (err, result) => {
+    Vaga.vagaReadEmpresa(id, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else if (result) {

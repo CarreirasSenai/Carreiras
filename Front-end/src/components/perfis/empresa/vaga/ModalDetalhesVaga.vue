@@ -9,9 +9,9 @@
                 <v-row>
                     <v-col cols="12">
                         <v-card class="rounded-lg">
-                            <v-card-title
-                                class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel d-flex align-center">
-                                <v-btn size="small" class="mr-2" icon="mdi-share-variant" variant="tonal"></v-btn>
+                            <v-card-title class="opacity-100 bg-deep-purple-accent-4 observavel d-flex align-center">
+                                <v-btn size="small" class="mr-2" icon="mdi-share-variant" variant="tonal"
+                                    @click="compartilhar"></v-btn>
                                 {{ this.Vagas.raw.titulo }}
                                 <v-spacer></v-spacer>
                                 <v-btn size="small" icon="mdi-close" variant="tonal" @click="dialog = false"></v-btn>
@@ -47,7 +47,7 @@
                                 <div class="d-flex align-center ga-2 flex-wrap">
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Habilidades Exigidas:
                                     </div>
-                                    <v-chip
+                                    <v-chip size="small"
                                         v-for="(habilidade, index) in JSON.parse(this.Vagas.raw.habilidades_exigidas)"
                                         :key="index">
                                         {{ habilidade }}
@@ -57,7 +57,7 @@
                                 <div class="d-flex align-center ga-2 flex-wrap">
                                     <div class="text-deep-purple-accent-4 text-h6 w-100 border-b">Habilidades Opcionais:
                                     </div>
-                                    <v-chip
+                                    <v-chip size="small"
                                         v-for="(habilidade, index) in JSON.parse(this.Vagas.raw.habilidades_opcionais)"
                                         :key="index">
                                         {{ habilidade }}
@@ -73,7 +73,7 @@
                                 </div>
 
                             </v-card-text>
-                            
+
                             <v-card-actions class="d-flex justify-space-between">
                                 <div class="d-flex flex-wrap ga-2">
                                     <v-btn class="bt-primario">Inscrever-se</v-btn>
@@ -107,6 +107,21 @@ export default {
             required: true
         }
     },
+    methods: {
+        compartilhar() {
+            const url = `${import.meta.env.VITE_FRONTEND_URL}/detalhes-vaga?id=${this.Vagas.raw.id}&titulo=${encodeURIComponent(this.Vagas.raw.titulo)}`;
+
+            // Utiliza a API de Clipboard para copiar o URL
+            navigator.clipboard.writeText(url)
+                .then(() => {
+                    console.log('URL copiado para a área de transferência!');
+                    // Adicione uma notificação para o usuário ou alguma outra ação
+                })
+                .catch(err => {
+                    console.error('Erro ao copiar o URL para a área de transferência: ', err);
+                });
+        }
+    }
 }
 </script>
 

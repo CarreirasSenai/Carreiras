@@ -10,11 +10,9 @@
                 <h1 class="text-center ma-5">Faça o Login</h1>
 
                 <v-text-field v-model="email" label="E-mail" type="email" @keyup.enter="login"></v-text-field>
-                <v-text-field v-model="password" 
-                :append-inner-icon= "showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showPassword ? 'text' : 'password'"
-                @click:append-inner="showPassword = !showPassword" 
-                label="Senha" @keyup.enter="login"></v-text-field>
+                <v-text-field v-model="password" :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="showPassword ? 'text' : 'password'" @click:append-inner="showPassword = !showPassword"
+                  label="Senha" @keyup.enter="login"></v-text-field>
 
                 <div class="text-center text-red mb-4" id="aviso-invalido" v-if="mensagem">{{ mensagem }}</div>
 
@@ -39,6 +37,7 @@
 </template>
 
 <script>
+import { useCandidatoStore } from '@/stores/candidato';
 import axios from 'axios';
 
 export default {
@@ -56,6 +55,11 @@ export default {
       mensagem: '',
     };
   },
+
+  computed: {
+    user() { return useCandidatoStore(); },
+  },
+
   methods: {
     async login() {
       try {
@@ -65,6 +69,7 @@ export default {
         }, { withCredentials: true });
 
         console.log('Login bem-sucedido', response.data);
+        this.user.grupo = this.resposta;
         this.$router.push('/');
       } catch (error) {
         console.error('Erro no login', error.response.data);
@@ -82,6 +87,7 @@ export default {
       this.$router.push({ path: '/redefinir-senha', query: { resposta: this.resposta } });
     },
   },
+
   mounted() {
     this.$route.query.resposta;
   },
@@ -89,5 +95,4 @@ export default {
 
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

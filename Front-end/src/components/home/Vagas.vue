@@ -1,12 +1,12 @@
 <template>
     <v-data-iterator :items="vagas" :items-per-page="12" :search="search" v-if="vagas.length">
-        <template v-slot:header>
-            <!-- <v-toolbar>
+        <!-- <template v-slot:header>
+            <v-toolbar>
                 <v-text-field v-model="search" class="mt-2 mx-4" density="comfortable" placeholder="Pesquise uma vaga"
                     prepend-inner-icon="mdi-magnify" variant="plain">
                 </v-text-field>
-            </v-toolbar> -->
-        </template>
+            </v-toolbar>
+        </template> -->
 
         <template v-slot:default="{ items }">
             <v-row>
@@ -89,6 +89,7 @@
             </div>
         </template>
     </v-data-iterator>
+
     <template v-if="!vagas.length">
         <v-empty-state icon="mdi-magnify"
             text="Tente ajustar seus termos ou filtros de pesquisa. Às vezes, termos menos específicos ou consultas mais amplas podem ajudá-lo a encontrar o que procura."
@@ -136,30 +137,6 @@ export default {
                 });
 
                 this.vagas = response.data.result;
-
-                // Após os dados das vagas serem carregados, registre o IntersectionObserver
-                this.$nextTick(() => {
-                    function observarEntrada(entries, observer) {
-                        entries.forEach((entry, index) => {
-                            if (entry.isIntersecting) {
-                                setTimeout(() => {
-                                    entry.target.classList.add('visivel');
-                                }, index * 10); // Ajuste o tempo conforme necessário
-                            }
-                        });
-                    }
-
-                    const observer = new IntersectionObserver(observarEntrada, {
-                        root: null,
-                        rootMargin: '0px',
-                        threshold: 0.7
-                    });
-
-                    // Observar os elementos observavel
-                    this.$el.querySelectorAll('.observavel').forEach((element) => {
-                        observer.observe(element);
-                    });
-                });
 
             } catch (error) {
                 console.error('Erro', error.response.data);

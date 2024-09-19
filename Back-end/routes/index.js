@@ -54,6 +54,7 @@ router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 router.get('/vaga/pesquisa', Vaga.vagaPesquisa);
 router.post('/vaga/create', Vaga.vagaCreate);
 router.get('/vaga/read', Vaga.vagaRead);
+router.get('/vaga/read/empresa', Vaga.vagaReadEmpresa);
 router.get('/vaga/read/all', Vaga.vagaReadAll);
 router.put('/vaga/update', Vaga.vagaUpdate);
 router.delete('/vaga/delete/:id', Vaga.vagaDelete);

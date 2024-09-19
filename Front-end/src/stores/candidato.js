@@ -15,12 +15,13 @@ export const useCandidatoStore = defineStore('candidato', {
         visibilidadeLogado: false,
         dadosUser: '',
         router: useRouter(),
+        grupo: ''
     }),
     actions: {
         async userLogado() {
-            console.clear();
+            console.log(this.grupo);
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidato/read`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${this.grupo}/read`, {
                     withCredentials: true
                 });
 
