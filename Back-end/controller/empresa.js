@@ -105,3 +105,17 @@ exports.login = (req, res) => {
         }
     })
 }
+
+exports.getUser = (req, res) => {
+    usuario_id = req.session.usuario.id;
+
+    Empresa.getUser(usuario_id, (err, usuario) => {
+        if(err)
+            return res.status(500).json({ error: err.message });
+        
+        if(!usuario)
+            return res.status(404).json({ error: 'Usuário não encontrado!'});
+        
+        res.json({ success: true, usuario: usuario});
+    })
+}
