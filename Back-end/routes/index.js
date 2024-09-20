@@ -16,6 +16,11 @@ const Experiencia = require('../controller/experiencias');
 const Habilidade = require('../controller/habilidades');
 const VerificarConta = require('../controller/verificarConta');
 
+// rota autenticacao
+router.get('/auth', authMiddleware, (req, res) => {
+    res.status(200).json({ message: "Authenticated" });
+});
+
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
 router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);

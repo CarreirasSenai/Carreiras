@@ -68,14 +68,16 @@ export default {
           password: this.password
         }, { withCredentials: true });
 
+        sessionStorage.setItem("grupo", this.resposta); // Resposta 'candidato' ou 'empresa' da store para receber os dados
+        this.$router.push('/'); // Envia a Home index.vue
+
         console.log('Login bem-sucedido', response.data);
-        this.user.grupo = this.resposta;
-        this.$router.push('/');
       } catch (error) {
         console.error('Erro no login', error.response.data);
         this.mensagem = error.response.data.aviso;
       }
     },
+
     goToSignUp() {
       if (window.location.href.includes("candidato")) {
         this.$router.push({ path: '/cadastro-candidato' });
@@ -83,6 +85,7 @@ export default {
         this.$router.push({ path: '/cadastro-empresa' });
       }
     },
+
     respostaGrupo() {
       this.$router.push({ path: '/redefinir-senha', query: { resposta: this.resposta } });
     },

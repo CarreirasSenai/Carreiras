@@ -5,8 +5,12 @@
             <v-col cols="12">
                 <v-card class="rounded-lg ma-4">
                     <v-card-title class="opacity-100 bg-deep-purple-accent-4 observavel d-flex align-center">
-                        <v-btn size="small" class="mr-2" icon="mdi-share-variant" variant="tonal"></v-btn>
                         {{ vaga.titulo }}
+                        <v-spacer></v-spacer>
+                        <v-chip size="small" variant="outlined" class="mr-15 bg-deep-purple-accent-2 position-absolute right-0" v-model="snackbar">
+                            Copiado para área de transferência!
+                        </v-chip>
+                        <v-btn size="small" icon="mdi-share-variant" variant="tonal" @click="compartilhar"></v-btn>
                     </v-card-title>
                     <v-card-text class="d-flex flex-column ga-2 pa-4 pl-6 pr-6">
                         <div class="d-flex align-center ga-2 flex-wrap">
@@ -73,6 +77,7 @@
 
 <script>
 import axios from 'axios';
+import { useCandidatoStore } from '@/stores/candidato';
 
 export default {
     data: () => ({
@@ -80,7 +85,18 @@ export default {
         vaga: '',
         habilidadesExigidas: [],
         habilidadesOpcionais: [],
+        snackbar: false
     }),
+
+    computed: {
+        user() {
+            return useCandidatoStore();
+        },
+    },
+
+    mounted() {
+        this.user.userLogado();
+    },
 
     created() {
         this.id = this.$route.query.id;
@@ -109,6 +125,24 @@ export default {
                 console.log('Erro ao buscar!', error.response);
             }
         },
+
+        compartilhar() {
+            const url = `${import.meta.env.VITE_FRONTEND_URL}/detalhes-vaga?id=${this.vaga.id}&titulo=${encodeURIComponent(this.vaga.titulo)}`;
+
+            // Utiliza a API de Clipboard para copiar o URL
+            navigator.clipboard.writeText(url)
+                .then(() => {
+                    console.log(url);
+
+                    this.snackbar = true;
+                    setTimeout(() => {
+                        this.snackbar = false;
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Erro ao copiar o URL para a área de transferência: ', err);
+                });
+        }
     }
 }
 </script>

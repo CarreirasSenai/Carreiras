@@ -8,15 +8,6 @@
                     <a href="/" class="d-flex justify-center align-center">
                         <img class="carreiras-logo" src="../../assets/logo.png">
                     </a>
-                    <!-- <ADM / LOGIN /> -->
-                    <!-- <div class="d-flex ga-1 ma-1" v-if="user.visibilidadeNaoLogado">
-                        <v-btn class="adm-btn" variant="outlined">
-                            Adm
-                        </v-btn>
-                        <v-btn class="bg-purple-darken-4" to="/empresa-candidato">
-                            Login
-                        </v-btn>
-                    </div> -->
                     <!-- Aqui o Menu com opções visiveis que o sestito pediu e tbm a versão mob -->
                     <div v-if="user.visibilidadeNaoLogado">
                         <div v-if="visibilidadeMenuInicial" class="d-flex align-center ga-15">
@@ -119,9 +110,6 @@ export default {
     },
 
     mounted() {
-        const user = this.user;
-        user.userLogado();
-
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
     },
@@ -147,6 +135,8 @@ export default {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/logout`, {
                     withCredentials: true  // Importante: enviar cookies com a requisição
                 });
+
+                sessionStorage.removeItem("grupo");
                 console.log(response.data);
                 window.location.href = '/';
 

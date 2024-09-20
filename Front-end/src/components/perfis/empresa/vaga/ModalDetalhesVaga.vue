@@ -8,10 +8,14 @@
             <v-container>
                 <v-row>
                     <v-col cols="12">
+                        <v-chip size="small" variant="outlined" class="mb-1 bg-deep-purple-accent-2" v-model="snackbar">
+                            Copiado para área de transferência!
+                        </v-chip>
                         <v-card class="rounded-lg">
                             <v-card-title class="opacity-100 bg-deep-purple-accent-4 observavel d-flex align-center">
-                                <v-btn size="small" class="mr-2" icon="mdi-share-variant" variant="tonal"
-                                    @click="compartilhar"></v-btn>
+                                <v-btn size="small" class="mr-2 position-relative" icon="mdi-share-variant"
+                                    variant="tonal" @click="compartilhar">
+                                </v-btn>
                                 {{ this.Vagas.raw.titulo }}
                                 <v-spacer></v-spacer>
                                 <v-btn size="small" icon="mdi-close" variant="tonal" @click="dialog = false"></v-btn>
@@ -98,6 +102,7 @@ export default {
     data() {
         return {
             dialog: false,
+            snackbar: false
         }
     },
     props: {
@@ -114,8 +119,10 @@ export default {
             // Utiliza a API de Clipboard para copiar o URL
             navigator.clipboard.writeText(url)
                 .then(() => {
-                    console.log('URL copiado para a área de transferência!');
-                    // Adicione uma notificação para o usuário ou alguma outra ação
+                    this.snackbar = true;
+                    setTimeout(() => {
+                        this.snackbar = false;
+                    }, 2000);
                 })
                 .catch(err => {
                     console.error('Erro ao copiar o URL para a área de transferência: ', err);
