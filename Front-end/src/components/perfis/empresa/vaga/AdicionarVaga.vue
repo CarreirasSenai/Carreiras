@@ -78,8 +78,12 @@
                         </v-row>
                         <v-row dense>
                             <v-col cols="12">
+                                <v-icon icon="mdi-information" size="x-small" color="grey-lighten-1" :title="infoQuestionario">
+                                    <v-tooltip activator="parent" location="end"></v-tooltip>
+                                </v-icon>
                                 <v-combobox v-model="form.questionario" chips closable-chips multiple
-                                    label="Questionário de Triagem" hint="Escreva uma pergunta e tecle enter"></v-combobox>
+                                    label="Questionário de Triagem"
+                                    hint="Escreva uma pergunta e tecle enter"></v-combobox>
                             </v-col>
                         </v-row>
                         <v-row dense>
@@ -131,6 +135,11 @@ export default {
             'Paraná - PR', 'Pernambuco - PE', 'Piauí - PI', 'Rio de Janeiro - RJ', 'Rio Grande do Norte - RN',
             'Rio Grande do Sul - RS', 'Rondônia - RO', 'Roraima - RR', 'Santa Catarina - SC', 'São Paulo - SP',
             'Sergipe - SE', 'Tocantins - TO'],
+        infoQuestionario: `
+        O questionário consiste de perguntas 
+        alternativas que tem o objetivo de selecionar 
+        e atribuir a relevância do candidato para a vaga 
+        a fim de ajudar na triagem da seleção.`
     }),
     props: {
         MostrarVagas: {

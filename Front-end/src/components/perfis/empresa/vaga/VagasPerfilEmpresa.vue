@@ -1,5 +1,5 @@
 <template>
-    <div class="ma-4 mb-2 d-flex justify-space-between align-center">
+    <div class="ma-4 mb-4 d-flex justify-space-between align-center">
         <h1 style="font-size: 3vh;">Vagas da Empresa</h1>
         <AdicionarVaga :MostrarVagas="mostrarVagas" />
     </div>
