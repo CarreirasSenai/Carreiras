@@ -12,13 +12,13 @@
                             Copiado para área de transferência!
                         </v-chip>
                         <v-card class="rounded-lg">
-                            <v-card-title class="opacity-100 bg-deep-purple-accent-4 observavel d-flex align-center">
-                                <v-btn size="small" class="mr-2 position-relative" icon="mdi-share-variant"
+                            <v-card-title class="pa-2 opacity-100 bg-deep-purple-accent-4 observavel d-flex align-center">
+                                <v-btn size="x-small" class="mr-2 position-relative" icon="mdi-share-variant"
                                     variant="tonal" @click="compartilhar">
                                 </v-btn>
                                 {{ this.Vagas.raw.titulo }}
                                 <v-spacer></v-spacer>
-                                <v-btn size="small" icon="mdi-close" variant="tonal" @click="dialog = false"></v-btn>
+                                <v-btn size="x-small" icon="mdi-close" variant="tonal" @click="dialog = false"></v-btn>
                             </v-card-title>
                             <v-card-text style="max-height: 60vh;"
                                 class="overflow-auto d-flex flex-column ga-2 pa-4 pl-6 pr-6">

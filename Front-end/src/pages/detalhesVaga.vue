@@ -4,7 +4,7 @@
         <v-row>
             <v-col cols="12">
                 <v-card class="rounded-lg ma-4">
-                    <v-card-title class="opacity-100 bg-deep-purple-accent-4 observavel d-flex align-center">
+                    <v-card-title class="pr-2 opacity-100 bg-deep-purple-accent-4 observavel d-flex align-center">
                         {{ vaga.titulo }}
                         <v-spacer></v-spacer>
                         <v-chip size="small" variant="outlined" class="mr-15 bg-deep-purple-accent-2 position-absolute right-0" v-model="snackbar">

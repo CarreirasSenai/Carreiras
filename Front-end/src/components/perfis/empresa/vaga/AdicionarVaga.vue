@@ -79,7 +79,13 @@
                         <v-row dense>
                             <v-col cols="12">
                                 <v-combobox v-model="form.questionario" chips closable-chips multiple
-                                    label="Questionário" hint="Escreva uma pergunta e tecle enter"></v-combobox>
+                                    label="Questionário de Triagem" hint="Escreva uma pergunta e tecle enter"></v-combobox>
+                            </v-col>
+                        </v-row>
+                        <v-row dense>
+                            <v-col cols="12">
+                                <v-text-field v-model="form.qtdCandidatos" label="Máximo de Candidaturas" type="number"
+                                    :rules="[rules.geral]"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -113,7 +119,8 @@ export default {
             habsOpcionais: ['Malabarismo', 'Conserto de Veículos', 'Plantar Bananeira'],
             descricao: 'A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.',
             etapas: ['Entrevista', 'Desafio', 'Call com Líder', 'Acordo'],
-            questionario: ['Há quantos anos você usa Excel no trabalho?', 'Fale sobre um projeto desafiador.']
+            questionario: ['Há quantos anos você usa Excel no trabalho?', 'Fale sobre um projeto desafiador.'],
+            qtdCandidatos: 100,
         },
         rules: {
             geral: value => !!value || 'O campo obrigatório.'

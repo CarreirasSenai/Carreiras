@@ -71,7 +71,7 @@
                             </small>
                             <v-card-actions class="d-flex justify-space-between">
                                 <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
-                                <ModalCandidatosVagas />
+                                <ModalCandidatosVagas :Vagas="item" />
                             </v-card-actions>
                         </v-card>
                     </v-col>

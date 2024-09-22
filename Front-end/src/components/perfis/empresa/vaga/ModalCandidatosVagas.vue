@@ -8,48 +8,42 @@
                     <v-card flat>
                         <v-card-title class="d-flex flex-wrap align-center pe-4 ga-2">
                             <h1 style="font-size: 2.5vh; text-overflow: ellipsis; overflow: hidden;">
-                                Candidatos de Analista de Dados
+                                Candidatos a {{ this.Vagas.raw.titulo }}
                             </h1>
-
                             <v-spacer></v-spacer>
-
                             <v-text-field v-model="search" density="compact" label="Search"
                                 prepend-inner-icon="mdi-magnify" variant="solo-filled" flat hide-details
                                 single-line></v-text-field>
                         </v-card-title>
 
                         <v-divider></v-divider>
-                        <v-data-table v-model:search="search" :items="items" height="500" class="position-relative">
+                        <v-data-table v-model:search="search" :items="items" :headers="headers" height="500"
+                            class="position-relative">
+
                             <template v-slot:item.foto="{ item }">
-                                <v-card class="my-2 rounded-circle w-75">
+                                <v-card class="my-2 rounded-circle" style="width:50px;">
                                     <v-img :src="`https://randomuser.me/api/portraits/women/${item.foto}`"
                                         cover></v-img>
                                 </v-card>
                             </template>
 
                             <template v-slot:item.nome="{ item }">
-                                <v-btn variant="text" prepend-icon="mdi-arrow-top-right-thick" class="text-capitalize"
-                                    @click="redirectPerfil(perfil)">{{ item.nome }}</v-btn>
+                                <router-link :to="`/perfil-candidato?id=${item.id}`" target="_blank" class="text-black">
+                                    <v-btn variant="text" prepend-icon="mdi-arrow-top-right-thick"
+                                        class="text-capitalize" title="Ver Curriculo">{{ item.nome }}</v-btn>
+                                </router-link>
                             </template>
 
-                            <template v-slot:item.habilidades="{ item }">
-                                <v-sheet class="py-4 px-1" style="max-width: 300px;">
-                                    <v-chip-group selected-class="text-primary" mandatory>
-                                        <v-chip variant="outlined" v-for="(habilidade, index) in item.habilidades"
-                                            :key="index">{{ habilidade }}</v-chip>
-                                    </v-chip-group>
-                                </v-sheet>
-                            </template>
-
-                            <template v-slot:item.stock="{ item }">
-                                <div class="text-end">
-                                    <v-chip :color="item.stock ? 'green' : 'red'"
-                                        :text="item.stock ? 'In stock' : 'Out of stock'" class="text-uppercase"
-                                        size="small" label></v-chip>
+                            <template v-slot:item.acao="{ item }">
+                                <div class="d-flex">
+                                    <v-btn icon="mdi-check-bold" size="x-small" class="mx-2 bg-success"
+                                        @click="aprovarCandidato(item.id)"></v-btn>
+                                    <ModalJustificativa :Candidato="item" :Vaga="this.Vagas" />
                                 </div>
                             </template>
+
                         </v-data-table>
-                        <v-btn class="bt-primario position-absolute bottom-0 ma-2"
+                        <v-btn class="bt-primario position-absolute bottom-0 ma-2 elevation-0"
                             @click="dialog = false">Fechar</v-btn>
                     </v-card>
                 </v-col>
@@ -65,33 +59,59 @@ export default {
             dialog: false,
             perfil: '/perfil-candidato',
             search: '',
+            headers: [
+                { title: 'Foto', value: 'foto', sortable: false },
+                { title: 'Nome', value: 'nome', sortable: false },
+                { title: 'Profissão', value: 'profissao', sortable: false },
+                { title: 'Relevância', value: 'relevancia', sortable: true },
+                { title: 'Ação', value: 'acao', sortable: false },
+            ],
             items: [
                 {
                     foto: '1.jpg',
                     nome: 'João Pereira',
-                    profissão: 'Engenheiro de Software',
-                    habilidades: ['javascript', 'typescript', 'node.js', 'express', 'angular', 'docker', 'kubernetes'],
+                    profissao: 'Engenheiro de Software',
+                    relevancia: '70%',
+                    acao: '',
+                    id: 1,
                 },
                 {
                     foto: '2.jpg',
                     nome: 'Maria Fernandes',
-                    profissão: 'Desenvolvedora Full Stack',
-                    habilidades: ['php', 'laravel', 'mysql', 'vue', 'nuxt', 'tailwind', 'git'],
+                    profissao: 'Desenvolvedora Full Stack',
+                    relevancia: '64%',
+                    acao: '',
+                    id: 2,
                 },
                 {
                     foto: '3.jpg',
                     nome: 'Carlos Silva',
-                    profissão: 'Especialista em DevOps',
-                    habilidades: ['bash', 'aws', 'terraform', 'ansible', 'jenkins', 'k8s', 'grafana'],
+                    profissao: 'Especialista em DevOps',
+                    relevancia: '90%',
+                    acao: '',
+                    id: 3,
                 },
             ],
         }
     },
+
+    props: {
+        Vagas: Object,
+    },
+
     methods: {
-        redirectPerfil(perfil) {
-            const url = this.$router.resolve(perfil).href;
-            window.open(url, '_blank');
-        }
+        // redirectPerfil(perfil) {
+        //     const url = this.$router.resolve(perfil).href;
+        //     window.open(url, '_blank');
+        // },
+
+        aprovarCandidato(id) {
+            alert(id);
+        },
+
+        removerCandidato(id) {
+            alert(id);
+        },
     }
 }
 </script>

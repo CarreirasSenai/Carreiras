@@ -9,7 +9,7 @@ import PerfilCandidato from '@/pages/perfilCandidato.vue';
 import AgendaCandidato from '@/pages/AgendaCandidato.vue';
 import AgendaEmpresa from '@/pages/AgendaEmpresa.vue';
 import RedefinirSenha from '@/pages/redefinirSenha.vue';
-import ModalJustificativa from '@/components/perfis/empresa/ModalJustificativa.vue';
+import ModalJustificativa from '@/components/perfis/empresa/vaga/ModalJustificativa.vue';
 import ListaEmpresas from '@/components/admin/ListaEmpresas.vue';
 import loginADM from '@/components/admin/loginADM.vue';
 import ListaDeUsuarios from '@/components/admin/ListaDeUsuarios.vue';

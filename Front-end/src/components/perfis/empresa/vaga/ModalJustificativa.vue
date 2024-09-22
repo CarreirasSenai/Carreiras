@@ -1,9 +1,7 @@
 <template>
-    <div class="text-center pa-4">
-        <v-btn @click="dialog = true" class="bg-red">
-            Recusar
-        </v-btn>
-
+    <v-btn icon="mdi-minus" size="x-small" class="bg-error" @click="dialog = true"></v-btn>
+    
+    <!-- <div class="text-center pa-4">         -->
         <v-dialog v-model="dialog">
             <v-container>
                 <v-row class="d-flex justify-center">
@@ -33,7 +31,7 @@
                 </v-row>
             </v-container>
         </v-dialog>
-    </div>
+    <!-- </div> -->
 </template>
 
 <script>
@@ -49,6 +47,17 @@ export default {
             length: len => v => (v || '').length >= len || `Necessário ${len} caracteres para enviar a justificativa!`
         },
     }),
+
+    props: {
+        Candidato: Object,
+        Vaga: Object
+    },
+
+    mounted(){
+        this.candidato = this.Candidato.nome;
+        this.vaga = this.Vaga.raw.titulo;
+    },
+
     methods: {
         resetForm() {
             this.justificativa = '';
