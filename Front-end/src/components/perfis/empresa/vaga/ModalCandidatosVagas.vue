@@ -28,7 +28,7 @@
                             </template>
 
                             <template v-slot:item.nome="{ item }">
-                                <router-link :to="`/perfil-candidato?id=${item.id}`" target="_blank" class="text-black">
+                                <router-link :to="`/perfil-candidato?id=${item.id}&requisicao=${requisicao}`" target="_blank" class="text-black">
                                     <v-btn variant="text" prepend-icon="mdi-arrow-top-right-thick"
                                         class="text-capitalize" title="Ver Curriculo">{{ item.nome }}</v-btn>
                                 </router-link>
@@ -57,7 +57,7 @@ export default {
     data() {
         return {
             dialog: false,
-            perfil: '/perfil-candidato',
+            requisicao: '',
             search: '',
             headers: [
                 { title: 'Foto', value: 'foto', sortable: false },
@@ -99,12 +99,12 @@ export default {
         Vagas: Object,
     },
 
-    methods: {
-        // redirectPerfil(perfil) {
-        //     const url = this.$router.resolve(perfil).href;
-        //     window.open(url, '_blank');
-        // },
+    mounted(){
+        this.requisicao = localStorage.getItem("grupo");
+        this.requisicao = 'empresa';
+    },
 
+    methods: {
         aprovarCandidato(id) {
             alert(id);
         },

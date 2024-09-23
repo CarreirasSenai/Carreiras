@@ -68,7 +68,7 @@ export default {
           password: this.password
         }, { withCredentials: true });
 
-        sessionStorage.setItem("grupo", this.resposta); // Resposta 'candidato' ou 'empresa' da store para receber os dados
+        localStorage.setItem("grupo", this.resposta); // Resposta 'candidato' ou 'empresa' enviada a store para receber os dados
         this.$router.push('/'); // Envia a Home index.vue
 
         console.log('Login bem-sucedido', response.data);

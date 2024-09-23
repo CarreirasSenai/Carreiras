@@ -7,7 +7,7 @@ const transporter = require('../services/nodemailer');
 exports.createUser = async (req, res) => {
     const { nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao } = req.body;
     console.log(req.body);
-    
+
     // Gerar um salt e hash a senha
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -116,8 +116,11 @@ exports.login = (req, res) => {
 
 // Read / Autenticar
 exports.getUser = (req, res) => {
+    const requisicao = req.query.requisicao;
+    const idReq = req.query.id;
+    const idSession = req.session.usuario.id;
 
-    usuario_id = req.session.usuario.id;
+    const usuario_id = requisicao ? idReq : idSession;
 
     Candidato.getUser(usuario_id, (err, usuario) => {
         if (err) {
