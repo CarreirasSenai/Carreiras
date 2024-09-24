@@ -1,52 +1,66 @@
 <template>
-    <v-row>
-        <!-- <v-col cols="12" lg="4" md="6" sm="6" v-for="n in 9" :key="n"> -->
-        <v-col cols="12" lg="4" md="6" sm="6" v-for="vaga in vagas" :key="vaga.id">
-            <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
-                <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
-                    {{ vaga.vaga }}
-                </v-card-title>
-                <v-card-text class="pa-4" style="min-height: 120px;">
-                    <v-row>
-                        <v-col cols="6">
-                            <p class="observavel">
-                                <span class="mdi mdi-map-marker text-h6 text-grey-darken-1"></span>
-                                &nbsp;{{ vaga.local }}
-                            </p>
-                            <p class="observavel">
-                                <span class="mdi mdi-clipboard-text text-h6 text-grey-darken-1"></span>
-                                &nbsp;{{ vaga.contrato }}
-                            </p>
-                        </v-col>
-                        <v-col cols="6">
-                            <p class="observavel">
-                                <span class="mdi mdi-laptop text-h6 text-grey-darken-1"></span>
-                                &nbsp;{{ vaga.modalidade }}
-                            </p>
-                            <p class="observavel">
-                                <span class="mdi mdi-currency-usd text-h6 text-grey-darken-1"></span>
-                                &nbsp;{{ vaga.remuneracao }}
-                            </p>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <small
-                    class="position-absolute top-0 right-0 ma-2 text-white observavel bg-deep-purple-accent-3 pa-1 rounded-lg elevation-2 data-vaga">
-                    {{ vaga.data }}
-                </small>
-                <v-card-actions class="d-flex justify-space-between">
-                    <ModalDetalhesVaga />
-                    <div class="d-flex align-center justify-center ga-2">
-                        {{ vaga.empresa }}
-                        <img src="/src/assets/avatar.png" width="50px" class="rounded-circle">
-                    </div>
-                </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </div>
-      <Footer />
-  </div>
+  <v-row>
+    <!-- <v-col cols="12" lg="4" md="6" sm="6" v-for="n in 9" :key="n"> -->
+    <v-col cols="12" lg="4" md="6" sm="6" v-for="vaga in vagas" :key="vaga.id">
+      <v-card
+        class="elevation-2 rounded-lg observavel"
+        style="border-color: #6200ea !important"
+      >
+        <v-card-title
+          class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel"
+        >
+          {{ vaga.vaga }}
+        </v-card-title>
+        <v-card-text class="pa-4" style="min-height: 120px">
+          <v-row>
+            <v-col cols="6">
+              <p class="observavel">
+                <span
+                  class="mdi mdi-map-marker text-h6 text-grey-darken-1"
+                ></span>
+                &nbsp;{{ vaga.local }}
+              </p>
+              <p class="observavel">
+                <span
+                  class="mdi mdi-clipboard-text text-h6 text-grey-darken-1"
+                ></span>
+                &nbsp;{{ vaga.contrato }}
+              </p>
+            </v-col>
+            <v-col cols="6">
+              <p class="observavel">
+                <span class="mdi mdi-laptop text-h6 text-grey-darken-1"></span>
+                &nbsp;{{ vaga.modalidade }}
+              </p>
+              <p class="observavel">
+                <span
+                  class="mdi mdi-currency-usd text-h6 text-grey-darken-1"
+                ></span>
+                &nbsp;{{ vaga.remuneracao }}
+              </p>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <small
+          class="position-absolute top-0 right-0 ma-2 text-white observavel bg-deep-purple-accent-3 pa-1 rounded-lg elevation-2 data-vaga"
+        >
+          {{ vaga.data }}
+        </small>
+        <v-card-actions class="d-flex justify-space-between">
+          <ModalDetalhesVaga />
+          <div class="d-flex align-center justify-center ga-2">
+            {{ vaga.empresa }}
+            <img
+              src="/src/assets/avatar.png"
+              width="50px"
+              class="rounded-circle"
+            />
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+    <Footer />
+  </v-row>
 </template>
 
 <script>
@@ -171,8 +185,6 @@ export default {
   animation: fadeInLeft 2s normal;
 }
 .cards-container {
-    margin-bottom: 40px;
+  margin-bottom: 40px;
 }
-
-
 </style>
