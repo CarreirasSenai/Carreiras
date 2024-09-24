@@ -29,12 +29,13 @@
                                 </template>
                                 <v-list class="d-flex flex-column ga-2 pa-2 mt-2">
                                     <v-btn class="w-100" variant="text" prepend-icon="mdi-login"
-                                        to="/empresa-candidato">Entrar</v-btn>
+                                        to="/empresa-candidato?resposta=entrar">Entrar</v-btn>
                                     <v-divider></v-divider>
                                     <v-btn class="w-100" variant="text" prepend-icon="mdi-account-plus"
-                                        @click="redirectToCad">Cadastrar</v-btn>
+                                        to="/empresa-candidato?resposta=cadastro">Cadastrar</v-btn>
                                     <v-divider></v-divider>
-                                    <v-btn class="w-100" variant="text" prepend-icon="mdi-shield-account">Adm</v-btn>
+                                    <v-btn class="w-100" variant="text" prepend-icon="mdi-shield-account"
+                                        to="/login?resposta=admin">Adm</v-btn>
                                     <v-divider></v-divider>
                                     <v-btn class="w-100" variant="text" prepend-icon="mdi-help-circle">Faq</v-btn>
                                 </v-list>
@@ -72,12 +73,15 @@
                                         <v-btn variant="text" rounded to="/agenda-candidato">
                                             Agenda
                                         </v-btn>
-                                        <v-divider class="my-2"></v-divider>
+                                        <v-divider class="my-2" v-if="user.grupo === 'candidato'"></v-divider>
                                         <!-- <v-btn variant="text" @click="triggerAbrirChatHome">Chat</v-btn>
                                         <v-divider class="my-2"></v-divider> -->
-                                        <v-btn variant="text" rounded>Minhas Vagas</v-btn>
+                                        <v-btn variant="text" rounded v-if="user.grupo === 'candidato'">Minhas Vagas</v-btn>
                                         <v-divider class="my-2"></v-divider>
-                                        <v-btn variant="text" rounded to="/perfil-candidato">Curriculo</v-btn>
+                                        <v-btn variant="text" rounded to="/perfil-candidato"
+                                            v-if="user.grupo === 'candidato'">Curriculo</v-btn>
+                                        <v-btn variant="text" rounded to="/perfil-empresa"
+                                            v-if="user.grupo === 'empresa'">Perfil</v-btn>
                                         <v-divider class="my-2"></v-divider>
                                         <v-btn variant="text" rounded prepend-icon="mdi-logout"
                                             @click="logout">Sair</v-btn>

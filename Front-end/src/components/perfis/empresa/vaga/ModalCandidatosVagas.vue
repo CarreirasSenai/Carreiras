@@ -28,10 +28,23 @@
                             </template>
 
                             <template v-slot:item.nome="{ item }">
-                                <router-link :to="`/perfil-candidato?id=${item.id}&requisicao=${requisicao}`" target="_blank" class="text-black">
+                                <router-link :to="`/perfil-candidato?id=${item.id}&requisicao=${requisicao}`"
+                                    target="_blank" class="text-black">
                                     <v-btn variant="text" prepend-icon="mdi-arrow-top-right-thick"
                                         class="text-capitalize" title="Ver Curriculo">{{ item.nome }}</v-btn>
                                 </router-link>
+                            </template>
+
+                            <template v-slot:item.indicacao="{ item }">
+                                <v-icon :icon="item.indicacao ? 'mdi-circle' : ''" color="deep-purple-accent-3"
+                                    size="x-small"></v-icon>
+                            </template>
+
+                            <template v-slot:item.relevancia="{ item }">
+                                <div class="d-flex">
+                                    <v-sheet class="text-center rounded-lg pa-1 elevation-1"
+                                        :color="validaCorRelevancia(item.relevancia)">{{ item.relevancia }}%</v-sheet>
+                                </div>
                             </template>
 
                             <template v-slot:item.acao="{ item }">
@@ -62,6 +75,7 @@ export default {
             headers: [
                 { title: 'Foto', value: 'foto', sortable: false },
                 { title: 'Nome', value: 'nome', sortable: false },
+                { title: 'Indicação', value: 'indicacao', sortable: true },
                 { title: 'Profissão', value: 'profissao', sortable: false },
                 { title: 'Relevância', value: 'relevancia', sortable: true },
                 { title: 'Ação', value: 'acao', sortable: false },
@@ -70,24 +84,27 @@ export default {
                 {
                     foto: '1.jpg',
                     nome: 'João Pereira',
+                    indicacao: 'true',
                     profissao: 'Engenheiro de Software',
-                    relevancia: '70%',
+                    relevancia: '70',
                     acao: '',
                     id: 1,
                 },
                 {
                     foto: '2.jpg',
                     nome: 'Maria Fernandes',
+                    indicacao: '',
                     profissao: 'Desenvolvedora Full Stack',
-                    relevancia: '64%',
+                    relevancia: '64',
                     acao: '',
                     id: 2,
                 },
                 {
                     foto: '3.jpg',
                     nome: 'Carlos Silva',
+                    indicacao: 'true',
                     profissao: 'Especialista em DevOps',
-                    relevancia: '90%',
+                    relevancia: '90',
                     acao: '',
                     id: 3,
                 },
@@ -99,8 +116,7 @@ export default {
         Vagas: Object,
     },
 
-    mounted(){
-        this.requisicao = localStorage.getItem("grupo");
+    mounted() {
         this.requisicao = 'empresa';
     },
 
@@ -112,6 +128,21 @@ export default {
         removerCandidato(id) {
             alert(id);
         },
+
+        validaCorRelevancia(value) {
+            if (value < 50) {
+                return 'error';
+            }
+            if (value >= 50 && value < 70) {
+                return 'warning';
+            }
+            if (value >= 70 && value < 90) {
+                return 'info';
+            }
+            if (value >= 90) {
+                return 'success';
+            }
+        }
     }
 }
 </script>

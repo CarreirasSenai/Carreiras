@@ -33,7 +33,6 @@ export default {
     mounted() {
         this.auth.autenticacao();
         this.user.userLogado();
-        // this.user.pesquisaUser();
     },
 }
 </script>

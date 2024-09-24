@@ -10,13 +10,6 @@
     </div>
 </template>
 
-<script>
-import Formacoes from './formacoes/Formacoes.vue';
-import Cursos from './cursos/Cursos.vue';
-import Experiencias from './experiencias/Experiencias.vue';
-import Habilidades from './habilidades/Habilidades.vue';
-</script>
-
 <style>
 .div-infos {
     margin: 0 20px 20px 20px;

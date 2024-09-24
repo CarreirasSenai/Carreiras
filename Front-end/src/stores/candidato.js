@@ -17,33 +17,35 @@ export const useCandidatoStore = defineStore('candidato', {
         router: useRouter(),
         id: '',
         requisicao: '',
+        grupo: '',
     }),
     actions: {
         async userLogado() {
-            const grupo = localStorage.getItem("grupo");
+            this.grupo = localStorage.getItem("grupo");
 
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${grupo}/read`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${this.grupo}/read`, {
                     withCredentials: true
                 });
-
-                // Setando dados do user da requisição
-                this.user.initials = this.extrairIniciais(response.data.usuario.nome_completo);
-                this.user.fullName = response.data.usuario.nome_completo;
-                this.user.email = response.data.usuario.email;
-
-                // Mostra foto ou avatar padrão
-                this.user.foto = response.data.usuario.foto === null ? '/src/assets/avatar.png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${response.data.usuario.foto}`;
-                this.user.capa = response.data.usuario.capa === null ? '/src/assets/capa (1).png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${response.data.usuario.capa}`;
-
-                // Altera visibilidade da navegação
-                this.visibilidadeNaoLogado = false;
-                this.visibilidadeLogado = true;
 
                 // Atribuindo dados do usuario
                 this.dadosUser = response.data.usuario;
 
                 console.log("Usuário logado:", this.dadosUser);
+
+                // Setando dados do user da requisição
+                this.user.initials = this.dadosUser.nome_completo ? this.extrairIniciais(this.dadosUser.nome_completo) : this.extrairIniciais(this.dadosUser.nome_fantasia);
+                this.user.fullName = this.dadosUser.nome_completo;
+                this.user.email = this.dadosUser.email;
+
+                // Mostra foto ou avatar padrão
+                this.user.foto = this.dadosUser.foto === null ? '/src/assets/avatar.png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${this.dadosUser.foto}`;
+                this.user.capa = this.dadosUser.capa === null ? '/src/assets/capa (1).png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${this.dadosUser.capa}`;
+
+                // Altera visibilidade da navegação
+                this.visibilidadeNaoLogado = false;
+                this.visibilidadeLogado = true;
+
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response.data);
             }

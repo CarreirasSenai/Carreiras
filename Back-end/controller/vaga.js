@@ -1,8 +1,7 @@
 const Vaga = require("../model/vaga");
 
 exports.vagaCreate = (req, res) => {
-    // const id = req.session.usuario.id;
-    const id = 2;
+    const id = req.session.usuario.id;
     const dados = req.body;
 
     Vaga.vagaCreate(id, dados, (err, idVaga) => {
@@ -27,8 +26,7 @@ exports.vagaRead = (req, res) => {
 }
 
 exports.vagaReadEmpresa = (req, res) => {
-    // const id = req.session.usuario.id;
-    const id = 1;
+    const id = req.session.usuario.id;
 
     Vaga.vagaReadEmpresa(id, (err, result) => {
         if (err) {
