@@ -1,9 +1,6 @@
 <template>
-    <div>
-        <Navbar />
-        <FotoCapaEmpresa />
-        <VagasPerfilEmpresa />
-    </div>
+    <Navbar />
+    <Calendario />
 </template>
 
 <script>
@@ -19,9 +16,14 @@ export default {
             return useCandidatoStore();
         },
     },
+    created() {
+        this.user.id = this.$route.query.id;
+        this.user.requisicao = this.$route.query.requisicao;
+    },
     mounted() {
         this.auth.autenticacao();
         this.user.userLogado();
+        // this.user.pesquisaUser();
     },
 }
 </script>

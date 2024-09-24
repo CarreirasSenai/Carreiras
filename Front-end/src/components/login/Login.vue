@@ -9,16 +9,14 @@
               <v-form class="ma-5 text-start" @submit.prevent="login">
                 <h1 class="text-center ma-5">Faça o Login</h1>
 
-                <v-text-field v-model="email" label="E-mail" type="email"></v-text-field>
-                <v-text-field v-model="password" 
-                :append-icon= "showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showPassword ? 'text' : 'password'"
-                @click:append="showPassword = !showPassword" 
-                label="Senha"></v-text-field>
+                <v-text-field v-model="email" label="E-mail" type="email" @keyup.enter="login"></v-text-field>
+                <v-text-field v-model="password" :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="showPassword ? 'text' : 'password'" @click:append-inner="showPassword = !showPassword"
+                  label="Senha" @keyup.enter="login"></v-text-field>
 
                 <div class="text-center text-red mb-4" id="aviso-invalido" v-if="mensagem">{{ mensagem }}</div>
 
-                <v-btn class="bg-purple-darken-4" @click="login" block>Continuar</v-btn>
+                <v-btn class="bg-purple-darken-4" @click="login" @keyup.enter="login" block>Entrar</v-btn>
               </v-form>
               <v-row class="ma-2">
                 <v-col cols="6">
@@ -39,6 +37,7 @@
 </template>
 
 <script>
+import { useCandidatoStore } from '@/stores/candidato';
 import axios from 'axios';
 
 export default {
@@ -56,6 +55,11 @@ export default {
       mensagem: '',
     };
   },
+
+  computed: {
+    user() { return useCandidatoStore(); },
+  },
+
   methods: {
     async login() {
       try {
@@ -67,13 +71,16 @@ export default {
           password: this.password
         }, { withCredentials: true });
 
+        localStorage.setItem("grupo", this.resposta); // Resposta 'candidato' ou 'empresa' enviada a store para receber os dados
+        this.$router.push('/'); // Envia a Home index.vue
+
         console.log('Login bem-sucedido', response.data);
-        this.$router.push('/');
       } catch (error) {
         console.error('Erro no login', error.response.data);
         this.mensagem = error.response.data.aviso;
       }
     },
+
     goToSignUp() {
       if (window.location.href.includes("candidato")) {
         this.$router.push({ path: '/cadastro-candidato' });
@@ -81,10 +88,12 @@ export default {
         this.$router.push({ path: '/cadastro-empresa' });
       }
     },
+
     respostaGrupo() {
       this.$router.push({ path: '/redefinir-senha', query: { resposta: this.resposta } });
     },
   },
+
   mounted() {
     this.$route.query.resposta;
   },
@@ -92,5 +101,4 @@ export default {
 
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

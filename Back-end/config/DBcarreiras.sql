@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `carreiras` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `carreiras`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: carreiras
@@ -38,7 +36,7 @@ CREATE TABLE `agendamento` (
   KEY `id_candidato` (`id_candidato`),
   CONSTRAINT `agendamento_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`) ON DELETE CASCADE,
   CONSTRAINT `agendamento_ibfk_2` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,6 +45,7 @@ CREATE TABLE `agendamento` (
 
 LOCK TABLES `agendamento` WRITE;
 /*!40000 ALTER TABLE `agendamento` DISABLE KEYS */;
+INSERT INTO `agendamento` VALUES (8,'Desenvolvedor Full Stack','Pleno','2024-09-17','09:00:00',1,25,'2024-09-18 00:00:26'),(9,'Engenheiro de Software','Sênior','2024-09-18','14:30:00',1,25,'2024-09-18 00:00:26'),(10,'Analista de Dados','Júnior','2024-09-19','11:00:00',1,25,'2024-09-18 00:00:26');
 /*!40000 ALTER TABLE `agendamento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,7 +76,6 @@ CREATE TABLE `curso` (
 
 LOCK TABLES `curso` WRITE;
 /*!40000 ALTER TABLE `curso` DISABLE KEYS */;
-INSERT INTO `curso` VALUES (5,'Espanhol Panamenho','Duolingo','2024-09','2024-12',1,'2024-09-13 08:41:21');
 /*!40000 ALTER TABLE `curso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -101,7 +99,7 @@ CREATE TABLE `experiencia` (
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
   CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,7 +108,7 @@ CREATE TABLE `experiencia` (
 
 LOCK TABLES `experiencia` WRITE;
 /*!40000 ALTER TABLE `experiencia` DISABLE KEYS */;
-INSERT INTO `experiencia` VALUES (6,'Desenvolvedor','Links','[\"Acompanhamento do ciclo total de desenvolvimento\", \"Planejamento\", \"Prototipagem\", \"Frontend\", \"Backend\", \"Testes\", \"Implantação\", \"Documentação\", \"Suporte\", \"Infra\"]','PJ','2024-12','2024-12',1,'2024-09-13 16:50:38'),(10,'Analista de Sistemas','TOTVS','[\"Criação de Interfaces\", \"Controle de Estoque\", \"Gestão de Pessoas\"]','CLT','2024-12','2024-12',1,'2024-09-13 16:51:00');
+INSERT INTO `experiencia` VALUES (14,'Desenvolvedor Full Stack','TOTVS','[\"Criação de Interfaces\", \"Controle de Estoque\", \"Gestão de Pessoas\", \"Testes\", \"Desenvolvimento\"]','PJ','2024-10','2024-12',25,'2024-09-19 06:07:10');
 /*!40000 ALTER TABLE `experiencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +158,7 @@ CREATE TABLE `habilidade` (
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
   CONSTRAINT `habilidade_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +167,7 @@ CREATE TABLE `habilidade` (
 
 LOCK TABLES `habilidade` WRITE;
 /*!40000 ALTER TABLE `habilidade` DISABLE KEYS */;
-INSERT INTO `habilidade` VALUES (1,'[\"vue\", \"js\", \"ts\", \"java\", \"react\", \"next\", \"c#\", \"cobra\", \"cavalo\", \"morcego\", \"simples\", \"otimista\", \"trabaiado\", \"jovem\", \"me da um emprego como dev?\"]',1,'2024-09-13 20:45:32');
+INSERT INTO `habilidade` VALUES (5,'[\"awfasf\"]',25,'2024-09-22 00:49:52');
 /*!40000 ALTER TABLE `habilidade` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,7 +302,7 @@ CREATE TABLE `user_candidato` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `cpf` (`cpf`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -313,7 +311,7 @@ CREATE TABLE `user_candidato` (
 
 LOCK TABLES `user_candidato` WRITE;
 /*!40000 ALTER TABLE `user_candidato` DISABLE KEYS */;
-INSERT INTO `user_candidato` VALUES (1,0,NULL,'Thiago','Thiag Lima','thiago@gmail.com','4700000000','47000000000','00000000000','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','$2b$10$g8l1I0FQkEjsU0H1q1uG.OQOvNJUtee6kgwZzhlHJy5K7L1OWC6JK','Tecnologia da Informação','programador node.js','candidato','<h1><font color=\"#00bd97\">Hello World!</font></h1><div><font color=\"#000000\">Muito prazer eu me chamo Zezinho, sou formado em Sistemas da Informação e ja trabalhei em grandes projetos, em empresas como: <b>Nubank, PicPay e Mercado Pago</b>. Atualmente estou trabalhando em uma mina de carvão na zona leste da cidade e buscando uma nova oportunidade de emprego na área de tecnologia.</font></div>','perfil-foto-userId-1.jpg','perfil-capa-userId-1.jpg','2024-09-14 08:18:33');
+INSERT INTO `user_candidato` VALUES (25,1,'ae605f546f2b651413dd4ef42bf12307b846ba6e6f883c93af2688ba9e2724e0','Thiago','Thiag Lima','mauesckt@gmail.com','4700000000','47000000000','00000000000','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','$2b$10$CbXB085hKBrYixwnUYMKYuP0bku5j9PnIP6EYYlWOo0rz91NlYMeq','Tecnologia da Informação','programador node.js','candidato','<h1>https://mauesck.github.io/portfolio/</h1>','perfil-foto-userId-25.jpg',NULL,'2024-09-21 18:09:59');
 /*!40000 ALTER TABLE `user_candidato` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -354,7 +352,7 @@ CREATE TABLE `user_empresa` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `cnpj` (`cnpj`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -363,6 +361,7 @@ CREATE TABLE `user_empresa` (
 
 LOCK TABLES `user_empresa` WRITE;
 /*!40000 ALTER TABLE `user_empresa` DISABLE KEYS */;
+INSERT INTO `user_empresa` VALUES (1,0,NULL,'Empresa ABC Ltda','ABC Soluções','12345678000195','123456789012','12345678','Rua das Flores','123','Apto 101','Centro','São Paulo','SP','contato@abc.com','(11) 1234-5678','(11) 91234-5678','João Silva','12345678901','(11) 91234-5678','senhaSegura1','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(2,0,NULL,'Empresa XYZ S.A.','XYZ Consultoria','98765432000158','987654321098','87654321','Av. Paulista','456','','Bela Vista','São Paulo','SP','contato@xyz.com','(11) 8765-4321','(11) 98765-4321','Maria Souza','98765432100','(11) 98765-4321','senhaSegura2','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(3,0,NULL,'Tech Innovators Ltda','Tech Innovators','11223344000122','112233445566','11223344','Rua Inovação','789','Bloco B','Tecnologia','Campinas','SP','contato@techinnovators.com','(19) 1234-5678','(19) 91234-5678','Carlos Pereira','22334455677','(19) 91234-5678','senhaSegura3','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(4,0,NULL,'Alpha Serviços EIRELI','Alpha Serviços','33445566000188','334455667788','33445566','Av. do Trabalho','321','Sala 202','Industrial','Belo Horizonte','MG','contato@alphaservicos.com','(31) 8765-4321','(31) 98765-4321','Ana Oliveira','44556677889','(31) 98765-4321','senhaSegura4','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(5,0,NULL,'Beta Comercial Ltda','Beta Comercial','55667788000144','556677889900','55667788','Rua do Comércio','654','Loja 5','Centro','Rio de Janeiro','RJ','contato@betacomercial.com','(21) 1234-5678','(21) 91234-5678','Paulo Mendes','66778899011','(21) 91234-5678','senhaSegura5','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(8,1,'e2bbb1a82213875fda07227e3b9e6af11487324c2a16f91d2807642ec8ae1460','InfoTech S.A.','Thiago Mauesck Lima','20117741000164','283759312284','89225785','Rua Ivon Cury','50','Casa','Aventureiro','Joinville','SC','mauesckt@gmail.com','4799221259','47997213589','Fulano da Silva','90035392002','ciclano@infotech.com.br','$2b$10$q1MqjTJAti1IVKEewfwd2eV78wKYcxcwWb3fZu/tOWmYwdFwIxmgG','empresa','','','','2024-09-19 01:02:03');
 /*!40000 ALTER TABLE `user_empresa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -376,21 +375,24 @@ DROP TABLE IF EXISTS `vagas`;
 CREATE TABLE `vagas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `titulo` varchar(45) NOT NULL,
-  `localizacao` text NOT NULL,
+  `cep` varchar(9) DEFAULT NULL,
+  `cidade` varchar(45) DEFAULT NULL,
+  `estado` varchar(45) DEFAULT NULL,
   `contrato` varchar(45) NOT NULL,
   `modalidade` varchar(45) NOT NULL,
-  `remuneracao` decimal(10,2) DEFAULT NULL,
-  `descricao` text NOT NULL,
-  `responsabilidades` text,
-  `habilidades_exigidas` text,
-  `habilidades_extras` text,
-  `beneficios` text,
+  `nivel` varchar(45) DEFAULT NULL,
+  `remuneracao` varchar(10) DEFAULT NULL,
+  `habilidades_exigidas` json DEFAULT NULL,
+  `habilidades_opcionais` json DEFAULT NULL,
+  `descricao` text,
+  `etapas` json DEFAULT NULL,
+  `questionario` json DEFAULT NULL,
   `id_empresa` int NOT NULL,
   `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
   CONSTRAINT `vagas_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -399,6 +401,7 @@ CREATE TABLE `vagas` (
 
 LOCK TABLES `vagas` WRITE;
 /*!40000 ALTER TABLE `vagas` DISABLE KEYS */;
+INSERT INTO `vagas` VALUES (4,'Desenvolvedor Junior','87775-435','Mafra','SC','Estágio','Presencial','Júnior','600,00','[\"JavaScript\", \"Vuejs\", \"react\", \"Angular\", \"Uma banheira do gugu\", \"3 soletrando\"]','[\"Boa comunication\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',1,'2024-09-10 07:24:44'),(10,'Analista de Dados','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',1,'2024-09-18 16:04:36'),(11,'Analista de Python','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',2,'2024-09-01 07:24:44'),(12,'Gente como a Gente','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',2,'2024-09-18 16:34:49'),(14,'Tech Lider','87775-435','Jaragua','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',2,'2024-09-19 06:05:58');
 /*!40000 ALTER TABLE `vagas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -441,8 +444,6 @@ DROP TABLE IF EXISTS `vagas_etapas`;
 CREATE TABLE `vagas_etapas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(45) NOT NULL,
-  `data_inicio` date NOT NULL,
-  `data_termino` date NOT NULL,
   `id_vaga` int NOT NULL,
   `id_empresa` int NOT NULL,
   `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -472,4 +473,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-16  3:56:52
+-- Dump completed on 2024-09-22 12:22:37

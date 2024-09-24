@@ -15,37 +15,71 @@ export const useCandidatoStore = defineStore('candidato', {
         visibilidadeLogado: false,
         dadosUser: '',
         router: useRouter(),
+        id: '',
+        requisicao: '',
     }),
     actions: {
         async userLogado() {
-            console.clear();
+            const grupo = localStorage.getItem("grupo");
+
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidato/read`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${grupo}/read`, {
                     withCredentials: true
                 });
 
+                // Setando dados do user da requisição
                 this.user.initials = this.extrairIniciais(response.data.usuario.nome_completo);
                 this.user.fullName = response.data.usuario.nome_completo;
                 this.user.email = response.data.usuario.email;
 
+                // Mostra foto ou avatar padrão
                 this.user.foto = response.data.usuario.foto === null ? '/src/assets/avatar.png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${response.data.usuario.foto}`;
                 this.user.capa = response.data.usuario.capa === null ? '/src/assets/capa (1).png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${response.data.usuario.capa}`;
 
+                // Altera visibilidade da navegação
                 this.visibilidadeNaoLogado = false;
                 this.visibilidadeLogado = true;
 
-                console.log('Usuário autenticado!');
-
+                // Atribuindo dados do usuario
                 this.dadosUser = response.data.usuario;
-                console.log("Dados do User: ", this.dadosUser);
 
+                console.log("Usuário logado:", this.dadosUser);
             } catch (error) {
-                console.error('Erro ao obter dados do usuário', error.response ? error.response.data : error.message);
-
-                this.router.push('/');
-
+                console.error('Erro ao obter dados do usuário', error.response.data);
             }
         },
+
+        async pesquisaUser() { // Visualização do perfil por terceiros
+            var grupo = '';
+            if (this.requisicao === 'empresa') {
+                grupo = 'candidato';
+            } else if (this.requisicao === 'candidato') {
+                grupo = 'empresa';
+            }
+
+            if (grupo) {
+                try {
+                    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${grupo}/read`, {
+                        params: {
+                            id: this.id,
+                            requisicao: this.requisicao
+                        },
+                        withCredentials: true
+                    });
+
+                    this.user.fullName = response.data.usuario.nome_completo;
+                    this.user.foto = response.data.usuario.foto === null ? '/src/assets/avatar.png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${response.data.usuario.foto}`;
+                    this.user.capa = response.data.usuario.capa === null ? '/src/assets/capa (1).png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${response.data.usuario.capa}`;
+
+                    this.dadosUser = response.data.usuario;
+
+                    console.log("Usuário pesquisado:", this.dadosUser);
+                } catch (error) {
+                    console.error('Erro ao obter dados do usuário', error.response.data);
+                }
+            }
+        },
+
         extrairIniciais(nomeCompleto) {
             const iniciais = nomeCompleto.split(' ').map((n) => n[0]).join('');
             return iniciais.toUpperCase();

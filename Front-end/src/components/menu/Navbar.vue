@@ -8,22 +8,13 @@
                     <a href="/" class="d-flex justify-center align-center">
                         <img class="carreiras-logo" src="../../assets/logo.png">
                     </a>
-                    <!-- <ADM / LOGIN /> -->
-                    <!-- <div class="d-flex ga-1 ma-1" v-if="user.visibilidadeNaoLogado">
-                        <v-btn class="adm-btn" variant="outlined">
-                            Adm
-                        </v-btn>
-                        <v-btn class="bg-purple-darken-4" @click="redirectToLogin">
-                            Login
-                        </v-btn>
-                    </div> -->
                     <!-- Aqui o Menu com opções visiveis que o sestito pediu e tbm a versão mob -->
                     <div v-if="user.visibilidadeNaoLogado">
                         <div v-if="visibilidadeMenuInicial" class="d-flex align-center ga-15">
-                            <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center div-btn-links">
-                                <button @click="redirectToHome">Home</button>
-                                <button>Sobre o Carreiras</button>
-                                <button>Contate-nos</button>
+                            <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center">
+                                <v-btn variant="text" rounded to="/" class="text-none">Home</v-btn>
+                                <v-btn variant="text" rounded to="/sobre" class="text-none">Sobre o Carreiras</v-btn>
+                                <v-btn variant="text" rounded to="/contato" class="text-none">Contate-nos</v-btn>
                             </div>
                             <v-menu :location="location">
                                 <template v-slot:activator="{ props }">
@@ -38,7 +29,7 @@
                                 </template>
                                 <v-list class="d-flex flex-column ga-2 pa-2 mt-2">
                                     <v-btn class="w-100" variant="text" prepend-icon="mdi-login"
-                                        @click="redirectToLogin">Entrar</v-btn>
+                                        to="/empresa-candidato">Entrar</v-btn>
                                     <v-divider></v-divider>
                                     <v-btn class="w-100" variant="text" prepend-icon="mdi-account-plus"
                                         @click="redirectToCad">Cadastrar</v-btn>
@@ -52,12 +43,12 @@
                         <MenuMobile v-if="visibilidadeMenuMobilie" />
                     </div>
                     <!-- <NavbarLogado /> -->
-                    <div class="user-account-avatar d-flex align-center ga-2" v-if="user.visibilidadeLogado">
+                    <div class="user-account-avatar d-flex align-center ga-2 mr-2" v-if="user.visibilidadeLogado">
                         <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.user.email }}</h1>
-                        <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center div-btn-links">
-                            <button @click="redirectToHome">Home</button>
-                            <button>Sobre o Carreiras</button>
-                            <button>Contate-nos</button>
+                        <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center">
+                            <v-btn variant="text" rounded to="/" class="text-none">Home</v-btn>
+                            <v-btn variant="text" rounded to="/sobre" class="text-none">Sobre o Carreiras</v-btn>
+                            <v-btn variant="text" rounded to="/contato" class="text-none">Contate-nos</v-btn>
                         </div>
                         <v-menu min-width="200px" rounded>
                             <template v-slot:activator="{ props }">
@@ -74,20 +65,20 @@
                                             {{ user.user.email }}
                                         </p>
                                         <v-divider class="my-2"></v-divider>
-                                        <v-btn variant="text" rounded @click='redirectToHome'>
+                                        <v-btn variant="text" rounded to="/">
                                             Home
                                         </v-btn>
                                         <v-divider class="my-2"></v-divider>
-                                        <v-btn variant="text" rounded @click='redirectToSchedule'>
+                                        <v-btn variant="text" rounded to="/agenda-candidato">
                                             Agenda
                                         </v-btn>
                                         <v-divider class="my-2"></v-divider>
                                         <!-- <v-btn variant="text" @click="triggerAbrirChatHome">Chat</v-btn>
                                         <v-divider class="my-2"></v-divider> -->
                                         <v-btn variant="text" rounded>Minhas Vagas</v-btn>
-                                        <v-divider class="mt-2 mb-4"></v-divider>
-                                        <v-btn variant="text" rounded @click='redirectToProfile'>Curriculo</v-btn>
-                                        <v-divider class="mt-2 mb-4"></v-divider>
+                                        <v-divider class="my-2"></v-divider>
+                                        <v-btn variant="text" rounded to="/perfil-candidato">Curriculo</v-btn>
+                                        <v-divider class="my-2"></v-divider>
                                         <v-btn variant="text" rounded prepend-icon="mdi-logout"
                                             @click="logout">Sair</v-btn>
                                     </div>
@@ -119,9 +110,6 @@ export default {
     },
 
     mounted() {
-        const user = this.user;
-        user.userLogado();
-
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
     },
@@ -131,24 +119,10 @@ export default {
     },
 
     methods: {
-        redirectToLogin() {
-            this.$router.push('/empresa-candidato');
-        },
         redirectToCad() {
             this.$router.push('/cadastro-candidato');
-        },
-        redirectToHome() {
             this.$router.push('/');
             this.$refs.showProgress.showProgressLoader();
-        },
-        redirectToSchedule() {
-            this.$router.push('/agenda-candidato');
-        },
-        redirectToChat() {
-            this.$router.push('/chat');
-        },
-        redirectToProfile() {
-            this.$router.push('/perfil-candidato');
         },
         triggerAbrirChatHome() {
             // Access the ChatLayout component and call its method
@@ -161,8 +135,9 @@ export default {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/logout`, {
                     withCredentials: true  // Importante: enviar cookies com a requisição
                 });
-                console.log(response.data);
 
+                sessionStorage.removeItem("grupo");
+                console.log(response.data);
                 window.location.href = '/';
 
             } catch (error) {
@@ -216,19 +191,5 @@ export default {
 .v-btn a {
     text-decoration: none;
     color: black;
-}
-
-.user-account-avatar {
-    margin: 0 20px;
-}
-
-.div-btn-links button {
-    padding: 5px 10px 5px 10px;
-    border-radius: 10px;
-}
-
-.div-btn-links button:hover {
-    background-color: #5600cf;
-    color: white;
 }
 </style>

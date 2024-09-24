@@ -3,6 +3,22 @@
   <AgendaCandidato />
 </template>
 
-<script setup>
-  import AgendaCandidato from '@/components/agenda/AgendaCandidato.vue';
-</script>
+<!-- <script>
+import { useAuthStore } from '@/stores/auth';
+import { useCandidatoStore } from '@/stores/candidato';
+
+export default {
+    computed: {
+        auth() {
+            return useAuthStore();
+        },
+        user() {
+            return useCandidatoStore();
+        },
+    },
+    mounted() {
+        this.auth.autenticacao();
+        this.user.userLogado();
+    },
+}
+</script> -->
