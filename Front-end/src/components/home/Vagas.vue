@@ -42,130 +42,137 @@
                     </div>
                 </v-card-actions>
             </v-card>
-        </v-col>
-    </v-row>
+          </v-col>
+        </v-row>
+      </div>
+      <Footer />
+  </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            vagas: [
-                {
-                    id: 1,
-                    vaga: 'Desenvolvedor Full Stack',
-                    local: 'Centro, São Paulo, São Paulo',
-                    contrato: 'CLT',
-                    modalidade: 'Remoto',
-                    remuneracao: 'R$ 7.000,00',
-                    empresa: 'Tech Innovators',
-                    data: '2 dias atrás'
-                },
-                {
-                    id: 2,
-                    vaga: 'Analista de Segurança da Informação',
-                    local: 'Vila Olímpia, São Paulo, São Paulo',
-                    contrato: 'CLT',
-                    modalidade: 'Híbrido',
-                    remuneracao: 'R$ 8.500,00',
-                    empresa: 'SecureTech',
-                    data: '4 dias atrás'
-                },
-                {
-                    id: 3,
-                    vaga: 'Engenheiro de Software',
-                    local: 'Savassi, Belo Horizonte, Minas Gerais',
-                    contrato: 'PJ',
-                    modalidade: 'Remoto',
-                    remuneracao: 'R$ 10.000,00',
-                    empresa: 'CodeWorks',
-                    data: '1 semana atrás'
-                },
-                {
-                    id: 4,
-                    vaga: 'Desenvolvedor Front-end',
-                    local: 'Botafogo, Rio de Janeiro, Rio de Janeiro',
-                    contrato: 'CLT',
-                    modalidade: 'Presencial',
-                    remuneracao: 'R$ 6.000,00',
-                    empresa: 'Web Solutions',
-                    data: '2 semanas atrás'
-                },
-                {
-                    id: 5,
-                    vaga: 'Cientista de Dados',
-                    local: 'Lourdes, Belo Horizonte, Minas Gerais',
-                    contrato: 'CLT',
-                    modalidade: 'Híbrido',
-                    remuneracao: 'R$ 12.000,00',
-                    empresa: 'Data Insights',
-                    data: '3 semanas atrás'
-                },
-                {
-                    id: 6,
-                    vaga: 'DevOps Engineer',
-                    local: 'Centro, Curitiba, Paraná',
-                    contrato: 'PJ',
-                    modalidade: 'Remoto',
-                    remuneracao: 'R$ 9.500,00',
-                    empresa: 'CloudTech',
-                    data: '5 dias atrás'
-                },
-            ],
+  data() {
+    return {
+      vagas: [
+        {
+          id: 1,
+          vaga: "Desenvolvedor Full Stack",
+          local: "Centro, São Paulo, São Paulo",
+          contrato: "CLT",
+          modalidade: "Remoto",
+          remuneracao: "R$ 7.000,00",
+          empresa: "Tech Innovators",
+          data: "2 dias atrás",
+        },
+        {
+          id: 2,
+          vaga: "Analista de Segurança da Informação",
+          local: "Vila Olímpia, São Paulo, São Paulo",
+          contrato: "CLT",
+          modalidade: "Híbrido",
+          remuneracao: "R$ 8.500,00",
+          empresa: "SecureTech",
+          data: "4 dias atrás",
+        },
+        {
+          id: 3,
+          vaga: "Engenheiro de Software",
+          local: "Savassi, Belo Horizonte, Minas Gerais",
+          contrato: "PJ",
+          modalidade: "Remoto",
+          remuneracao: "R$ 10.000,00",
+          empresa: "CodeWorks",
+          data: "1 semana atrás",
+        },
+        {
+          id: 4,
+          vaga: "Desenvolvedor Front-end",
+          local: "Botafogo, Rio de Janeiro, Rio de Janeiro",
+          contrato: "CLT",
+          modalidade: "Presencial",
+          remuneracao: "R$ 6.000,00",
+          empresa: "Web Solutions",
+          data: "2 semanas atrás",
+        },
+        {
+          id: 5,
+          vaga: "Cientista de Dados",
+          local: "Lourdes, Belo Horizonte, Minas Gerais",
+          contrato: "CLT",
+          modalidade: "Híbrido",
+          remuneracao: "R$ 12.000,00",
+          empresa: "Data Insights",
+          data: "3 semanas atrás",
+        },
+        {
+          id: 6,
+          vaga: "DevOps Engineer",
+          local: "Centro, Curitiba, Paraná",
+          contrato: "PJ",
+          modalidade: "Remoto",
+          remuneracao: "R$ 9.500,00",
+          empresa: "CloudTech",
+          data: "5 dias atrás",
+        },
+      ],
+    };
+  },
 
+  mounted() {
+    function observarEntrada(entries, observer) {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add("visivel");
+          }, index * 10); // Ajuste o tempo conforme necessário
         }
-    },
+      });
+    }
 
-    mounted() {
-        function observarEntrada(entries, observer) {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visivel');
-                    }, index * 10); // Ajuste o tempo conforme necessário
-                }
-            });
-        }
+    const observer = new IntersectionObserver(observarEntrada, {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.7,
+    });
 
-        const observer = new IntersectionObserver(observarEntrada, {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.7
-        });
-
-        // Observar os elementos observavel
-        this.$el.querySelectorAll('.observavel').forEach((element) => {
-            observer.observe(element);
-        });
-    },
+    // Observar os elementos observavel
+    this.$el.querySelectorAll(".observavel").forEach((element) => {
+      observer.observe(element);
+    });
+  },
 };
 </script>
 
 <style scoped>
-@media(max-width:600px) {
-    .row-rev div:nth-child(2) {
-        display: flex;
-        justify-content: start;
-    }
+@media (max-width: 600px) {
+  .row-rev div:nth-child(2) {
+    display: flex;
+    justify-content: start;
+  }
 }
 
 .v-card {
-    transition: transform 0.3s;
+  transition: transform 0.3s;
 }
 
 .v-card:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .v-card.visivel {
-    animation: fadeInLeft 1s normal;
+  animation: fadeInLeft 1s normal;
 }
 
 .v-card-title.visivel {
-    animation: fadeInLeft 2s normal;
+  animation: fadeInLeft 2s normal;
 }
 
 .data-vaga.visivel {
-    animation: fadeInLeft 2s normal;
+  animation: fadeInLeft 2s normal;
 }
+.cards-container {
+    margin-bottom: 40px;
+}
+
+
 </style>
