@@ -216,28 +216,29 @@
 
 <script>
 import axios from "axios";
+import { useCandidatoStore } from '@/stores/candidato';
 
 export default {
   data() {
     return {
-      razaoSocial: '',
-      nomeFantasia: '',
-      email: '',
-      telefone: '',
-      celular: '',
-      cnpj: '',
-      inscricaoEstadual: '',
-      cep: '',
-      numero: '',
-      complemento: '',
-      endereco: '',
-      bairro: '',
-      cidade: '',
-      estado: '',
-      responsavelLegal: '',
-      cpfResponsavel: '',
-      responsavelAdm: '',
-      contatoRA: '',
+      id: useCandidatoStore().dadosUser.id,
+      razaoSocial: useCandidatoStore().dadosUser.razao_social,
+      nomeFantasia: useCandidatoStore().dadosUser.nome_fantasia,
+      email: useCandidatoStore().dadosUser.email,
+      telefone: useCandidatoStore().dadosUser.telefone,
+      celular: useCandidatoStore().dadosUser.celular,
+      cnpj: useCandidatoStore().dadosUser.cnpj,
+      inscricaoEstadual: useCandidatoStore().dadosUser.inscricao_estadual,
+      cep: useCandidatoStore().dadosUser.cep,
+      numero: useCandidatoStore().dadosUser.numero,
+      complemento: useCandidatoStore().dadosUser.complemento,
+      endereco: useCandidatoStore().dadosUser.endereco,
+      bairro: useCandidatoStore().dadosUser.bairro,
+      cidade: useCandidatoStore().dadosUser.cidade,
+      estado: useCandidatoStore().dadosUser.estado,
+      responsavelLegal: useCandidatoStore().dadosUser.responsavel_legal,
+      cpfResponsavel: useCandidatoStore().dadosUser.cpf_responsavel,
+      contatoRA: useCandidatoStore().dadosUser.contato_responsavel,
       mensagem: '',
       color: '',
       snackbar: false,
@@ -297,6 +298,9 @@ export default {
       dialog: false,
     };
   },
+  computed: {
+    user() { return useCandidatoStore() },
+  },
   methods: {
     async retornarInformacoesCep(){
       if(this.cep !== "" && this.cep.length === 8) {
@@ -344,7 +348,7 @@ export default {
         this.color = 'success',
         this.snackbar = true
 
-        //this.user.userLogado();
+        this.user.userLogado();
 
         console.info('%cAtualização bem-sucedida ✔👌', 'color: lightgreen; padding: 20px 0;', response.data);
       } catch (error) {
@@ -355,8 +359,10 @@ export default {
       }
     },
     limparMascaraValores(valor) {
-      if (valor !== "") {
+      if (typeof valor === 'string' && valor !== '') {
         valor = valor.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
+      } else if (valor !== null) {
+        valor = String(valor).replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
       }
 
       return valor;

@@ -114,6 +114,8 @@ exports.getUser = (req, res) => {
 
     const usuario_id = requisicao ? idReq : idSession;
 
+    console.log("Usuário (empresa): ", usuario_id);
+
     Empresa.getUser(usuario_id, (err, usuario) => {
         if (err) {
             return res.status(500).json({ error: err.message });
