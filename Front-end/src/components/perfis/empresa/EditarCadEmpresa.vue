@@ -76,6 +76,7 @@
                         <v-text-field
                           v-model="inscricaoEstadual"
                           :rules="inscricaoEstadualRules"
+                          v-mask='"###.###.###.###"'
                           label="Inscrição estadual"
                           variant="underlined"
                         ></v-text-field>
@@ -171,6 +172,15 @@
                       </v-col>
                     </v-row>
                     <v-row>
+                      <v-col cols="11" sm="6" md="6" lg="6">
+                        <v-text-field
+                          v-model="contatoRA"
+                          :rules="emailRules"
+                          label="Contato RA"
+                          density="compact"
+                          variant="underlined"
+                        ></v-text-field>
+                      </v-col>
                       <v-col cols="12" sm="6" md="6" lg="6">
                         <v-btn to="/redefinir-senha?resposta=empresa" text="Redefinir Senha"
                           append-icon="mdi-arrow-top-right-thick" block></v-btn>
@@ -229,6 +239,9 @@ export default {
       cpfResponsavel: '',
       responsavelAdm: '',
       contatoRA: '',
+      mensagem: '',
+      color: '',
+      snackbar: false,
       razaoSocialRules: [(v) => !!v || "Razão social requerida"],
       nomeFantasiaRules: [(v) => !!v || "Nome fantasia requerido"],
       emailRules: [
@@ -246,7 +259,6 @@ export default {
       ],
       cnpjRules: [
         (v) => !!v || "CNPJ requerido",
-        (v) => /^\d+$/.test(v) || "CNPJ deve conter apenas números",
       ],
       inscricaoEstadualRules: [(v) => !!v || "Inscrição estadual requerida"],
       cepRules: [
@@ -305,6 +317,7 @@ export default {
     async atualizarCadastro(){
       console.clear();
       this.cnpj = this.limparMascaraValores(this.cnpj);
+      this.inscricaoEstadual = this.limparMascaraValores(this.inscricaoEstadual);
       this.cpfResponsavel = this.limparMascaraValores(this.cpfResponsavel);
       try {
         const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/empresa/update`, {
@@ -325,8 +338,17 @@ export default {
           estado: this.estado,
           responsavelLegal: this.responsavelLegal,
           cpfResponsavel: this.cpfResponsavel,
-          responsavelAdm: this.responsavelAdm
-        })
+          responsavelAdm: this.responsavelAdm,
+          contatoRA: this.contatoRA
+        }, { withCredentials: true });
+
+        this.mensagem = 'Cadastro atualizado com Sucesso!',
+        this.color = 'success',
+        this.snackbar = true
+
+        //this.user.userLogado();
+
+        console.info('%cAtualização bem-sucedida ✔👌', 'color: lightgreen; padding: 20px 0;', response.data);
       } catch (error) {
         this.mensagem = 'Erro na atualização do Cadastro!';
         this.color = 'error';

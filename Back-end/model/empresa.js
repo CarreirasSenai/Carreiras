@@ -69,3 +69,37 @@ exports.getUser = (id, callback) => {
         return callback(null, rows.length > 0 ? rows[0] : null);
     })
 }
+
+exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, grupo, id,
+callback) => {
+    db.query(`UPDATE user_empresa
+        SET razao_social = ?,
+        nome_fantasia = ?,
+        email = ?,
+        telefone = ?,
+        celular = ?,
+        cnpj = ?,
+        inscricao_estadual = ?,
+        cep = ?,
+        endereco = ?,
+        numero = ?,
+        complemento = ?,
+        bairro = ?,
+        cidade = ?,
+        estado = ?,
+        responsavel_legal = ?,
+        cpf_responsavel = ?,
+        contato_responsavel = ?,
+        grupo = ?
+        WHERE id = ?`,
+        [razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, endereco, 
+        numero, complemento, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, grupo, id], 
+        (err, result) => {
+            if(err){
+                console.log(err);
+                return callback(err, null);
+            } else if (result) {
+                return callback(null, result.affectedRows > 0);
+            }
+        })
+}
