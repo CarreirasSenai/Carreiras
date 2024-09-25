@@ -12,9 +12,8 @@
           <div style="display: flex; align-items: center; flex-direction: column;">
             <h2 class="titulo-candidato">Candidato</h2>
             <v-btn style="font-weight: bold; color: white; z-index: 3;" dark
-              class="v-btn--size-x-large bg-purple-darken-4  v-btn--density-comfortable"
-              @click='redirectToLogin("candidato")'>
-              Entrar
+              class="v-btn--size-x-large bg-purple-darken-4 v-btn--density-comfortable" @click="redirecionar('candidato')">
+              {{ resposta }}
             </v-btn>
           </div>
           <div class="img-div">
@@ -28,8 +27,8 @@
           <div style="display: flex; align-items: center; flex-direction: column;">
             <h2 class="titulo-empresa" style="z-index: 2;">Empresa</h2>
             <v-btn style="color:rgba(58, 28, 118, 1);font-weight: bold; z-index: 3;" outlined
-              class="v-btn--size-x-large v-btn--density-comfortable" @click='redirectToLogin("empresa")'>
-              Entrar
+              class="v-btn--size-x-large v-btn--density-comfortable" @click="redirecionar('empresa')">
+              {{ resposta }}
             </v-btn>
           </div>
           <div class="img-div">
@@ -43,11 +42,27 @@
 
 <script>
 export default {
-  name: 'LandingPage',
+  data: () => ({
+    resposta: '',
+  }),
+
+  mounted() {
+    this.resposta = this.$route.query.resposta;
+  },
+
   methods: {
-    redirectToLogin(resposta) {
-      const encodedResposta = encodeURIComponent(resposta);
-      this.$router.push({ path: '/login', query: { resposta: encodedResposta } });
+    redirecionar(value) {
+      if (this.resposta === 'entrar') {
+        this.$router.push({
+          path: '/login',
+          query: { resposta: value }
+        });
+        
+      } else if (this.resposta === 'cadastro') {
+        this.$router.push({
+          path: `/cadastro-${value}`
+        });
+      }
     }
   }
 }

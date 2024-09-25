@@ -256,7 +256,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
-            <v-btn text="Entrar na Conta" @click="isActive.value = false" to="/login" class="bg-purple-darken-4">
+            <v-btn text="Entrar na Conta" @click="isActive.value = false" to="/login?resposta=empresa" class="bg-purple-darken-4">
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -289,8 +289,8 @@ export default {
       cpfResponsavel: '90035392002',
       responsavelAdm: 'Ciclano dos Santos',
       contatoRA: 'ciclano_santos@infotech.com.br',
-      senha: 'Teste123!',
-      repSenha: 'Teste123!',
+      senha: '12345678Ww@',
+      repSenha: '12345678Ww@',
       resposta: false,
       mensagemErro: '',
       showPassword: false,

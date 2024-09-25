@@ -6,7 +6,7 @@
             <img :src="user.user.foto" class="foto-perfil" alt="Foto de Perfil">
             <h3 class="cor-primaria">{{ user.dadosUser.nome_completo }}</h3>
             <h4 class="text-grey-darken-2"> {{ user.dadosUser.profissao }} </h4>
-            <MenuEditarCandidato style="height: 20px !important;" class="d-flex align-center" />
+            <MenuEditarCandidato style="height: 20px !important;" class="d-flex align-center" v-if="user.grupo === 'candidato'"/>
         </div>
     </div>
 </template>

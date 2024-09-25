@@ -106,19 +106,27 @@ exports.login = (req, res) => {
     })
 }
 
+// Read / Autenticar
 exports.getUser = (req, res) => {
-    usuario_id = req.session.usuario.id;
+    const requisicao = req.query.requisicao;
+    const idReq = req.query.id;
+    const idSession = req.session.usuario.id;
+
+    const usuario_id = requisicao ? idReq : idSession;
 
     Empresa.getUser(usuario_id, (err, usuario) => {
-        if(err)
+        if (err) {
             return res.status(500).json({ error: err.message });
-        
-        if(!usuario)
-            return res.status(404).json({ error: 'Usuário não encontrado!'});
-        
-        res.json({ success: true, usuario: usuario});
-    })
-}
+        }
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado!' });
+        }
+        console.log(usuario);
+
+        res.json({ success: true, usuario: usuario });
+    });
+};
 
 exports.updateUser = (req, res) => {
     const {id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero,

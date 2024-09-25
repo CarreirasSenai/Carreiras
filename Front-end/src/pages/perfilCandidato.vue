@@ -13,10 +13,28 @@
     <Curriculo />
 </template>
 
-<script setup lang="ts">
-import Curriculo from '@/components/perfis/candidato/Curriculo.vue';
-import InformacoesPessoais from '@/components/perfis/candidato/InformacoesPessoais.vue';
-import LinksCandidato from '@/components/perfis/candidato/LinksCandidato.vue';
+<script>
+import { useAuthStore } from '@/stores/auth';
+import { useCandidatoStore } from '@/stores/candidato';
+
+export default {
+    computed: {
+        auth() {
+            return useAuthStore();
+        },
+        user() {
+            return useCandidatoStore();
+        },
+    },
+    created() {
+        this.user.id = this.$route.query.id;
+        this.user.requisicao = this.$route.query.requisicao;
+    },
+    mounted() {
+        this.auth.autenticacao();
+        this.user.userLogado();
+    },
+}
 </script>
 
 <style>

@@ -17,6 +17,11 @@ const Habilidade = require('../controller/habilidades');
 const VerificarConta = require('../controller/verificarConta');
 const Empresa = require('../controller/empresa');
 
+// rota autenticacao
+router.get('/auth', authMiddleware, (req, res) => {
+    res.status(200).json({ message: "Authenticated" });
+});
+
 // rotas candidato
 router.post('/candidato/login', Candidato.login);
 router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
@@ -54,10 +59,17 @@ router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 // rotas empresa
 router.post('/empresa/login', Empresa.login);
 router.post('/empresa/create', Empresa.createCompany); 
+router.get('/empresa/read', authMiddleware, Empresa.getUser);
 router.put('/empresa/update', Empresa.updateUser);
 
 // rotas vagas
-router.get('/vaga/pesquisa', Vaga.buscarVaga);
+router.get('/vaga/pesquisa', Vaga.vagaPesquisa);
+router.post('/vaga/create', Vaga.vagaCreate);
+router.get('/vaga/read', Vaga.vagaRead);
+router.get('/vaga/read/empresa', Vaga.vagaReadEmpresa);
+router.get('/vaga/read/all', Vaga.vagaReadAll);
+router.put('/vaga/update', Vaga.vagaUpdate);
+router.delete('/vaga/delete/:id', Vaga.vagaDelete);
 
 // rotas redefinir senha
 router.post('/enviar/codigo', RedefinirSenha.enviarCodigo);

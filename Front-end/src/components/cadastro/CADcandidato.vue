@@ -137,7 +137,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
-            <v-btn text="Entrar na Conta" @click="isActive.value = false" to="/login" class="bg-purple-darken-4">
+            <v-btn text="Entrar na Conta" @click="isActive.value = false" to="/login?resposta=candidato" class="bg-purple-darken-4">
             </v-btn>
           </v-card-actions>
         </v-card>

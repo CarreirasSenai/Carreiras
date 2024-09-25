@@ -3,11 +3,22 @@ import axios from "axios";
 
 export const usePesquisaVaga = defineStore('pesquisaVaga', {
     state: () => ({
+        dialog: false,
         loaded: false,
         loading: false,
-        pesquisa: '',
         visibilidadeHome: true,
         visibilidadeFiltroVagas: false,
+        form: {
+            palavraChave: '',
+            cidade: '',
+            estado: '',
+            contrato: '',
+            modalidade: '',
+            remuneracao: '',
+            dataInicio: '',
+            dataFim: '',
+        },
+        pesquisa: []
     }),
 
     actions: {
@@ -31,15 +42,20 @@ export const usePesquisaVaga = defineStore('pesquisaVaga', {
         },
 
         async pesquisar() {
-            console.log(1);
-            
+            console.clear();
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/pesquisa`, {
-                    pesquisa: this.pesquisa,
+                    params: {
+                        dados: this.form,
+                    }
                 });
 
                 this.visibilidadeHome = false;
                 this.visibilidadeFiltroVagas = true;
+                this.dialog = false,
+
+                this.pesquisa = response.data.result;
+                console.log(this.pesquisa);
 
                 console.log('Busca enviada!', response.data);
 
