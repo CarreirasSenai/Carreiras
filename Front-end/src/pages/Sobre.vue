@@ -38,7 +38,7 @@
                   our team.
                 </v-card-text>
                 <div class="botao text-left">
-                  <ModalContatenos />
+                  <ModalContatenos ref="ModalContatenos" />
                 </div>
               </v-card>
             </v-col>
