@@ -130,10 +130,10 @@ exports.updateUser = (req, res) => {
 
     Empresa.updateUser(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep,
         numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, 
-        grupo, id), (err, success) => {
+        grupo, id, (err, success) => {
             if(err)
                 return res.status(500).json({ error: err.message });
 
             return res.status(200).json({ success: 'Cadastro Atualizado!' })
-        }
+        })
 }

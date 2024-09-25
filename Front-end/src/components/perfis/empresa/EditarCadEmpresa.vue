@@ -167,7 +167,6 @@
                           :rules="responsavelAdmRules"
                           label="Responsável administrativo (RA)"
                           variant="underlined"
-                          counter
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -199,8 +198,8 @@
                   <v-btn
                     text="Atualizar"
                     variant="tonal"
-                    @click="dialog = false"
                     class="bg-purple-darken-4"
+                    @click="atualizarCadastro()"
                   ></v-btn>
                 </v-card-actions>
               </v-card>
@@ -338,7 +337,6 @@ export default {
           estado: this.estado,
           responsavelLegal: this.responsavelLegal,
           cpfResponsavel: this.cpfResponsavel,
-          responsavelAdm: this.responsavelAdm,
           contatoRA: this.contatoRA
         }, { withCredentials: true });
 

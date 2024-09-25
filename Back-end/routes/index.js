@@ -54,6 +54,7 @@ router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 // rotas empresa
 router.post('/empresa/login', Empresa.login);
 router.post('/empresa/create', Empresa.createCompany); 
+router.put('/empresa/update', Empresa.updateUser);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.buscarVaga);
