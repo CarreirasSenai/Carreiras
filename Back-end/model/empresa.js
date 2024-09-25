@@ -15,7 +15,7 @@ grupo, token, callback) => {
         db.query("SELECT 1 FROM user_empresa WHERE cnpj = ?", [cnpj], (err, results) => {
             if(err)
                 return callback(err, null);
-            if(results.lengths > 0)
+            if(results.length > 0)
                 return callback(new Error('Este CNPJ já foi cadastrado!'), null);
         });
     
