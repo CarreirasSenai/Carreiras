@@ -189,6 +189,11 @@
                 </v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
+                  <v-btn
+                    text="Excluir"
+                    variant="text"
+                    @click="dialog = false, modalDelete = true"
+                  ></v-btn>
                   <v-spacer></v-spacer>
                   <v-btn
                     text="Fechar"
@@ -208,6 +213,21 @@
         </v-container>
       </v-dialog>
     </div>
+    <v-dialog max-width="500" v-model="modalDelete">
+      <v-card title="Confirme a Exclusão da Conta">
+        <v-card-text>
+          Tem certeza que deseja excluir sua conta? Todos os seus dados serão apagados e não será possível
+          recuperá-los!
+          <!-- Melhoria: Sistema de feedbacks dos users -->
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn variant="tonal" text="Cancelar" @click="modalDelete = false"></v-btn>
+          <v-btn variant="tonal" class="bg-error" text="Excluir Conta" @click="deletarConta"></v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-snackbar :color="color" v-model="snackbar" :timeout="6000">
       <div class="text-center">{{ mensagem }}</div>
     </v-snackbar>
@@ -241,6 +261,7 @@ export default {
       contatoRA: useCandidatoStore().dadosUser.contato_responsavel,
       mensagem: '',
       color: '',
+      modalDelete: false,
       snackbar: false,
       razaoSocialRules: [(v) => !!v || "Razão social requerida"],
       nomeFantasiaRules: [(v) => !!v || "Nome fantasia requerido"],
@@ -356,6 +377,32 @@ export default {
         this.color = 'error';
         this.snackbar = true;
         console.error('Erro ao atualizar o cadastro', error.response.data);
+      }
+    },
+    async deletarConta() {
+      console.clear();
+      console.log(this.id);
+
+      try {
+        const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/empresa/delete`, {
+          data: { id: this.id },
+          withCredentials: true,
+        });
+
+        this.mensagem = 'Sua conta foi deletada 🙄!';
+        this.color = 'warning';
+        this.snackbar = true;
+
+        setTimeout(() => {
+          window.location.href = '/'; // Deixe este! Eu sei o motivo...
+        }, 2000);
+
+        console.info('%Exclusão bem-sucedida 🙄', 'color: lightyellow; padding: 20px 0;', response.data);
+      } catch (error) {
+        this.mensagem = 'Erro na exclusão da Conta!';
+        this.color = 'error';
+        this.snackbar = 'true';
+        console.log('Erro ao excluir conta', error.response.data);
       }
     },
     limparMascaraValores(valor) {
