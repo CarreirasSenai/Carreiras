@@ -31,8 +31,8 @@ exports.createCompany = (razaoSocial, nomeFantasia, email, telefone, celular, cn
                 }
                 callback(null, result.insertId);
             }
-    )
-}
+    );
+};
 
 //Read
 exports.getLogin = (email, callback) => {
@@ -68,8 +68,8 @@ exports.getUser = (id, callback) => {
         }
         
         return callback(null, rows.length > 0 ? rows[0] : null);
-    })
-}
+    });
+};
 
 exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, grupo, id,
 callback) => {
@@ -102,5 +102,16 @@ callback) => {
             } else if (result) {
                 return callback(null, result.affectedRows > 0);
             }
-        })
-}
+        });
+};
+
+
+exports.deleteUser = (id, callback) => {
+    db.query('DELETE FROM user_empresa WHERE id = ?', [id], (err,result) => {
+        if(err) {
+            console.log(err);
+            return callback(err, null);
+        } else if (result)
+            return callback(null, result.affectedRows > 0);
+    });
+};

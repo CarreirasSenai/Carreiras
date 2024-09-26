@@ -147,3 +147,14 @@ exports.updateUser = (req, res) => {
             return res.status(200).json({ success: 'Cadastro Atualizado!' })
         })
 }
+
+exports.deleteUser = (req, res) => {
+    const { id } = req.body;
+    
+    Empresa.deleteUser(id, (err, success) => {
+        if(err) 
+            return res.json(500).json({ error: err.message });
+        
+        return res.json(200).json({ success: 'Usuário Deletado!' })
+    })
+}
