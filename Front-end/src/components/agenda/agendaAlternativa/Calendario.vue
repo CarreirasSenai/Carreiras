@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
     <v-container fluid>
         <v-card border>
@@ -62,56 +61,13 @@ export default {
             selectedDay: null,
             showModal: false,
             weekDays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
-            eventos: [
-                {
-                    cliente: 'Thiago Lima',
-                    servico: ['Corte', 'Barba', 'Sobrancelha'],
-                    data: '2024-09-01',
-                    horario: '13:20'
-                },
-                {
-                    cliente: 'José',
-                    servico: ['Corte', 'Barba', 'Sobrancelha'],
-                    data: '2024-09-01',
-                    horario: '13:20'
-                },
-                {
-                    cliente: 'José',
-                    servico: ['Corte', 'Barba', 'Sobrancelha'],
-                    data: '2024-09-08',
-                    horario: '13:20'
-                },
-                {
-                    cliente: 'Marcel',
-                    servico: ['Corte', 'Barba'],
-                    data: '2024-09-08',
-                    horario: '13:20'
-                },
-                {
-                    cliente: 'Marcel',
-                    servico: ['Corte', 'Barba'],
-                    data: '2024-09-08',
-                    horario: '13:20'
-                },
-                {
-                    cliente: 'Marcel',
-                    servico: ['Corte', 'Barba'],
-                    data: '2024-09-08',
-                    horario: '13:20'
-                },
-                {
-                    cliente: 'Marcel',
-                    servico: ['Corte', 'Barba'],
-                    data: '2025-01-01',
-                    horario: '13:20'
-                }
-            ],
-            maxVisibleEvents: 2, // Número máximo de eventos visíveis
+            eventos: [],
+            maxVisibleEvents: 2,
         };
     },
-
-    created() {
+    async created() {
         this.resolucao.verificaResolucao();
+        await this.fetchEvents();
     },
 
     computed: {
@@ -164,8 +120,21 @@ export default {
             return useResolucaoDesktop();
         }
     },
-    
+
     methods: {
+        async fetchEvents() {
+            try {
+                const month = String(this.currentMonth + 1).padStart(2, '0');
+                const year = this.currentYear;
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/agendamento/read`, {
+                    params: { month, year }
+                });
+                this.eventos = response.data;
+            } catch (error) {
+                console.error('Erro ao buscar eventos:', error);
+            }
+        },
+
         prevMonth() {
             if (this.currentMonth === 0) {
                 this.currentMonth = 11;
@@ -173,7 +142,9 @@ export default {
             } else {
                 this.currentMonth--;
             }
+            this.fetchEvents();
         },
+
         nextMonth() {
             if (this.currentMonth === 11) {
                 this.currentMonth = 0;
@@ -181,6 +152,7 @@ export default {
             } else {
                 this.currentMonth++;
             }
+            this.fetchEvents();
         },
         selectDay(day) {
             this.selectedDay = day;
@@ -227,7 +199,7 @@ table {
 
 thead th {
     padding: 10px;
-    background-color: #303030;
+    background-color: rgb(83, 14, 220);
     color: #fff;
     font-weight: bold;
     border-bottom: 1px solid #ccc;
@@ -240,8 +212,9 @@ tbody td {
     position: relative;
     vertical-align: top;
     width: 14.28%;
-    max-height: 100px;
+    max-height: 140px;
     overflow: hidden;
+    height: 140px;
 }
 
 tbody td:hover {
@@ -259,22 +232,45 @@ tbody td:hover {
     margin-top: 20px;
     overflow-y: hidden;
     max-height: 100px;
-    /* Definir a altura máxima para a lista de eventos */
 }
 
 .event {
-    background-color: #567494;
+    background-color: rgba(58, 28, 118, 1);
     color: white;
     margin: 5px 0;
     padding: 2px 5px;
     border-radius: 3px;
-    font-size: 0.8em;
+    font-size: 14px;
+    font-weight: 500;
     text-align: left;
 }
 
 .more-events {
     margin-top: 5px;
-    font-size: 0.75em;
-    color: #666;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(58, 28, 118, 1);
+}
+
+@media (max-width: 700px) {
+    tbody td {
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        cursor: pointer;
+        position: relative;
+        vertical-align: top;
+        width: 14.28%;
+        max-height: 65px;
+        overflow: hidden;
+        height: 65px;
+    }
+
+    .more-events {
+        font-size: 12px;
+        font-weight: 500;
+        background-color: #e1cbff;
+        border-radius: 9px;
+        color: rgba(58, 28, 118, 1);
+    }
 }
 </style>

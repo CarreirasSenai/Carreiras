@@ -16,6 +16,7 @@ const Experiencia = require('../controller/experiencias');
 const Habilidade = require('../controller/habilidades');
 const VerificarConta = require('../controller/verificarConta');
 const Empresa = require('../controller/empresa');
+const Agendamento = require('../controller/agendamento')
 
 // rota autenticacao
 router.get('/auth', authMiddleware, (req, res) => {
@@ -69,6 +70,9 @@ router.get('/vaga/read/empresa', Vaga.vagaReadEmpresa);
 router.get('/vaga/read/all', Vaga.vagaReadAll);
 router.put('/vaga/update', Vaga.vagaUpdate);
 router.delete('/vaga/delete/:id', Vaga.vagaDelete);
+
+//rotas agendamento
+router.get('/agendamento/read', Agendamento.read);
 
 // rotas redefinir senha
 router.post('/enviar/codigo', RedefinirSenha.enviarCodigo);
