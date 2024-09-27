@@ -60,8 +60,8 @@ router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 router.post('/empresa/login', Empresa.login);
 router.post('/empresa/create', Empresa.createCompany); 
 router.get('/empresa/read', authMiddleware, Empresa.getUser);
+router.delete('/empresa/delete', authMiddleware, Empresa.deleteUser);
 router.put('/empresa/update', authMiddleware, Empresa.updateUser);
-router.delete('/empresa/delete/:id', authMiddleware, Empresa.deleteUser);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.vagaPesquisa);

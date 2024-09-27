@@ -394,15 +394,17 @@ export default {
         this.snackbar = true;
 
         setTimeout(() => {
-          window.location.href = '/'; // Deixe este! Eu sei o motivo...
+          window.location.href = '/';
         }, 2000);
 
         console.info('%Exclusão bem-sucedida 🙄', 'color: lightyellow; padding: 20px 0;', response.data);
+
       } catch (error) {
+        console.log("Erro: ", error);
         this.mensagem = 'Erro na exclusão da Conta!';
         this.color = 'error';
-        this.snackbar = 'true';
-        console.log('Erro ao excluir conta', error.response.data);
+        this.snackbar = true;
+        console.error('Erro ao excluir a conta', error.response.data);
       }
     },
     limparMascaraValores(valor) {
