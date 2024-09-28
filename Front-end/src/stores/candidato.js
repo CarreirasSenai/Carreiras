@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 export const useCandidatoStore = defineStore('candidato', {
@@ -14,9 +13,6 @@ export const useCandidatoStore = defineStore('candidato', {
         visibilidadeNaoLogado: true,
         visibilidadeLogado: false,
         dadosUser: '',
-        router: useRouter(),
-        id: '',
-        requisicao: '',
         grupo: '',
     }),
     actions: {
@@ -48,37 +44,6 @@ export const useCandidatoStore = defineStore('candidato', {
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response.data);
-            }
-        },
-
-        async pesquisaUser() { // Visualização do perfil por terceiros
-            var grupo = '';
-            if (this.requisicao === 'empresa') {
-                grupo = 'candidato';
-            } else if (this.requisicao === 'candidato') {
-                grupo = 'empresa';
-            }
-
-            if (grupo) {
-                try {
-                    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${grupo}/read`, {
-                        params: {
-                            id: this.id,
-                            requisicao: this.requisicao
-                        },
-                        withCredentials: true
-                    });
-
-                    this.user.fullName = response.data.usuario.nome_completo;
-                    this.user.foto = response.data.usuario.foto === null ? '/src/assets/avatar.png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${response.data.usuario.foto}`;
-                    this.user.capa = response.data.usuario.capa === null ? '/src/assets/capa (1).png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${response.data.usuario.capa}`;
-
-                    this.dadosUser = response.data.usuario;
-
-                    console.log("Usuário pesquisado:", this.dadosUser);
-                } catch (error) {
-                    console.error('Erro ao obter dados do usuário', error.response.data);
-                }
             }
         },
 

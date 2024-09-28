@@ -18,22 +18,6 @@
     </div>
 </template>
 
-<script>
-import EditarCadCandidato from './EditarCadCandidato.vue';
-import EditarFotoCapa from './EditarFotoCapa.vue';
-import EditarLinksCandidato from './EditarLinksCandidato.vue';
-
-export default {
-    data: () => ({
-        // items: [
-        //     { title: 'Editar Perfil' },
-        //     { title: 'Editar Descrição' },
-        //     { title: 'Editar Foto e Capa' },
-        // ],
-    }),
-}
-</script>
-
 <style>
 * {
     /* border: 1px solid red; */

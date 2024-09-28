@@ -28,7 +28,7 @@
                             </template>
 
                             <template v-slot:item.nome="{ item }">
-                                <router-link :to="`/perfil-candidato?id=${item.id}&requisicao=${requisicao}`"
+                                <router-link :to="`/perfil-candidato?requisicao=candidato&id=${item.id}`"
                                     target="_blank" class="text-black">
                                     <v-btn variant="text" prepend-icon="mdi-arrow-top-right-thick"
                                         class="text-capitalize" title="Ver Curriculo">{{ item.nome }}</v-btn>
@@ -70,7 +70,6 @@ export default {
     data() {
         return {
             dialog: false,
-            requisicao: '',
             search: '',
             headers: [
                 { title: 'Foto', value: 'foto', sortable: false },
@@ -88,7 +87,7 @@ export default {
                     profissao: 'Engenheiro de Software',
                     relevancia: '70',
                     acao: '',
-                    id: 1,
+                    id: 25,
                 },
                 {
                     foto: '2.jpg',
@@ -114,10 +113,6 @@ export default {
 
     props: {
         Vagas: Object,
-    },
-
-    mounted() {
-        this.requisicao = 'empresa';
     },
 
     methods: {

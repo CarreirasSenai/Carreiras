@@ -15,24 +15,23 @@
 
 <script>
 import { useAuthStore } from '@/stores/auth';
-import { useCandidatoStore } from '@/stores/candidato';
+import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
 
 export default {
     computed: {
         auth() {
             return useAuthStore();
         },
-        user() {
-            return useCandidatoStore();
+        pesquisaUser() {
+            return usePesquisaUsuarioStore();
         },
     },
     created() {
-        this.user.id = this.$route.query.id;
-        this.user.requisicao = this.$route.query.requisicao;
+        this.pesquisaUser.id = this.$route.query.id;
+        this.pesquisaUser.requisicao = this.$route.query.requisicao;
     },
     mounted() {
         this.auth.autenticacao();
-        this.user.userLogado();
     },
 }
 </script>

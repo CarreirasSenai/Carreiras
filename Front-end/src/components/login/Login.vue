@@ -43,7 +43,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      email: 'thiago@gmail.com',
+      email: 'pibipax668@skrak.com',
       emailRules: [
         (v) => !!v || 'E-mail requerido',
         (v) => /.+@.+\..+/.test(v) || 'E-mail deve ser válido',

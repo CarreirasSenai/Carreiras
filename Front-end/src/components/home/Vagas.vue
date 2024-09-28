@@ -62,10 +62,12 @@
             </small>
             <v-card-actions class="d-flex justify-space-between">
               <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
-              <div class="d-flex align-center justify-center ga-2">
-                {{ item.raw.id_empresa }}
-                <img src="/src/assets/avatar.png" width="50px" class="rounded-circle">
-              </div>
+              <router-link :to="`/perfil-empresa?requisicao=empresa&id=${item.raw.id_empresa}`" class="text-black text-decoration-none">
+                <div class="d-flex align-center justify-center ga-2">
+                  {{ item.raw.id_empresa }}
+                  <img src="/src/assets/avatar.png" width="50px" class="rounded-circle" to="/perfil-empresa">
+                </div>
+              </router-link>
             </v-card-actions>
           </v-card>
         </v-col>

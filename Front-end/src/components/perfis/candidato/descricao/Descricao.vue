@@ -15,15 +15,18 @@
 
 <script>
 import { useCandidatoStore } from '@/stores/candidato';
+import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
 
 export default {
-    mounted() {
-        const user = useCandidatoStore();
-        user.userLogado();
-    },
+    data: () => ({
+        dialog: false,
+    }),
     computed: {
         user() {
             return useCandidatoStore();
+        },
+        pesquisaUser() {
+            return usePesquisaUsuarioStore();
         }
     },
 }
