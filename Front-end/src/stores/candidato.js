@@ -11,6 +11,8 @@ export const useCandidatoStore = defineStore('candidato', {
     actions: {
         async userLogado() {
             this.grupo = localStorage.getItem("grupo");
+            console.log(this.grupo);
+            
 
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${this.grupo}/read`, {
