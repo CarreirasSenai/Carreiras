@@ -1,14 +1,25 @@
 <template>
     <div class="div-infos">
         <v-expansion-panels>
-            <Descricao />
-            <Formacoes />
+            <Descricao :Dados="Dados"/>
+            <Formacoes :Dados="Dados"/>
             <Cursos />
             <Experiencias />
             <Habilidades />
         </v-expansion-panels>
     </div>
 </template>
+
+<script>
+export default {
+    props: {
+        Dados: {
+            type: Object,
+            required: true
+        },
+    },
+}
+</script>
 
 <style>
 .div-infos {

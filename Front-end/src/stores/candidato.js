@@ -3,13 +3,6 @@ import axios from 'axios';
 
 export const useCandidatoStore = defineStore('candidato', {
     state: () => ({
-        user: {
-            initials: '',
-            fullName: '',
-            email: '',
-            foto: '',
-            capa: '',
-        },
         visibilidadeNaoLogado: true,
         visibilidadeLogado: false,
         dadosUser: '',
@@ -29,14 +22,9 @@ export const useCandidatoStore = defineStore('candidato', {
 
                 console.log("Usuário logado:", this.dadosUser);
 
-                // Setando dados do user da requisição
-                this.user.initials = this.dadosUser.nome_completo ? this.extrairIniciais(this.dadosUser.nome_completo) : this.extrairIniciais(this.dadosUser.nome_fantasia);
-                this.user.fullName = this.dadosUser.nome_completo;
-                this.user.email = this.dadosUser.email;
-
                 // Mostra foto ou avatar padrão
-                this.user.foto = this.dadosUser.foto === null ? '/src/assets/avatar.png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${this.dadosUser.foto}`;
-                this.user.capa = this.dadosUser.capa === null ? '/src/assets/capa (1).png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${this.dadosUser.capa}`;
+                this.dadosUser.foto = this.dadosUser.foto === null ? '/src/assets/avatar.png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${this.dadosUser.foto}`;
+                this.dadosUser.capa = this.dadosUser.capa === null ? '/src/assets/capa (1).png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${this.dadosUser.capa}`;
 
                 // Altera visibilidade da navegação
                 this.visibilidadeNaoLogado = false;

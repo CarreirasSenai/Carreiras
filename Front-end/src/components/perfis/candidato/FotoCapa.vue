@@ -1,63 +1,31 @@
 <template>
     <div class="div-capa-foto">
-        <img class="capa" :src="dados.capa">
+        <img class="capa" :src="Dados.capa" alt="Capa">
         <div class="pos-capa"></div>
         <div class="div-foto-perfil text-center">
-            <img :src="dados.foto" class="foto-perfil" alt="Foto de Perfil">
-            <h3 class="cor-primaria">{{ dados.nome }}</h3>
-            <h4 class="text-grey-darken-2"> {{ dados.profissao }} </h4>
+            <img :src="Dados.foto" class="foto-perfil" alt="Foto de Perfil">
+            <h3 class="cor-primaria">{{ Dados.nome_completo }}</h3>
+            <h4 class="text-grey-darken-2">{{ Dados.profissao }}</h4>
             <MenuEditarCandidato style="height: 20px !important;" class="d-flex align-center"
-                v-if="user.grupo === 'candidato'" />
+                v-if="grupo === 'candidato'" />
         </div>
     </div>
 </template>
 
 <script>
-import { useCandidatoStore } from '@/stores/candidato';
-import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
-
 export default {
     data: () => ({
-        dialog: false,
-        dados: {
-            nome: '',
-            profissao: '',
-            foto: '',
-            capa: ''
-        }
+        grupo: '',
     }),
-    computed: {
-        user() {
-            return useCandidatoStore();
+    props: {
+        Dados: {
+            type: Object,
+            required: true
         },
-        pesquisaUser() {
-            return usePesquisaUsuarioStore();
-        }
     },
     mounted() {
-        this.validaRequisitante();
+        this.grupo = localStorage.getItem('grupo');
     },
-    methods: {
-        validaRequisitante() {                        
-            if (this.pesquisaUser.requisicao === 'candidato') {
-                this.pesquisaUser.pesquisaUser();
-                this.dados.nome = this.pesquisaUser.dadosUser.nome_completo;
-                this.dados.profissao = this.pesquisaUser.dadosUser.profissao;
-                this.dados.foto = this.pesquisaUser.user.foto;
-                this.dados.capa = this.pesquisaUser.user.capa;
-                console.log(this.pesquisaUser.dadosUser);
-                console.log(this.pesquisaUser.dados);
-                
-            } else {
-                console.log(2);
-                this.user.userLogado();
-                this.dados.nome = this.user.dadosUser.nome_completo;
-                this.dados.profissao = this.user.dadosUser.profissao;
-                this.dados.foto = this.user.user.foto;
-                this.dados.capa = this.user.user.capa;
-            }
-        }
-    }
 }
 </script>
 

@@ -10,20 +10,19 @@
                         <p>Celular:</p>
                     </v-col>
                     <v-col cols="6" md="4" class="infos-valores">
-                        <p>{{ nome }}<v-tooltip activator="parent" location="right">{{ nome
-                                }}</v-tooltip></p>
-                        <p>{{ email }}<v-tooltip activator="parent" location="right">{{ email }}</v-tooltip></p>
-                        <p>{{ celular }}<v-tooltip activator="parent" location="right">{{ celular }}</v-tooltip></p>
+                        <p>{{ Dados.nome_completo }}<v-tooltip activator="parent" location="right">{{ Dados.nome_completo }}</v-tooltip></p>
+                        <p>{{ Dados.email }}<v-tooltip activator="parent" location="right">{{ Dados.email }}</v-tooltip></p>
+                        <p>{{ Dados.celular }}<v-tooltip activator="parent" location="right">{{ Dados.celular }}</v-tooltip></p>
                     </v-col>
                     <v-col cols="6" md="2" class="infos-pessoais">
-                        <p>Telefone:<v-tooltip activator="parent" location="right">Telefone</v-tooltip></p>
+                        <p>Telefone:</p>
                         <p>Cidade:</p>
                         <p>Estado:</p>
                     </v-col>
                     <v-col cols="6" md="3" class="infos-valores">
-                        <p>{{ telefone }}<v-tooltip activator="parent" location="right">{{ telefone }}</v-tooltip></p>
-                        <p>{{ cidade }}<v-tooltip activator="parent" location="right">{{ cidade }}</v-tooltip></p>
-                        <p>{{ estado }}<v-tooltip activator="parent" location="right">{{ estado }}</v-tooltip></p>
+                        <p>{{ Dados.telefone }}<v-tooltip activator="parent" location="right">{{ Dados.telefone }}</v-tooltip></p>
+                        <p>{{ Dados.cidade }}<v-tooltip activator="parent" location="right">{{ Dados.cidade }}</v-tooltip></p>
+                        <p>{{ Dados.estado }}<v-tooltip activator="parent" location="right">{{ Dados.estado }}</v-tooltip></p>
                     </v-col>
                 </v-row>
             </v-container>
@@ -32,31 +31,16 @@
 </template>
 
 <script>
-import { useCandidatoStore } from '@/stores/candidato';
-
 export default {
     data: () => ({
-        nome: '',
-        email: '',
-        telefone: '',
-        celular: '',
-        cidade: '',
-        estado: '',
+        dialog: false,
     }),
-
-    mounted(){
-        this.nome = this.user.dadosUser.nome_completo;
-        this.email = this.user.dadosUser.email;
-        this.telefone = this.user.dadosUser.telefone;
-        this.celular = this.user.dadosUser.celular;
-        this.cidade = this.user.dadosUser.cidade;
-        this.estado = this.user.dadosUser.estado;
+    props: {
+        Dados: {
+            type: Object,
+            required: true
+        },
     },
-
-    computed: {
-        user() { return useCandidatoStore(); },
-    },
-
 }
 </script>
 
