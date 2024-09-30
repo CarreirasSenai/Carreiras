@@ -114,6 +114,8 @@ exports.getUser = (req, res) => {
 
     const usuario_id = requisicao ? idReq : idSession;
 
+    console.log("Usuário (empresa): ", usuario_id);
+
     Empresa.getUser(usuario_id, (err, usuario) => {
         if (err) {
             return res.status(500).json({ error: err.message });
@@ -127,3 +129,32 @@ exports.getUser = (req, res) => {
         res.json({ success: true, usuario: usuario });
     });
 };
+
+exports.updateUser = (req, res) => {
+    const {id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero,
+    complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA} = req.body;
+    console.log('\n updateUser:');
+    console.log(req.body);
+
+    const grupo = 'empresa';
+
+    Empresa.updateUser(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep,
+        numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, 
+        grupo, id, (err, success) => {
+            if(err)
+                return res.status(500).json({ error: err.message });
+
+            return res.status(200).json({ success: 'Cadastro Atualizado!' })
+        })
+}
+
+exports.deleteUser = (req, res) => {
+    const { id } = req.body;
+    
+    Empresa.deleteUser(id, (err, success) => {
+        if(err) 
+            return res.status(500).json({ error: err.message });
+        
+        return res.status(200).json({ success: 'Usuário Deletado!' })
+    })
+}
