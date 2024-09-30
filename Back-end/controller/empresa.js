@@ -153,8 +153,8 @@ exports.deleteUser = (req, res) => {
     
     Empresa.deleteUser(id, (err, success) => {
         if(err) 
-            return res.json(500).json({ error: err.message });
+            return res.status(500).json({ error: err.message });
         
-        return res.json(200).json({ success: 'Usuário Deletado!' })
+        return res.status(200).json({ success: 'Usuário Deletado!' })
     })
 }
