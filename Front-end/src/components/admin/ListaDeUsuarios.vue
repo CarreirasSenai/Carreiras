@@ -5,7 +5,7 @@
     <div class="d-flex align-center ga-1">
       <h1 style="font-size: 3vh;">Usuários do Sistema</h1>
       <v-spacer></v-spacer>
-      <CadUsuarioAdmin />
+      <CadUsuarioAdmin :MostrarUsuarios="mostrarUsuarios" />
     </div>
 
     <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure um Usuário"
@@ -13,7 +13,7 @@
 
     <v-card v-for="user in usuarios" :key="user">
       <v-card-text>
-        <v-row align="center" no-gutters>
+        <v-row align="center">
 
           <v-col cols="3" sm="3">
             <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.foto">
@@ -22,19 +22,20 @@
             </v-avatar>
           </v-col>
 
-          <v-col cols="6" sm="3">
+          <v-col cols="9" sm="3">
             <div class="ma-1">
               <h3>{{ user.nome }}</h3>
               <p>{{ user.email }}</p>
             </div>
           </v-col>
 
-          <v-col cols="3" sm="3" class="text-center">
+          <v-col cols="4" sm="3" class="text-align">
             <v-chip size="small" :color="colorTipoUser(user.tipo_admin)">{{ user.tipo_admin }}</v-chip>
           </v-col>
 
-          <v-col cols="12" sm="3" class="text-end">
-            <MenuAdminUsuario v-if="usuario.dadosUser.tipo_admin === 'super'" :User="user"/>
+          <v-col cols="8" sm="3" class="text-end">
+            <MenuAdminUsuario v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
+              :User="user" />
           </v-col>
 
         </v-row>
@@ -104,5 +105,15 @@ export default {
 <style>
 * {
   /* border: 1px solid red; */
+}
+
+.text-align {
+  text-align: center;
+}
+
+@media(max-width:600px) {
+  .text-align{
+    text-align: left;
+  }
 }
 </style>

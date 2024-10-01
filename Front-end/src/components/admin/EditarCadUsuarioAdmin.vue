@@ -1,70 +1,70 @@
 <template>
-  <div class="text-center">
-    <v-dialog v-model="dialog" max-width="800px">
-      <template v-slot:activator="{ props: activatorProps }">
-        <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Cadastro</v-btn>
-      </template>
+  <v-dialog v-model="dialog" max-width="600" persistent>
+    <template v-slot:activator="{ props: activatorProps }">
+      <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Cadastro</v-btn>
+    </template>
 
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-form class="my-4" @submit.prevent="atualizarCadastro">
-              <v-card title="Informações Pessoais" class="pa-2">
-                <v-card-text style="max-height: 70vh" class="overflow-auto">
-                  <v-row>
-                    <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field v-model="nomeSocial" :rules="nomeSocialRules" label="Nome Social"
-                        variant="underlined" :disabled="isDisabled"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field v-model="nomeCompleto" :rules="nomeCompletoRules" label="Nome Completo"
-                        variant="underlined" :disabled="isDisabled"></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field v-model="email" :rules="emailRules" label="E-mail" variant="underlined"
-                        :disabled="isDisabled"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field v-model="phone" :rules="phoneRules" label="Telefone" variant="underlined"
-                        :disabled="isDisabled"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field v-model="cellphone" :rules="cellphoneRules" label="Celular" variant="underlined"
-                        :disabled="isDisabled"></v-text-field>
-                    </v-col>
-                  </v-row>
-                 
-                 
-                  <v-row>
-                    <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field v-model="password" :rules="passwordRules" label="Senha" variant="underlined"
-                        :disabled="isDisabled" type="password"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field v-model="confirmPassword" :rules="confirmPasswordRules" label="Repetir Senha"
-                        variant="underlined" :disabled="isDisabled" type="password"></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
+    <v-form class="my-4" @submit.prevent="updateUser">
+      <v-card title="Editar Cadastro">
+        <small class="text-error position-absolute top-0 right-0 ma-4 mr-6">{{ mensagem }}</small>
+        <v-card-text style="max-height: 70vh" class="overflow-auto">
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-text-field v-model="form.nome" :rules="nomeRules" label="Nome Completo"
+                variant="underlined"></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field v-model="form.email" :rules="emailRules" label="E-mail" variant="underlined"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-text-field v-model="form.cpf" :rules="cpfRules" label="CPF" variant="underlined"></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field v-model="form.celular" :rules="cellphoneRules" label="Celular"
+                variant="underlined"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-radio-group v-model="form.tipo" :rules="geral" label="Classe do Usuário">
+                <v-radio label="SUPER" value="super"></v-radio>
+                <v-radio label="ADM" value="adm"></v-radio>
+                <v-radio label="USER" value="user"></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-radio-group v-model="form.status" :rules="geral" label="Status Ativo">
+                <v-radio label="Ativado" value="1"></v-radio>
+                <v-radio label="Desativado" value="0"></v-radio>
+              </v-radio-group>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions class="d-flex justify-end">
+          <v-btn text="Excluir" color="error" @click="modalDelete = true"></v-btn>
+          <v-spacer></v-spacer>
+          <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
+          <v-btn text="Salvar" color="Enviar" variant="tonal" class="bg-purple-darken-4" type="submit"></v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-form>
+  </v-dialog>
 
-                <v-divider></v-divider>
-
-                <v-card-actions class="d-flex justify-end">
-                  <v-spacer></v-spacer>
-
-                  <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
-                  <v-btn text="Salvar" color="Enviar" variant="tonal" class="bg-purple-darken-4"
-                    @click="atualizarCadastro"></v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-form>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-dialog>
-  </div>
+  <v-dialog max-width="500" v-model="modalDelete">
+    <v-card title="Confirme a Operação">
+      <v-card-text>
+        Tem certeza que deseja excluir este Usuário?
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn variant="tonal" text="Cancelar" @click="modalDelete = false"></v-btn>
+        <v-btn variant="tonal" class="bg-error" text="Excluir" @click="deletarConta"></v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -73,33 +73,38 @@ import axios from "axios";
 export default {
   data() {
     return {
-      nomeSocial: "Robsoh",
-      nomeCompleto: "Robsoh Hush",
-      email: "robsoh@gmail.com",
-      phone: "4700000000",
-      cellphone: "47000000000",
-      password: "12645678Ww@",
-      confirmPassword: "12645678Ww@",
-      resposta: false,
-      mensagemErro: "",
-      isDisabled: false,
       dialog: false,
+      modalDelete: false,
+      mensagem: '',
+      form: {
+        id: '',
+        nome: '',
+        email: '',
+        cpf: '',
+        celular: '',
+        tipo: '',
+        status: ''
+      },
+      senhaConfirm: 'Thiago1@',
 
-      nomeSocialRules: [
+      nomeRules: [
         (v) => !!v || "Nome Social Requerido",
         (v) => v.length >= 3 || "Nome Social deve ter pelo menos 3 caracteres",
       ],
-
       nomeCompletoRules: [
         (v) => !!v || "Nome Completo Requerido",
         (v) =>
           v.length >= 5 || "Nome Completo deve ter pelo menos 5 caracteres",
       ],
-
       emailRules: [
         (v) => !!v || "E-mail requerido",
         (v) => /.+@.+\..+/.test(v) || "E-mail precisa ser válido",
         (v) => v.length <= 254 || "E-mail deve ter no máximo 254 caracteres",
+      ],
+      cpfRules: [
+        (v) => !!v || "Cpf requerido",
+        (v) => v.length === 11 || "Celular deve ter pelo menos 10 caracteres",
+        (v) => /^\d+$/.test(v) || "Celular deve conter apenas números",
       ],
       cellphoneRules: [
         (v) => !!v || "Celular requerido",
@@ -111,50 +116,77 @@ export default {
         (v) => v.length >= 10 || "Telefone deve ter pelo menos 10 caracteres",
         (v) => /^\d+$/.test(v) || "Telefone deve conter apenas números",
       ],
-      passwordRules: [
-        (v) => !!v || "Senha Requerida",
-        (v) => v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
-        (v) =>
-          /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(
-            v
-          ) ||
-          "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
-      ],
-
-      confirmPasswordRules: [
-        (v) => !!v || "Repetir Senha Requerida",
-        (v) => v === this.password || "Senhas não coincidem",
-      ],
+      geral: [
+        (v) => !!v || "Escolha uma opção",
+      ]
     };
   },
-  methods: {
-    async atualizarCadastro() {
-      try {
-        const response = await axios.post(
-          "http://localhost:4000/update/create",
-          {
-            nomeSocial: this.nomeSocial,
-            nomeCompleto: this.nomeCompleto,
-            email: this.email,
-            phone: this.phone,
-            cellphone: this.cellphone,
-            password: this.password,
-          }
-        );
 
-        this.resposta = true;
-        console.log("Atalização bem-sucedida", response.data);
-        document.getElementById("btnAlertaCadastro").click();
-      } catch (error) {
-        this.resposta = false;
-        console.error(
-          "Erro ao atualizar o cadastro",
-          error.response.data.error
-        );
-        this.mensagemErro = error.response.data.error;
-        document.getElementById("btnAlertaCadastro").click();
+  props: {
+    MostrarUsuarios: {
+      type: Function,
+      required: true
+    },
+    User: {
+      type: Object,
+      required: true
+    }
+  },
+
+  mounted() {
+    this.form.id = this.User.id;
+    this.form.nome = this.User.nome;
+    this.form.email = this.User.email;
+    this.form.cpf = this.User.cpf;
+    this.form.celular = this.User.celular;
+    this.form.tipo = this.User.tipo_admin;
+    this.form.status = this.User.status.toString();
+  },
+
+  methods: {
+    async updateUser(event) {
+      console.clear();
+      const dados = await event;
+
+      // alert(JSON.stringify(dados, null, 2))
+
+      if (dados.valid === true) {
+        console.log(this.form);
+
+        try {
+          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/admin/update`, {
+            dados: this.form,
+          }, { withCredentials: true });
+
+          console.log(response.data);
+          this.MostrarUsuarios();
+          this.dialog = false;
+
+        } catch (error) {
+          console.error('Erro', error.response.data);
+          this.mensagem = error.response.data.error;
+        }
       }
     },
+
+    async deletarConta() {
+      console.clear();
+      console.log(this.User.id);
+
+      try {
+        const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/admin/delete/${this.User.id}`, {
+          withCredentials: true,
+        });
+
+        console.log(response.data);
+        this.MostrarUsuarios();
+        this.modalDelete = false;
+
+      } catch (error) {
+        console.error('Erro', error.response.data);
+        this.mensagem = error.response.data.error;
+      }
+    }
   },
 };
 </script>

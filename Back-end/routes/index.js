@@ -84,8 +84,8 @@ router.post('/admin/create', Admin.createUser);
 router.post('/admin/login', Admin.login);
 router.get('/admin/read', authMiddleware, Admin.getUser);
 router.get('/admin/read/all', authMiddleware, Admin.getAllUser);
-// router.delete('/admin/delete', authMiddleware, Candidato.deleteUser);
-// router.put('/admin/update', authMiddleware, Candidato.updateUser);
+router.delete('/admin/delete/:id', authMiddleware, Admin.deleteUser);
+router.put('/admin/update', authMiddleware, Admin.updateUser);
 
 // rota logout
 router.get('/logout', (req, res) => {

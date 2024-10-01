@@ -7,7 +7,7 @@
         <v-list class="mt-2">
             <v-list-item class="pa-0">
                 <v-list-item-title class="cursor-pointer">
-                    <EditarCadUsuarioAdmin />
+                    <EditarCadUsuarioAdmin :MostrarUsuarios="MostrarUsuarios" :User="User" />
                 </v-list-item-title>
             </v-list-item>
         </v-list>
@@ -17,12 +17,18 @@
 <script>
 export default {
     data: () => ({
-        // items: [
-        //     { title: 'Editar Perfil' },
-        //     { title: 'Editar Descrição' },
-        //     { title: 'Editar Foto e Capa' },
-        // ],
     }),
+    props: {
+        MostrarUsuarios: {
+            type: Function,
+            required: true
+        },
+        User: {
+            type: Object,
+            required: true
+        }
+    },
+
 }
 </script>
 

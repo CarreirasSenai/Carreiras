@@ -84,3 +84,62 @@ exports.getAllUser = (callback) => {
         return callback(null, result.length > 0 ? result : null);
     });
 };
+
+// Update
+// Necesssário fazer a validação se o email ou cpf de atualziação já existe como no cadastro, a falta disso ocasionara um erro no database - thiago :)
+exports.updateUser = (id, nome, email, cpf, celular, tipo, status, callback) => {
+
+    // Verificar se o email já existe
+    db.query('SELECT * FROM user_admin WHERE email = ? AND id != ?', [email, id], (err, results) => {
+        if (err) {
+            // Se houver um erro na consulta, retornar o erro no callback
+            return callback(err, null);
+        }
+        if (results.length > 0) {
+            // console.log('Este email já foi cadastrado!');
+            return callback(new Error('E-mail já cadastrado!'), null);
+        }
+
+        db.query('SELECT * FROM user_admin WHERE cpf = ? AND id != ?', [cpf, id], (err, results) => {
+            if (err) {
+                // Se houver um erro na consulta, retornar o erro no callback
+                return callback(err, null);
+            }
+            if (results.length > 0) {
+                // console.log('Este email já foi cadastrado!');
+                return callback(new Error('Este CPF já foi cadastrado!'), null);
+            }
+
+            db.query(`UPDATE user_admin 
+                SET nome = ?, 
+                email = ?, 
+                cpf = ?, 
+                celular = ?, 
+                tipo_admin = ?, 
+                status = ?
+                WHERE id = ?`,
+                [nome, email, cpf, celular, tipo, status, id], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        return callback(err, null);
+                    } else if (result) {
+                        console.log(result);
+                        return callback(null, result.affectedRows > 0);
+                    }
+                });
+        });
+    });
+};
+
+// Delete
+exports.deleteUser = (id, callback) => {
+    db.query('DELETE FROM user_admin WHERE id = ?', [id], (err, result) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+        } else if (result) {
+            console.log(result);
+            return callback(null, result.affectedRows > 0);
+        }
+    });
+};

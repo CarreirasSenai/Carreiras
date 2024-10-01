@@ -89,6 +89,38 @@ exports.getAllUser = (req, res) => {
     });
 };
 
+// Update
+exports.updateUser = (req, res) => {
+    const { id, nome, email, cpf, celular, tipo, status } = req.body.dados;
+    console.log('\n updateUser:');
+
+    const grupo = 'admin';
+
+    Admin.updateUser(id, nome, email, cpf, celular, tipo, status, (err, success) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        return res.status(200).json({ success: 'Cadastro Atualizado!' });
+    });
+};
+
+// Delete
+exports.deleteUser = (req, res) => {
+    const { id } = req.params;
+
+    Admin.deleteUser(id, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else if (!result) {
+            return res.status(404).json({ error: "Recurso não encontrado" });
+        } else if (result) {
+            return res.status(200).json({ sucess: true, result: result });
+        }
+    });
+};
+
+
 // async function name() {
 //     const saltRounds = 10;
 //     const hashedPassword = await bcrypt.hash('123456', saltRounds);

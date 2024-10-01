@@ -31,11 +31,13 @@
           <v-row>
             <v-col cols="12" md="6">
               <v-text-field v-model="form.senha" :rules="passwordRules" label="Senha" variant="underlined"
-                type="password"></v-text-field>
+                :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :type="show1 ? 'text' : 'password'"
+                @click:append-inner="show1 = !show1"></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <v-text-field v-model="senhaConfirm" :rules="confirmPasswordRules" label="Repetir Senha"
-                variant="underlined" type="password"></v-text-field>
+              <v-text-field v-model="senhaConfirm" :rules="confirmPasswordRules" label="Senha" variant="underlined"
+                :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :type="show2 ? 'text' : 'password'"
+                @click:append-inner="show2 = !show2"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -71,6 +73,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      show1: false,
+      show2: true,
       dialog: false,
       mensagem: '',
       form: {
@@ -131,6 +135,14 @@ export default {
       ]
     };
   },
+
+  props: {
+    MostrarUsuarios: {
+      type: Function,
+      required: true
+    }
+  },
+
   methods: {
     async createUser(event) {
       console.clear();
@@ -147,6 +159,7 @@ export default {
           }, { withCredentials: true });
 
           console.log(response.data);
+          this.MostrarUsuarios();
           this.dialog = false;
 
         } catch (error) {
