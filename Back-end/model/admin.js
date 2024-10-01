@@ -1,20 +1,20 @@
 const db = require("../config/db");
 
 // Create
-exports.createUser = (tipo_admin, status, nome, email, cpf, hashedPassword, celular, grupo, callback) => {
+exports.createUser = (nome, email, cpf, hashedPassword, celular, tipo, status, grupo, callback) => {
 
     // Verificar se o email já existe
-    db.query('SELECT * FROM user_candidato WHERE email = ?', [email], (err, results) => {
+    db.query('SELECT * FROM user_admin WHERE email = ?', [email], (err, results) => {
         if (err) {
             // Se houver um erro na consulta, retornar o erro no callback
             return callback(err, null);
         }
         if (results.length > 0) {
             // console.log('Este email já foi cadastrado!');
-            return callback(new Error('E-mail já cadastrado! Tente usar outro endereço de e-mail.'), null);
+            return callback(new Error('E-mail já cadastrado!'), null);
         }
 
-        db.query('SELECT * FROM user_candidato WHERE cpf = ?', [cpf], (err, results) => {
+        db.query('SELECT * FROM user_admin WHERE cpf = ?', [cpf], (err, results) => {
             if (err) {
                 // Se houver um erro na consulta, retornar o erro no callback
                 return callback(err, null);
@@ -25,15 +25,15 @@ exports.createUser = (tipo_admin, status, nome, email, cpf, hashedPassword, celu
             }
 
             db.query(
-                'INSERT INTO user_candidato (tipo_admin, status, nome, email, cpf, hashedPassword, celular, grupo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                [tipo_admin, status, nome, email, cpf, hashedPassword, celular, grupo,],
+                'INSERT INTO user_admin (nome, email, cpf, senha, celular, tipo_admin, status, grupo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [nome, email, cpf, hashedPassword, celular, tipo, status, grupo],
                 (err, result) => {
 
                     if (err) {
                         console.log(err);
                         return callback(err, null);
                     }
-                    callback(null, result.insertId);
+                    callback(null, result);
                 }
             );
         });
@@ -60,11 +60,27 @@ exports.getLogin = (email, callback) => {
 
 // Read
 exports.getUser = (id, callback) => {
+    console.log('model');
     db.query('SELECT * FROM user_admin WHERE id = ?', [id], (err, rows) => {
         if (err) {
+            console.log(err);
             return callback(err, null);
         }
 
+
+        console.log(rows[0]);
         return callback(null, rows.length > 0 ? rows[0] : null);
+    });
+};
+
+exports.getAllUser = (callback) => {
+    db.query('SELECT * FROM user_admin', (err, result) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+        }
+
+        console.log(result);
+        return callback(null, result.length > 0 ? result : null);
     });
 };

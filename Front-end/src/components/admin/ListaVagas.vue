@@ -2,95 +2,106 @@
   <div class="vacancy-list-container" style="height: 100%">
     <Navbar />
     <h1>Lista de vagas</h1>
-      <div class="busca">
-        <div class="procurar-Usuarios">
-          <v-card-text>
-            <v-text-field
-              :loading="loading"
-              append-inner-icon="mdi-magnify"
-              density="compact"
-              label="Pesquisar"
-              variant="solo"
-              hide-details
-              single-line
-              @click:append-inner="onClick"
-            />
-          </v-card-text>
-        </div>
+    <div class="busca">
+      <div class="procurar-Usuarios">
+        <v-card-text>
+          <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Pesquisar"
+            variant="solo" hide-details single-line @click:append-inner="onClick" @keyup.enter="onClick" />
+        </v-card-text>
       </div>
-      <div class="empresa-info rounded">
-        <div>
-          <v-avatar color="surface-variant" size="60">
-              <v-icon>mdi-account-circle</v-icon>
-          </v-avatar>
-          <p>TOTVS - EMPRESAS INTELIGENTES</p>
-        </div>
-        <p><strong>Localização:</strong> Joinville, SC</p>
-        <p class="status"></p>
+    </div>
+    <div class="empresa-info rounded">
+      <div>
+        <v-avatar color="surface-variant" size="60">
+          <v-icon>mdi-account-circle</v-icon>
+        </v-avatar>
+        <p>TOTVS - EMPRESAS INTELIGENTES</p>
       </div>
-      <div class="vagas-container rounded">
-        <div class="vagas-cadastradas-container rounded">
-          <div class="vagas-cadastradas rounded">
-            <p>Vagas Cadastradas</p>
-            <p>Data de postagem</p>
-            <span style="color: #ff0008;">1 Strike</span>
-          </div>
-            <v-expansion-panels>
-              <v-expansion-panel
-                v-for="i in 5"
-                :key="i">
-                <v-expansion-panel-title class="vagas-panel-title">
-                    <v-row>
-                      <div class="linha-vaga">
-                        <v-col cols="6">
-                          <p>Analista de Suporte ao Usuário Junior</p>
-                        </v-col>
-                        <v-col>
-                          <p>21/08/2024</p>
-                        </v-col>
-                      </div>
-                    </v-row>
-                </v-expansion-panel-title>
-                <v-expansion-panel-text class="vagas-panel-text">
-                  <div class="vagas-text">
-                    <p><strong>Nível do cargo:</strong> Júnior</p>
-                    <p><strong>Habilidades exigidas:</strong> HTML, CSS, 2 anos de experiência com Java.</p>
-                    <p><strong>Descrição:</strong> Buscamos um profissional que esteja disposto a aprender e busque melhorar suas habilidades no dia-a-dia.</p>
-                  </div>
-                  <div class="buttons-container mt-3 mb-2">
-                    <v-btn class="bg-red-accent-4 me-2" density="compact">Strike</v-btn>
-                    <v-btn class="bg-purple-darken-4 me-2" density="compact">Aprovar</v-btn>
-                  </div>
-                </v-expansion-panel-text>
-              </v-expansion-panel>
-            </v-expansion-panels>
+      <p><strong>Localização:</strong> Joinville, SC</p>
+      <p class="status"></p>
+    </div>
+    <div class="vagas-container rounded">
+      <div class="vagas-cadastradas-container rounded">
+        <div class="vagas-cadastradas rounded">
+          <p>Vagas Cadastradas</p>
+          <p>Data de postagem</p>
+          <span style="color: #ff0008;">1 Strike</span>
         </div>
+        <v-expansion-panels>
+          <v-expansion-panel v-for="i in 5" :key="i">
+            <v-expansion-panel-title class="vagas-panel-title">
+              <v-row>
+                <div class="linha-vaga">
+                  <v-col cols="6">
+                    <p>Analista de Suporte ao Usuário Junior</p>
+                  </v-col>
+                  <v-col>
+                    <p>21/08/2024</p>
+                  </v-col>
+                </div>
+              </v-row>
+            </v-expansion-panel-title>
+            <v-expansion-panel-text class="vagas-panel-text">
+              <div class="vagas-text">
+                <p><strong>Nível do cargo:</strong> Júnior</p>
+                <p><strong>Habilidades exigidas:</strong> HTML, CSS, 2 anos de experiência com Java.</p>
+                <p><strong>Descrição:</strong> Buscamos um profissional que esteja disposto a aprender e busque melhorar
+                  suas habilidades no dia-a-dia.</p>
+              </div>
+              <div class="buttons-container mt-3 mb-2">
+                <v-btn class="bg-red-accent-4 me-2" density="compact">Strike</v-btn>
+                <v-btn class="bg-purple-darken-4 me-2" density="compact">Aprovar</v-btn>
+              </div>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </div>
+    </div>
   </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
+import { useAuthStore } from '@/stores/auth';
+import { useCandidatoStore } from '@/stores/candidato';
 
-            }
-        }
+export default {
+  data() {
+    return {
+      loading: false,
     }
+  },
+  computed: {
+    auth() {
+      return useAuthStore();
+    }
+  },
+  created() {
+    this.auth.autenticacao();
+  },
+  methods: {
+    onClick() {
+      this.loading = true
+
+      setTimeout(() => {
+        this.loading = false
+      }, 2000)
+    },
+  }
+}
 </script>
 
 <style scoped lang="scss">
 .vacancy-list-container {
-    background-color: #E1D6F6;
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-    align-items: center;
+  background-color: #E1D6F6;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
 
-    h1 {
-      margin: 20px auto;
-      color: #3A1C76;
-    }
+  h1 {
+    margin: 20px auto;
+    color: #3A1C76;
+  }
 }
 
 .busca {
@@ -158,7 +169,7 @@
 }
 
 .vagas-panel-title {
-  border: 1px solid #3A1C76; 
+  border: 1px solid #3A1C76;
   color: #000;
 }
 
@@ -170,7 +181,7 @@
 }
 
 .vagas-panel-text {
-  border: 1px solid #3A1C76; 
+  border: 1px solid #3A1C76;
   border-top: none;
 }
 
@@ -196,7 +207,7 @@
     margin-bottom: 15px;
   }
 
-.procurar-Usuarios {
+  .procurar-Usuarios {
     width: 100%;
     margin: 10px 0;
   }
@@ -211,15 +222,17 @@
   }
 
   .vagas-cadastradas {
-      p, span {
-        text-align: center;
-        font-size: 15px;
-      }
+
+    p,
+    span {
+      text-align: center;
+      font-size: 15px;
+    }
   }
 
   .linha-vaga {
-      font-size: 14px;
-      text-align: center;
+    font-size: 14px;
+    text-align: center;
   }
 
   .status {

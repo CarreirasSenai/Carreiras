@@ -46,7 +46,8 @@
                     <!-- <NavbarLogado /> -->
                     <div class="user-account-avatar d-flex align-center ga-2 mr-2" v-if="user.visibilidadeLogado">
                         <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.dadosUser.email }}</h1>
-                        <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center" v-if="visibilidadeMenuInicial">
+                        <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center"
+                            v-if="visibilidadeMenuInicial">
                             <v-btn variant="text" rounded to="/" class="text-none">Home</v-btn>
                             <v-btn variant="text" rounded to="/sobre" class="text-none">Sobre o Carreiras</v-btn>
                             <v-btn variant="text" rounded to="/contato" class="text-none">Contate-nos</v-btn>
@@ -54,37 +55,72 @@
                         <v-menu min-width="200px" rounded>
                             <template v-slot:activator="{ props }">
                                 <v-btn icon v-bind="props">
-                                    <v-avatar v-if="user.dadosUser.foto" :image="user.dadosUser.foto" size="45"></v-avatar>
+                                    <v-avatar v-if="user.dadosUser.foto" :image="user.dadosUser.foto"
+                                        size="45"></v-avatar>
                                 </v-btn>
                             </template>
                             <v-card>
                                 <v-card-text>
                                     <div class="mx-auto text-center">
-                                        <v-avatar v-if="user.dadosUser.foto" :image="user.dadosUser.foto" size="45"></v-avatar>
+                                        <v-avatar v-if="user.dadosUser.foto" :image="user.dadosUser.foto"
+                                            size="45"></v-avatar>
                                         <h3>{{ user.dadosUser.nome_completo }}</h3>
                                         <p class="text-caption mt-1">
                                             {{ user.dadosUser.email }}
                                         </p>
+
                                         <v-divider class="my-2"></v-divider>
                                         <v-btn variant="text" rounded to="/">
                                             Home
                                         </v-btn>
-                                        <v-divider class="my-2"></v-divider>
-                                        <v-btn variant="text" rounded to="/agenda-candidato">
+
+                                        <v-divider class="my-2"
+                                            v-if="user.grupo === 'candidato' || user.grupo === 'empresa'"></v-divider>
+                                        <v-btn variant="text" rounded
+                                            v-if="user.grupo === 'candidato' || user.grupo === 'empresa'"
+                                            :to="user.grupo === 'candidato' ? '/agenda-candidato' : 'agenda-empresa'">
                                             Agenda
                                         </v-btn>
+
                                         <v-divider class="my-2" v-if="user.grupo === 'candidato'"></v-divider>
-                                        <!-- <v-btn variant="text" @click="triggerAbrirChatHome">Chat</v-btn>
-                                        <v-divider class="my-2"></v-divider> -->
-                                        <v-btn variant="text" rounded v-if="user.grupo === 'candidato'">Minhas Vagas</v-btn>
-                                        <v-divider class="my-2"></v-divider>
+                                        <v-btn variant="text" rounded v-if="user.grupo === 'candidato'">Minhas
+                                            Vagas</v-btn>
+
+                                        <v-divider class="my-2"
+                                            v-if="user.grupo === 'candidato' || user.grupo === 'empresa'"></v-divider>
                                         <v-btn variant="text" rounded to="/perfil-candidato"
                                             v-if="user.grupo === 'candidato'">Curriculo</v-btn>
                                         <v-btn variant="text" rounded to="/perfil-empresa"
                                             v-if="user.grupo === 'empresa'">Perfil</v-btn>
+
+                                        <v-divider class="my-2" v-if="user.grupo === 'admin'"></v-divider>
+                                        <v-btn variant="text" rounded v-if="user.grupo === 'admin'">Painel</v-btn>
+
+                                        <v-divider class="my-2" v-if="user.grupo === 'admin'"></v-divider>
+                                        <v-btn variant="text" rounded to="lista-vagas"
+                                            v-if="user.grupo === 'admin'">Lista de
+                                            Vagas</v-btn>
+
+                                        <v-divider class="my-2" v-if="user.grupo === 'admin'"></v-divider>
+                                        <v-btn variant="text" rounded to="lista-empresas" v-if="user.grupo === 'admin'">
+                                            Empresas</v-btn>
+
+                                        <v-divider class="my-2" v-if="user.grupo === 'admin'"></v-divider>
+                                        <v-btn variant="text" rounded
+                                            v-if="user.grupo === 'admin'">
+                                            Candidatos</v-btn>
+
+                                        <v-divider class="my-2" v-if="user.grupo === 'admin'"></v-divider>
+                                        <v-btn variant="text" rounded to="lista-usuarios"
+                                            v-if="user.grupo === 'admin'">
+                                            Usuários</v-btn>
+
                                         <v-divider class="my-2"></v-divider>
                                         <v-btn variant="text" rounded prepend-icon="mdi-logout"
                                             @click="logout">Sair</v-btn>
+
+                                        <!-- <v-btn variant="text" @click="triggerAbrirChatHome">Chat</v-btn>
+                                        <v-divider class="my-2"></v-divider> -->
                                     </div>
                                 </v-card-text>
                             </v-card>
