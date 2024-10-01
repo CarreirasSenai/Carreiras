@@ -18,6 +18,8 @@ import ListaVagas from '@/components/admin/ListaVagas.vue';
 import Sobre from '@/pages/Sobre.vue';
 import DetalhesVaga from '@/pages/detalhesVaga.vue';
 import AgendaAlternativa from '@/pages/AgendaAlternativa.vue';
+import MinhasVagas from '@/pages/minhasVagas.vue';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,7 +48,8 @@ const router = createRouter({
     { path: '/lista-vagas', component: ListaVagas},
     { path: '/sobre', component: Sobre },
     { path: '/detalhes-vaga', component: DetalhesVaga},
-    { path: '/agenda-alternativa', component: AgendaAlternativa}
+    { path: '/agenda-alternativa', component: AgendaAlternativa},
+    { path: '/minhas-vagas', component: MinhasVagas}
   ],
 });
 
