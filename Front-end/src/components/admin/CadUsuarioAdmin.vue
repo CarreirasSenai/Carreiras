@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       show1: false,
-      show2: true,
+      show2: false,
       dialog: false,
       mensagem: '',
       form: {

@@ -5,7 +5,7 @@
     <div class="d-flex align-center ga-1">
       <h1 style="font-size: 3vh;">Usuários do Sistema</h1>
       <v-spacer></v-spacer>
-      <CadUsuarioAdmin :MostrarUsuarios="mostrarUsuarios" />
+      <CadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios" />
     </div>
 
     <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure um Usuário"
@@ -29,19 +29,27 @@
             </div>
           </v-col>
 
-          <v-col cols="4" sm="3" class="text-align">
+          <v-col cols="4" sm="3" class="text-align text-uppercase">
             <v-chip size="small" :color="colorTipoUser(user.tipo_admin)">{{ user.tipo_admin }}</v-chip>
           </v-col>
 
           <v-col cols="8" sm="3" class="text-end">
             <EditarCadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
               :User="user" />
+            <v-btn variant="text" icon="mdi mdi-pencil" v-if="usuario.dadosUser.tipo_admin != 'super'"
+              @click="showSnackbar = true">
+            </v-btn>
           </v-col>
 
         </v-row>
       </v-card-text>
     </v-card>
   </v-container>
+
+  <v-snackbar variant="tonal" v-model="showSnackbar" :timeout="4000" color="error" elevation="24">
+    <div class="text-center">Você é <span class="text-uppercase rounded pa-1 ma-1" :class="'bg-'+colorTipoUser(usuario.dadosUser.tipo_admin)">{{
+      usuario.dadosUser.tipo_admin }}</span> não tem acesso! 👎😂</div>
+  </v-snackbar>
 </template>
 
 <script>
@@ -52,6 +60,7 @@ import axios from "axios";
 
 export default {
   data: () => ({
+    showSnackbar: false,
     loading: false,
     dialog: false,
     usuarios: ''
@@ -112,7 +121,7 @@ export default {
 }
 
 @media(max-width:600px) {
-  .text-align{
+  .text-align {
     text-align: left;
   }
 }
