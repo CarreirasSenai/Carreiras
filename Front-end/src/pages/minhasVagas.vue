@@ -38,7 +38,6 @@ export default {
 
 <style scoped>
 .suasVagas {
-  max-width: 800px;
   margin: 40px auto;
   padding: 20px;
   background-color: #f7f7f7;
