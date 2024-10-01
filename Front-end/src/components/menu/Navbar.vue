@@ -133,6 +133,7 @@
                     <v-btn
                       variant="text"
                       rounded
+                      to="/minhas-vagas"
                       v-if="user.grupo === 'candidato'"
                       >Minhas Vagas</v-btn
                     >
