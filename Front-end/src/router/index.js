@@ -11,13 +11,14 @@ import AgendaEmpresa from '@/pages/AgendaEmpresa.vue';
 import RedefinirSenha from '@/pages/redefinirSenha.vue';
 import ModalJustificativa from '@/components/perfis/empresa/vaga/ModalJustificativa.vue';
 import ListaEmpresas from '@/components/admin/ListaEmpresas.vue';
-import loginADM from '@/components/admin/loginADM.vue';
 import ListaDeUsuarios from '@/components/admin/ListaDeUsuarios.vue';
 import PerfilEmpresa from '@/pages/perfilEmpresa.vue';
 import ListaVagas from '@/components/admin/ListaVagas.vue';
 import Sobre from '@/pages/Sobre.vue';
 import DetalhesVaga from '@/pages/detalhesVaga.vue';
 import AgendaAlternativa from '@/pages/AgendaAlternativa.vue';
+import MinhasVagas from '@/pages/minhasVagas.vue';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,12 +42,12 @@ const router = createRouter({
     { path: '/perfil-candidato', component: PerfilCandidato },
     { path: '/agenda-empresa', component: AgendaEmpresa },
     { path: '/lista-empresas', component: ListaEmpresas },
-    { path: '/login-admin', component: loginADM },
-    { path: '/lista-de-usuarios', component: ListaDeUsuarios },
+    { path: '/lista-usuarios', component: ListaDeUsuarios },
     { path: '/lista-vagas', component: ListaVagas},
     { path: '/sobre', component: Sobre },
     { path: '/detalhes-vaga', component: DetalhesVaga},
-    { path: '/agenda-alternativa', component: AgendaAlternativa}
+    { path: '/agenda-alternativa', component: AgendaAlternativa},
+    { path: '/minhas-vagas', component: MinhasVagas}
   ],
 });
 

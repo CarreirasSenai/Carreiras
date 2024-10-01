@@ -78,6 +78,7 @@ exports.getLogin = (email, callback) => {
 };
 
 // Update
+// Necesssário fazer a validação se o email ou cpf de atualziação já existe como no cadastro, a falta disso ocasionara um erro no database - thiago :)
 exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, callback) => {
     db.query(`UPDATE user_candidato 
         SET nome_social = ?, 
