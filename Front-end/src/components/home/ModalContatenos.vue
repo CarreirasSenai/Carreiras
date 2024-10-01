@@ -1,4 +1,5 @@
 <template>
+
   <div class="text pa-4">
     <div>
       <v-btn class="primary bg-purple-darken-2" @click="dialog = true">
@@ -67,6 +68,11 @@
 export default {
   data: () => ({
     dialog: false,
+    methods: {
+    open() {
+      this.dialog = true;
+    },
+  },
     loading: false,
     success: false,
     error: false,
@@ -88,6 +94,7 @@ export default {
       },
     ],
   }),
+  
   methods: {
     sendMessage() {
       this.loading = true;
@@ -111,6 +118,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style scoped lang="scss">

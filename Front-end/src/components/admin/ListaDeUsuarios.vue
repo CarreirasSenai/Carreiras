@@ -34,7 +34,7 @@
           </v-col>
 
           <v-col cols="8" sm="3" class="text-end">
-            <MenuAdminUsuario v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
+            <EditarCadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
               :User="user" />
           </v-col>
 
