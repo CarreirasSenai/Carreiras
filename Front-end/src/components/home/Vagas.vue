@@ -62,7 +62,8 @@
             </small>
             <v-card-actions class="d-flex justify-space-between">
               <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
-              <router-link :to="`/perfil-empresa?requisicao=empresa&id=${item.raw.id_empresa}`" class="text-black text-decoration-none">
+              <router-link :to="`/perfil-empresa?requisicao=empresa&id=${item.raw.id_empresa}`"
+                class="text-black text-decoration-none">
                 <div class="d-flex align-center justify-center ga-2">
                   {{ item.raw.id_empresa }}
                   <img src="/src/assets/avatar.png" width="50px" class="rounded-circle" to="/perfil-empresa">
@@ -89,11 +90,15 @@
     </template>
   </v-data-iterator>
 
-  <template v-if="!vagas.length">
+  <template v-if="!vagas.length && dadosCarregados === true">
     <v-empty-state icon="mdi-magnify"
       text="Tente ajustar seus termos ou filtros de pesquisa. Às vezes, termos menos específicos ou consultas mais amplas podem ajudá-lo a encontrar o que procura."
       title="Não encontramos uma correspondência."></v-empty-state>
   </template>
+
+  <div v-if="dadosCarregados === false" class="text-center h-100 mt-15 pt-9 d-flex align-center justify-center">
+    <v-progress-circular color="deep-purple-accent-4" indeterminate :size="50"></v-progress-circular>
+  </div>
 </template>
 
 <script>
@@ -107,6 +112,7 @@ export default {
     return {
       vagas: [],
       search: '',
+      dadosCarregados: false
     }
   },
 
@@ -135,7 +141,10 @@ export default {
           withCredentials: true
         });
 
-        this.vagas = response.data.result;
+        setTimeout(() => {
+          this.vagas = response.data.result;
+          this.dadosCarregados = true;
+        }, 2000);
 
       } catch (error) {
         console.error('Erro', error.response.data);

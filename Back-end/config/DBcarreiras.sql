@@ -1,3 +1,7 @@
+create database carreiras;
+use carreiras;
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
+
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: carreiras
@@ -70,7 +74,7 @@ CREATE TABLE `curso` (
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
   CONSTRAINT `curso_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,6 +83,7 @@ CREATE TABLE `curso` (
 
 LOCK TABLES `curso` WRITE;
 /*!40000 ALTER TABLE `curso` DISABLE KEYS */;
+INSERT INTO `curso` VALUES (8,'Inglês','Duolingo','2024-09','2024-12',25,'2024-09-30 18:20:44'),(9,'Totvs Protheus','IOS','2016-02','2016-12',25,'2024-09-30 18:21:31');
 /*!40000 ALTER TABLE `curso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +139,7 @@ CREATE TABLE `formacao` (
   PRIMARY KEY (`id`),
   KEY `id_candidato` (`id_candidato`),
   CONSTRAINT `formacao_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,6 +148,7 @@ CREATE TABLE `formacao` (
 
 LOCK TABLES `formacao` WRITE;
 /*!40000 ALTER TABLE `formacao` DISABLE KEYS */;
+INSERT INTO `formacao` VALUES (6,'','Ensino Fundamental','Senai','2024-09','2024-12',26,'2024-09-30 18:19:14'),(7,'Desenvolvimento de Sistemas','Curso Técnico','Senai Norte Joinville','2019-02','2020-11',25,'2024-09-30 18:20:23'),(8,'Análise e Desenvolvimento de Sistemas','Ensino Superior (Graduação)','UniSenai Norte Joinville','2022-02','2025-12',25,'2024-09-30 18:22:13');
 /*!40000 ALTER TABLE `formacao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,7 +176,7 @@ CREATE TABLE `habilidade` (
 
 LOCK TABLES `habilidade` WRITE;
 /*!40000 ALTER TABLE `habilidade` DISABLE KEYS */;
-INSERT INTO `habilidade` VALUES (5,'[\"awfasf\"]',25,'2024-09-22 00:49:52');
+INSERT INTO `habilidade` VALUES (5,'[\"vue.js\", \"react\", \"javascript\", \"node.js\", \"mysql\", \"postgresql\", \"bootstrap\", \"html\", \"css\", \"materialui\", \"C#\", \"lógica de programação\"]',25,'2024-09-30 18:23:55');
 /*!40000 ALTER TABLE `habilidade` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,19 +252,18 @@ DROP TABLE IF EXISTS `user_admin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_admin` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `tipo` varchar(45) NOT NULL,
+  `tipo_admin` varchar(45) NOT NULL,
+  `status` tinyint(1) DEFAULT NULL,
   `nome` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `cpf` char(11) NOT NULL,
   `senha` varchar(250) NOT NULL,
   `celular` varchar(20) DEFAULT NULL,
   `grupo` varchar(5) NOT NULL,
-  `descricao` varchar(1000) DEFAULT NULL,
   `foto` varchar(200) DEFAULT NULL,
-  `capa` varchar(200) DEFAULT NULL,
   `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,6 +272,7 @@ CREATE TABLE `user_admin` (
 
 LOCK TABLES `user_admin` WRITE;
 /*!40000 ALTER TABLE `user_admin` DISABLE KEYS */;
+INSERT INTO `user_admin` VALUES (1,'super',1,'Super Admin','admin@admin.com','00000000000','$2b$10$5jDcy0sSqqOVE5WWNkGU2OFwsLsOFDusGnQSFjx1HM.IsBCnmQmgq','(00)00000-0000','admin',NULL,'2024-09-30 21:02:44');
 /*!40000 ALTER TABLE `user_admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -305,7 +311,7 @@ CREATE TABLE `user_candidato` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `cpf` (`cpf`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -314,7 +320,7 @@ CREATE TABLE `user_candidato` (
 
 LOCK TABLES `user_candidato` WRITE;
 /*!40000 ALTER TABLE `user_candidato` DISABLE KEYS */;
-INSERT INTO `user_candidato` VALUES (25,1,'ae605f546f2b651413dd4ef42bf12307b846ba6e6f883c93af2688ba9e2724e0','Thiago','Thiag Lima','mauesckt@gmail.com','4700000000','47000000000','00000000000','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','$2b$10$CbXB085hKBrYixwnUYMKYuP0bku5j9PnIP6EYYlWOo0rz91NlYMeq','Tecnologia da Informação','programador node.js','candidato','<h1>https://mauesck.github.io/portfolio/</h1>','perfil-foto-userId-25.jpg',NULL,'2024-09-21 18:09:59');
+INSERT INTO `user_candidato` VALUES (25,1,'ae605f546f2b651413dd4ef42bf12307b846ba6e6f883c93af2688ba9e2724e0','Thiagoo','Thiag Lima','mauesckt@gmail.com','(47) 0000-0000','(47) 00000-0000','00000000000','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','$2b$10$CbXB085hKBrYixwnUYMKYuP0bku5j9PnIP6EYYlWOo0rz91NlYMeq','Engenharia','programador php','candidato','<h1><span style=\"font-weight: bolder; white-space-collapse: collapse;\">Olá, tudo bem?</span></h1><div style=\"white-space-collapse: collapse;\"><br></div><div style=\"white-space-collapse: collapse;\">Meu nome é Thiago, eu sou desenvolvedor Full Stack com ênfase na criação de aplicações web utilizando node.js.</div><div style=\"white-space-collapse: collapse;\"><br></div><div style=\"white-space-collapse: collapse;\">Veja meu portfólio -&gt;&nbsp;<font color=\"#0055ff\">https://mauesck.github.io/portfolio/</font></div>','perfil-foto-303555970711905-userId-25.jpg','perfil-capa-907946581442958-userId-25.jpeg','2024-09-30 18:26:40'),(26,1,'faa095dd29bbbfd1237c42c37b738e81f50f5a7756d8d3c04fac3c227ad737ce','Thiago','Thiag Lima','pibipax668@skrak.com','4700000000','47000000000','00000000323','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','$2b$10$dOVZucG0o1Q9M/YVpYGrbuzwtD2o3s6PWGxfy/hs.1GvHxyqDudNm','Tecnologia da Informação','programador node.js','candidato','Olá meu nome é nome e eu quero um emprego','perfil-foto-010968158942723-userId-26.jpg',NULL,'2024-09-30 18:18:40');
 /*!40000 ALTER TABLE `user_candidato` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -355,7 +361,7 @@ CREATE TABLE `user_empresa` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `cnpj` (`cnpj`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -364,7 +370,7 @@ CREATE TABLE `user_empresa` (
 
 LOCK TABLES `user_empresa` WRITE;
 /*!40000 ALTER TABLE `user_empresa` DISABLE KEYS */;
-INSERT INTO `user_empresa` VALUES (1,0,NULL,'Empresa ABC Ltda','ABC Soluções','12345678000195','123456789012','12345678','Rua das Flores','123','Apto 101','Centro','São Paulo','SP','contato@abc.com','(11) 1234-5678','(11) 91234-5678','João Silva','12345678901','(11) 91234-5678','senhaSegura1','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(2,0,NULL,'Empresa XYZ S.A.','XYZ Consultoria','98765432000158','987654321098','87654321','Av. Paulista','456','','Bela Vista','São Paulo','SP','contato@xyz.com','(11) 8765-4321','(11) 98765-4321','Maria Souza','98765432100','(11) 98765-4321','senhaSegura2','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(3,0,NULL,'Tech Innovators Ltda','Tech Innovators','11223344000122','112233445566','11223344','Rua Inovação','789','Bloco B','Tecnologia','Campinas','SP','contato@techinnovators.com','(19) 1234-5678','(19) 91234-5678','Carlos Pereira','22334455677','(19) 91234-5678','senhaSegura3','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(4,0,NULL,'Alpha Serviços EIRELI','Alpha Serviços','33445566000188','334455667788','33445566','Av. do Trabalho','321','Sala 202','Industrial','Belo Horizonte','MG','contato@alphaservicos.com','(31) 8765-4321','(31) 98765-4321','Ana Oliveira','44556677889','(31) 98765-4321','senhaSegura4','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(5,0,NULL,'Beta Comercial Ltda','Beta Comercial','55667788000144','556677889900','55667788','Rua do Comércio','654','Loja 5','Centro','Rio de Janeiro','RJ','contato@betacomercial.com','(21) 1234-5678','(21) 91234-5678','Paulo Mendes','66778899011','(21) 91234-5678','senhaSegura5','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(8,1,'e2bbb1a82213875fda07227e3b9e6af11487324c2a16f91d2807642ec8ae1460','InfoTech S.A.','Thiago Mauesck Lima','20117741000164','283759312284','89225785','Rua Ivon Cury','50','Casa','Aventureiro','Joinville','SC','mauesckt@gmail.com','4799221259','47997213589','Fulano da Silva','90035392002','ciclano@infotech.com.br','$2b$10$q1MqjTJAti1IVKEewfwd2eV78wKYcxcwWb3fZu/tOWmYwdFwIxmgG','empresa','','','','2024-09-19 01:02:03');
+INSERT INTO `user_empresa` VALUES (1,0,NULL,'Empresa ABC Ltda','ABC Soluções','12345678000195','123456789012','12345678','Rua das Flores','123','Apto 101','Centro','São Paulo','SP','contato@abc.com','(11) 1234-5678','(11) 91234-5678','João Silva','12345678901','(11) 91234-5678','senhaSegura1','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(2,0,NULL,'Empresa XYZ S.A.','XYZ Consultoria','98765432000158','987654321098','87654321','Av. Paulista','456','','Bela Vista','São Paulo','SP','contato@xyz.com','(11) 8765-4321','(11) 98765-4321','Maria Souza','98765432100','(11) 98765-4321','senhaSegura2','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(3,0,NULL,'Tech Innovators Ltda','Tech Innovators','11223344000122','112233445566','11223344','Rua Inovação','789','Bloco B','Tecnologia','Campinas','SP','contato@techinnovators.com','(19) 1234-5678','(19) 91234-5678','Carlos Pereira','22334455677','(19) 91234-5678','senhaSegura3','empresa',NULL,NULL,NULL,'2024-09-17 05:23:29'),(16,0,'a38ddbbd307196efe54e3a98ddcd4da02e98198f79adf1cf35b870d732d7999a','InfoTech S.A.','InfoTech','20117741000164','283759312284','89225785','Rua Ivon Cury','50','Casa','Aventureiro','Joinville','SC','seuemail@gmail.com','4780614657','47997213589','Fulano da Silva','90035392002','ciclano_santos@infotech.com.br','$2b$10$0AcjYRERx6lTFXmahdmAuu7PVQWVtNoE3W2DLxQype3xLEKFjojY6','empresa',NULL,NULL,NULL,'2024-09-24 17:34:39'),(18,1,'72337164ab27329ea11454d7b3f84af0d928a9cbea4b2e3e05caba95beef943d','InfoTech S.A.','InfoTech','20316433333333','283759312284','89225785','Rua Ivon Cury','50','Casa','Aventureiro','Joinville','SC','pibipax668@skrak.com','4780614657','47997213589','Fulano da Silva','90035392002','ciclano_santos@infotech.com.br','$2b$10$quM8UwdkdXXdFLdDPuxCReUla2k4Nrm/Z7E.bFbmGChVQSJdRMwru','empresa','adfasdfasdf',NULL,NULL,'2024-09-30 16:29:19');
 /*!40000 ALTER TABLE `user_empresa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,7 +401,7 @@ CREATE TABLE `vagas` (
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
   CONSTRAINT `vagas_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -404,7 +410,7 @@ CREATE TABLE `vagas` (
 
 LOCK TABLES `vagas` WRITE;
 /*!40000 ALTER TABLE `vagas` DISABLE KEYS */;
-INSERT INTO `vagas` VALUES (4,'Desenvolvedor Junior','87775-435','Mafra','SC','Estágio','Presencial','Júnior','600,00','[\"JavaScript\", \"Vuejs\", \"react\", \"Angular\", \"Uma banheira do gugu\", \"3 soletrando\"]','[\"Boa comunication\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',1,'2024-09-10 07:24:44'),(10,'Analista de Dados','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',1,'2024-09-18 16:04:36'),(11,'Analista de Python','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',2,'2024-09-01 07:24:44'),(12,'Gente como a Gente','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',2,'2024-09-18 16:34:49'),(14,'Tech Lider','87775-435','Jaragua','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',2,'2024-09-19 06:05:58');
+INSERT INTO `vagas` VALUES (4,'Desenvolvedor Junior','87775-435','Mafra','SC','Estágio','Presencial','Júnior','600,00','[\"JavaScript\", \"Vuejs\", \"react\", \"Angular\", \"Uma banheira do gugu\", \"3 soletrando\"]','[\"Boa comunication\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',1,'2024-09-10 07:24:44'),(10,'Analista de Dados','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',1,'2024-09-18 16:04:36'),(11,'Analista de Python','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',2,'2024-09-01 07:24:44'),(12,'Gente como a Gente','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',2,'2024-09-18 16:34:49'),(14,'Tech Lider','87775-435','Jaragua','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',2,'2024-09-19 06:05:58'),(15,'Analista de Dados','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',18,'2024-09-24 17:47:01'),(16,'Analista de Dados','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.','[\"Entrevista\", \"Desafio\", \"Call com Líder\", \"Acordo\"]','[\"Há quantos anos você usa Excel no trabalho?\", \"Fale sobre um projeto desafiador.\"]',18,'2024-09-24 17:47:06');
 /*!40000 ALTER TABLE `vagas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -476,4 +482,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-22 12:22:37
+-- Dump completed on 2024-09-30 18:38:11

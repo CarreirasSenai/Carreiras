@@ -16,6 +16,7 @@ const Experiencia = require('../controller/experiencias');
 const Habilidade = require('../controller/habilidades');
 const VerificarConta = require('../controller/verificarConta');
 const Empresa = require('../controller/empresa');
+const Admin = require('../controller/admin');
 
 // rota autenticacao
 router.get('/auth', authMiddleware, (req, res) => {
@@ -79,6 +80,13 @@ router.put('/redefinir/senha', RedefinirSenha.redefinirSenha);
 
 // rota verificar conta
 router.get('/verifica-conta', VerificarConta.verificarConta);
+
+// rotas admin
+router.post('/admin/login', Admin.login);
+router.get('/admin/read', authMiddleware, Admin.getUser);
+// router.delete('/admin/delete', authMiddleware, Candidato.deleteUser);
+// router.post('/admin/create', Candidato.createUser);
+// router.put('/admin/update', authMiddleware, Candidato.updateUser);
 
 // rota logout
 router.get('/logout', (req, res) => {

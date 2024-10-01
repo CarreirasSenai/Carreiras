@@ -34,15 +34,17 @@ exports.perfilUpdate = (req, res) => {
         // Define o diretório de uploads
         const diretorio = path.join(__dirname, '..', 'public', 'uploads', 'perfil');
 
+        const numAleatorio = Math.random().toString().slice(2, 17);
+
         if (foto) {
             const extensao = foto.name.split('.').pop();
-            var fotoNome = `perfil-foto-userId-${id}.${extensao}`;
+            var fotoNome = `perfil-foto-${numAleatorio}-userId-${id}.${extensao}`;
             foto.mv(path.join(diretorio, fotoNome));
         }
 
         if (capa) {
             const extensao = capa.name.split('.').pop();
-            var capaNome = `perfil-capa-userId-${id}.${extensao}`;
+            var capaNome = `perfil-capa-${numAleatorio}-userId-${id}.${extensao}`;
             capa.mv(path.join(diretorio, capaNome));
         }
 

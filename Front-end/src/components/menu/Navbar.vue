@@ -45,8 +45,8 @@
                     </div>
                     <!-- <NavbarLogado /> -->
                     <div class="user-account-avatar d-flex align-center ga-2 mr-2" v-if="user.visibilidadeLogado">
-                        <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.user.email }}</h1>
-                        <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center">
+                        <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.dadosUser.email }}</h1>
+                        <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center" v-if="visibilidadeMenuInicial">
                             <v-btn variant="text" rounded to="/" class="text-none">Home</v-btn>
                             <v-btn variant="text" rounded to="/sobre" class="text-none">Sobre o Carreiras</v-btn>
                             <v-btn variant="text" rounded to="/contato" class="text-none">Contate-nos</v-btn>
@@ -54,16 +54,16 @@
                         <v-menu min-width="200px" rounded>
                             <template v-slot:activator="{ props }">
                                 <v-btn icon v-bind="props">
-                                    <v-avatar v-if="user.user.foto" :image="user.user.foto" size="45"></v-avatar>
+                                    <v-avatar v-if="user.dadosUser.foto" :image="user.dadosUser.foto" size="45"></v-avatar>
                                 </v-btn>
                             </template>
                             <v-card>
                                 <v-card-text>
                                     <div class="mx-auto text-center">
-                                        <v-avatar v-if="user.user.foto" :image="user.user.foto" size="45"></v-avatar>
-                                        <h3>{{ user.user.fullName }}</h3>
+                                        <v-avatar v-if="user.dadosUser.foto" :image="user.dadosUser.foto" size="45"></v-avatar>
+                                        <h3>{{ user.dadosUser.nome_completo }}</h3>
                                         <p class="text-caption mt-1">
-                                            {{ user.user.email }}
+                                            {{ user.dadosUser.email }}
                                         </p>
                                         <v-divider class="my-2"></v-divider>
                                         <v-btn variant="text" rounded to="/">
@@ -116,6 +116,7 @@ export default {
     mounted() {
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
+        this.user.userLogado();
     },
 
     beforeDestroy() {

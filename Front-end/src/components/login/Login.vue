@@ -24,7 +24,8 @@
                     senha?</p>
                 </v-col>
                 <v-col cols="6">
-                  <p class="cor-primaria cursor-pointer text-end" @click="goToSignUp">Não tem uma conta? Cadastre-se.
+                  <p class="cor-primaria cursor-pointer text-end" @click="goToSignUp"
+                    v-if="resposta === 'empresa' || resposta === 'candidato'">Não tem uma conta? Cadastre-se.
                   </p>
                 </v-col>
               </v-row>
@@ -51,7 +52,7 @@ export default {
       password: '12345678Ww@',
       showPassword: false,
       passwordRules: [(v) => !!v || 'Senha requerida'],
-      resposta: this.$route.query.resposta,
+      resposta: '',
       mensagem: '',
     };
   },
@@ -63,15 +64,12 @@ export default {
   methods: {
     async login() {
       try {
-        const urlLogin = window.location.href;
-        const path = urlLogin.includes("empresa") ? "empresa" : "candidato"
-
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/${path}/login`, {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/${this.resposta}/login`, {
           email: this.email,
           password: this.password
         }, { withCredentials: true });
 
-        localStorage.setItem("grupo", this.resposta); // Resposta 'candidato' ou 'empresa' enviada a store para receber os dados
+        localStorage.setItem("grupo", this.resposta); // Resposta 'candidato', 'empresa' ou 'admin' enviada a store para receber os dados
         this.$router.push('/'); // Envia a Home index.vue
 
         console.log('Login bem-sucedido', response.data);
@@ -95,7 +93,7 @@ export default {
   },
 
   mounted() {
-    this.$route.query.resposta;
+    this.resposta = this.$route.query.resposta;
   },
 };
 

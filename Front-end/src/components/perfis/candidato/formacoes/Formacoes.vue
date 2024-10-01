@@ -15,12 +15,13 @@
                                 {{ items.lugar }} <br>
                                 {{ formatarData(items.inicio) }} - {{ formatarData(items.termino) }}
                             </v-card-text>
-                            <EditarFormacoes :MostrarFormacoes="mostrarFormacoes" :Formacoes="items" />
+                            <EditarFormacoes :MostrarFormacoes="mostrarFormacoes" :Formacoes="items"
+                                v-if="grupo === 'candidato'" />
                         </v-card>
                     </v-col>
                     <span v-if="!formacoes.length" class="ma-4">Adicione uma formação.</span>
                 </v-row>
-                <AdicionarFormacao :MostrarFormacoes="mostrarFormacoes" />
+                <AdicionarFormacao :MostrarFormacoes="mostrarFormacoes" v-if="grupo === 'candidato'" />
             </v-expansion-panel-text>
         </v-expansion-panel>
     </v-col>
@@ -32,6 +33,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            grupo: '',
             formacoes: [
                 {
                     nome: '',
@@ -45,11 +47,15 @@ export default {
     },
     mounted() {
         this.mostrarFormacoes();
+        this.grupo = localStorage.getItem('grupo');
     },
     methods: {
         async mostrarFormacoes() {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/formacao/read`, {
+                    params: {
+                        idUser: '',
+                    },
                     withCredentials: true
                 });
 
