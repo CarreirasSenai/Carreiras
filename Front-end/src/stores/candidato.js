@@ -11,8 +11,6 @@ export const useCandidatoStore = defineStore('candidato', {
     actions: {
         async userLogado() {
             this.grupo = localStorage.getItem("grupo");
-            console.log(this.grupo);
-            
 
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${this.grupo}/read`, {
@@ -22,7 +20,7 @@ export const useCandidatoStore = defineStore('candidato', {
                 // Atribuindo dados do usuario
                 this.dadosUser = response.data.usuario;
 
-                console.log("Usuário logado:", this.dadosUser);
+                console.log("Usuário logado:", this.dadosUser);                        
 
                 // Mostra foto ou avatar padrão
                 this.dadosUser.foto = this.dadosUser.foto === null ? '/src/assets/avatar.png' : `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/${this.dadosUser.foto}`;

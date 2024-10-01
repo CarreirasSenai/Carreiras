@@ -44,12 +44,12 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      email: 'pibipax668@skrak.com',
+      email: 'admin@admin.com',
       emailRules: [
         (v) => !!v || 'E-mail requerido',
         (v) => /.+@.+\..+/.test(v) || 'E-mail deve ser válido',
       ],
-      password: '12345678Ww@',
+      password: '123456',
       showPassword: false,
       passwordRules: [(v) => !!v || 'Senha requerida'],
       resposta: '',
@@ -70,7 +70,9 @@ export default {
         }, { withCredentials: true });
 
         localStorage.setItem("grupo", this.resposta); // Resposta 'candidato', 'empresa' ou 'admin' enviada a store para receber os dados
-        this.$router.push('/'); // Envia a Home index.vue
+
+        const pagina = this.resposta === 'admin' ? 'lista-vagas' : '/';
+        this.$router.push(pagina);
 
         console.log('Login bem-sucedido', response.data);
       } catch (error) {

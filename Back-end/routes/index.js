@@ -59,7 +59,7 @@ router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 
 // rotas empresa
 router.post('/empresa/login', Empresa.login);
-router.post('/empresa/create', Empresa.createCompany); 
+router.post('/empresa/create', Empresa.createCompany);
 router.get('/empresa/read', authMiddleware, Empresa.getUser);
 router.delete('/empresa/delete', authMiddleware, Empresa.deleteUser);
 router.put('/empresa/update', authMiddleware, Empresa.updateUser);
@@ -82,11 +82,12 @@ router.put('/redefinir/senha', RedefinirSenha.redefinirSenha);
 router.get('/verifica-conta', VerificarConta.verificarConta);
 
 // rotas admin
+router.post('/admin/create', Admin.createUser);
 router.post('/admin/login', Admin.login);
 router.get('/admin/read', authMiddleware, Admin.getUser);
-// router.delete('/admin/delete', authMiddleware, Candidato.deleteUser);
-// router.post('/admin/create', Candidato.createUser);
-// router.put('/admin/update', authMiddleware, Candidato.updateUser);
+router.get('/admin/read/all', authMiddleware, Admin.getAllUser);
+router.delete('/admin/delete/:id', authMiddleware, Admin.deleteUser);
+router.put('/admin/update', authMiddleware, Admin.updateUser);
 
 // rota logout
 router.get('/logout', (req, res) => {
