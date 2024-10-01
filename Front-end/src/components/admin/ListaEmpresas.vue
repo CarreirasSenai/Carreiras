@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="list-empresa">
-          <v-row v-for="n in 6" :key="n" class="list-empresa-row">
+          <v-row v-for="empresa in empresas" :key="empresa" class="list-empresa-row">
             <v-col cols="12">
               <v-card class="card-da-empresa">
                 <v-row align="center" no-gutters>
@@ -32,11 +32,11 @@
                     </v-avatar>
                   </v-col>
                   <v-col cons="3">
-                    <h3 class="empresa-nome">TOTVS - Sistemas Inteligentes</h3>
+                    <h3 class="empresa-nome">{{empresa.usuario.nome_fantasia}}</h3>
                   </v-col>
                   <v-col cols="2">
                     <p class="localizacao-empresa">
-                      <strong>Localização: </strong> Joinville
+                      <strong>Localização: </strong> {{empresa.usuario.cidade}}
                     </p>
                   </v-col>
                   <v-col cols="2">
@@ -55,12 +55,32 @@
 </template>
 
 <script>
+import axios from 'axios';
 import MenuAdminEmpresa from "./MenuAdminEmpresa.vue";
 export default {
   components: { MenuAdminEmpresa },
   data: () => ({
     items: [{ text: "Offline", icon: "mdi-check-circle" }],
+    empresas: ''
   }),
+  mounted() {
+    this.recuperaEmpresas();
+  },
+  methods: {
+    async recuperaEmpresas(){
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/empresa/read`, {
+          withCredentials: true
+        });
+
+        console.log('Array de empresas', response.data);
+        this.empresas = response.data.usuario;
+
+      } catch (error) {
+        console.error('Erro: ', error.response.data);
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

@@ -184,6 +184,11 @@
               </v-card-text>
               <v-divider></v-divider>
               <v-card-actions>
+                <v-btn
+                  text="Excluir"
+                  variant="text"
+                  @click="dialog = false, modalDelete = true"
+                ></v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
                   text="Fechar"
@@ -203,6 +208,21 @@
         </v-row>
       </v-container>
     </v-dialog>
+    <div>
+      <v-dialog max-width="500" v-model="modalDelete">
+        <v-card title="Confirme a Exclusão da Empresa">
+          <v-card-text>
+            Tem certeza que deseja excluir essa empresa? Todos os dados da empresa serão apagados e não será possível
+            recuperá-los!
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn variant="tonal" text="Cancelar" @click="modalDelete = false"></v-btn>
+            <v-btn variant="tonal" class="bg-error" text="Excluir Empresa" @click="deletarEmpresa"></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
   </div>
 </template>
 
@@ -229,6 +249,7 @@ export default {
       contatoRA: "",
       senha: "",
       repSenha: "",
+      modalDelete: false,
       razaoSocialRules: [(v) => !!v || "Razão social requerida"],
       nomeFantasiaRules: [(v) => !!v || "Nome fantasia requerido"],
       emailRules: [
