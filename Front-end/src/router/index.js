@@ -47,7 +47,7 @@ const router = createRouter({
     { path: '/sobre', component: Sobre },
     { path: '/detalhes-vaga', component: DetalhesVaga},
     { path: '/agenda-alternativa', component: AgendaAlternativa},
-    { path: '/minhas-vagas', component: MinhasVagas}
+    { path: '/minhas-vagas', component: MinhasVagas},
   ],
 });
 
