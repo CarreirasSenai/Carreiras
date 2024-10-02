@@ -1,5 +1,5 @@
 const Empresa = require('../model/empresa');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { gerarToken } = require('../services/gerarToken');
 const transporter = require('../services/nodemailer');
 

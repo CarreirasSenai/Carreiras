@@ -7,6 +7,18 @@
 </template>
 
 <script>
+import { useResolucaoDesktop } from "@/stores/resolucao";
+
+export default {
+  computed: {
+    resolucao() {
+      return useResolucaoDesktop();
+    }
+  },
+  mounted() {
+    this.resolucao.verificaResolucao();
+  }
+}
 </script>
 
 <style>

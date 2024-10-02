@@ -20,6 +20,7 @@ const Admin = require('../controller/admin');
 
 // rota autenticacao
 router.get('/auth', authMiddleware, (req, res) => {
+    console.log('Usuário autenticado: ', req.session.usuario.email);
     res.status(200).json({ message: "Authenticated" });
 });
 
@@ -88,6 +89,7 @@ router.get('/admin/read', authMiddleware, Admin.getUser);
 router.get('/admin/read/all', authMiddleware, Admin.getAllUser);
 router.delete('/admin/delete/:id', authMiddleware, Admin.deleteUser);
 router.put('/admin/update', authMiddleware, Admin.updateUser);
+router.get('/admin/pesquisa', Admin.pesquisaUser);
 
 // rota logout
 router.get('/logout', (req, res) => {
