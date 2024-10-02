@@ -27,7 +27,7 @@
                 variant="underlined"></v-text-field>
             </v-col>
           </v-row>
-          <v-row>
+          <v-row v-if="usuario.dadosUser.tipo_admin === 'super'">
             <v-col cols="12" md="6">
               <v-radio-group v-model="form.tipo" :rules="geral" label="Classe do Usuário">
                 <v-radio label="SUPER" value="super"></v-radio>
@@ -42,10 +42,17 @@
               </v-radio-group>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-btn to="/redefinir-senha?resposta=admin" text="Redefinir Senha" append-icon="mdi-arrow-top-right-thick"
+                block></v-btn>
+            </v-col>
+          </v-row>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions class="d-flex justify-end">
-          <v-btn text="Excluir" color="error" @click="modalDelete = true"></v-btn>
+          <v-btn v-if="usuario.dadosUser.tipo_admin === 'super'" text="Excluir" color="error"
+            @click="modalDelete = true"></v-btn>
           <v-spacer></v-spacer>
           <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
           <v-btn text="Salvar" color="Enviar" variant="tonal" class="bg-purple-darken-4" type="submit"></v-btn>
@@ -70,6 +77,7 @@
 
 <script>
 import axios from "axios";
+import { useCandidatoStore } from "@/stores/candidato";
 
 export default {
   data() {
@@ -131,6 +139,12 @@ export default {
     User: {
       type: Object,
       required: true
+    }
+  },
+
+  computed: {
+    usuario() {
+      return useCandidatoStore();
     }
   },
 

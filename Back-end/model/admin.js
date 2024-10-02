@@ -60,7 +60,6 @@ exports.getLogin = (email, callback) => {
 
 // Read
 exports.getUser = (id, callback) => {
-    console.log('model');
     db.query('SELECT * FROM user_admin WHERE id = ?', [id], (err, rows) => {
         if (err) {
             console.log(err);
@@ -68,7 +67,7 @@ exports.getUser = (id, callback) => {
         }
 
 
-        console.log(rows[0]);
+        // console.log(rows[0]);
         return callback(null, rows.length > 0 ? rows[0] : null);
     });
 };
@@ -141,5 +140,24 @@ exports.deleteUser = (id, callback) => {
             console.log(result);
             return callback(null, result.affectedRows > 0);
         }
+    });
+};
+
+exports.pesquisaUser = (busca, callback) => {
+    const buscaComCuringa = `%${busca}%`; // Adiciona o curinga para busca parcial
+
+    const sql = `
+        SELECT * FROM user_admin 
+        WHERE CONCAT(nome, ' ', email, ' ', cpf, ' ', celular, ' ', tipo_admin, ' ', status) LIKE ?
+    `;
+
+    db.query(sql, [buscaComCuringa], (err, row) => {
+        if (err) {
+            // console.log(err);
+            return callback(err, null);
+        }
+
+        // console.log(row);
+        return callback(null, row);
     });
 };

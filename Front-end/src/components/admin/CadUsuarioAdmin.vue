@@ -1,7 +1,9 @@
 <template>
   <v-dialog v-model="dialog" max-width="600" persistent>
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn class="bg-deep-purple-accent-3" v-bind="activatorProps">
+      <v-btn v-if="!resolucao.resolucaoDesktop" icon="mdi-plus" class="bg-deep-purple-accent-3" v-bind="activatorProps">
+      </v-btn>
+      <v-btn v-if="resolucao.resolucaoDesktop" class="bg-deep-purple-accent-3" v-bind="activatorProps">
         Adicionar
       </v-btn>
     </template>
@@ -69,12 +71,13 @@
 
 <script>
 import axios from "axios";
+import { useResolucaoDesktop } from "@/stores/resolucao";
 
 export default {
   data() {
     return {
       show1: false,
-      show2: true,
+      show2: false,
       dialog: false,
       mensagem: '',
       form: {
@@ -141,6 +144,12 @@ export default {
       type: Function,
       required: true
     }
+  },
+
+  computed: {
+    resolucao() {
+      return useResolucaoDesktop();
+    },
   },
 
   methods: {
