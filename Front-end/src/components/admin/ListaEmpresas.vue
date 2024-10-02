@@ -27,7 +27,7 @@
               <v-chip size="small" :color="colorTipoUser(user.verificado)">{{ user.verificado === 1 ? 'Verificado' : 'Não verificado'}}</v-chip>
             </v-col>
             <v-col cols="8" sm="3" class="text-end">
-              <EditarCadEmpresaAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
+              <MenuAdminEmpresa v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
                 :User="user" />
             </v-col>
           </v-row>
@@ -38,6 +38,9 @@
 </template>
 
 <script>
+import { useAuthStore } from "@/stores/auth";
+import { useCandidatoStore } from "@/stores/candidato";
+
 import axios from "axios";
 import MenuAdminEmpresa from "./MenuAdminEmpresa.vue";
 export default {
@@ -46,6 +49,14 @@ export default {
     items: [{ text: "Offline", icon: "mdi-check-circle" }],
     empresas: "",
   }),
+  computed: {
+    auth() {
+      return useAuthStore();
+    },
+    usuario() {
+      return useCandidatoStore();
+    }
+  },
   mounted() {
     this.recuperaEmpresas();
   },

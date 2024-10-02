@@ -312,5 +312,21 @@ export default {
       dialog: false,
     };
   },
+  props: {
+    MostrarUsuarios: {
+        type: Function,
+        required: true
+    },
+    User: {
+        type: Object,
+        required: true
+    }
+  },
+  mounted() {
+    this.id = this.User.id,
+    this.razaoSocial = this.User.razao_social,
+    this.nomeFantasia = this.User.nome_fantasia,
+    this.email = this.User.email
+  }
 };
 </script>

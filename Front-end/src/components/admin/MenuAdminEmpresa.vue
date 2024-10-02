@@ -8,7 +8,7 @@
             <v-list>
                 <v-list-item class="pa-0">
                     <v-list-item-title class="cursor-pointer">
-                        <EditarCadEmpresaAdmin />
+                        <EditarCadEmpresaAdmin :MostrarUsuarios="MostrarUsuarios" :User="User"/>
                         <EditarStatusEmpresa />
                     </v-list-item-title>
                 </v-list-item>
@@ -20,17 +20,14 @@
 <script>
 export default {
     data: () => ({
-        // items: [
-        //     { title: 'Editar Perfil' },
-        //     { title: 'Editar Descrição' },
-        //     { title: 'Editar Foto e Capa' },
-        // ],
+       MostrarUsuarios: {
+            type: Function,
+            required: true
+       },
+       User: {
+            type: Object,
+            required: true
+       }
     }),
 }
 </script>
-
-<style>
-* {
-    /* border: 1px solid red; */
-}
-</style>
