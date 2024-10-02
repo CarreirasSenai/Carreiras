@@ -6,6 +6,9 @@
       <h1 style="font-size: 3vh;">Usuários do Sistema</h1>
       <v-spacer></v-spacer>
       <CadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios" />
+      <v-btn class="bg-deep-purple-accent-3" v-if="usuario.dadosUser.tipo_admin != 'super'" @click="showSnackbar = true">
+        Adicionar
+      </v-btn>
     </div>
 
     <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure um Usuário"
@@ -46,9 +49,10 @@
     </v-card>
   </v-container>
 
-  <v-snackbar variant="tonal" v-model="showSnackbar" :timeout="4000" color="error" elevation="24">
-    <div class="text-center">Você é <span class="text-uppercase rounded pa-1 ma-1" :class="'bg-'+colorTipoUser(usuario.dadosUser.tipo_admin)">{{
-      usuario.dadosUser.tipo_admin }}</span> não tem acesso! 👎😂</div>
+  <v-snackbar location="top right" v-model="showSnackbar" :timeout="4000" color="red" elevation="24">
+    <div class="text-center">Você é <span class="text-uppercase rounded-xl pa-1 ma-1"
+        :class="'bg-' + colorTipoUser(usuario.dadosUser.tipo_admin)">{{
+          usuario.dadosUser.tipo_admin }}</span> não tem acesso! 👎😂</div>
   </v-snackbar>
 </template>
 
