@@ -29,8 +29,6 @@ exports.createUser = async (req, res) => {
 exports.login = (req, res) => {
     const { email, password } = req.body;
 
-    console.log(email, password);
-
     Admin.getLogin(email, (err, user, status) => {
         if (err) {
             return res.status(500).json({ error: err.message });
@@ -120,10 +118,19 @@ exports.deleteUser = (req, res) => {
     });
 };
 
+exports.pesquisaUser = (req, res) => {
+    const busca = req.query.busca;
 
-// async function name() {
-//     const saltRounds = 10;
-//     const hashedPassword = await bcrypt.hash('123456', saltRounds);
-//     console.log(hashedPassword);
-// }
-// name();
+    Admin.pesquisaUser(busca, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        if (result.length === 0) {
+            console.log('Busca não encontrada');            
+            return res.status(404).json({ error: 'Busca não encontrada' });
+        }
+
+        return res.json({ success: true, result: result });
+    });
+};

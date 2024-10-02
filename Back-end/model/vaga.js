@@ -26,7 +26,7 @@ exports.vagaRead = (id, callback) => {
             return callback(err, null);
 
         } else if (row) {
-            console.log(row[0]);
+            // console.log(row[0]);
             return callback(null, row[0]);
         }
     });
@@ -52,7 +52,7 @@ exports.vagaReadAll = (callback) => {
             return callback(err, null);
 
         } else if (result) {
-            console.log(result);
+            // console.log(result);
             return callback(null, result);
         }
     });

@@ -6,13 +6,15 @@
       <h1 style="font-size: 3vh;">Usuários do Sistema</h1>
       <v-spacer></v-spacer>
       <CadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios" />
-      <v-btn class="bg-deep-purple-accent-3" v-if="usuario.dadosUser.tipo_admin != 'super'" @click="showSnackbar = true">
+      <v-btn class="bg-deep-purple-accent-3" v-if="usuario.dadosUser.tipo_admin != 'super'"
+        @click="showSnackbar = true">
         Adicionar
       </v-btn>
     </div>
 
-    <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure um Usuário"
-      variant="underlined" hide-details single-line @click:append-inner="onClick" />
+    <v-text-field v-model="busca" :loading="loading" append-inner-icon="mdi-magnify" density="compact"
+      label="Procure um Usuário" variant="underlined" hide-details single-line @click:append-inner="searchUser"
+      @keyup.enter="searchUser" />
 
     <v-card v-for="user in usuarios" :key="user">
       <v-card-text>
@@ -67,7 +69,8 @@ export default {
     showSnackbar: false,
     loading: false,
     dialog: false,
-    usuarios: ''
+    usuarios: '',
+    busca: ''
   }),
   computed: {
     auth() {
@@ -98,8 +101,23 @@ export default {
       }
     },
 
-    onClick() {
-      console.log("Ícone de busca clicado");
+    async searchUser() {
+      console.clear();
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/pesquisa`, {
+          params: {
+            busca: this.busca
+          },
+          withCredentials: true
+        });
+
+        console.log(response.data);
+        this.usuarios = response.data.result;
+
+      } catch (error) {
+        console.error('Erro na busca:', error.response.data);
+        this.usuarios = '';
+      }
     },
 
     colorTipoUser(value) {
