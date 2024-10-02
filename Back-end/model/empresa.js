@@ -71,6 +71,18 @@ exports.getUser = (id, callback) => {
     });
 };
 
+exports.getAllUser = (callback) => {
+    db.query('SELECT * FROM user_empresa', (err, result) => {
+        if(err) {
+            console.log(err);
+            return callback(err, null);
+        }
+
+        console.log(result);
+        return callback(null, result.length > 0 ? result : null);
+    });
+}
+
 exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, grupo, id,
 callback) => {
     db.query(`UPDATE user_empresa

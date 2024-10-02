@@ -130,6 +130,18 @@ exports.getUser = (req, res) => {
     });
 };
 
+exports.getAllUser = (req, res) => {
+    Empresa.getAllUser((err, usuarios) => {
+        if(err)
+            return res.status(500).json({ error: err.message });
+        
+        if (!usuarios)
+            return res.status(404).json
+
+        res.json({ success: true, usuarios: usuarios })
+    })
+}
+
 exports.updateUser = (req, res) => {
     const {id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero,
     complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA} = req.body;

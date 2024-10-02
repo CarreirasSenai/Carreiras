@@ -1,86 +1,77 @@
 <template>
-    <div style="height: 100%">
-      <Navbar />
-      <v-container fluid class="fill-height main-container">
-        <div class="text-center mt-4">
-          <h1>Lista de Empresas</h1>
-        </div>
-        <div class="busca">
-          <div class="procurar-empresas">
-            <v-card-text>
-              <v-text-field
-                :loading="loading"
-                append-inner-icon="mdi-magnify"
-                density="compact"
-                label="Procure uma Empresa."
-                variant="solo"
-                hide-details
-                single-line
-                @click:append-inner="onClick"
-              />
-            </v-card-text>
-          </div>
-        </div>
-        <div class="list-empresa">
-          <v-row v-for="empresa in empresas" :key="empresa" class="list-empresa-row">
-            <v-col cols="12">
-              <v-card class="card-da-empresa">
-                <v-row align="center" no-gutters>
-                  <v-col cols="3" class="text-center">
-                    <v-avatar color="surface-variant" size="60">
-                      <v-icon class="empresa-foto">mdi-account-circle</v-icon>
-                    </v-avatar>
-                  </v-col>
-                  <v-col cons="3">
-                    <h3 class="empresa-nome">{{empresa.usuario.nome_fantasia}}</h3>
-                  </v-col>
-                  <v-col cols="2">
-                    <p class="localizacao-empresa">
-                      <strong>Localização: </strong> {{empresa.usuario.cidade}}
-                    </p>
-                  </v-col>
-                  <v-col cols="2">
-                    <p class="status"></p>
-                  </v-col>
-                  <v-col cons="3" class="text-right">
-                    <div class="locaCor"><MenuAdminEmpresa /></div>
-                  </v-col>
-                </v-row>
-              </v-card>
+  <div>
+    <Navbar />
+    <v-container class="d-flex flex-column ga-8 pa-6 mt-5">
+      <div class="d-flex align-center ga-1">
+        <h1 style="font-size: 3vh;">Empresas do Sistema</h1>
+        <v-spacer></v-spacer>
+      </div>
+      <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Empresa"
+        variant="underlined" hide-details single-line @click:append-inner="onClick" />
+      <v-card v-for="user in empresas" :key="user">
+        <v-card-text>
+          <v-row align="center">
+            <v-col cols="3" sm="3">
+              <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.foto">
+              </v-avatar>
+              <v-avatar color="surface-variant" :image="user.foto" v-if="user.foto">
+              </v-avatar>
+            </v-col>
+            <v-col cols="9" sm="3">
+              <div class="ma-1">
+                <h3>{{ user.nome_fantasia }}</h3>
+                <p>{{ user.email }}</p>
+              </div>
+            </v-col>
+            <v-col cols="4" sm="3" class="text-align">
+              <v-chip size="small" :color="colorTipoUser(user.verificado)">{{ user.verificado === 1 ? 'Verificado' : 'Não verificado'}}</v-chip>
+            </v-col>
+            <v-col cols="8" sm="3" class="text-end">
+              <EditarCadEmpresaAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
+                :User="user" />
             </v-col>
           </v-row>
-        </div>
-      </v-container>
-    </div>
+        </v-card-text>
+      </v-card>
+    </v-container>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 import MenuAdminEmpresa from "./MenuAdminEmpresa.vue";
 export default {
   components: { MenuAdminEmpresa },
   data: () => ({
     items: [{ text: "Offline", icon: "mdi-check-circle" }],
-    empresas: ''
+    empresas: "",
   }),
   mounted() {
     this.recuperaEmpresas();
   },
   methods: {
-    async recuperaEmpresas(){
+    async recuperaEmpresas() {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/empresa/read`, {
-          withCredentials: true
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/empresa/read/all`,
+          {
+            withCredentials: true,
+          }
+        );
 
-        console.log('Array de empresas', response.data);
-        this.empresas = response.data.usuario;
-
+        console.log("Array de empresas", response.data);
+        this.empresas = response.data.usuarios;
       } catch (error) {
-        console.error('Erro: ', error.response.data);
+        console.error("Erro: ", error.response.data);
       }
+    },
+    colorTipoUser(value) {
+      if (value === 1) 
+        return 'success';
+      
+      return 'error';
     }
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
