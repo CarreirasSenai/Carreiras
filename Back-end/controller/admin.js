@@ -1,5 +1,5 @@
 const Candidato = require('../model/candidato');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { gerarToken } = require('../services/gerarToken');
 const transporter = require('../services/nodemailer');
 const Admin = require('../model/admin');

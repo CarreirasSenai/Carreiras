@@ -1,6 +1,6 @@
 const transporter = require('../services/nodemailer');
 const RedefinirSenha = require('../model/redefinirSenha');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 exports.enviarCodigo = (req, res) => {
     // Recebe o email da requisição
