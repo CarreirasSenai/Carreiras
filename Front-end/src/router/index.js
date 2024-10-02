@@ -18,6 +18,7 @@ import Sobre from '@/pages/Sobre.vue';
 import DetalhesVaga from '@/pages/detalhesVaga.vue';
 import AgendaAlternativa from '@/pages/AgendaAlternativa.vue';
 import MinhasVagas from '@/pages/minhasVagas.vue';
+import ListaCandidatos from '@/pages/listaCandidatos.vue';
 
 
 const router = createRouter({
@@ -47,7 +48,8 @@ const router = createRouter({
     { path: '/sobre', component: Sobre },
     { path: '/detalhes-vaga', component: DetalhesVaga},
     { path: '/agenda-alternativa', component: AgendaAlternativa},
-    { path: '/minhas-vagas', component: MinhasVagas}
+    { path: '/minhas-vagas', component: MinhasVagas},
+    { path: '/lista-de-candidatos', component: ListaCandidatos}
   ],
 });
 
