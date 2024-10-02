@@ -222,7 +222,7 @@
                       class="my-2"
                       v-if="user.grupo === 'admin'"
                     ></v-divider>
-                    <v-btn variant="text" rounded v-if="user.grupo === 'admin'">
+                    <v-btn variant="text" rounded to="lista-candidatos" v-if="user.grupo === 'admin'">
                       Candidatos</v-btn
                     >
 
