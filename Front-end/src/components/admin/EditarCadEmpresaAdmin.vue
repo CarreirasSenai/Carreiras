@@ -326,7 +326,21 @@ export default {
     this.id = this.User.id,
     this.razaoSocial = this.User.razao_social,
     this.nomeFantasia = this.User.nome_fantasia,
-    this.email = this.User.email
+    this.email = this.User.email,
+    this.telefone = this.User.telefone,
+    this.celular = this.User.celular,
+    this.cnpj = this.User.cnpj,
+    this.inscricaoEstadual = this.User.inscricao_estadual,
+    this.cep = this.User.cep,
+    this.numero = this.User.numero,
+    this.complemento = this.User.complemento,
+    this.endereco = this.User.endereco,
+    this.bairro = this.User.bairro,
+    this.cidade = this.User.cidade,
+    this.estado = this.User.estado,
+    this.responsavelLegal = this.User.responsavel_legal,
+    this.cpf_responsavel = this.User.cpf_responsavel,
+    this.contatoRA = this.User.contato_responsavel
   }
 };
 </script>

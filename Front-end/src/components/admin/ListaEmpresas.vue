@@ -57,11 +57,14 @@ export default {
       return useCandidatoStore();
     }
   },
+  created() {
+    this.auth.autenticacao();
+  },
   mounted() {
-    this.recuperaEmpresas();
+    this.mostrarUsuarios();
   },
   methods: {
-    async recuperaEmpresas() {
+    async mostrarUsuarios() {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/empresa/read/all`,
