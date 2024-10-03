@@ -13,11 +13,7 @@
 
             <v-divider></v-divider>
             <v-data-table height="400" v-model:search="search" :headers="headers" :items="eventos"
-                :sort-by="[{ key: 'titulo', order: 'asc' }]">
-
-                <template v-slot:item.titulo="{ item }">
-                    {{ item.titulo }}
-                </template>
+                :sort-by="[{ key: 'vaga', order: 'asc' }]">
 
                 <template v-slot:item.candidato="{ item }">
                     {{ item.candidato }}
@@ -27,12 +23,17 @@
                     {{ item.vaga }}
                 </template>
 
-                <template v-slot:item.data="{ item }">
-                    {{ item.data }}
+                <template v-slot:item.titulo="{ item }">
+                    {{ item.title }}
                 </template>
 
+                <template v-slot:item.data="{ item }">
+                    {{ new Date(item.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) }}
+                </template>
+
+
                 <template v-slot:item.horario="{ item }">
-                    {{ item.horario }}
+                    {{ item.hora }}
                 </template>
 
                 <template v-slot:item.actions="{ item }">
@@ -60,7 +61,7 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-text-field v-model="editedItem.titulo" variant="outlined" clearable label="Título"
+                            <v-text-field v-model="editedItem.title" variant="outlined" clearable label="Título"
                                 maxlength="30" :rules="rules.tituloRules"></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12">
@@ -68,19 +69,22 @@
                                 label="Descrição" :rules="rules.descricaoRules"></v-textarea>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-select v-model="editedItem.candidato" :rules="candidatoRules" :items="items"
+                            <v-select v-model="editedItem.candidato" :rules="rules.candidatoRules" :items="items"
                                 label="Candidato" variant="outlined"></v-select>
+                            <v-select v-if="vagas.length > 0" v-model="editedItem.vaga" label="Vaga" variant="outlined" :items="vagas"></v-select>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-select v-model="editedItem.vaga" label="Vaga" variant="outlined"></v-select>
+                            <v-select v-model="editedItem.vaga" label="Vaga" variant="outlined" :items="vagas"
+                                item-value="id" item-text="titulo"></v-select>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <v-text-field v-model="editedItem.data" label="Data" type="date" variant="outlined"></v-text-field>
+                            <v-text-field v-model="editedItem.data" :rules="rules.dataRules" label="Data" type="date"
+                                variant="outlined"></v-text-field>
                         </v-col>
 
                         <v-col cols="12" md="6">
-                            <v-text-field v-model="editedItem.horario" label="Horário" type="time"
-                            variant="outlined"></v-text-field>
+                            <v-text-field v-model="editedItem.hora" label="Horário" type="time"
+                                variant="outlined"></v-text-field>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -110,10 +114,13 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-    
+
 </template>
 
 <script>
+import axios from 'axios';
+
+
 export default {
     props: {
         showModal: {
@@ -125,11 +132,14 @@ export default {
             required: true
         },
         title: {
-            type: Number
+            type: String,
+            required: true
         }
     },
 
     data: () => ({
+        vagas: [],
+        items: ['João', 'Maria', 'Felipe', 'Thiago', 'Rodrigo', 'Paula'],
         search: '',
         dialog: false,
         dialogDelete: false,
@@ -145,21 +155,17 @@ export default {
             candidatoRules: [
                 (v) => !!v || "Candidato Requerido"
             ],
-            items: [
-                'João',
-                'Maria',
-                'Felipe',
-                'Thiago',
-                'Rodrigo',
-                'Paula'
+            dataRules: [
+                (v) => !!v || "Data Requerida",
+                (v) => new Date(v) >= new Date() || "A data deve ser futura"
             ]
         },
         headers: [
-            { title: 'Título', align: 'start', sortable: false, key: 'titulo' },
+            { title: 'Título', align: 'start', sortable: false, key: 'title' },
             { title: 'Candidato', align: 'start', sortable: false, key: 'candidato' },
             { title: 'Vaga', key: 'vaga' },
             { title: 'Data', key: 'data' },
-            { title: 'Horários', key: 'horario' },
+            { title: 'Horário', key: 'hora' },
             { title: 'Ações', key: 'actions', sortable: false, align: 'end' },
         ],
         editedIndex: -1,
@@ -202,13 +208,57 @@ export default {
         this.initialize()
     },
 
+    mounted() {
+        this.mostrarVagas();
+    },
+
     methods: {
         initialize() {
+            const eventData = this.eventos[this.editedIndex];
+            if (eventData && eventData.data) {
+                this.editedItem.data = new Date(eventData.data).toISOString().split('T')[0];
+            }
         },
+
+        formatDate(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleDateString('pt-BR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+        },
+
+        async mostrarVagas() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read/empresa`, {
+                    params: {
+                        id: this.editedItem.id_empresa
+                    }
+                });
+
+                this.vagas = [];
+                console.log('Resposta da API:', response.data);
+                response.data.result.forEach(vaga => {
+                    this.vagas.push({
+                        id: vaga.id,
+                        titulo: vaga.titulo
+                    });
+                });
+                console.log('construçao do this.vagas:', this.vagas);
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
+        },
+
         editItem(item) {
             console.log("Editando item:", item);
             this.editedIndex = this.eventos.indexOf(item);
             this.editedItem = Object.assign({}, item);
+            if (this.editedItem.data) {
+                this.editedItem.data = new Date(this.editedItem.data).toISOString().split('T')[0];
+            }
+            this.mostrarVagas();
             this.dialog = true;
         },
 

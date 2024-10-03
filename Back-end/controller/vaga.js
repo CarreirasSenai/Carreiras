@@ -27,7 +27,10 @@ exports.vagaRead = (req, res) => {
 
 exports.vagaReadEmpresa = (req, res) => {
     const id = req.session.usuario.id;
-
+    // teste da agenda -> pegar as vagas pelo id da empresa
+    //console.log("helooo")
+    // console.log(req.query.id)
+    // const id = 1
     Vaga.vagaReadEmpresa(id, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });

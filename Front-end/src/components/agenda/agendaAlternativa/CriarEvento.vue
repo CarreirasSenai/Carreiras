@@ -46,6 +46,14 @@
 
 <script>
 export default {
+    props: {
+        showModal: {
+            type: Boolean,
+            required: true,
+        }
+    },
+
+
     data() {
         return {
             dialog: false,
