@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="600" persistent>
     <template v-slot:activator="{ props: activatorProps }">
       <!-- <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Cadastro</v-btn> -->
-      <v-btn variant="text" v-bind="activatorProps" icon="mdi mdi-pencil"></v-btn>
+      <v-btn variant="text" v-bind="activatorProps" icon="mdi-pencil"></v-btn>
     </template>
 
     <v-form class="my-4" @submit.prevent="updateUser">

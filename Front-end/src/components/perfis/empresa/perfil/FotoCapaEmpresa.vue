@@ -1,37 +1,117 @@
 <template>
-    <div class="div-capa-foto rounded-b-xl elevation-2" id="foto-capa">
-        <img class="capa" src="/src/assets/capa (1).png">
+    <div v-if="dadosCarregados" class="div-capa-foto rounded-b-xl elevation-2" id="foto-capa">
+        <img class="capa" :src="dados.capa">
         <div class="pos-capa">
-            <div class="div-foto-perfil">
-                <div class="position-relative">
-                    <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
-                </div>
-                <div>
-                    <h3 class="cor-primaria">Nome da Empresa</h3>
-                    <h5 class="text-grey-darken-2">Joinville, Santa Catarina, Brasil</h5>
-                    <MenuEditarEmpresa style="height: 20px !important;" class="d-flex align-center" />
-                </div>
-            </div>
-            <div class="descricao text-grey-darken-4 pb-5" style="min-height: 200px;">
-                
-            </div>
+            <v-row align="center" justify="space-evenly">
+                <v-col cols="12" md="4" lg="3">
+                    <div class="div-foto-perfil">
+                        <div>
+                            <img :src="dados.foto" class="foto-perfil" alt="Foto de Perfil">
+                        </div>
+                        <div>
+                            <h3 class="cor-primaria">{{ dados.nome_fantasia }}</h3>
+                            <h5 class="text-grey-darken-2">{{ dados.cidade }}, {{ dados.bairro }}, {{
+                                dados.estado }}</h5>
+                            <MenuEditarEmpresa v-if="grupo === 'empresa'" style="height: 20px !important;"
+                                class="d-flex align-center" />
+                        </div>
+                    </div>
+                </v-col>
+                <v-col cols="12" md="8" lg="8">
+                    <span v-html="dados.descricao"></span>
+                </v-col>
+            </v-row>
         </div>
     </div>
 </template>
 
 <script>
+import { useCandidatoStore } from '@/stores/candidato';
+import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
+
 export default {
     data: () => ({
         dialog: false,
+        grupo: '',
+        dados: '',
+        dadosCarregados: false
     }),
     computed: {
+        user() {
+            return useCandidatoStore();
+        },
+        pesquisaUser() {
+            return usePesquisaUsuarioStore();
+        },
+    },
+    created() {
+        this.pesquisaUser.id = this.$route.query.id;
+        this.pesquisaUser.requisicao = this.$route.query.requisicao;
     },
     mounted() {
+        this.grupo = localStorage.getItem('grupo');
+        this.atribuirValores();
     },
+    methods: {
+        validarRequisitante() {
+            if (this.pesquisaUser.requisicao === 'empresa') {
+                if (localStorage.getItem('grupo') === 'candidato' || this.pesquisaUser.requisicao) {
+                    console.log('\npesquisaUser');
+                    this.pesquisaUser.pesquisaUser();
+                    return this.pesquisaUser;
+                } else {
+                    this.empty = true;
+                    return null;
+                }
+            } else {
+                console.log('\nuserLogado');
+                this.user.userLogado();
+                return this.user;
+            }
+        },
+
+        atribuirValores() {
+            const requisitante = this.validarRequisitante();
+
+            if (!requisitante) {
+                return;
+            }
+            
+            // Verifica se os dados são diferentes para evitar reatribuição
+            // if (JSON.stringify(this.dados) !== JSON.stringify(requisitante.dadosUser)) {
+            setTimeout(() => {
+                this.dadosCarregados = true;
+                this.$emit('dados-carregados', this.dadosCarregados);
+                this.dados = requisitante.dadosUser;
+                console.log("Atribuindo novos valores a this.dados");
+            }, 1000);
+            // }
+        }
+    },
+    watch: {
+        // Observa mudanças no objeto dados
+        'dados': {
+            handler(novo, antigo) {
+                console.clear();
+                console.log('O objeto dadosUser foi alterado: \n', 'Novo:', novo, '\n', 'Antigo:', antigo);
+
+                // Evita chamar atribuirValores se os dados não mudaram de fato
+                if (JSON.stringify(novo) !== JSON.stringify(antigo)) {
+                    this.atribuirValores();
+                }
+            },
+            deep: true // Monitorar todas as propriedades do objeto
+        }
+    }
+
 }
 </script>
 
 <style lang="scss" scoped>
+* {
+    // border: 1px solid red;
+}
+
 .box-shadow {
     box-shadow: 0 2px 4px gray;
 }
@@ -66,7 +146,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     min-width: 300px;
     gap: 20px;
 }
@@ -76,11 +156,13 @@ export default {
     height: 150px;
     border-radius: 100%;
     border: 2px solid #6832D2;
+    object-fit: cover;
 }
 
 .descricao {
     min-width: 300px;
-    max-width: 600px;
+    max-width: 800px;
+    width: 100%;
     padding: 15px;
 }
 
@@ -100,6 +182,9 @@ export default {
         gap: 5px;
         position: absolute;
         top: 150px;
+        right: 0;
+        left: 0;
+        justify-content: center;
     }
 
     .div-foto-perfil div {

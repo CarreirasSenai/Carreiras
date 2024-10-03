@@ -44,7 +44,7 @@
           </div>
           <!-- <NavbarLogado /> -->
           <div class="user-account-avatar d-flex align-center ga-2 mr-2" v-if="user.visibilidadeLogado">
-            <h1 class="text-grey-darken-4 text-subtitle-2">{{ user.dadosUser.email }}</h1>
+            <h1 id="email-navbar" class="text-grey-darken-4 text-subtitle-2">{{ user.dadosUser.email }}</h1>
             <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center" v-if="visibilidadeMenuInicial">
               <v-btn variant="text" rounded to="/" class="text-none">Home</v-btn>
               <v-btn variant="text" rounded to="/sobre" class="text-none">Sobre o Carreiras</v-btn>
@@ -220,5 +220,11 @@ export default {
 .v-btn a {
   text-decoration: none;
   color: black;
+}
+
+@media(max-width:800px) {
+  #email-navbar {
+    display: none;
+  }
 }
 </style>
