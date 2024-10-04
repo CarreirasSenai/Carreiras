@@ -26,7 +26,11 @@ exports.vagaRead = (req, res) => {
 }
 
 exports.vagaReadEmpresa = (req, res) => {
-    const id = req.session.usuario.id;
+    const requisicao = req.query.requisicao;
+    const idReq = req.query.id;
+    const idSession = req.session.usuario.id;
+
+    const id = requisicao ? idReq : idSession;
 
     Vaga.vagaReadEmpresa(id, (err, result) => {
         if (err) {

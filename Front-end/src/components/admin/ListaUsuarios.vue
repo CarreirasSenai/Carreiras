@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <v-container class="d-flex flex-column ga-8 pa-6 mt-5">
+  <v-container class="d-flex flex-column ga-8 pa-6 mt-5 mb-15">
 
     <div class="d-flex align-center ga-1">
       <h1 style="font-size: clamp(17px, 4vw, 25px);">
@@ -18,30 +18,34 @@
         </v-tooltip>
       </h1>
       <v-spacer></v-spacer>
-      <CadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios" />      
+      <CadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios" />
     </div>
 
     <v-text-field v-model="busca" :loading="loading" append-inner-icon="mdi-magnify" density="compact"
       label="Procure um Usuário" variant="underlined" hide-details single-line @click:append-inner="searchUser"
-      @keyup.enter="searchUser"/>
+      @keyup.enter="searchUser" />
 
     <v-card v-for="user in usuarios" :key="user">
       <v-card-text>
         <v-row align="center">
 
-          <v-col cols="3" sm="2">
+          <v-col cols="12" sm="4" class="d-flex align-center ga-2">
             <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.foto">
             </v-avatar>
             <v-avatar color="surface-variant" :image="user.foto" v-if="user.foto">
             </v-avatar>
-          </v-col>
-
-          <v-col cols="9" sm="3">
-            <div class="ma-1">
+            <div>
               <h3>{{ user.nome }}</h3>
               <p>{{ user.email }}</p>
             </div>
           </v-col>
+
+          <!-- <v-col cols="9" sm="3">
+            <div class="ma-1">
+              <h3>{{ user.nome }}</h3>
+              <p>{{ user.email }}</p>
+            </div>
+          </v-col> -->
 
           <v-col cols="12" sm="3" class="text-align">
             <p>
@@ -50,14 +54,14 @@
             </p>
           </v-col>
 
-          <v-col cols="4" sm="3" class="text-align text-uppercase">
+          <v-col cols="4" sm="4" class="text-align text-uppercase">
             <v-chip size="small" :color="colorTipoUser(user.tipo_admin)">{{ user.tipo_admin }}</v-chip>
           </v-col>
 
           <v-col cols="8" sm="1" class="text-end">
             <EditarCadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super' || usuario.dadosUser.id === user.id"
               :MostrarUsuarios="mostrarUsuarios" :User="user" />
-            <v-btn variant="text" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
+            <v-btn variant="plain" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
             </v-btn>
           </v-col>
 

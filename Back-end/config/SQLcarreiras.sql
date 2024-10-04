@@ -115,7 +115,8 @@ CREATE TABLE `user_empresa` (
 CREATE TABLE `agendamento` (
   `id` int NOT NULL AUTO_INCREMENT, 
   `titulo` varchar(100) NOT NULL,
-  `vaga` varchar(45) NOT NULL,
+  `descricao` varchar(600),
+  `vaga` varchar(45),
   `data` date NOT NULL,
   `hora` time NOT NULL,
   `id_empresa` int NOT NULL,

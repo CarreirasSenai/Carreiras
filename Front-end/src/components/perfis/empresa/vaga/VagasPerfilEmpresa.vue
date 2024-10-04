@@ -1,18 +1,20 @@
 <template>
     <div class="ma-4 mb-4 d-flex justify-space-between align-center">
-        <h1 style="font-size: 3vh;">Vagas da Empresa</h1>
-        <AdicionarVaga :MostrarVagas="mostrarVagas" />
+        <h1 style="font-size: clamp(17px, 4vw, 25px);">Vagas da Empresa</h1>
+        <AdicionarVaga
+            v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id && grupo === 'empresa'"
+            :MostrarVagas="mostrarVagas" />
     </div>
 
     <!-- <v-divider class="ml-4 mr-4"></v-divider> -->
 
-    <v-card>
+    <v-card variant="text">
         <v-data-iterator :items="vagas" :items-per-page="6" :search="search">
             <template v-slot:header>
-                <v-toolbar>
-                    <v-text-field v-model="search" class="mt-2 mx-4" density="comfortable"
-                        placeholder="Pesquise uma vaga" prepend-inner-icon="mdi-magnify" variant="plain"></v-text-field>
-                </v-toolbar>
+                <!-- <v-toolbar> -->
+                <v-text-field v-model="search" class="mt-2 mx-4" density="compact" placeholder="Pesquise uma vaga"
+                    prepend-inner-icon="mdi-magnify" variant="underlined"></v-text-field>
+                <!-- </v-toolbar> -->
             </template>
 
             <template v-slot:default="{ items }">
@@ -71,7 +73,9 @@
                             </small>
                             <v-card-actions class="d-flex justify-space-between">
                                 <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
-                                <ModalCandidatosVagas :Vagas="item" />
+                                <ModalCandidatosVagas
+                                    v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                                    :Vagas="item" />
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -96,6 +100,8 @@
 </template>
 
 <script>
+import { useCandidatoStore } from '@/stores/candidato';
+import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
 import axios from 'axios';
 
 export default {
@@ -103,15 +109,37 @@ export default {
         return {
             search: '',
             vagas: [],
+            grupo: ''
         };
+    },
+    created() {
+        console.log(this.$route.query.id);
+        console.log(this.$route.query.requisicao);
     },
     mounted() {
         this.mostrarVagas();
+        this.grupo = localStorage.getItem('grupo');
+        console.log(this.user.dadosUser.id);
+        console.log(this.grupo);
+
+
+    },
+    computed: {
+        user() {
+            return useCandidatoStore();
+        },
+        pesquisaUser() {
+            return usePesquisaUsuarioStore();
+        }
     },
     methods: {
         async mostrarVagas() {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read/empresa`, {
+                    params: {
+                        id: this.$route.query.id,
+                        requisicao: this.$route.query.requisicao
+                    },
                     withCredentials: true
                 });
 
