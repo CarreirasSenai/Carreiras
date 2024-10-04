@@ -1,7 +1,9 @@
 <template>
     <div class="ma-4 mb-4 d-flex justify-space-between align-center">
         <h1 style="font-size: clamp(17px, 4vw, 25px);">Vagas da Empresa</h1>
-        <AdicionarVaga :MostrarVagas="mostrarVagas" />
+        <AdicionarVaga
+            v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id && grupo === 'empresa'"
+            :MostrarVagas="mostrarVagas" />
     </div>
 
     <!-- <v-divider class="ml-4 mr-4"></v-divider> -->
@@ -71,7 +73,9 @@
                             </small>
                             <v-card-actions class="d-flex justify-space-between">
                                 <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
-                                <ModalCandidatosVagas :Vagas="item" v-if="grupo === 'empresa'" />
+                                <ModalCandidatosVagas
+                                    v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                                    :Vagas="item" />
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -97,6 +101,7 @@
 
 <script>
 import { useCandidatoStore } from '@/stores/candidato';
+import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
 import axios from 'axios';
 
 export default {
@@ -115,11 +120,16 @@ export default {
         this.mostrarVagas();
         this.grupo = localStorage.getItem('grupo');
         console.log(this.user.dadosUser.id);
-        
+        console.log(this.grupo);
+
+
     },
     computed: {
         user() {
             return useCandidatoStore();
+        },
+        pesquisaUser() {
+            return usePesquisaUsuarioStore();
         }
     },
     methods: {

@@ -12,8 +12,9 @@
                             <h3 class="cor-primaria">{{ dados.nome_fantasia }}</h3>
                             <h5 class="text-grey-darken-2">{{ dados.cidade }}, {{ dados.bairro }}, {{
                                 dados.estado }}</h5>
-                            <MenuEditarEmpresa v-if="grupo === 'empresa'" style="height: 20px !important;"
-                                class="d-flex align-center" />
+                            <MenuEditarEmpresa
+                                v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id && grupo === 'empresa'"
+                                style="height: 20px !important;" class="d-flex align-center" />
                         </div>
                     </div>
                 </v-col>
@@ -34,7 +35,8 @@ export default {
         dialog: false,
         grupo: '',
         dados: '',
-        dadosCarregados: false
+        dadosCarregados: false,
+        empty: false,
     }),
     computed: {
         user() {
@@ -59,14 +61,17 @@ export default {
                     console.log('\npesquisaUser');
                     this.pesquisaUser.pesquisaUser();
                     return this.pesquisaUser;
+
                 } else {
                     this.empty = true;
                     return null;
                 }
-            } else {
+            } else if (!this.$route.query.id && !this.$route.query.requisicao) {
                 console.log('\nuserLogado');
                 this.user.userLogado();
                 return this.user;
+            } else {
+                window.location.href = "/";
             }
         },
 
@@ -76,23 +81,18 @@ export default {
             if (!requisitante) {
                 return;
             }
-            
-            // Verifica se os dados são diferentes para evitar reatribuição
-            // if (JSON.stringify(this.dados) !== JSON.stringify(requisitante.dadosUser)) {
+
             setTimeout(() => {
+                this.dados = requisitante.dadosUser;
                 this.dadosCarregados = true;
                 this.$emit('dados-carregados', this.dadosCarregados);
-                this.dados = requisitante.dadosUser;
-                console.log("Atribuindo novos valores a this.dados");
             }, 1000);
-            // }
         }
     },
     watch: {
         // Observa mudanças no objeto dados
         'dados': {
             handler(novo, antigo) {
-                console.clear();
                 console.log('O objeto dadosUser foi alterado: \n', 'Novo:', novo, '\n', 'Antigo:', antigo);
 
                 // Evita chamar atribuirValores se os dados não mudaram de fato

@@ -96,7 +96,7 @@
       title="Não encontramos uma correspondência."></v-empty-state>
   </template>
 
-  <div v-if="dadosCarregados === false" class="text-center h-100 mt-15 pt-9 d-flex align-center justify-center">
+  <div v-if="dadosCarregados === false" class="text-center pt-9 d-flex align-center justify-center" style="height: 45vh;">
     <v-progress-circular color="deep-purple-accent-4" indeterminate :size="50"></v-progress-circular>
   </div>
 </template>

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export const usePesquisaUsuarioStore = defineStore('pesquisaUsuario', {
     state: () => ({
@@ -7,6 +8,9 @@ export const usePesquisaUsuarioStore = defineStore('pesquisaUsuario', {
         id: '',
         requisicao: '',
         grupo: '',
+        status: true,
+        router: useRouter(),
+
     }),
     actions: {
         async pesquisaUser() {
@@ -23,6 +27,7 @@ export const usePesquisaUsuarioStore = defineStore('pesquisaUsuario', {
                     });
 
                     this.dadosUser = response.data.usuario;
+                    this.status = true;
 
                     console.log("Usuário pesquisado:", this.dadosUser);
 
@@ -32,6 +37,7 @@ export const usePesquisaUsuarioStore = defineStore('pesquisaUsuario', {
 
                 } catch (error) {
                     console.error('Erro ao obter dados do usuário', error.response.data);
+                    this.router.push('/');
                 }
             }
         },
