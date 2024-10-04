@@ -3,7 +3,7 @@
   <v-container class="d-flex flex-column ga-8 pa-6 mt-5">
     <div class="d-flex align-center ga-1">
       <h1 style="font-size: clamp(17px, 4vw, 25px)">
-        Candidatos do Sistema
+        Lista de Candidatos
         <v-icon size="x-small"> mdi-information </v-icon>
         <v-tooltip activator="parent" location="start">
           <strong>Permissões:</strong> <br />
@@ -61,9 +61,8 @@
 
           <v-col cols="12" sm="3" class="text-align">
             <p>
-              <v-icon>mdi-card-account-details-outline
-</v-icon>
-              {{ user.celular }}
+              <v-icon>mdi-card-account-details-outline </v-icon>
+              {{ formattedCpf(user.cpf) }}
             </p>
           </v-col>
 
@@ -193,15 +192,21 @@ export default {
         return "error";
       }
     },
+
+    formattedCpf(cpf) {
+      if (cpf === null || cpf === undefined) {
+        return "";
+      }
+      if (typeof cpf === "string" && cpf.length === 11) {
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+      }
+      return cpf;
+    },
   },
 };
 </script>
 
 <style>
-* {
-  /* border: 1px solid red; */
-}
-
 .text-align {
   text-align: center;
 }
