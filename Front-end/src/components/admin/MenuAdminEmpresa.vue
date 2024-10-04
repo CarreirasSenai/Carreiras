@@ -9,7 +9,7 @@
                 <v-list-item class="pa-0">
                     <v-list-item-title class="cursor-pointer">
                         <EditarCadEmpresaAdmin :MostrarUsuarios="MostrarUsuarios" :User="User"/>
-                        <EditarStatusEmpresa />
+                        <EditarStatusEmpresa :MostrarUsuarios="MostrarUsuarios" :User="User"/>
                     </v-list-item-title>
                 </v-list-item>
             </v-list>
@@ -20,14 +20,16 @@
 <script>
 export default {
     data: () => ({
-       MostrarUsuarios: {
-            type: Function,
-            required: true
-       },
-       User: {
-            type: Object,
-            required: true
-       }
     }),
+    props: {
+        MostrarUsuarios: {
+                type: Function,
+                required: true
+        },
+        User: {
+                type: Object,
+                required: true
+        }
+    }
 }
 </script>

@@ -153,10 +153,6 @@ export default {
 </script>
 
 <style>
-* {
-  /* border: 1px solid red; */
-}
-
 .text-align {
   text-align: center;
 }

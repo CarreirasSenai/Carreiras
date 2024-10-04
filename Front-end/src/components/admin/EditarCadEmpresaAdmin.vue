@@ -15,7 +15,7 @@
           <v-col cols="12">
             <v-card title="Editar Cadastro" class="pa-2">
               <v-card-text style="max-height: 70vh" class="overflow-auto">
-                <v-form class="my-4" @submit.prevent>
+                <v-form class="my-4" @submit.prevent="updateUser">
                   <v-row>
                     <v-col cols="12" sm="6" md="6" lg="6">
                       <v-text-field
@@ -227,6 +227,8 @@
 </template>
 
 <script>
+import axios from "axios"; 
+import { useCandidatoStore } from "@/stores/candidato";
 export default {
   data() {
     return {
@@ -320,6 +322,54 @@ export default {
     User: {
         type: Object,
         required: true
+    }
+  },
+  computed: {
+    usuarios() {
+      return useCandidatoStore();
+    }
+  },
+  methods: {
+    async updateUser(event) {
+      console.clear();
+      const dados = await event;
+
+      if (dados.valid === true) {
+        console.log(this.form);
+
+        try {
+          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/admin/update`, {
+            dados: this.form,
+          }, { withCredentials: true });
+
+          console.log(response.data);
+          this.MostrarUsuarios();
+          this.dialog = false;
+
+        } catch (error) {
+          console.error('Erro', error.response.data);
+          this.mensagem = error.response.data.error;
+        }
+      }
+    },
+    async deletarEmpresa() {
+      console.clear();
+      console.log("Id da empresa: ", this.User.id);
+
+      try {
+        const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/empresa/delete`, {
+          data: { id: this.User.id },
+          withCredentials: true,
+        });
+
+        console.log(response.data);
+        this.MostrarUsuarios();
+        this.modalDelete = false;
+
+      } catch (error) {
+        console.error('Erro', error.response.data);
+        this.mensagem = error.response.data.error;
+      }
     }
   },
   mounted() {
