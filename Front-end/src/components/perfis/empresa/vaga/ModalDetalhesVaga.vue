@@ -12,7 +12,8 @@
                             Copiado para área de transferência!
                         </v-chip>
                         <v-card class="rounded-lg">
-                            <v-card-title class="pa-2 opacity-100 bg-deep-purple-accent-4 observavel d-flex align-center">
+                            <v-card-title
+                                class="pa-2 opacity-100 bg-deep-purple-accent-4 observavel d-flex align-center">
                                 <v-btn size="x-small" class="mr-2 position-relative" icon="mdi-share-variant"
                                     variant="tonal" @click="compartilhar">
                                 </v-btn>
@@ -80,9 +81,10 @@
 
                             <v-card-actions class="d-flex justify-space-between">
                                 <div class="d-flex flex-wrap ga-2">
-                                    <v-btn class="bt-primario">Inscrever-se</v-btn>
-                                    <EditarVaga :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
-                                    <small>O button alterna conforme o user logado.</small>
+                                    <v-btn v-if="grupo === 'candidato'" class="bt-primario">Inscrever-se</v-btn>
+                                    <EditarVaga
+                                        v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                                        :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
                                 </div>
                                 <div class="d-flex align-center justify-center ga-2">
                                     TOTVS
@@ -98,9 +100,13 @@
 </template>
 
 <script>
+import { useCandidatoStore } from '@/stores/candidato';
+import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
+
 export default {
     data() {
         return {
+            grupo: '',
             dialog: false,
             snackbar: false
         }
@@ -111,6 +117,17 @@ export default {
             type: Function,
             required: true
         }
+    },
+    computed: {
+        user() {
+            return useCandidatoStore();
+        },
+        pesquisaUser() {
+            return usePesquisaUsuarioStore();
+        },
+    },
+    mounted() {
+        this.grupo = localStorage.getItem('grupo');
     },
     methods: {
         compartilhar() {

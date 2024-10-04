@@ -47,7 +47,7 @@ exports.getLogin = (email, callback) => {
             console.log(err);
             return callback(err, null, null);
 
-        } else if (rows) {
+        } else if (rows.length > 0) {
             console.log(rows[0]);
             return callback(null, rows[0], null);
 

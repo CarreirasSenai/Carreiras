@@ -67,6 +67,7 @@ export default {
             border-radius: 100%;
             border: 2px solid #6832D2;
             background-color: #eee;
+            object-fit: cover;
         }
 
         h3,

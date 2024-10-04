@@ -11,7 +11,7 @@ import AgendaEmpresa from '@/pages/AgendaEmpresa.vue';
 import RedefinirSenha from '@/pages/redefinirSenha.vue';
 import ModalJustificativa from '@/components/perfis/empresa/vaga/ModalJustificativa.vue';
 import ListaEmpresas from '@/components/admin/ListaEmpresas.vue';
-import ListaDeUsuarios from '@/components/admin/ListaDeUsuarios.vue';
+import ListaDeUsuarios from '@/components/admin/ListaUsuarios.vue';
 import PerfilEmpresa from '@/pages/perfilEmpresa.vue';
 import ListaVagas from '@/components/admin/ListaVagas.vue';
 import Sobre from '@/pages/Sobre.vue';
