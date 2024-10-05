@@ -14,7 +14,10 @@ exports.cursoCreate = (req, res) => {
 }
 
 exports.cursoRead = (req, res) => {
-    const id = req.session.usuario.id;
+    const idReq = req.query.id;
+    const idSession = req.session.usuario.id;
+
+    const id = idReq ? idReq : idSession;
 
     Curso.cursoRead(id, (err, result) => {
         if (err) {

@@ -91,7 +91,7 @@ export default {
     },
     watch: {
         // Observa mudanças no objeto dados
-        'dados': {
+        'user.dadosUser': {
             handler(novo, antigo) {
                 console.log('O objeto dadosUser foi alterado: \n', 'Novo:', novo, '\n', 'Antigo:', antigo);
 
