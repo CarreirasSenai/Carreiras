@@ -81,14 +81,14 @@
 
                             <v-card-actions class="d-flex justify-space-between">
                                 <div class="d-flex flex-wrap ga-2">
-                                    <v-btn v-if="grupo === 'candidato'" class="bt-primario">Inscrever-se</v-btn>
-                                    <EditarVaga
-                                        v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                                    <v-btn v-if="grupo != 'empresa' && grupo != 'admin'" class="bt-primario">Inscrever-se</v-btn>
+                                    <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa
+                                        || pesquisaUser.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
                                 </div>
                                 <div class="d-flex align-center justify-center ga-2">
-                                    TOTVS
-                                    <img src="/src/assets/avatar.png" width="50px">
+                                    {{ empresa.nome_fantasia }}
+                                    <img :src="empresa.foto" width="50px" class="rounded-circle">
                                 </div>
                             </v-card-actions>
                         </v-card>
@@ -102,13 +102,15 @@
 <script>
 import { useCandidatoStore } from '@/stores/candidato';
 import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
+import axios from 'axios';
 
 export default {
     data() {
         return {
             grupo: '',
             dialog: false,
-            snackbar: false
+            snackbar: false,
+            empresa: '',
         }
     },
     props: {
@@ -124,15 +126,15 @@ export default {
         },
         pesquisaUser() {
             return usePesquisaUsuarioStore();
-        },
+        }
     },
     mounted() {
         this.grupo = localStorage.getItem('grupo');
+        this.getUserEmpresa();
     },
     methods: {
         compartilhar() {
             const url = `${import.meta.env.VITE_FRONTEND_URL}/detalhes-vaga?id=${this.Vagas.raw.id}&titulo=${encodeURIComponent(this.Vagas.raw.titulo)}`;
-
             // Utiliza a API de Clipboard para copiar o URL
             navigator.clipboard.writeText(url)
                 .then(() => {
@@ -144,6 +146,38 @@ export default {
                 .catch(err => {
                     console.error('Erro ao copiar o URL para a área de transferência: ', err);
                 });
+        },
+
+        async getUserEmpresa() {
+            const id = this.Vagas.raw.id_empresa;
+            const requisicao = 'empresa';
+
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/empresa/read`, {
+                    params: {
+                        id: id,
+                        requisicao: requisicao
+                    },
+                    withCredentials: true
+                });
+
+                this.empresa = response.data.usuario;
+
+                const path = `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/`;
+                const avatarPadrao = '/src/assets/avatar.png';
+                const capaPadrao = '/src/assets/capa (1).png';
+
+                const foto = this.empresa.foto;
+                const capa = this.empresa.capa;
+
+                this.empresa.foto = foto ? path + foto : avatarPadrao;
+                this.empresa.capa = capa ? path + capa : capaPadrao;
+
+                // console.log(this.empresa);                
+
+            } catch (error) {
+                console.error('Erro ao obter dados do usuário', error.response.data);
+            }
         }
     }
 }

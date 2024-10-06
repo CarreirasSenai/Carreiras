@@ -61,7 +61,8 @@ router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 // rotas empresa
 router.post('/empresa/login', Empresa.login);
 router.post('/empresa/create', Empresa.createCompany);
-router.get('/empresa/read', authMiddleware, Empresa.getUser);
+router.get('/empresa/read', Empresa.getUser);
+router.get('/empresa/read/all', Empresa.getAllUser);
 router.delete('/empresa/delete', authMiddleware, Empresa.deleteUser);
 router.put('/empresa/update', authMiddleware, Empresa.updateUser);
 

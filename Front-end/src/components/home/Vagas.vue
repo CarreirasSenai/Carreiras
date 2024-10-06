@@ -64,9 +64,11 @@
               <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
               <router-link :to="`/perfil-empresa?requisicao=empresa&id=${item.raw.id_empresa}`"
                 class="text-black text-decoration-none">
-                <div class="d-flex align-center justify-center ga-2">
-                  {{ item.raw.id_empresa }}
-                  <img src="/src/assets/avatar.png" width="50px" class="rounded-circle" to="/perfil-empresa">
+                <div v-for="empresa in ListaEmpresas" :key="empresa.id">
+                  <span v-if="empresa.id === item.raw.id_empresa" class="d-flex align-center justify-center ga-2">
+                    {{ empresa.nome_fantasia }}
+                    <img :src="empresa.foto" width="50px" class="rounded-circle" to="/perfil-empresa">
+                  </span>
                 </div>
               </router-link>
             </v-card-actions>
@@ -96,7 +98,8 @@
       title="Não encontramos uma correspondência."></v-empty-state>
   </template>
 
-  <div v-if="dadosCarregados === false" class="text-center pt-9 d-flex align-center justify-center" style="height: 45vh;">
+  <div v-if="dadosCarregados === false" class="text-center pt-9 d-flex align-center justify-center"
+    style="height: 45vh;">
     <v-progress-circular color="deep-purple-accent-4" indeterminate :size="50"></v-progress-circular>
   </div>
 </template>
@@ -112,7 +115,8 @@ export default {
     return {
       vagas: [],
       search: '',
-      dadosCarregados: false
+      dadosCarregados: false,
+      ListaEmpresas: []
     }
   },
 
@@ -127,6 +131,8 @@ export default {
       },
       { immediate: true } // Executa a função de callback imediatamente, com o valor atual da store
     );
+
+    this.getAllEmpresas();
   },
 
   computed: {
@@ -183,7 +189,35 @@ export default {
       } else {
         return `Há ${anos} anos`;
       }
-    }
+    },
+
+    async getAllEmpresas() {
+      console.clear()
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/empresa/read/all`, {
+          withCredentials: true
+        });
+
+        console.log("Lista de empresas:", response.data.result);
+
+        this.ListaEmpresas = response.data.result;
+
+        for (const key in this.ListaEmpresas) {
+          const path = `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/`;
+          const avatarPadrao = '/src/assets/avatar.png';
+          const capaPadrao = '/src/assets/capa (1).png';
+
+          const foto = this.ListaEmpresas[key].foto;
+          const capa = this.ListaEmpresas[key].capa;
+
+          this.ListaEmpresas[key].foto = foto ? path + foto : avatarPadrao;
+          this.ListaEmpresas[key].capa = capa ? path + capa : capaPadrao;
+        }
+
+      } catch (error) {
+        console.error('Erro ao obter lista de empresas', error.response.data);
+      }
+    },
   }
 };
 </script>

@@ -1,73 +1,70 @@
 <template>
   <Navbar />
-  <v-container class="d-flex flex-column ga-8 pa-6 mt-5 mb-15">
+  <v-container class="mb-15 pa-6">
+    <v-row justify="center">
+      <v-col cols="12" lg="8">
+        <div class="d-flex align-center ga-1 my-8">
+          <h1 style="font-size: clamp(17px, 4vw, 25px);">
+            Usuários do Sistema
+            <v-icon size="x-small">
+              mdi-information
+            </v-icon>
+            <v-tooltip activator="parent" location="start">
+              <strong>Permissões:</strong> <br>
+              Todas as permissões (SUPER) <br>
+              Cadastro de usuários (SUPER) <br>
+              Controle dos próprios dados cadastrais (TODOS) <br>
+              Controle total de empresas e candidatos (SUPER e ADM) <br>
+              Vizualização e leitura (TODOS)
+            </v-tooltip>
+          </h1>
+          <v-spacer></v-spacer>
+          <CadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios" />
+        </div>
 
-    <div class="d-flex align-center ga-1">
-      <h1 style="font-size: clamp(17px, 4vw, 25px);">
-        Usuários do Sistema
-        <v-icon size="x-small">
-          mdi-information
-        </v-icon>
-        <v-tooltip activator="parent" location="start">
-          <strong>Permissões:</strong> <br>
-          Todas as permissões (SUPER) <br>
-          Cadastro de usuários (SUPER) <br>
-          Controle dos próprios dados cadastrais (TODOS) <br>
-          Controle total de empresas e candidatos (SUPER e ADM) <br>
-          Vizualização e leitura (TODOS)
-        </v-tooltip>
-      </h1>
-      <v-spacer></v-spacer>
-      <CadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios" />
-    </div>
+        <v-text-field class="my-8" v-model="busca" :loading="loading" append-inner-icon="mdi-magnify" density="compact"
+          label="Procure um Usuário" variant="underlined" hide-details single-line @click:append-inner="searchUser"
+          @keyup.enter="searchUser" />
 
-    <v-text-field v-model="busca" :loading="loading" append-inner-icon="mdi-magnify" density="compact"
-      label="Procure um Usuário" variant="underlined" hide-details single-line @click:append-inner="searchUser"
-      @keyup.enter="searchUser" />
+        <v-card v-for="user in usuarios" :key="user" class="my-4">
+          <v-card-text>
+            <v-row align="center">
 
-    <v-card v-for="user in usuarios" :key="user">
-      <v-card-text>
-        <v-row align="center">
+              <v-col cols="12" sm="4" class="d-flex align-center ga-2">
+                <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.foto">
+                </v-avatar>
+                <v-avatar color="surface-variant" :image="user.foto" v-if="user.foto">
+                </v-avatar>
+                <div>
+                  <h3>{{ user.nome }}</h3>
+                  <p>{{ user.email }}</p>
+                </div>
+              </v-col>
 
-          <v-col cols="12" sm="4" class="d-flex align-center ga-2">
-            <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.foto">
-            </v-avatar>
-            <v-avatar color="surface-variant" :image="user.foto" v-if="user.foto">
-            </v-avatar>
-            <div>
-              <h3>{{ user.nome }}</h3>
-              <p>{{ user.email }}</p>
-            </div>
-          </v-col>
+              <v-col cols="12" sm="3" class="text-align">
+                <p>
+                  <v-icon>mdi-cellphone</v-icon>
+                  {{ formatarCelular(user.celular) }}
+                </p>
+              </v-col>
 
-          <!-- <v-col cols="9" sm="3">
-            <div class="ma-1">
-              <h3>{{ user.nome }}</h3>
-              <p>{{ user.email }}</p>
-            </div>
-          </v-col> -->
+              <v-col cols="4" sm="4" class="text-align text-uppercase">
+                <v-chip size="small" :color="colorTipoUser(user.tipo_admin)">{{ user.tipo_admin }}</v-chip>
+              </v-col>
 
-          <v-col cols="12" sm="3" class="text-align">
-            <p>
-              <v-icon>mdi-cellphone</v-icon>
-              {{ user.celular }}
-            </p>
-          </v-col>
+              <v-col cols="8" sm="1" class="text-end">
+                <EditarCadUsuarioAdmin
+                  v-if="usuario.dadosUser.tipo_admin === 'super' || usuario.dadosUser.id === user.id"
+                  :MostrarUsuarios="mostrarUsuarios" :User="user" />
+                <v-btn variant="plain" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
+                </v-btn>
+              </v-col>
 
-          <v-col cols="4" sm="4" class="text-align text-uppercase">
-            <v-chip size="small" :color="colorTipoUser(user.tipo_admin)">{{ user.tipo_admin }}</v-chip>
-          </v-col>
-
-          <v-col cols="8" sm="1" class="text-end">
-            <EditarCadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super' || usuario.dadosUser.id === user.id"
-              :MostrarUsuarios="mostrarUsuarios" :User="user" />
-            <v-btn variant="plain" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
-            </v-btn>
-          </v-col>
-
-        </v-row>
-      </v-card-text>
-    </v-card>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 
   <v-snackbar location="top right" v-model="showSnackbar" :timeout="4000" color="red" elevation="24">
@@ -151,6 +148,14 @@ export default {
       } else if (value === 'super') {
         return 'error';
       }
+    },
+
+    formatarCelular(celular) {
+      // Verifica se o número tem 11 dígitos
+      if (!celular || celular.length !== 11) return celular;
+
+      // Aplica a máscara (##) #####-####
+      return celular.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
     }
   },
 };
