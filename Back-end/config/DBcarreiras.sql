@@ -27,9 +27,10 @@ DROP TABLE IF EXISTS `agendamento`;
 CREATE TABLE `agendamento` (
   `id` int NOT NULL AUTO_INCREMENT,
   `titulo` varchar(100) NOT NULL,
-  `vaga` varchar(45) NOT NULL,
+  `vaga` varchar(45),
   `data` date NOT NULL,
   `hora` time NOT NULL,
+  `descricao` varchar(600),
   `id_empresa` int NOT NULL,
   `id_candidato` int NOT NULL,
   `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
