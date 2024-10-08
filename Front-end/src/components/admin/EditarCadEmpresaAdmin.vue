@@ -2,12 +2,7 @@
   <div class="text-center">
     <v-dialog v-model="dialog" max-width="800px">
       <template v-slot:activator="{ props: activatorProps }">
-        <v-btn
-          variant="text"
-          v-bind="activatorProps"
-          class="w-100 rounded-0 justify-start"
-          >Editar Cadastro</v-btn
-        >
+       <v-btn variant="text" v-bind="activatorProps" icon="mdi-pencil"></v-btn>
       </template>
 
       <v-container>
@@ -163,21 +158,17 @@
                         variant="underlined"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="senha"
-                        :rules="senhaRules"
-                        label="Senha"
-                        variant="underlined"
-                      ></v-text-field>
+                    <v-col cols="12" sm="6" md="6" lg="6">
+                      <v-radio-group v-model="status" :rules="geral" label="Status Ativo" inline>
+                        <v-radio label="Ativado" value="1"></v-radio>
+                        <v-radio label="Desativado" value="0"></v-radio>
+                      </v-radio-group>
                     </v-col>
-                    <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field
-                        v-model="repSenha"
-                        :rules="repSenhaRules"
-                        label="Repetir senha"
-                        variant="underlined"
-                      ></v-text-field>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-btn to="/redefinir-senha?resposta=empresa" text="Redefinir Senha"
+                        append-icon="mdi-arrow-top-right-thick" block></v-btn>
                     </v-col>
                   </v-row>
                 </v-form>
@@ -199,8 +190,8 @@
                   text="Salvar"
                   color="Enviar"
                   variant="tonal"
-                  @click="dialog = false"
                   class="bg-purple-darken-4"
+                  type="submit"
                 ></v-btn>
               </v-card-actions>
             </v-card>
@@ -249,8 +240,7 @@ export default {
       responsavelLegal: "",
       responsavelAdm: "",
       contatoRA: "",
-      senha: "",
-      repSenha: "",
+      status: "",
       modalDelete: false,
       razaoSocialRules: [(v) => !!v || "Razão social requerida"],
       nomeFantasiaRules: [(v) => !!v || "Nome fantasia requerido"],
@@ -303,13 +293,14 @@ export default {
       ],
       senhaRules: [(v) => !!v || "Senha requerida"],
       repSenhaRules: [(v) => !!v || "Repetir senha requerido"],
-      items: [
-        "Amazonas",
-        "Amapá",
-        "Santa Catarina",
-        "Paraná",
-        "Rio Grande do Sul",
-        "São Paulo",
+      items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
+                'CE', 'DF', 'ES', 'GO', 'MA',
+                'MT', 'MS', 'MG', 'PA', 'PB',
+                'PR', 'PE', 'PI', 'RJ', 'RN',
+                'RS', 'RO', 'RR', 'SC', 'SP',
+                'SE', 'TO'],
+      geral: [
+        (v) => !!v || "Escolha uma opção",
       ],
       dialog: false,
     };
@@ -390,7 +381,8 @@ export default {
     this.estado = this.User.estado,
     this.responsavelLegal = this.User.responsavel_legal,
     this.cpf_responsavel = this.User.cpf_responsavel,
-    this.contatoRA = this.User.contato_responsavel
+    this.contatoRA = this.User.contato_responsavel,
+    this.status = this.User.verificado.toString()
   }
 };
 </script>

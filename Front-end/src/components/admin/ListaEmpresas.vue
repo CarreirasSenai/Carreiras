@@ -3,36 +3,56 @@
     <Navbar />
     <v-container class="d-flex flex-column ga-8 pa-6 mt-5">
       <div class="d-flex align-center ga-1">
-        <h1 style="font-size: 3vh;">Empresas do Sistema</h1>
+        <h1 style="font-size: clamp(17px, 4vw, 25px);">
+        Empresas do Sistema
+        <v-icon size="x-small">
+          mdi-information
+        </v-icon>
+        <v-tooltip activator="parent" location="start">
+          <strong>Permissões:</strong> <br>
+          Todas as permissões (SUPER) <br>
+          Cadastro de usuários (SUPER) <br>
+          Controle dos próprios dados cadastrais (TODOS) <br>
+          Controle total de empresas e candidatos (SUPER e ADM) <br>
+          Vizualização e leitura (TODOS)
+        </v-tooltip>
+      </h1>
         <v-spacer></v-spacer>
       </div>
       <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Empresa"
         variant="underlined" hide-details single-line @click:append-inner="onClick" />
-      <v-card v-for="user in empresas" :key="user">
-        <v-card-text>
-          <v-row align="center">
-            <v-col cols="3" sm="3">
-              <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.foto">
-              </v-avatar>
-              <v-avatar color="surface-variant" :image="user.foto" v-if="user.foto">
-              </v-avatar>
-            </v-col>
-            <v-col cols="9" sm="3">
-              <div class="ma-1">
-                <h3>{{ user.nome_fantasia }}</h3>
-                <p>{{ user.email }}</p>
-              </div>
-            </v-col>
-            <v-col cols="4" sm="3" class="text-align">
+          <v-card v-for="user in empresas" :key="user">
+      <v-card-text>
+        <v-row align="center">
+
+          <v-col cols="12" sm="4" class="d-flex align-center ga-2">
+            <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.foto">
+            </v-avatar>
+            <v-avatar color="surface-variant" :image="user.foto" v-if="user.foto">
+            </v-avatar>
+            <div>
+              <h3>{{ user.nome_fantasia }}</h3>
+              <p>{{ user.email }}</p>
+            </div>
+          </v-col>
+          <v-col cols="12" sm="3" class="text-align">
+            <p>
+              <v-icon>mdi-cellphone</v-icon>
+              {{ this.formatarCelular(user.celular) }}
+            </p>
+          </v-col>
+          <v-col cols="4" sm="4" class="text-align">
               <v-chip size="small" :color="colorTipoUser(user.verificado)">{{ user.verificado === 1 ? 'Verificado' : 'Não verificado'}}</v-chip>
-            </v-col>
-            <v-col cols="8" sm="3" class="text-end">
-              <MenuAdminEmpresa v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
-                :User="user" />
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
+          </v-col>
+          <v-col cols="8" sm="1" class="text-end">
+            <EditarCadEmpresaAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
+              :User="user" />
+              <v-btn variant="plain" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
     </v-container>
   </div>
 </template>
@@ -84,6 +104,11 @@ export default {
         return 'success';
       
       return 'error';
+    },
+    formatarCelular(valorTelefone) {
+      valorTelefone = valorTelefone.replace(/\D/g, "");
+      valorTelefone = valorTelefone.replace(/^(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+      return valorTelefone;
     }
   },
 };
