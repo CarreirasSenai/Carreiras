@@ -141,7 +141,7 @@ export default {
     async mostrarUsuarios() {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/candidato/read/all`,
+          `${import.meta.env.VITE_BACKEND_URL}/admin/read/all`,
           {
             withCredentials: true,
           }

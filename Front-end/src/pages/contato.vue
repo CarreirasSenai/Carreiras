@@ -7,7 +7,8 @@
         <!-- Seção de cabeçalho com fundo escurecido para melhor contraste -->
         <v-row class="header" align="center" justify="center">
           <v-col cols="12" sm="10" md="8" class="text-center">
-            <h1 style="color: #1f1f1f">Sobre nós</h1>
+            <h1 style="font-size: 30px; color: #1f1f1f">Suporte Carreiras
+            </h1>
           </v-col>
         </v-row>
 

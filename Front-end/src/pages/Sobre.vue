@@ -7,7 +7,7 @@
         <!-- Seção de cabeçalho com fundo escurecido para melhor contraste -->
         <v-row class="header" align="center" justify="center">
           <v-col cols="12" sm="10" md="8" class="text-center">
-            <h1 style="color: #1f1f1f">Sobre nós</h1>
+            <h1 style="font-size: 30px; color: #1f1f1f">Sobre nós</h1>
           </v-col>
         </v-row>
 
@@ -159,6 +159,40 @@
         </v-row>
       </v-row>
     </v-container>
+
+    <v-divider class="my-12"></v-divider>
+
+    <v-container>
+      <!-- FAQ Section -->
+      <div class="faq-container">
+        <h2 class="faq-title">Perguntas Frequentes - FAQ</h2>
+        <p>Conheça as respostas para as perguntas mais frequentes</p>
+        <v-row class="faq-ajuste" justify="space-between">
+          <v-col
+            v-for="(question, index) in faq"
+            :key="index"
+            cols="12"
+            md="4"
+            class="faq-ajuste"
+          >
+            <v-hover v-slot:default="{ isHovering }">
+              <v-card
+                :elevation="isHovering ? 8 : 2"
+                class="text-center team-card"
+              >
+                <v-card-title class="faq-title-bold" style="font-size: 14px">{{
+                  question.title
+                }}</v-card-title>
+                <v-card-text>{{ question.answer }}</v-card-text>
+              </v-card>
+            </v-hover>
+          </v-col>
+        </v-row>
+      </div>
+    </v-container>
+
+    <v-divider class="my-12"></v-divider>
+
     <Footer />
   </v-app>
 </template>
@@ -188,6 +222,24 @@ export default {
           position: "Especialista em Segurança",
           photo: "https://cdn.vuetifyjs.com/images/john.jpg",
         },
+      ],
+      faq: [
+        {
+          title: "Como posso criar um currículo no site?",
+          answer:
+            "Para criar um currículo no site, basta clicar no botão 'Criar Currículo' na página inicial e preencher o formulário com suas informações pessoais e profissionais.",
+        },
+        {
+          title: "Como posso buscar vagas de emprego no site?",
+          answer:
+            "Você pode buscar vagas de emprego no site utilizando a barra de busca na página inicial. Digite palavras-chave relacionadas à vaga que você procura e selecione a localização desejada.",
+        },
+        {
+          title: "Como entrar em contato com o suporte?",
+          answer:
+            " Você pode entrar em contato com a equipe de suporte do site enviando um e-mail para suporte@carreiras.com ou utilizando a página de contato no site.",
+        },
+        // Adicione mais perguntas frequentes conforme necessário
       ],
     };
   },
@@ -383,6 +435,33 @@ export default {
 
 .membro-equipe {
   text-align: center;
+}
+
+.faq-container {
+  padding: 50px;
+}
+
+.faq-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.faq-ajuste {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.faq-title-bold {
+  font-weight: bold;
+}
+.team-card {
+  transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
 }
 
 @media (max-width: 600px) {
