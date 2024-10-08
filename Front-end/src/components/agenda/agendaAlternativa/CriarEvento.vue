@@ -1,33 +1,35 @@
 <template>
     <v-dialog v-model="dialog" max-width="600">
         <template v-slot:activator="{ props: activatorProps }">
-            <v-btn variant="elevated" class="text-none" icon="mdi-plus" text="Agendar" v-bind="activatorProps" color="#567494"></v-btn>
+            <v-btn variant="elevated" class="text-none" icon="mdi-plus" text="Agendar" v-bind="activatorProps" color="rgba(58, 28, 118, 1)"></v-btn>
         </template>
         <v-form @submit.prevent="agendar">
             <v-card prepend-icon="mdi-calendar-plus" title="Novo Agendamento">
                 <v-card-text class="overflow-auto pt-2">
                     <v-row dense>
-                        <v-col cols="12" md="6">
-                            <v-text-field v-model="form.nome" variant="outlined" clearable label="Nome e Sobrenome"
-                                maxlength="30" :rules="rules.nomeRules"></v-text-field>
+                        <v-col cols="12" md="12">
+                            <v-text-field v-model="form.titulo" variant="outlined" clearable label="Título"
+                                maxlength="30" :rules="rules.tituloRules"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-textarea counter="600" auto-grow v-model="form.descricao" variant="outlined" label="Descrição" :rules="rules.descricaoRules"></v-textarea>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-select v-model="form.candidato" :rules="candidatoRules" :items="items" label="Candidato" variant="outlined"></v-select>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-select v-model="form.vaga" label="Vaga" variant="outlined"></v-select>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-select v-model="editedItem.vaga" label="Vaga" variant="outlined"></v-select>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <v-text-field v-model="form.celular" variant="outlined" label="Celular" maxlength="14"
-                                :rules="rules.celularRules"></v-text-field>
+                            <v-text-field v-model="editedItem.data" label="Data" type="date" variant="outlined"></v-text-field>
                         </v-col>
-                        <v-col cols="12">
-                            <v-autocomplete v-model="form.servicos" :rules="rules.servicoRules" clearable chips
-                                label="Serviços" :items="['Corte Social', 'Barba', 'Escovação', 'Mãos', 'Pés']" multiple
-                                variant="outlined" maxlength="30"></v-autocomplete>
-                        </v-col>
+
                         <v-col cols="12" md="6">
-                            <input type="date" v-model="form.data" class="pa-3 rounded w-100">
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <input type="time" v-model="form.horario" class="pa-3 rounded w-100">
-                        </v-col>
-                        <v-col cols="12" class="mt-4">
-                            <span>Tempo estimado: <span class="bg-primary pa-1 rounded-lg">1:40 min.</span></span>
+                            <v-text-field v-model="editedItem.horario" label="Horário" type="time"
+                            variant="outlined"></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -44,27 +46,44 @@
 
 <script>
 export default {
+    props: {
+        showModal: {
+            type: Boolean,
+            required: true,
+        }
+    },
+
+
     data() {
         return {
             dialog: false,
             form: {
-                nome: '',
-                celular: '',
-                servicos: [],
+                titulo: '',
+                descricao: '',
+                candidato:'',
                 data: '2024-12-31',
                 horario: '12:00',
+                vaga:''
             },
             rules: {
-                nomeRules: [
-                    v => !!v || 'Nome requerido.',
-                    v => (/^[A-Z][a-z]+ [A-Z][a-z]+( [A-Z][a-z]+)?$/.test(v)) || 'Iniciais Maiúsculas.'
-                    ],
-                celularRules: [
-                    v => !!v || 'Celular requerido, apenas números.',
-                    v => (/[(][0-9]{2}[)][ ][0-9]{5}[-][0-9]{4}/.test(v)) || 'Celular incorreto.'
+                tituloRules: [
+                (v) => !!v || "Título Requerido",
+                (v) => v.length >= 3 || "Título deve ter pelo menos 3 caracteres",
                 ],
-                servicoRules: [
-                    v => (/([a-zA-Z]{1,})|([a-zA-Z]{1,}[ ][a-zA-Z]{1,})/.test(v)) || 'Selecione pelo menos 1 serviço.'
+                descricaoRules: [
+                    (v) => !!v || "Descrição Requerida",
+                    (v) => v.length <= 600 || "Máximo permitido 600 caracteres",
+                ],
+                candidatoRules: [
+                (v) => !!v || "Candidato Requerido"
+                ],
+                items: [
+                    'João',
+                    'Maria',
+                    'Felipe',
+                    'Thiago',
+                    'Rodrigo',
+                    'Paula'
                 ]
             },
         };

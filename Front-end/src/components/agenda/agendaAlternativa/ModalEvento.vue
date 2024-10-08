@@ -13,10 +13,27 @@
 
             <v-divider></v-divider>
             <v-data-table height="400" v-model:search="search" :headers="headers" :items="eventos"
-                :sort-by="[{ key: 'servico', order: 'asc' }]">
+                :sort-by="[{ key: 'vaga', order: 'asc' }]">
 
-                <template v-slot:item.servico="{ item }">
-                    {{ item.servico.join(', ') }}
+                <template v-slot:item.candidato="{ item }">
+                    {{ item.candidato }}
+                </template>
+
+                <template v-slot:item.vaga="{ item }">
+                    {{ item.vaga }}
+                </template>
+
+                <template v-slot:item.titulo="{ item }">
+                    {{ item.title }}
+                </template>
+
+                <template v-slot:item.data="{ item }">
+                    {{ new Date(item.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) }}
+                </template>
+
+
+                <template v-slot:item.horario="{ item }">
+                    {{ item.hora }}
                 </template>
 
                 <template v-slot:item.actions="{ item }">
@@ -35,22 +52,38 @@
     </v-dialog>
 
     <!-- Modal Edit -->
-    <v-dialog v-model="dialog" max-width="500px">
+    <v-dialog v-model="dialog" max-width="600px">
         <v-card>
             <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
+                <span class="text-h5">Editar evento</span>
             </v-card-title>
             <v-card-text>
                 <v-container>
                     <v-row>
-                        <v-col cols="12" md="4" sm="6">
-                            <v-text-field v-model="editedItem.cliente" label="Dessert name"></v-text-field>
+                        <v-col cols="12" md="12">
+                            <v-text-field v-model="editedItem.title" variant="outlined" clearable label="Título"
+                                maxlength="30" :rules="rules.tituloRules"></v-text-field>
                         </v-col>
-                        <v-col cols="12" md="4" sm="6">
-                            <v-text-field v-model="editedItem.servico" label="Calories"></v-text-field>
+                        <v-col cols="12" md="12">
+                            <v-textarea counter="600" auto-grow v-model="editedItem.descricao" variant="outlined"
+                                label="Descrição" :rules="rules.descricaoRules"></v-textarea>
                         </v-col>
-                        <v-col cols="12" md="4" sm="6">
-                            <v-text-field v-model="editedItem.horario" label="Fat (g)"></v-text-field>
+                        <v-col cols="12" md="12">
+                            <v-select v-model="editedItem.candidato" :rules="rules.candidatoRules" :items="items"
+                                label="Candidato" variant="outlined"></v-select>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-select :item-props="itemProps" :items="vagas" label="Selecione uma Vaga" variant="outlined" :clearable="true">
+                            </v-select>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-text-field v-model="editedItem.data" :rules="rules.dataRules" label="Data" type="date"
+                                variant="outlined"></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" md="6">
+                            <v-text-field v-model="editedItem.hora" label="Horário" type="time"
+                                variant="outlined"></v-text-field>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -70,8 +103,8 @@
     <!-- Modal Delete -->
     <v-dialog v-model="dialogDelete" max-width="500px">
         <v-card>
-            <v-card-title class="text-h5">Excluir Evento?</v-card-title>
-            <v-card-text>Descrição do Evento</v-card-text>
+            <v-card-title class="text-h5">Excluir Evento</v-card-title>
+            <v-card-text>Essa ação é irreversível. Deseja excluir evento?</v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -80,9 +113,13 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
+
 </template>
 
 <script>
+import axios from 'axios';
+
+
 export default {
     props: {
         showModal: {
@@ -94,43 +131,69 @@ export default {
             required: true
         },
         title: {
-            type: Number
+            type: String,
+            required: true
         }
     },
 
     data: () => ({
+        vagas: [
+            { id: 15, titulo: 'Analista de Dados', cep: '87775-435', cidade: 'Joinville', estado: 'SC' },
+            { id: 16, titulo: 'Analista de Dados', cep: '87775-435', cidade: 'Joinville', estado: 'SC' },
+            { id: 18, titulo: 'Analista de Dados', cep: '87775-435', cidade: 'Joinville', estado: 'SC' }
+        ],
+        selectedVaga: null,
+        items: ['João', 'Maria', 'Felipe', 'Thiago', 'Rodrigo', 'Paula'],
         search: '',
         dialog: false,
         dialogDelete: false,
+        rules: {
+            tituloRules: [
+                (v) => !!v || "Título Requerido",
+                (v) => v.length >= 3 || "Título deve ter pelo menos 3 caracteres",
+            ],
+            descricaoRules: [
+                (v) => !!v || "Descrição Requerida",
+                (v) => v.length <= 600 || "Máximo permitido 600 caracteres",
+            ],
+            candidatoRules: [
+                (v) => !!v || "Candidato Requerido"
+            ],
+            dataRules: [
+                (v) => !!v || "Data Requerida",
+                (v) => new Date(v) >= new Date() || "A data deve ser futura"
+            ]
+        },
         headers: [
-            { title: 'Cliente', align: 'start', sortable: false, key: 'cliente', },
-            { title: 'Serviços', key: 'servico' },
+            { title: 'Título', align: 'start', sortable: false, key: 'title' },
+            { title: 'Candidato', align: 'start', sortable: false, key: 'candidato' },
+            { title: 'Vaga', key: 'vaga' },
             { title: 'Data', key: 'data' },
-            { title: 'Horários', key: 'horario' },
+            { title: 'Horário', key: 'hora' },
             { title: 'Ações', key: 'actions', sortable: false, align: 'end' },
         ],
-        desserts: [],
         editedIndex: -1,
         editedItem: {
-            cliente: '',
-            servico: 0,
-            data: 0,
-            horario: 0,
+            titulo: '',
+            descricao: '',
+            candidato: '',
+            vaga: '',
+            data: '',
+            horario: '',
         },
         defaultItem: {
-            cliente: '',
-            servico: 0,
-            data: 0,
-            horario: 0,
+            titulo: '',
+            descricao: '',
+            candidato: '',
+            vaga: '',
+            data: '',
+            horario: '',
         },
     }),
 
     emits: ['FecharTabela'],
 
     computed: {
-        formTitle() {
-            return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-        },
         internalShowModal() {
             return this.showModal;
         },
@@ -149,46 +212,73 @@ export default {
         this.initialize()
     },
 
+    mounted() {
+        this.mostrarVagas();
+    },
+
     methods: {
+        itemProps(vaga) {
+            return {
+                title: vaga.titulo,
+                subtitle: vaga.id,
+            }
+        },
+
         initialize() {
-            this.desserts = [
-                {
-                    cliente: 'Frozen Yogurt',
-                    servico: 159,
-                    horario: 6.0,
-                },
-                {
-                    cliente: 'Frozen Yogurt',
-                    servico: 159,
-                    horario: 6.0,
-                },
-                {
-                    cliente: 'Frozen Yogurt',
-                    servico: 159,
-                    horario: 6.0,
-                },
-                {
-                    cliente: 'Thjiago Lima',
-                    servico: 159,
-                    horario: 6.0,
-                },
-            ]
+            const eventData = this.eventos[this.editedIndex];
+            if (eventData && eventData.data) {
+                this.editedItem.data = new Date(eventData.data).toISOString().split('T')[0];
+            }
+        },
+
+        formatDate(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleDateString('pt-BR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+        },
+
+        async mostrarVagas() {
+            this.loadingVagas = true;
+            try {
+                console.log(this.editedItem.id_empresa)
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read/empresa`, {
+                    params: {
+                        id: 18,
+                        requisicao: 'empresa'
+                    },
+                    withCredentials: true
+                });
+
+                //this.vagas = response.data.result
+                console.log('construçao do this.vagas:', this.vagas);
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
         },
 
         editItem(item) {
-            this.editedIndex = this.desserts.indexOf(item)
-            this.editedItem = Object.assign({}, item)
-            this.dialog = true
+            console.log("Editando item:", item);
+            this.editedIndex = this.eventos.indexOf(item);
+            this.editedItem = Object.assign({}, item);
+            if (this.editedItem.data) {
+                this.editedItem.data = new Date(this.editedItem.data).toISOString().split('T')[0];
+            }
+            this.mostrarVagas();
+            this.dialog = true;
         },
 
         deleteItem(item) {
-            this.editedIndex = this.desserts.indexOf(item)
-            this.editedItem = Object.assign({}, item)
-            this.dialogDelete = true
+            console.log("Excluindo item:", item);
+            this.editedIndex = this.eventos.indexOf(item);
+            this.editedItem = Object.assign({}, item);
+            this.dialogDelete = true;
         },
 
         deleteItemConfirm() {
-            this.desserts.splice(this.editedIndex, 1)
+            this.eventos.splice(this.editedIndex, 1)
             this.closeDelete()
         },
 
@@ -210,9 +300,9 @@ export default {
 
         save() {
             if (this.editedIndex > -1) {
-                Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                Object.assign(this.eventos[this.editedIndex], this.editedItem)
             } else {
-                this.desserts.push(this.editedItem)
+                this.eventos.push(this.editedItem)
             }
             this.close()
         },

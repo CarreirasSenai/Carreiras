@@ -17,6 +17,7 @@ const Habilidade = require('../controller/habilidades');
 const VerificarConta = require('../controller/verificarConta');
 const Empresa = require('../controller/empresa');
 const Admin = require('../controller/admin');
+const Agendamento = require('../controller/agendamento');
 
 // rota autenticacao
 router.get('/auth', authMiddleware, (req, res) => {
@@ -90,6 +91,9 @@ router.get('/admin/read/all', authMiddleware, Admin.getAllUser);
 router.delete('/admin/delete/:id', authMiddleware, Admin.deleteUser);
 router.put('/admin/update', authMiddleware, Admin.updateUser);
 router.get('/admin/pesquisa', Admin.pesquisaUser);
+
+//rotas agendamento
+router.get('/agendamento/read', Agendamento.read);
 
 // rota logout
 router.get('/logout', (req, res) => {
