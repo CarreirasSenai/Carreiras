@@ -14,11 +14,6 @@
           Vizualização e leitura (TODOS)
         </v-tooltip>
       </h1>
-      <v-spacer></v-spacer>
-      <CadUsuarioAdmin
-        v-if="usuario.dadosUser.tipo_admin === 'super'"
-        :MostrarUsuarios="mostrarUsuarios"
-      />
     </div>
 
     <v-text-field
@@ -67,9 +62,6 @@
           </v-col>
 
           <v-col cols="4" sm="3" class="text-align text-uppercase">
-            <v-chip size="small" :color="colorTipoUser(user.tipo_admin)">{{
-              user.tipo_admin
-            }}</v-chip>
           </v-col>
 
           <v-col cols="8" sm="1" class="text-end">
@@ -149,7 +141,7 @@ export default {
     async mostrarUsuarios() {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/admin/read/all`,
+          `${import.meta.env.VITE_BACKEND_URL}/candidato/read/all`,
           {
             withCredentials: true,
           }
@@ -207,6 +199,13 @@ export default {
 </script>
 
 <style>
+.main-container {
+  background-color: #e1d6f6;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
 .text-align {
   text-align: center;
 }

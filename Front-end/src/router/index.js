@@ -19,6 +19,7 @@ import DetalhesVaga from '@/pages/detalhesVaga.vue';
 import AgendaAlternativa from '@/pages/AgendaAlternativa.vue';
 import MinhasVagas from '@/pages/minhasVagas.vue';
 import listaCandidatos from '@/pages/listaCandidatos.vue';
+import Contato from '@/pages/contato.vue';
 
 
 
@@ -51,7 +52,7 @@ const router = createRouter({
     { path: '/agenda-alternativa', component: AgendaAlternativa},
     { path: '/minhas-vagas', component: MinhasVagas},
     { path: '/lista-candidatos', component: listaCandidatos},
-
+    { path: '/contato', component: Contato}
   ],
 });
 
