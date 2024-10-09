@@ -103,6 +103,19 @@ exports.updateUser = (req, res) => {
     });
 };
 
+exports.updateUserEmpresa = (req, res) => {
+    const { id, status, razaoSocial, nomeFantasia, email, cnpj, inscricaoEstadual,
+        cep, endereco, numero, complemento, bairro, cidade, estado, telefone, celular, responsavelLegal, cpfResponsavel,
+        contatoRA} = req.body;
+        console.log(req.body);
+
+        Admin.updateUserEmpresa(id, razaoSocial, nomeFantasia, email, cnpj, inscricaoEstadual, cep, endereco,
+            numero, complemento, bairro, cidade, estado, telefone, celular, responsavelLegal, cpfResponsavel, contatoRA,
+            status, (err, success) => {
+                
+            })
+}
+
 // Delete
 exports.deleteUser = (req, res) => {
     const { id } = req.params;

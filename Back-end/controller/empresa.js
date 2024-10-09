@@ -136,7 +136,7 @@ exports.getAllUser = (req, res) => {
             return res.status(500).json({ error: err.message });
         
         if (!usuarios)
-            return res.status(404).json
+            return res.status(404).json({ error: "Usuários não encontrados"})
 
         res.json({ success: true, usuarios: usuarios })
     })

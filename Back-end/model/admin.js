@@ -130,6 +130,56 @@ exports.updateUser = (id, nome, email, cpf, celular, tipo, status, callback) => 
     });
 };
 
+exports.updateUserEmpresa = (id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual,
+    cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpf_responsavel, contatoRA, 
+    statusUser, callback) => {
+        db.query("SELECT 1 FROM user_empresa WHERE email = ? AND id != ?", [email, id], (err, results) => {
+            if(err)
+                return callback(err, null);
+
+            if(results.length > 0)
+                return callback(new Error('E-mail já cadastrado!'), null);
+        });
+
+        db.query("SELECT 1 FROM user_empresa WHERE cnpj = ? AND id != ?", [cnpj, id], (err, results) => {
+            if(err)
+                return callback(err, null);
+            
+            if(results.length > 0)
+                return callback(new Error('CNPJ já cadastrado!'), null);
+        });
+
+        db.query(`UPDATE user_empresa
+        SET verificado = ?,
+        razao_social = ?,
+        nome_fantasia = ?,
+        cnpj = ?,
+        inscricao_estadual = ?,
+        cep = ?,
+        endereco = ?,
+        numero = ?,
+        complemento = ?,
+        endereco = ?,
+        bairro = ?,
+        cidade = ?,
+        estado = ?,
+        email = ?,
+        telefone = ?,
+        celular = ?,
+        responsavel_legal = ?,
+        cpf_responsavel = ?,
+        contato_responsavel = ?`, [statusUser, razaoSocial, nomeFantasia, email, cnpj, inscricaoEstadual,
+        cep, endereco, numero, complemento, bairro, cidade, estado, email, telefone, celular, responsavelLegal, cpf_responsavel,
+        contatoRA], (err, result) => {
+            if(err) {
+                console.log(err);
+                return callback(err, null);
+            } else if (result) {
+                return callback(null, result.affectedRows > 0);
+            }
+        })
+    }
+
 // Delete
 exports.deleteUser = (id, callback) => {
     db.query('DELETE FROM user_admin WHERE id = ?', [id], (err, result) => {
