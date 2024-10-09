@@ -137,14 +137,14 @@
                         </v-col>
                         <v-col cols="12" v-if="perguntas.tipo === 'alternativa'">
                             Defina todas as alternativas para a questão:
-                            <div class="d-flex justify-center my-2 ga-4">
+                            <div class="d-flex justify-center flex-wrap my-2 ga-2">
                                 <v-text-field id="alternativa" density="compact" variant="outlined"
                                     clearable></v-text-field>
                                 <v-btn color="deep-purple-accent-4"
                                     @click="createAlternativa">Adicionar</v-btn>                                
                             </div>
-                            <div id="alternativas" class="pa-4 mb-2"></div>
-                            <v-btn color="grey" @click="resetAlternativas">Resetar</v-btn>
+                            <div id="alternativas" class="pa-4 mb-6"></div>
+                            <v-btn color="black" @click="resetAlternativas">Resetar</v-btn>
                         </v-col>
                         <v-col cols="12" v-else-if="perguntas.tipo === 'discursiva'">
                             Será disponibilizado um campo de entrada para que o candidato possa responder a pergunta.
