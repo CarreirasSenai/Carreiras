@@ -49,7 +49,7 @@
 
           <v-col cols="9" sm="3">
             <div class="ma-1">
-              <h3>{{ user.nome }}</h3>
+              <h3>{{ user.nome_completo }}</h3>
               <p>{{ user.email }}</p>
             </div>
           </v-col>
@@ -141,13 +141,13 @@ export default {
     async mostrarUsuarios() {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/admin/read/all`,
+          `${import.meta.env.VITE_BACKEND_URL}/candidato/read/all`,
           {
             withCredentials: true,
           }
         );
 
-        console.log(response.data);
+        console.log("candidatos: ", response.data);
         this.usuarios = response.data.usuarios;
       } catch (error) {
         console.log(error.data);
