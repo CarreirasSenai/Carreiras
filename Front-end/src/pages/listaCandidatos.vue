@@ -65,7 +65,7 @@
           </v-col>
 
           <v-col cols="8" sm="1" class="text-end">
-            <EditarCadUsuarioAdmin
+            <EditarCadUsuarioAdmin 
               v-if="
                 usuario.dadosUser.tipo_admin === 'super' ||
                 usuario.dadosUser.id === user.id
