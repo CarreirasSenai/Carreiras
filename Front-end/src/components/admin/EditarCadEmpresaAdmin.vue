@@ -332,11 +332,11 @@ export default {
         console.log(this.form);
 
         try {
-          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/admin/update`, {
+          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/empresa/update`, {
             dados: this.form,
           }, { withCredentials: true });
 
-          console.log(response.data);
+          console.log("Resposta: ",response.data);
           this.MostrarUsuarios();
           this.dialog = false;
 

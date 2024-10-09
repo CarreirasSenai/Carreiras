@@ -362,7 +362,7 @@ export default {
           estado: this.estado,
           responsavelLegal: this.responsavelLegal,
           cpfResponsavel: this.cpfResponsavel,
-          contatoRA: this.contatoRA
+          contatoRA: this.contatoRA,
         }, { withCredentials: true });
 
         this.mensagem = 'Cadastro atualizado com Sucesso!',
