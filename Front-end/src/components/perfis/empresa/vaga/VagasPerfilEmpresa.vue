@@ -1,18 +1,16 @@
 <template>
-    <div class="ma-4 mb-4 d-flex justify-space-between align-center">
+    <div class="ma-5 mb-4 d-flex justify-space-between align-center">
         <h1 style="font-size: clamp(17px, 4vw, 25px);">Vagas da Empresa</h1>
         <AdicionarVaga
             v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id && grupo === 'empresa'"
             :MostrarVagas="mostrarVagas" />
     </div>
 
-    <!-- <v-divider class="ml-4 mr-4"></v-divider> -->
-
     <v-card variant="text">
         <v-data-iterator :items="vagas" :items-per-page="6" :search="search">
             <template v-slot:header>
                 <!-- <v-toolbar> -->
-                <v-text-field v-model="search" class="mt-2 mx-4" density="compact" placeholder="Pesquise uma vaga"
+                <v-text-field v-model="search" class="mt-2 mx-5" density="compact" placeholder="Pesquise uma vaga"
                     prepend-inner-icon="mdi-magnify" variant="underlined"></v-text-field>
                 <!-- </v-toolbar> -->
             </template>
@@ -121,8 +119,6 @@ export default {
         this.grupo = localStorage.getItem('grupo');
         console.log(this.user.dadosUser.id);
         console.log(this.grupo);
-
-
     },
     computed: {
         user() {

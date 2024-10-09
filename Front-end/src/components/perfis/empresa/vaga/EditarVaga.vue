@@ -86,7 +86,7 @@
                     </v-card-text>
                     <v-divider></v-divider>
                     <v-card-actions>
-                        <v-btn text="Excluir" color="error" @click="deletarVaga"></v-btn>
+                        <v-btn text="Excluir" color="error" @click="modalDelete = true"></v-btn>
                         <v-spacer></v-spacer>
                         <v-btn text="Fechar" variant="plain" @click="dialog = false"></v-btn>
                         <v-btn color="Enviar" text="Salvar" variant="tonal" type="submit"></v-btn>
@@ -95,6 +95,20 @@
             </v-form>
         </v-dialog>
     </div>
+
+    <v-dialog max-width="500" v-model="modalDelete">
+        <v-card :title="'Deletar ' + this.form.titulo">
+            <v-card-text>
+                Ao excluir essa vaga todos os candidatos pendentes serão notificados com a justificativa para não
+                contratação. Deseja continuar com a exclusão?
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn variant="tonal" text="Cancelar" @click="modalDelete = false"></v-btn>
+                <v-btn variant="tonal" class="bg-error" text="Excluir" @click="deletarVaga"></v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>
@@ -102,6 +116,7 @@ import axios from 'axios';
 
 export default {
     data: () => ({
+        modalDelete: false,
         dialog: false,
         form: {
             id: '',
@@ -201,7 +216,9 @@ export default {
 
                 console.log('Vaga Deletada!', response.data);
                 this.dialog = false;
+                this.modalDelete = false;
                 this.MostrarVagas();
+                window.location.reload;
 
             } catch (error) {
                 console.error('Erro', error.response.data);

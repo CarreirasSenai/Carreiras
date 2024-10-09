@@ -108,11 +108,7 @@ exports.login = (req, res) => {
 
 // Read / Autenticar
 exports.getUser = (req, res) => {
-    const requisicao = req.query.requisicao;
-    const idReq = req.query.id;
-    const idSession = req.session.usuario.id;
-
-    const usuario_id = requisicao ? idReq : idSession;
+    const usuario_id = req.query.id ? req.query.id : req.session.usuario.id;
 
     if (usuario_id) {
         Empresa.getUser(usuario_id, (err, usuario) => {

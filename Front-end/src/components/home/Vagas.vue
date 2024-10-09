@@ -46,7 +46,6 @@
               </v-row>
               <v-row dense>
                 <v-col cols="12">
-                  <!-- <span class="mdi mdi-school text-h4 mr-1"></span> -->
                   <p class="observavel overflow-hidden" style="white-space: nowrap;">
                     <v-chip size="small" variant="outlined" color="deep-purple-accent-4" class="mr-2"
                       v-for="(habilidade, index) in JSON.parse(item.raw.habilidades_exigidas).slice(0, 3)" :key="index">

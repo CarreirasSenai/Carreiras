@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { useAuthStore } from '@/stores/auth';
 import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
 
 export default {
@@ -23,16 +22,13 @@ export default {
         dadosCarregados: false,
         empty: false,
     }),
-    computed: {
-        auth() {
-            return useAuthStore();
-        },
+    computed: {        
         pesquisaUser() {
             return usePesquisaUsuarioStore();
         },
     },
     created() {
-        this.auth.autenticacao();
+        // this.auth.autenticacao();
     },
     methods: {
         atualizarDadosCarregados(valor) {

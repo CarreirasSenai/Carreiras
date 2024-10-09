@@ -70,26 +70,39 @@
                                     label="Descrição (Visão Geral da Vaga)" :rules="[rules.geral]"></v-textarea>
                             </v-col>
                         </v-row>
-                        <v-row dense>
+                        <!-- <v-row dense>
                             <v-col cols="12">
                                 <v-combobox v-model="form.etapas" chips closable-chips multiple label="Etapas da Vaga"
                                     hint="Escreva uma etapa e tecle enter" :rules="[rules.geral]"></v-combobox>
                             </v-col>
-                        </v-row>
-                        <v-row dense>
-                            <v-col cols="12">
-                                <v-icon icon="mdi-information" size="x-small" color="grey-lighten-1" :title="infoQuestionario">
-                                    <v-tooltip activator="parent" location="end"></v-tooltip>
-                                </v-icon>
-                                <v-combobox v-model="form.questionario" chips closable-chips multiple
-                                    label="Questionário de Triagem"
-                                    hint="Escreva uma pergunta e tecle enter"></v-combobox>
-                            </v-col>
-                        </v-row>
+                        </v-row> -->
                         <v-row dense>
                             <v-col cols="12">
                                 <v-text-field v-model="form.qtdCandidatos" label="Máximo de Candidaturas" type="number"
                                     :rules="[rules.geral]"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row dense>
+                            <v-col cols="10">
+                                <small>
+                                    Saiba mais
+                                    <v-tooltip activator="parent" location="left">
+                                        O questionário consiste de no minímo 3 até 30 perguntas alternativas que farão
+                                        <br>
+                                        a triagem dos candidatos atribuindo um nível de relevância a cada um deles. <br>
+                                        Também é possivel adicionar perguntas discursivas que não terão relevância na
+                                        <br>
+                                        triagem.
+                                    </v-tooltip>
+                                </small>
+                                <h3>Questionário para triagem dos candidatos</h3>
+                            </v-col>
+                            <v-col cols="2" class="text-end mt-5">
+                                <v-btn icon="mdi-plus" size="x-small" color="deep-purple-accent-4"
+                                    @click="dialogPerguntas = true"></v-btn>
+                            </v-col>
+                            <v-col cols="12">
+
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -102,6 +115,52 @@
             </v-form>
         </v-dialog>
     </div>
+
+
+    <v-dialog v-model="dialogPerguntas" max-width="700" persistent>
+        <v-form class="ma-5 text-start" @submit.prevent="">
+            <v-card title="Criar Pergunta">
+                <v-card-text class="text-start overflow-auto" style="height: 70vh;">
+                    <v-row dense>
+                        <v-col cols="12">
+                            <v-textarea v-model="perguntas.pergunta" rows="2" auto-grow label="Descreva a pergunta"
+                                :rules="[rules.geral]"></v-textarea>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-radio-group v-model="perguntas.tipo" inline label="Tipo da pergunta"
+                                :rules="[rules.geral]">
+                                <v-radio label="Alternativa" value="alternativa"
+                                    @click="perguntas.tipo = 'alternativa'"></v-radio>
+                                <v-radio label="Discursiva" value="discursiva"
+                                    @click="perguntas.tipo = 'discursiva'"></v-radio>
+                            </v-radio-group>
+                        </v-col>
+                        <v-col cols="12" v-if="perguntas.tipo === 'alternativa'">
+                            Defina todas as alternativas para a questão:
+                            <div class="d-flex justify-center my-2 ga-4">
+                                <v-text-field id="alternativa" density="compact" variant="outlined"
+                                    clearable></v-text-field>
+                                <v-btn color="deep-purple-accent-4"
+                                    @click="createAlternativa">Adicionar</v-btn>                                
+                            </div>
+                            <div id="alternativas" class="pa-4 mb-2"></div>
+                            <v-btn color="grey" @click="resetAlternativas">Resetar</v-btn>
+                        </v-col>
+                        <v-col cols="12" v-else-if="perguntas.tipo === 'discursiva'">
+                            Será disponibilizado um campo de entrada para que o candidato possa responder a pergunta.
+                            <br><br>
+                            <em>Questões discursivas não atribuem relevância ao candidato.</em>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-btn text="Fechar" variant="plain" @click="dialogPerguntas = false, resetAlternativas()"></v-btn>
+                    <v-btn color="Enviar" text="Salvar" variant="tonal" type="submit"></v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-form>
+    </v-dialog>
 </template>
 
 <script>
@@ -109,6 +168,8 @@ import axios from 'axios';
 
 export default {
     data: () => ({
+        count: 0,
+        dialogPerguntas: false,
         dialog: false,
         form: {
             titulo: 'Analista de Dados',
@@ -125,6 +186,12 @@ export default {
             etapas: ['Entrevista', 'Desafio', 'Call com Líder', 'Acordo'],
             questionario: ['Há quantos anos você usa Excel no trabalho?', 'Fale sobre um projeto desafiador.'],
             qtdCandidatos: 100,
+        },
+        perguntas: {
+            tipo: '',
+            pergunta: '',
+            respsErradas: [],
+            respCorreta: ''
         },
         rules: {
             geral: value => !!value || 'O campo obrigatório.'
@@ -168,6 +235,26 @@ export default {
                     console.error('Erro', error.response.data);
                 }
             }
+        },
+
+        createAlternativa() {
+            const divAlternativas = document.getElementById('alternativas');
+            const input = document.getElementById('alternativa');
+
+            if (input.value != '') {
+
+                this.count += 1;
+
+                if (this.count <= 5) {
+                    divAlternativas.innerHTML += `<p>${this.count} - ${input.value}</p>`;
+                }
+            }
+        },
+
+        resetAlternativas() {
+            const divAlternativas = document.getElementById('alternativas');
+            divAlternativas.innerHTML = '';
+            this.count = 0;
         }
     }
 }

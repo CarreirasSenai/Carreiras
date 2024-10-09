@@ -171,7 +171,7 @@ export default {
           withCredentials: true  // Importante: enviar cookies com a requisição
         });
 
-        sessionStorage.removeItem("grupo");
+        localStorage.removeItem("grupo");
         console.log(response.data);
         window.location.href = '/';
 

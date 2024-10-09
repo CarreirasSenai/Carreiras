@@ -29,6 +29,7 @@
 <script>
 import { useCandidatoStore } from '@/stores/candidato';
 import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
+import { useAuthStore } from '@/stores/auth';
 
 export default {
     data: () => ({
@@ -45,6 +46,9 @@ export default {
         pesquisaUser() {
             return usePesquisaUsuarioStore();
         },
+        auth() {
+            return useAuthStore();
+        },        
     },
     created() {
         this.pesquisaUser.id = this.$route.query.id;
@@ -69,6 +73,7 @@ export default {
             } else if (!this.$route.query.id && !this.$route.query.requisicao) {
                 console.log('\nuserLogado');
                 this.user.userLogado();
+                this.auth.autenticacao();
                 return this.user;
             } else {
                 window.location.href = "/";

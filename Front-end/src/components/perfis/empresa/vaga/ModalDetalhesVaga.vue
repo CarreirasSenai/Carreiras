@@ -1,6 +1,6 @@
 <template>
     <div class="text-center">
-        <v-btn variant="tonal" class="bg-deep-purple-accent-3" @click="dialog = true">
+        <v-btn variant="tonal" class="bg-deep-purple-accent-3" @click="dialog = true, getUserEmpresa()">
             Detalhes
         </v-btn>
 
@@ -79,17 +79,20 @@
 
                             </v-card-text>
 
-                            <v-card-actions class="d-flex justify-space-between">
+                            <v-card-actions class="d-flex justify-space-between border">
                                 <div class="d-flex flex-wrap ga-2">
-                                    <v-btn v-if="grupo != 'empresa' && grupo != 'admin'" class="bt-primario">Inscrever-se</v-btn>
-                                    <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa
-                                        || pesquisaUser.dadosUser.id === this.Vagas.raw.id_empresa"
+                                    <v-btn v-if="grupo != 'empresa' && grupo != 'admin'"
+                                        class="bt-primario">Inscrever-se</v-btn>
+                                    <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
                                 </div>
-                                <div class="d-flex align-center justify-center ga-2">
-                                    {{ empresa.nome_fantasia }}
-                                    <img :src="empresa.foto" width="50px" class="rounded-circle">
-                                </div>
+                                <router-link :to="`/perfil-empresa?requisicao=empresa&id=${this.Vagas.raw.id_empresa}`"
+                                    class="text-black text-decoration-none">
+                                    <div class="d-flex align-center justify-center ga-2">
+                                        {{ empresa.nome_fantasia }}
+                                        <img :src="empresa.foto" width="50px" class="rounded-circle">
+                                    </div>
+                                </router-link>
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -130,7 +133,6 @@ export default {
     },
     mounted() {
         this.grupo = localStorage.getItem('grupo');
-        this.getUserEmpresa();
     },
     methods: {
         compartilhar() {
@@ -150,13 +152,13 @@ export default {
 
         async getUserEmpresa() {
             const id = this.Vagas.raw.id_empresa;
-            const requisicao = 'empresa';
+
+            console.log(id)
 
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/empresa/read`, {
                     params: {
                         id: id,
-                        requisicao: requisicao
                     },
                     withCredentials: true
                 });
