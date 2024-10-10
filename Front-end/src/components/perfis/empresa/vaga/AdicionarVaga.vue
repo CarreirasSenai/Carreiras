@@ -118,7 +118,7 @@
 
 
     <v-dialog v-model="dialogPerguntas" max-width="700" persistent>
-        <v-form class="ma-5 text-start" @submit.prevent="">
+        <v-form class="ma-5 text-start" @submit.prevent="submitPergunta">
             <v-card title="Criar Pergunta">
                 <v-card-text class="text-start overflow-auto" style="height: 70vh;">
                     <v-row dense>
@@ -142,11 +142,13 @@
                             <v-btn variant="tonal" class="mr-2 bg-deep-purple-accent-4" @click="createAlternativa"
                                 :disabled="count === 5">adicionar</v-btn>
                             <v-btn class="mr-4" variant="tonal" @click="resetAlternativas">Resetar</v-btn>
-                            <small class="text-error" v-if="count === 5">Limite atingido</small>
+                            <small class="text-warning" v-if="count === 5">{{ mensagem = 'Limite atingido' }}</small>
                             <!-- <div id="alternativas" class="pa-4"></div> -->
-                            <v-radio-group v-model="perguntas.respCorreta" class="pa-4" :rules="[rules.geral]">
-                                <v-radio v-for="(alt, index) in vet" :key="index" :label="`${index + 1}) ${alt}`"
-                                    :value="alt"></v-radio>
+                            <v-radio-group v-model="perguntas.respCorreta" class="pa-4" :rules="[rules.alternativas]">
+                                <v-radio v-for="(alt, index) in vet" :key="index"
+                                    :label="`${index + 1}) ${alt} ${perguntas.respCorreta === alt ? '- Resposta correta' : ''}`"
+                                    :value="alt" color="green">
+                                </v-radio>
                             </v-radio-group>
                         </v-col>
                         <v-col cols="12" v-else-if="perguntas.tipo === 'discursiva'">
@@ -171,6 +173,7 @@ import axios from 'axios';
 
 export default {
     data: () => ({
+        mensagem: '',
         novaAlternativa: '',
         vet: [],
         count: 0,
@@ -195,11 +198,12 @@ export default {
         perguntas: {
             tipo: '',
             pergunta: '',
-            respsErradas: [],
+            respostas: [],
             respCorreta: ''
         },
         rules: {
-            geral: value => !!value || 'O campo obrigatório.'
+            geral: value => !!value || 'O campo obrigatório.',
+            alternativas: value => !!value || 'Adicione as alternativas e marque a correta.'
         },
         listEstados: ['Acre - AC', 'Alagoas - AL', 'Amapá - AP', 'Amazonas - AM', 'Bahia - BA',
             'Ceará - CE', 'Distrito Federal - DF', 'Espírito Santo - ES', 'Goiás - GO', 'Maranhão - MA',
@@ -242,29 +246,31 @@ export default {
             }
         },
 
-        // Declarar o vetor fora da função para persistir entre as chamadas
-        // createAlternativa() {
-        //     const divAlternativas = document.getElementById('alternativas');
-        //     const input = document.getElementById('alternativa').value;
+        async submitPergunta(event) {
+            console.clear();
+            const dados = await event;
 
-        //     if (input != '') {
-        //         if (this.count <= 5) {
-        //             if (!this.vet.includes(input)) {
-        //                 this.vet.push(input);
+            this.perguntas.respostas = this.vet;
 
-        //                 divAlternativas.innerHTML += `<v-radio label="${this.count + 1}) ${input}" value="${input}"></v-radio>`;
-        //                 console.log(divAlternativas.innerHTML);
-        //                 console.log(input);
+            console.log(this.perguntas);
 
-        //                 this.count += 1;
-        //             } else {
-        //                 alert('Alternativa já existente!');
-        //             }
-        //         } else {
-        //             alert('Número máximo de alternativas atingido!');
-        //         }
-        //     }
-        // },
+            // alert(JSON.stringify(dados, null, 2))
+
+            // if (dados.valid === true) {
+            //     try {
+            //         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/vaga/create`, {
+            //             dados: this.form,
+            //         }, { withCredentials: true });
+
+            //         console.log(response.data);
+            //         this.MostrarVagas();
+            //         this.dialog = false;
+
+            //     } catch (error) {
+            //         console.error('Erro', error.response.data);
+            //     }
+            // }
+        },
 
         createAlternativa() {
             const input = this.novaAlternativa.trim();
@@ -274,7 +280,7 @@ export default {
                     if (!this.vet.includes(input)) {
                         this.vet.push(input);
                         this.count += 1;
-                        this.novaAlternativa = ''; // Limpa o campo de input
+                        this.novaAlternativa = '';
                     } else {
                         alert('Alternativa já existente!');
                     }
@@ -290,13 +296,6 @@ export default {
             this.novaAlternativa = ''; // Limpa o campo de entrada
             this.perguntas.respCorreta = null; // Reseta a seleção
         },
-
-        // resetAlternativas() {
-        //     const divAlternativas = document.getElementById('alternativas');
-        //     divAlternativas.innerHTML = '';
-        //     this.count = 0;
-        //     this.vet = [];
-        // }
     }
 }
 </script>
