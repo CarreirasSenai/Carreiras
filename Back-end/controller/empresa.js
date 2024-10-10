@@ -58,17 +58,6 @@ exports.createCompany = async (req, res) => {
     `;
 
     // Disparar e-mail
-    async function main() {
-        const info = await transporter.sendMail({
-            from: '"Carreiras" <carreirassenai@gmail.com>',
-            to: email,
-            subject: "Ativação de Conta",
-            html: corpo
-        });
-
-        console.log("Email de validação de conta enviado para:", info.accepted);
-    }
-    main().catch(console.error);
 
     Empresa.createCompany(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep,
         numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA,
@@ -77,7 +66,22 @@ exports.createCompany = async (req, res) => {
                 console.log(err.message);
                 return res.status(500).json({ error: err.message });
             }
-            return res.status(200).json({ success: true, userId: insertId });
+
+            if(insertId) {
+                async function main() {
+                    const info = await transporter.sendMail({
+                        from: '"Carreiras" <carreirassenai@gmail.com>',
+                        to: email,
+                        subject: "Ativação de Conta",
+                        html: corpo
+                    });
+            
+                    console.log("Email de validação de conta enviado para:", info.accepted);
+                }
+                main().catch(console.error);
+                
+                return res.status(200).json({ success: true, userId: insertId });
+            }
         });
 }
 
