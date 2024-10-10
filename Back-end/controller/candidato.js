@@ -59,24 +59,24 @@ exports.createUser = async (req, res) => {
         </div>
     `;
 
-    // Disparar e-mail
-    async function main() {
-        const info = await transporter.sendMail({
-            from: '"Carreiras" <carreirassenai@gmail.com>',
-            to: email,
-            subject: "Ativação de Conta",
-            html: corpo
-        });
-
-        console.log("Email de validação de conta enviado para:", info.accepted);
-    }
-    main().catch(console.error); // Executa a função
-
     Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, hashedPassword, area, profissao, grupo, token, (err, insertId) => {
         if (err) {
             return res.status(500).json({ error: err.message });
 
-        } if (insertId) {
+        } 
+        if (insertId) {
+            // Disparar e-mail
+            async function main() {
+                const info = await transporter.sendMail({
+                    from: '"Carreiras" <carreirassenai@gmail.com>',
+                    to: email,
+                    subject: "Ativação de Conta",
+                    html: corpo
+                });
+
+                console.log("Email de validação de conta enviado para:", info.accepted);
+            }
+            main().catch(console.error); // Executa a função
             return res.json({ success: true, userId: insertId });
         }
     });

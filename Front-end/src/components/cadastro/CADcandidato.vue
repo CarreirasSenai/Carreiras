@@ -105,7 +105,7 @@
             <div class="got-account-container my-3">
               <p>
                 Já criou sua conta?
-                <a href="/empresa-candidato">Faça o login aqui</a>
+                <a href="/empresa-candidato?resposta=entrar">Faça o login aqui</a>
               </p>
             </div>
           </v-card-text>
@@ -241,17 +241,6 @@ export default {
       ],
 
       estadoRules: [(v) => !!v || "Estado Requerido"],
-
-      // passwordRules: [
-      //   (v) => !!v || "Senha Requerida",
-      //   (v) => v.length >= 8 || "Senha deve ter pelo menos 8 caracteres",
-      //   (v) =>
-      //     /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(
-      //       v
-      //     ) ||
-      //     "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
-      // ],
-
       senhaRules: {
         senhaRequired: (value) => !!value || "Senha requerida",
         repSenhaRequired: (value) => !!value || "Repetir senha requerida",

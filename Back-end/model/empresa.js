@@ -16,22 +16,21 @@ exports.createCompany = (razaoSocial, nomeFantasia, email, telefone, celular, cn
                 return callback(err, null);
             if (results.length > 0)
                 return callback(new Error('Este CNPJ já foi cadastrado!'), null);
-        });
 
-
-        db.query('INSERT INTO user_empresa (token_ativacao, razao_social, nome_fantasia, cnpj, inscricao_estadual, cep, endereco,'
-            + ' numero, complemento, bairro, cidade, estado, email, telefone, celular, responsavel_legal,'
-            + ' cpf_responsavel, contato_responsavel, senha, grupo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'
-            + ' ?, ?)',
-            [token, razaoSocial, nomeFantasia, cnpj, inscricaoEstadual, cep, endereco, numero, complemento, bairro, cidade,
-                estado, email, telefone, celular, responsavelLegal, cpfResponsavel, contatoRA, senha, grupo], (err, result) => {
-                    if (err) {
-                        console.log(err);
-                        return callback(err, null);
+            db.query(`INSERT INTO user_empresa (token_ativacao, razao_social, nome_fantasia, cnpj, inscricao_estadual, cep, endereco,
+                numero, complemento, bairro, cidade, estado, email, telefone, celular, responsavel_legal,
+                cpf_responsavel, contato_responsavel, senha, grupo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                ?, ?)`,
+                [token, razaoSocial, nomeFantasia, cnpj, inscricaoEstadual, cep, endereco, numero, complemento, bairro, cidade,
+                    estado, email, telefone, celular, responsavelLegal, cpfResponsavel, contatoRA, senha, grupo], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            return callback(err, null);
+                        }
+                        callback(null, result.insertId);
                     }
-                    callback(null, result.insertId);
-                }
-        );
+            );
+        });
     });
 };
 
