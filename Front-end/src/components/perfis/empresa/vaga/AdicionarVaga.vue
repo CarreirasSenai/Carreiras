@@ -132,19 +132,22 @@
                                 <v-radio label="Alternativa" value="alternativa"
                                     @click="perguntas.tipo = 'alternativa'"></v-radio>
                                 <v-radio label="Discursiva" value="discursiva"
-                                    @click="perguntas.tipo = 'discursiva'"></v-radio>
+                                    @click="perguntas.tipo = 'discursiva', resetAlternativas()"></v-radio>
                             </v-radio-group>
                         </v-col>
                         <v-col cols="12" v-if="perguntas.tipo === 'alternativa'">
                             Defina todas as alternativas para a questão:
-                            <div class="d-flex justify-center flex-wrap my-2 ga-2">
-                                <v-text-field id="alternativa" density="compact" variant="outlined"
-                                    clearable></v-text-field>
-                                <v-btn color="deep-purple-accent-4"
-                                    @click="createAlternativa">Adicionar</v-btn>                                
-                            </div>
-                            <div id="alternativas" class="pa-4 mb-6"></div>
-                            <v-btn color="black" @click="resetAlternativas">Resetar</v-btn>
+                            <v-text-field class="mt-2" v-model="novaAlternativa" id="alternativa" density="compact"
+                                variant="outlined" clearable></v-text-field>
+                            <v-btn variant="tonal" class="mr-2 bg-deep-purple-accent-4" @click="createAlternativa"
+                                :disabled="count === 5">adicionar</v-btn>
+                            <v-btn class="mr-4" variant="tonal" @click="resetAlternativas">Resetar</v-btn>
+                            <small class="text-error" v-if="count === 5">Limite atingido</small>
+                            <!-- <div id="alternativas" class="pa-4"></div> -->
+                            <v-radio-group v-model="perguntas.respCorreta" class="pa-4" :rules="[rules.geral]">
+                                <v-radio v-for="(alt, index) in vet" :key="index" :label="`${index + 1}) ${alt}`"
+                                    :value="alt"></v-radio>
+                            </v-radio-group>
                         </v-col>
                         <v-col cols="12" v-else-if="perguntas.tipo === 'discursiva'">
                             Será disponibilizado um campo de entrada para que o candidato possa responder a pergunta.
@@ -168,6 +171,8 @@ import axios from 'axios';
 
 export default {
     data: () => ({
+        novaAlternativa: '',
+        vet: [],
         count: 0,
         dialogPerguntas: false,
         dialog: false,
@@ -237,25 +242,61 @@ export default {
             }
         },
 
+        // Declarar o vetor fora da função para persistir entre as chamadas
+        // createAlternativa() {
+        //     const divAlternativas = document.getElementById('alternativas');
+        //     const input = document.getElementById('alternativa').value;
+
+        //     if (input != '') {
+        //         if (this.count <= 5) {
+        //             if (!this.vet.includes(input)) {
+        //                 this.vet.push(input);
+
+        //                 divAlternativas.innerHTML += `<v-radio label="${this.count + 1}) ${input}" value="${input}"></v-radio>`;
+        //                 console.log(divAlternativas.innerHTML);
+        //                 console.log(input);
+
+        //                 this.count += 1;
+        //             } else {
+        //                 alert('Alternativa já existente!');
+        //             }
+        //         } else {
+        //             alert('Número máximo de alternativas atingido!');
+        //         }
+        //     }
+        // },
+
         createAlternativa() {
-            const divAlternativas = document.getElementById('alternativas');
-            const input = document.getElementById('alternativa');
+            const input = this.novaAlternativa.trim();
 
-            if (input.value != '') {
-
-                this.count += 1;
-
+            if (input !== '') {
                 if (this.count <= 5) {
-                    divAlternativas.innerHTML += `<p>${this.count} - ${input.value}</p>`;
+                    if (!this.vet.includes(input)) {
+                        this.vet.push(input);
+                        this.count += 1;
+                        this.novaAlternativa = ''; // Limpa o campo de input
+                    } else {
+                        alert('Alternativa já existente!');
+                    }
+                } else {
+                    alert('Número máximo de alternativas atingido!');
                 }
             }
         },
 
         resetAlternativas() {
-            const divAlternativas = document.getElementById('alternativas');
-            divAlternativas.innerHTML = '';
-            this.count = 0;
-        }
+            this.vet = []; // Limpa o array de alternativas
+            this.count = 0; // Reseta o contador
+            this.novaAlternativa = ''; // Limpa o campo de entrada
+            this.perguntas.respCorreta = null; // Reseta a seleção
+        },
+
+        // resetAlternativas() {
+        //     const divAlternativas = document.getElementById('alternativas');
+        //     divAlternativas.innerHTML = '';
+        //     this.count = 0;
+        //     this.vet = [];
+        // }
     }
 }
 </script>
