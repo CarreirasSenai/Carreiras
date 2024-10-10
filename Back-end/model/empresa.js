@@ -83,8 +83,10 @@ exports.getAllUser = (callback) => {
     });
 }
 
-exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, grupo, id,
-callback) => {
+exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, grupo, id, callback) => {
+    
+    console.log(id);
+    
     db.query(`UPDATE user_empresa
         SET razao_social = ?,
         nome_fantasia = ?,

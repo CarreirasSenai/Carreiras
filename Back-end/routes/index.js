@@ -64,7 +64,7 @@ router.post('/empresa/create', Empresa.createCompany);
 router.get('/empresa/read', authMiddleware, Empresa.getUser);
 router.get('/empresa/read/all', authMiddleware, Empresa.getAllUser)
 router.delete('/empresa/delete', authMiddleware, Empresa.deleteUser);
-router.put('/empresa/update', authMiddleware, Empresa.updateUser);
+router.put('/empresa/update', Empresa.updateUser);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.vagaPesquisa);
