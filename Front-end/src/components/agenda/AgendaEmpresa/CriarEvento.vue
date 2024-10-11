@@ -15,20 +15,19 @@
                             <v-textarea counter="600" auto-grow v-model="form.descricao" variant="outlined" label="Descrição" :rules="rules.descricaoRules"></v-textarea>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-select v-model="form.candidato" :rules="candidatoRules" :items="items" label="Candidato" variant="outlined"></v-select>
+                            <v-select v-model="form.vaga" :items="vagas" item-title="titulo" item-value="id" label="Selecione uma Vaga" persistent-hint return-object single-line variant="outlined" :clearable="true" @click="mostrarCandidatos">
+                            </v-select>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-select v-model="form.vaga" label="Vaga" variant="outlined"></v-select>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-select v-model="editedItem.vaga" label="Vaga" variant="outlined"></v-select>
+                            <v-select v-model="form.candidato" :items="candidatos" item-title="nome" item-value="id" label="Selecione un Candidato" persistent-hint return-object single-line variant="outlined" :clearable="true">
+                            </v-select>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <v-text-field v-model="editedItem.data" label="Data" type="date" variant="outlined"></v-text-field>
+                            <v-text-field v-model="form.data" label="Data" type="date" variant="outlined"></v-text-field>
                         </v-col>
 
                         <v-col cols="12" md="6">
-                            <v-text-field v-model="editedItem.horario" label="Horário" type="time"
+                            <v-text-field v-model="form.horario" label="Horário" type="time"
                             variant="outlined"></v-text-field>
                         </v-col>
                     </v-row>
@@ -52,10 +51,10 @@ export default {
             required: true,
         }
     },
-
-
     data() {
         return {
+            vagas: [],
+            candidatos: [],
             dialog: false,
             form: {
                 titulo: '',
@@ -88,8 +87,64 @@ export default {
             },
         };
     },
-
+    created() {
+        this.initialize()
+    },
+    mounted() {
+        this.mostrarVagas();
+        this.mostrarCandidatos();
+    },
     methods: {
+        itemProps(vaga) {
+            return {
+                title: vaga.titulo,
+                subtitle: vaga.id,
+            };
+        },
+        candProps(candidato) {
+            return {
+                title: candidato.nome,
+                subtitle: candidato.id,
+            };
+        },
+        async mostrarCandidatos(vagaId) {
+            this.loadingVagas = true;
+            if (!vagaId) {
+                vagaId = 0
+            }
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/agendamento/readCandidatos`, {
+                    params: {
+                        id: vagaId
+                    },
+                    withCredentials: true
+                });
+
+                this.candidatos = response.data.result
+                console.log('construçao do this.candidatos:', this.candidatos);
+            } catch (error) {
+                console.error('Erro','Erro ao mostrar Candidatos');
+            }
+        },
+
+        async mostrarVagas() {
+            this.loadingVagas = true;
+            try {
+                //id_empresa = this.editedItem.id_empresa
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read/empresa`, {
+                    params: {
+                        id: 18,
+                        requisicao: 'empresa'
+                    },
+                    withCredentials: true
+                });
+
+                this.vagas = response.data.result
+                console.log('construçao do this.vagas:', this.vagas);
+            } catch (error) {
+                console.error('Erro', 'Erro ao mostrar Vagas');
+            }
+        },
         mascaraCelular(valor) {
             var mascarado = valor.replace(/\D/g, '');
 
@@ -98,6 +153,9 @@ export default {
             mascarado = mascarado.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
 
             return mascarado;
+        },
+
+        initialize() {
         },
 
         async agendar(event) {
@@ -113,11 +171,28 @@ export default {
         },
     },
 
+    computed: {
+        internalShowModal() {
+            return this.showModal;
+        },
+    },
+
     watch: {
+        dialog(val) {
+            val || this.close()
+        },
+        dialogDelete(val) {
+            val || this.closeDelete()
+        },
+        'editedItem.vaga': function (newValue) {
+            if (newValue && newValue.id) {
+                this.mostrarCandidatos(newValue.id);
+            }
+        },
         'form.celular': function (valor) {
             this.form.celular = this.mascaraCelular(valor);
         },
-    }
+    },
 }
 </script>
 

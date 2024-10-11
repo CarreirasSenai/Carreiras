@@ -1,3 +1,4 @@
+const { query } = require('express');
 const db = require('../config/db');
 
 exports.read = (grupo, id, month, year, callback) => {
@@ -39,34 +40,67 @@ exports.read = (grupo, id, month, year, callback) => {
     );
 };
 
-exports.update = (dados, callback) => {
-    const id = dados.id;
-    const titulo = dados.titulo;
-    const vaga = dados.vaga;
-    const data = dados.data;
-    const hora = dados.hora;
-    const id_candidato = dados.id_candidato;
-    const data_atu = NOW();
-    const descricao = dados.descricao;
+exports.readCandidatos = (id, callback) => {
+    var query = "SELECT DISTINCT user_candidato.id , user_candidato.nome_completo FROM vagas "
+    query += " INNER JOIN vagas_candidatadas ON vagas.id = vagas_candidatadas.id_vaga";
+    query += " INNER JOIN user_candidato ON vagas_candidatadas.id_user = user_candidato.id";
+
+    if (id && id != 0) {  
+        query += " WHERE vagas.id = ?"
+    }
     
-    db.query('update agendamento SET titulo = ?, vaga = ?, data = ?, hora = ?, id_candidato = ?, data_atu = ?, descricao = ?  where id = ?', [titulo, vaga, data, hora, id_candidato,data_atu,descricao, id], (err, result) => {
+    db.query( 
+        query, 
+        [id], 
+        (err, rows) => {
+            if (err) {
+                return callback(err, null);
+            }
+            const organizedData = rows.map(row => ({
+                id: row.id,
+                nome: row.nome_completo
+            }));
+            return callback(null, organizedData);
+        }
+    );
+};
+
+exports.update = (id, title, descricao, vaga, candidato, data, hora, callback) => {
+    if (candidato) {
+        db.query('UPDATE agendamento SET titulo = ?, vaga = ?, data = ?, hora = ?, id_candidato = ?, descricao = ?  where id = ?', [title, vaga, data, hora, candidato, descricao, id], (err, result) => {
+            if (err) {
+                console.log(err);
+                return callback(err, null);
+            } else if (result) {
+                console.log(result);
+                return callback(null, result.affectedRows > 0);
+            }
+        });
+    } else {
+        db.query('UPDATE agendamento SET titulo = ?, data = ?, hora = ?, descricao = ?  where id = ?', [title, data, hora, descricao, id], (err, result) => {
+            if (err) {
+                console.log(err);
+                return callback(err, null);
+            } else if (result) {
+                console.log(result);
+                return callback(null, result.affectedRows > 0);
+            }
+        });
+    }
+    
+}
+
+// Create
+exports.create = (title, descricao, vaga, candidato, empresa, data, hora, callback) => {
+    db.query('INSERT INTO agendamento (title, descricao, vaga, candidato, empresa, data, hora) VALUES (?, ?, ?, ?, ?, ?, ?)',[title, descricao, vaga, candidato, empresa, data, hora],(err, result) => {
         if (err) {
             console.log(err);
             return callback(err, null);
-        } else if (result) {
-            console.log(result);
-            return callback(null, result.affectedRows > 0);
         }
-    });
-}
+        return callback(null, 'Agendamento criado com sucesso');
+    }
+)};
 
-// // Update
-// exports.update= (id_empresa, date, time, title, description, candidate, vaga, dataAtu, callback) => {
-//     db.query('UPDATE agendamento SET titulo = ?, descricao = ?, vaga = ?, data = ?, hora = ?, id_empresa = ?, id_candidato = ?, data_atu = ? WHERE id = ?', [title, description, vaga, date, time, id_empresa, candidate, dataAtu], (err, result) => {
-//         if (err) throw err;
-//         callback(result.affectedRows > 0);
-//     });
-// };
 
 // // Delete
 // exports.delete = (id, callback) => {
