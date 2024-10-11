@@ -49,7 +49,7 @@
 
         <div v-if="dadosCarregados">
             <ModalEvento :showModal="showModal" :eventos="getEvents(selectedDay)"
-            :title="selectedDay" @FecharTabela="fecharTabela" />
+            :title="selectedDay" @FecharTabela="fecharTabela" @atualizarAgenda="fetchEvents"/>
         </div>
     </v-container>
 </template>

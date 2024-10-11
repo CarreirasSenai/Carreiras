@@ -69,11 +69,13 @@
                                 label="Descrição" :rules="rules.descricaoRules"></v-textarea>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-select v-model="editedItem.candidato" :rules="rules.candidatoRules" :items="items"
-                                label="Candidato" variant="outlined"></v-select>
+                            <v-select v-model="editedItem.vaga" :items="vagas" item-title="titulo" item-value="id"
+                                label="Selecione uma Vaga" persistent-hint return-object single-line variant="outlined" :clearable="true" @click="mostrarCandidatos">
+                            </v-select>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-select :item-props="itemProps" :items="vagas" label="Selecione uma Vaga" variant="outlined" :clearable="true">
+                            <v-select v-model="editedItem.candidato" :items="candidatos" item-title="nome"
+                                item-value="id" label="Selecione un Candidato" persistent-hint return-object single-line variant="outlined" :clearable="true">
                             </v-select>
                         </v-col>
                         <v-col cols="12" md="6">
@@ -119,7 +121,6 @@
 <script>
 import axios from 'axios';
 
-
 export default {
     props: {
         showModal: {
@@ -137,13 +138,8 @@ export default {
     },
 
     data: () => ({
-        vagas: [
-            { id: 15, titulo: 'Analista de Dados', cep: '87775-435', cidade: 'Joinville', estado: 'SC' },
-            { id: 16, titulo: 'Analista de Dados', cep: '87775-435', cidade: 'Joinville', estado: 'SC' },
-            { id: 18, titulo: 'Analista de Dados', cep: '87775-435', cidade: 'Joinville', estado: 'SC' }
-        ],
-        selectedVaga: null,
-        items: ['João', 'Maria', 'Felipe', 'Thiago', 'Rodrigo', 'Paula'],
+        vagas: [],
+        candidatos: [],
         search: '',
         dialog: false,
         dialogDelete: false,
@@ -155,9 +151,6 @@ export default {
             descricaoRules: [
                 (v) => !!v || "Descrição Requerida",
                 (v) => v.length <= 600 || "Máximo permitido 600 caracteres",
-            ],
-            candidatoRules: [
-                (v) => !!v || "Candidato Requerido"
             ],
             dataRules: [
                 (v) => !!v || "Data Requerida",
@@ -206,6 +199,11 @@ export default {
         dialogDelete(val) {
             val || this.closeDelete()
         },
+        'editedItem.vaga': function (newValue) {
+            if (newValue && newValue.id) {
+                this.mostrarCandidatos(newValue.id);
+            }
+        },
     },
 
     created() {
@@ -214,6 +212,7 @@ export default {
 
     mounted() {
         this.mostrarVagas();
+        this.mostrarCandidatos();
     },
 
     methods: {
@@ -221,7 +220,13 @@ export default {
             return {
                 title: vaga.titulo,
                 subtitle: vaga.id,
-            }
+            };
+        },
+        candProps(candidato) {
+            return {
+                title: candidato.nome,
+                subtitle: candidato.id,
+            };
         },
 
         initialize() {
@@ -240,19 +245,39 @@ export default {
             });
         },
 
+        async mostrarCandidatos(vagaId) {
+            this.loadingVagas = true;
+            if (!vagaId) {
+                vagaId = 0
+            }
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/agendamento/readCandidatos`, {
+                    params: {
+                        id: vagaId
+                    },
+                    withCredentials: true
+                });
+
+                this.candidatos = response.data.result
+                console.log('construçao do this.candidatos:', this.candidatos);
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
+        },
+
         async mostrarVagas() {
             this.loadingVagas = true;
             try {
-                console.log(this.editedItem.id_empresa)
+                id_empresa = this.editedItem.id_empresa
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read/empresa`, {
                     params: {
-                        id: 18,
+                        id: id_empresa,
                         requisicao: 'empresa'
                     },
                     withCredentials: true
                 });
 
-                //this.vagas = response.data.result
+                this.vagas = response.data.result
                 console.log('construçao do this.vagas:', this.vagas);
             } catch (error) {
                 console.error('Erro', error.response.data);
@@ -260,13 +285,14 @@ export default {
         },
 
         editItem(item) {
-            console.log("Editando item:", item);
+            console.log("Editando item");
             this.editedIndex = this.eventos.indexOf(item);
             this.editedItem = Object.assign({}, item);
             if (this.editedItem.data) {
                 this.editedItem.data = new Date(this.editedItem.data).toISOString().split('T')[0];
             }
             this.mostrarVagas();
+            this.mostrarCandidatos();
             this.dialog = true;
         },
 
@@ -298,13 +324,36 @@ export default {
             })
         },
 
-        save() {
-            if (this.editedIndex > -1) {
-                Object.assign(this.eventos[this.editedIndex], this.editedItem)
-            } else {
-                this.eventos.push(this.editedItem)
+        async save() {
+            let vaga_id = 0;
+            if (this.editedItem.vaga) {
+                vaga_id = this.editedItem.vaga.id
             }
-            this.close()
+            let candidato_id = 0;
+            if (this.editedItem.candidato) {
+                candidato_id = this.editedItem.candidato.id
+            }
+
+            const newEvent = {
+                id: this.editedItem.id,
+                title: this.editedItem.title,
+                descricao: this.editedItem.descricao,
+                vaga: vaga_id,
+                candidato: candidato_id,
+                data: this.editedItem.data,
+                hora: this.editedItem.hora
+            };
+
+            try {
+                const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/agendamento/update`, {
+                    params: newEvent,
+                }, { withCredentials: true });
+                this.$emit('atualizarAgenda');
+            } catch (error) {
+                console.error('Erro ao atualizar a descrição:', error.response.data);
+            }
+
+            this.close();
         },
     },
 }
