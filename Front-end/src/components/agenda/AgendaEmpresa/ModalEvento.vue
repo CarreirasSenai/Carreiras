@@ -280,7 +280,7 @@ export default {
                 this.vagas = response.data.result
                 console.log('construçao do this.vagas:', this.vagas);
             } catch (error) {
-                console.error('Erro', error.response.data);
+                console.error('Erro', 'Erro ao mostrar vagas');
             }
         },
 

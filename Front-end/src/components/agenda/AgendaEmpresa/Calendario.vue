@@ -138,10 +138,6 @@ export default {
                         year: year
                     }
                 });
-                setTimeout(() => {
-                    this.eventos = response.data;
-                    this.dadosCarregados = true;
-                }, 500);
             } catch (error) {
                 console.error('Erro ao buscar eventos na agenda:', error);
                 this.$notify({
