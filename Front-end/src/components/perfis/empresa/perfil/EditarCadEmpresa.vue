@@ -19,7 +19,7 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="6" lg="6">
                         <v-text-field
-                          v-model="razaoSocial"
+                          v-model="form.razaoSocial"
                           :rules="razaoSocialRules"
                           label="Razão social"
                           variant="underlined"
@@ -27,7 +27,7 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="6" lg="6">
                         <v-text-field
-                          v-model="nomeFantasia"
+                          v-model="form.nomeFantasia"
                           :rules="nomeFantasiaRules"
                           label="Nome fantasia"
                           variant="underlined"
@@ -37,7 +37,7 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="6" lg="6">
                         <v-text-field
-                          v-model="email"
+                          v-model="form.email"
                           :rules="emailRules"
                           label="Email"
                           variant="underlined"
@@ -45,7 +45,7 @@
                       </v-col>
                       <v-col cols="12" sm="3" md="3" lg="3">
                         <v-text-field
-                          v-model="telefone"
+                          v-model="form.telefone"
                           :rules="telefoneRules"
                           label="Telefone"
                           variant="underlined"
@@ -54,7 +54,7 @@
                       </v-col>
                       <v-col cols="12" sm="3" md="3" lg="3">
                         <v-text-field
-                          v-model="celular"
+                          v-model="form.celular"
                           :rules="celularRules"
                           label="Celular"
                           variant="underlined"
@@ -65,7 +65,7 @@
                     <v-row>
                       <v-col cols="12" sm="3" md="3" lg="3">
                         <v-text-field
-                          v-model="cnpj"
+                          v-model="form.cnpj"
                           :rules="cnpjRules"
                           label="CNPJ"
                           variant="underlined"
@@ -74,7 +74,7 @@
                       </v-col>
                       <v-col cols="12" sm="3" md="3" lg="3">
                         <v-text-field
-                          v-model="inscricaoEstadual"
+                          v-model="form.inscricaoEstadual"
                           :rules="inscricaoEstadualRules"
                           v-mask='"###.###.###.###"'
                           label="Inscrição estadual"
@@ -85,7 +85,7 @@
                         <v-text-field
                           v-mask="'########'"
                           maxlength="8"
-                          v-model="cep"
+                          v-model="form.cep"
                           :rules="cepRules"
                           label="CEP"
                           variant="underlined"
@@ -94,7 +94,7 @@
                       </v-col>
                       <v-col cols="12" sm="2" md="2" lg="2">
                         <v-text-field
-                          v-model="numero"
+                          v-model="form.numero"
                           :rules="numeroRules"
                           label="Nº"
                           variant="underlined"
@@ -104,14 +104,14 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="6" lg="6">
                         <v-text-field
-                          v-model="complemento"
+                          v-model="form.complemento"
                           label="Complemento"
                           variant="underlined"
                         ></v-text-field>
                       </v-col>
                       <v-col>
                         <v-text-field
-                          v-model="endereco"
+                          v-model="form.endereco"
                           :rules="enderecoRules"
                           label="Endereço"
                           variant="underlined"
@@ -121,7 +121,7 @@
                     <v-row>
                       <v-col cols="12" sm="3" md="3" lg="3">
                         <v-text-field
-                          v-model="bairro"
+                          v-model="form.bairro"
                           :rules="bairroRules"
                           label="Bairro"
                           variant="underlined"
@@ -129,7 +129,7 @@
                       </v-col>
                       <v-col cols="12" sm="3" md="3" lg="3">
                         <v-text-field
-                          v-model="cidade"
+                          v-model="form.cidade"
                           :rules="cidadeRules"
                           label="Cidade"
                           variant="underlined"
@@ -137,7 +137,7 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="6" lg="6">
                         <v-select
-                          v-model="estado"
+                          v-model="form.estado"
                           :rules="estadoRules"
                           :items="items"
                           label="Estado"
@@ -146,7 +146,7 @@
                       </v-col>
                       <v-col cols="12" sm="4" md="4" lg="4">
                         <v-text-field
-                          v-model="responsavelLegal"
+                          v-model="form.responsavelLegal"
                           :rules="responsavelLegalRules"
                           label="Responsável legal"
                           variant="underlined"
@@ -154,7 +154,7 @@
                       </v-col>
                       <v-col cols="12" sm="4" md="4" lg="4">
                         <v-text-field
-                          v-model="cpfResponsavel"
+                          v-model="form.cpf_responsavel"
                           :rules="cpfResponsavelRules"
                           v-mask="'###.###.###-##'"
                           label="CPF do responsável legal"
@@ -173,7 +173,7 @@
                     <v-row>
                       <v-col cols="11" sm="6" md="6" lg="6">
                         <v-text-field
-                          v-model="contatoRA"
+                          v-model="form.contatoRA"
                           :rules="emailRules"
                           label="Contato RA"
                           density="compact"
@@ -241,24 +241,27 @@ import { useCandidatoStore } from '@/stores/candidato';
 export default {
   data() {
     return {
-      id: useCandidatoStore().dadosUser.id,
-      razaoSocial: useCandidatoStore().dadosUser.razao_social,
-      nomeFantasia: useCandidatoStore().dadosUser.nome_fantasia,
-      email: useCandidatoStore().dadosUser.email,
-      telefone: useCandidatoStore().dadosUser.telefone,
-      celular: useCandidatoStore().dadosUser.celular,
-      cnpj: useCandidatoStore().dadosUser.cnpj,
-      inscricaoEstadual: useCandidatoStore().dadosUser.inscricao_estadual,
-      cep: useCandidatoStore().dadosUser.cep,
-      numero: useCandidatoStore().dadosUser.numero,
-      complemento: useCandidatoStore().dadosUser.complemento,
-      endereco: useCandidatoStore().dadosUser.endereco,
-      bairro: useCandidatoStore().dadosUser.bairro,
-      cidade: useCandidatoStore().dadosUser.cidade,
-      estado: useCandidatoStore().dadosUser.estado,
-      responsavelLegal: useCandidatoStore().dadosUser.responsavel_legal,
-      cpfResponsavel: useCandidatoStore().dadosUser.cpf_responsavel,
-      contatoRA: useCandidatoStore().dadosUser.contato_responsavel,
+      form: {
+        id: useCandidatoStore().dadosUser.id,
+        razaoSocial: useCandidatoStore().dadosUser.razao_social,
+        nomeFantasia: useCandidatoStore().dadosUser.nome_fantasia,
+        email: useCandidatoStore().dadosUser.email,
+        telefone: useCandidatoStore().dadosUser.telefone,
+        celular: useCandidatoStore().dadosUser.celular,
+        cnpj: useCandidatoStore().dadosUser.cnpj,
+        inscricaoEstadual: useCandidatoStore().dadosUser.inscricao_estadual,
+        cep: useCandidatoStore().dadosUser.cep,
+        numero: useCandidatoStore().dadosUser.numero,
+        complemento: useCandidatoStore().dadosUser.complemento,
+        endereco: useCandidatoStore().dadosUser.endereco,
+        bairro: useCandidatoStore().dadosUser.bairro,
+        cidade: useCandidatoStore().dadosUser.cidade,
+        estado: useCandidatoStore().dadosUser.estado,
+        responsavelLegal: useCandidatoStore().dadosUser.responsavel_legal,
+        cpf_responsavel: useCandidatoStore().dadosUser.cpf_responsavel,
+        contatoRA: useCandidatoStore().dadosUser.contato_responsavel,
+        statusUser: useCandidatoStore().dadosUser.verificado,
+      },
       mensagem: '',
       color: '',
       modalDelete: false,
@@ -324,13 +327,13 @@ export default {
   },
   methods: {
     async retornarInformacoesCep(){
-      if(this.cep !== "" && this.cep.length === 8) {
+      if(this.form.cep !== "" && this.form.cep.length === 8) {
         try {
           const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
-          this.endereco = response.data.street,
-          this.bairro = response.data.neighborhood,
-          this.cidade = response.data.city,
-          this.estado = response.data.state
+          this.form.endereco = response.data.street,
+          this.form.bairro = response.data.neighborhood,
+          this.form.cidade = response.data.city,
+          this.form.estado = response.data.state
         }
         catch (error) {
           console.log("Houve um erro ao validar o CEP. Erro: ", error);
@@ -340,29 +343,12 @@ export default {
     },
     async atualizarCadastro(){
       console.clear();
-      this.cnpj = this.limparMascaraValores(this.cnpj);
-      this.inscricaoEstadual = this.limparMascaraValores(this.inscricaoEstadual);
-      this.cpfResponsavel = this.limparMascaraValores(this.cpfResponsavel);
+      this.form.cnpj = this.limparMascaraValores(this.form.cnpj);
+      this.form.inscricaoEstadual = this.limparMascaraValores(this.form.inscricaoEstadual);
+      this.form.cpf_responsavel = this.limparMascaraValores(this.form.cpf_responsavel);
       try {
         const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/empresa/update`, {
-          id: this.id,
-          razaoSocial: this.razaoSocial,
-          nomeFantasia: this.nomeFantasia,
-          email: this.email,
-          telefone: this.telefone,
-          celular: this.celular,
-          cnpj: this.cnpj,
-          inscricaoEstadual: this.inscricaoEstadual,
-          cep: this.cep,
-          numero: this.numero,
-          complemento: this.complemento,
-          endereco: this.endereco,
-          bairro: this.bairro,
-          cidade: this.cidade,
-          estado: this.estado,
-          responsavelLegal: this.responsavelLegal,
-          cpfResponsavel: this.cpfResponsavel,
-          contatoRA: this.contatoRA,
+          dados: this.form
         }, { withCredentials: true });
 
         this.mensagem = 'Cadastro atualizado com Sucesso!',
@@ -385,7 +371,7 @@ export default {
 
       try {
         const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/empresa/delete`, {
-          data: { id: this.id },
+          data: { id: this.form.id },
           withCredentials: true,
         });
 

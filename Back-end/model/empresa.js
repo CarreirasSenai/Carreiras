@@ -83,11 +83,11 @@ exports.getAllUser = (callback) => {
     });
 }
 
-exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, grupo, id, callback) => {
+exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, statusUser, grupo, id, callback) => {
     
     console.log(id);
-    
-    db.query(`UPDATE user_empresa
+
+    let updateQuery = `UPDATE user_empresa
         SET razao_social = ?,
         nome_fantasia = ?,
         email = ?,
@@ -104,11 +104,20 @@ exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj,
         estado = ?,
         responsavel_legal = ?,
         cpf_responsavel = ?,
-        contato_responsavel = ?,
-        grupo = ?
-        WHERE id = ?`,
-        [razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, endereco, 
-        numero, complemento, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, grupo, id], 
+        contato_responsavel = ?,`
+
+    let fields = [razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, endereco, numero, complemento, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA];
+
+    if(statusUser !== null && statusUser !== undefined){
+        updateQuery += 'verificado = ?,';
+        fields.push(statusUser);
+    }
+
+    fields.push(grupo);
+    fields.push(id);
+    
+    db.query(updateQuery + `grupo = ?
+        WHERE id = ?`, fields, 
         (err, result) => {
             if(err){
                 console.log(err);

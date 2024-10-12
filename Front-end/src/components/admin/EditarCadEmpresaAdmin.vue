@@ -94,7 +94,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-radio-group v-model="form.status" :rules="geral" label="Status Ativo" inline>
+                      <v-radio-group v-model="form.statusUser" :rules="geral" label="Status Ativo" inline>
                         <v-radio label="Ativado" value="1"></v-radio>
                         <v-radio label="Desativado" value="0"></v-radio>
                       </v-radio-group>
@@ -161,7 +161,7 @@ export default {
         estado: "",
         responsavelLegal: "",
         contatoRA: "",
-        status: ""
+        statusUser: ""
       },
       responsavelAdm: "",
       modalDelete: false,
@@ -274,7 +274,7 @@ export default {
 
       try {
         const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/empresa/delete`, {
-          data: { id: this.User.id },
+          data: { id: this.form.id },
           withCredentials: true,
         });
 
@@ -289,7 +289,7 @@ export default {
     }
   },
   mounted() {
-    this.form.id = this.User.id,
+      this.form.id = this.User.id,
       this.form.razaoSocial = this.User.razao_social,
       this.form.nomeFantasia = this.User.nome_fantasia,
       this.form.email = this.User.email,
@@ -307,7 +307,7 @@ export default {
       this.form.responsavelLegal = this.User.responsavel_legal,
       this.form.cpf_responsavel = this.User.cpf_responsavel,
       this.form.contatoRA = this.User.contato_responsavel,
-      this.form.status = this.User.verificado.toString()
+      this.form.statusUser = this.User.verificado.toString()
   }
 };
 </script>

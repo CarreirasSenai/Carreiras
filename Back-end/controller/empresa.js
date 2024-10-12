@@ -143,13 +143,13 @@ exports.getAllUser = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
-    const { id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpf_responsavel, contatoRA } = req.body.dados;
+    const { id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpf_responsavel, contatoRA, statusUser } = req.body.dados;
     console.log('\n updateUser:');
     console.log(req.body.dados);
 
     const grupo = 'empresa';
 
-    Empresa.updateUser(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpf_responsavel, contatoRA, grupo, id, (err, success) => {
+    Empresa.updateUser(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpf_responsavel, contatoRA, statusUser, grupo, id, (err, success) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
