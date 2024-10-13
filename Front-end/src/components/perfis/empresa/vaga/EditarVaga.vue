@@ -73,14 +73,8 @@
                         </v-row>
                         <v-row dense>
                             <v-col cols="12">
-                                <v-combobox v-model="form.etapas" chips closable-chips multiple label="Etapas da Vaga"
-                                    hint="Escreva uma etapa e tecle enter" :rules="[rules.geral]"></v-combobox>
-                            </v-col>
-                        </v-row>
-                        <v-row dense>
-                            <v-col cols="12">
-                                <v-combobox v-model="form.questionario" chips closable-chips multiple
-                                    label="Questionário" hint="Escreva uma pergunta e tecle enter"></v-combobox>
+                                <v-text-field v-model="form.qtdCandidatos" label="Máximo de Candidaturas" type="number"
+                                    :rules="[rules.geral]"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -131,8 +125,7 @@ export default {
             habsExigidas: [],
             habsOpcionais: [],
             descricao: '',
-            etapas: [],
-            questionario: []
+            qtdCandidatos: '',
         },
         rules: {
             geral: value => !!value || 'O campo obrigatório.'
@@ -161,6 +154,8 @@ export default {
         this.form.modalidade = this.Vagas.raw.modalidade;
         this.form.nivel = this.Vagas.raw.nivel;
         this.form.remuneracao = this.Vagas.raw.remuneracao;
+        this.form.qtdCandidatos = parseInt(this.Vagas.raw.max_candidaturas, 10);      
+        this.form.descricao = this.Vagas.raw.descricao; 
 
         // Remover os colchetes e as aspas da string e depois separar os valores por vírgula
         this.form.habsExigidas = this.Vagas.raw.habilidades_exigidas
@@ -171,19 +166,7 @@ export default {
         this.form.habsOpcionais = this.Vagas.raw.habilidades_opcionais
             .replace(/[\[\]"]/g, '')
             .split(', ')
-            .map(hab => hab.trim());
-
-        this.form.descricao = this.Vagas.raw.descricao;
-
-        this.form.etapas = this.Vagas.raw.etapas
-            .replace(/[\[\]"]/g, '')
-            .split(', ')
-            .map(etapa => etapa.trim());
-
-        this.form.questionario = this.Vagas.raw.questionario
-            .replace(/[\[\]"]/g, '')
-            .split(', ')
-            .map(quest => quest.trim());
+            .map(hab => hab.trim());        
     },
     methods: {
         async submitUpdate(event) {

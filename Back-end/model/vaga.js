@@ -1,10 +1,10 @@
 const db = require("../config/db");
 
 exports.vagaCreate = (id, { dados }, callback) => {
-    const { titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habsExigidas, habsOpcionais, descricao, etapas, questionario } = dados;
+    const { titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habsExigidas, habsOpcionais, descricao, qtdCandidatos  } = dados;    
 
-    db.query('insert into vagas (titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habilidades_exigidas, habilidades_opcionais, descricao, etapas, questionario, id_empresa) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        [titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, JSON.stringify(habsExigidas), JSON.stringify(habsOpcionais), descricao, JSON.stringify(etapas), JSON.stringify(questionario), id],
+    db.query('insert into vagas (titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habilidades_exigidas, habilidades_opcionais, descricao, max_candidaturas, id_empresa) values (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        [titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, JSON.stringify(habsExigidas), JSON.stringify(habsOpcionais), descricao, qtdCandidatos, id],
         (err, result) => {
 
             if (err) {
@@ -59,7 +59,7 @@ exports.vagaReadAll = (callback) => {
 };
 
 exports.vagaUpdate = ({ dados }, callback) => {
-    const { id, titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habsExigidas, habsOpcionais, descricao, etapas, questionario } = dados;
+    const { id, titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habsExigidas, habsOpcionais, descricao, qtdCandidatos } = dados;
 
     db.query(`
         update vagas 
@@ -74,11 +74,10 @@ exports.vagaUpdate = ({ dados }, callback) => {
         habilidades_exigidas = ?,
         habilidades_opcionais = ?,
         descricao = ?,
-        etapas = ?,
-        questionario = ?
+        max_candidaturas = ?
         where id = ?
         `,
-        [titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, JSON.stringify(habsExigidas), JSON.stringify(habsOpcionais), descricao, JSON.stringify(etapas), JSON.stringify(questionario), id],
+        [titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, JSON.stringify(habsExigidas), JSON.stringify(habsOpcionais), descricao, qtdCandidatos, id],
         (err, result) => {
 
             if (err) {

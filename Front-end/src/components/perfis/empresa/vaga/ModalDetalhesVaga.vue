@@ -17,7 +17,7 @@
                                 <v-btn size="x-small" class="mr-2 position-relative" icon="mdi-share-variant"
                                     variant="tonal" @click="compartilhar">
                                 </v-btn>
-                                {{ this.Vagas.raw.titulo }}
+                                <div style="font-size: clamp(10px, 4vw, 20px);">{{ this.Vagas.raw.titulo }}</div>
                                 <v-spacer></v-spacer>
                                 <v-btn size="x-small" icon="mdi-close" variant="tonal" @click="dialog = false"></v-btn>
                             </v-card-title>
@@ -80,11 +80,10 @@
                             </v-card-text>
 
                             <v-card-actions class="d-flex justify-space-between border">
-                                <div class="d-flex flex-wrap ga-2">
-                                    <v-btn v-if="grupo != 'empresa' && grupo != 'admin'"
-                                        class="bt-primario">Inscrever-se</v-btn>
+                                <div class="d-flex flex-wrap ga-2">                                    
                                     <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
+                                    <Questionario :IdVaga="this.Vagas.raw.id"/>
                                 </div>
                                 <router-link :to="`/perfil-empresa?requisicao=empresa&id=${this.Vagas.raw.id_empresa}`"
                                     class="text-black text-decoration-none">
@@ -106,6 +105,7 @@
 import { useCandidatoStore } from '@/stores/candidato';
 import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
 import axios from 'axios';
+import Questionario from './Questionario.vue';
 
 export default {
     data() {
