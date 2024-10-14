@@ -83,7 +83,7 @@
                                 <div class="d-flex flex-wrap ga-2">                                    
                                     <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
-                                    <Questionario :IdVaga="this.Vagas.raw.id"/>
+                                    <Questionario :Vagas="Vagas"/>
                                 </div>
                                 <router-link :to="`/perfil-empresa?requisicao=empresa&id=${this.Vagas.raw.id_empresa}`"
                                     class="text-black text-decoration-none">

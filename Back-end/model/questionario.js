@@ -32,3 +32,21 @@ exports.read = (id, callback) => {
         }
     });
 };
+
+exports.update = ({ dados }, callback) => {
+    console.log(dados);
+    const { id, tipo, pergunta, respostas, respCorreta } = dados;
+
+    db.query('update questionario set tipo = ?, pergunta = ?, respostas = ?, respCorreta = ? where id = ?',
+        [tipo, pergunta, JSON.stringify(respostas), respCorreta, id], (err, result) => {
+           
+            if (err) {
+                console.log(err);
+                return callback(err, null);
+
+            } else if (result) {
+                console.log(result);
+                return callback(null, result);
+            }
+        });
+};

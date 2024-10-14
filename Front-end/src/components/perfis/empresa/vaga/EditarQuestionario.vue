@@ -6,7 +6,7 @@
         </template>
 
         <v-form class="text-start" @submit.prevent="updatePergunta">
-            <v-card title="Criar Pergunta">
+            <v-card title="Editar Pergunta">
                 <v-card-text class="text-start overflow-auto" style="height: 70vh;">
                     <v-row dense>
                         <v-col cols="12">
@@ -65,19 +65,29 @@ export default {
         count: 0,
         dialog: false,
         perguntas: {
+            id: '',
             tipo: '',
             pergunta: '',
             respostas: [],
             respCorreta: '',
-            idVaga: '',
         },
-        questionario: {},
 
         rules: {
             geral: value => !!value || 'O campo obrigatório.',
             alternativas: value => !!value || 'Adicione as alternativas e marque a correta.'
         },
     }),
+
+    props: {
+        Pergunta: {
+            type: Object,
+            required: true,
+        },
+        ReadQuestionario: {
+            type: Function,
+            required: true
+        }
+    },
 
     computed: {
         resolucao() {
@@ -87,6 +97,9 @@ export default {
 
     mounted() {
         this.resolucao.verificaResolucao();
+        this.perguntas.id = this.Pergunta.id;
+        this.perguntas.tipo = this.Pergunta.tipo;
+        this.perguntas.pergunta = this.Pergunta.pergunta;
     },
 
     methods: {
@@ -95,39 +108,23 @@ export default {
             // console.clear();
             const dados = await event;
 
-            this.perguntas.respostas = this.vet;
+            this.perguntas.respostas = this.vet ? this.vet : null;
 
             // alert(JSON.stringify(dados, null, 2))
 
-            // if (dados.valid === true) {
-            //     try {
-            //         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/questionario/create`, {
-            //             dados: this.perguntas,
-            //         }, { withCredentials: true });
+            if (dados.valid === true) {
+                console.log(this.perguntas);
+                try {
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/questionario/update`, {
+                        dados: this.perguntas,
+                    }, { withCredentials: true });
 
-            //         console.log(response.data);
-            //         this.readQuestionario();
+                    console.log(response.data);
+                    this.ReadQuestionario();
 
-            //     } catch (error) {
-            //         console.error('Erro', error.response.data);
-            //     }
-            // }
-        },
-
-        async readQuestionario() {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/questionario/read`, {
-                    params: {
-                        id: this.perguntas.idVaga,
-                    },
-                    withCredentials: true
-                });
-
-                console.log(response.data);
-                this.questionario = response.data.result;
-
-            } catch (error) {
-                console.error('Erro', error.response.data);
+                } catch (error) {
+                    console.error('Erro', error.response.data);
+                }
             }
         },
 

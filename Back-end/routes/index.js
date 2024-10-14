@@ -79,6 +79,7 @@ router.delete('/vaga/delete/:id', Vaga.vagaDelete);
 // rotas questionario
 router.post('/questionario/create', Questionario.create);
 router.get('/questionario/read', Questionario.read);
+router.put('/questionario/update', Questionario.update);
 
 // rotas redefinir senha
 router.post('/enviar/codigo', RedefinirSenha.enviarCodigo);

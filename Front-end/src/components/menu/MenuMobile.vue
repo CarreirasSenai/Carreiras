@@ -15,13 +15,13 @@
                 </div>
                 <v-list nav class="bg-deep-purple-accent-3">
                     <v-divider class="ma-4 mt-0 border-opacity-100 "></v-divider>
-                    <v-list-item prepend-icon="mdi-home" title="Home" value="home" @click="redirectToHome"></v-list-item>
-                    <v-list-item prepend-icon="mdi-book-open" title="Sobre o Carreiras" value="sobre"></v-list-item>
+                    <v-list-item prepend-icon="mdi-home" title="Home" value="home" to="/"></v-list-item>
+                    <v-list-item prepend-icon="mdi-book-open" title="Sobre o Carreiras" value="sobre" to="/sobre"></v-list-item>
                     <v-list-item prepend-icon="mdi-phone" title="Contate-nos" value="contato"></v-list-item>
                     <v-divider class="ma-4 border-opacity-100"></v-divider>
-                    <v-list-item prepend-icon="mdi-shield-account" title="Adm" value="adm"></v-list-item>
-                    <v-list-item prepend-icon="mdi-account-plus" title="Cadastro" value="cadastro" @click="redirectToCad"></v-list-item>
-                    <v-list-item prepend-icon="mdi-login" title="Login" value="login" @click="redirectToLogin"></v-list-item>
+                    <v-list-item prepend-icon="mdi-shield-account" title="Adm" value="adm" to="/login?resposta=admin"></v-list-item>
+                    <v-list-item prepend-icon="mdi-account-plus" title="Cadastro" value="cadastro" to="/empresa-candidato?resposta=cadastro"></v-list-item>
+                    <v-list-item prepend-icon="mdi-login" title="Login" value="login" to="/empresa-candidato?resposta=entrar"></v-list-item>
                 </v-list>
             </v-card>
         </div>
@@ -36,18 +36,6 @@ export default {
             dialog: false,
         }
     },
-    methods: {
-        redirectToLogin() {
-            this.$router.push('/empresa-candidato');
-        },
-        redirectToCad() {
-            this.$router.push('/cadastro-candidato');
-        },
-        redirectToHome() {
-            this.$router.push('/');
-            this.$refs.showProgress.showProgressLoader();
-        },
-    }
 }
 </script>
 

@@ -13,8 +13,8 @@ exports.create = (req, res) => {
 };
 
 exports.read = (req, res) => {
-    const { id } = req.query;   
-    
+    const { id } = req.query;
+
     Questionario.read(id, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
@@ -23,3 +23,15 @@ exports.read = (req, res) => {
         }
     });
 }
+
+exports.update = (req, res) => {
+    const dados = req.body;
+    
+    Questionario.update(dados, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else {
+            return res.json({ sucess: true, result: result });
+        }
+    });
+};

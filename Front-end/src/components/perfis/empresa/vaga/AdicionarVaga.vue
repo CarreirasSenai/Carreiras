@@ -208,7 +208,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-btn text="Fechar" variant="plain" @click="dialogPerguntas = false, resetAlternativas()"></v-btn>
-                    <v-btn color="Enviar" text="Salvar" variant="tonal" type="submit"></v-btn>
+                    <v-btn text="Salvar" variant="tonal" type="submit"></v-btn>
                 </v-card-actions>
             </v-card>
         </v-form>
@@ -344,6 +344,7 @@ export default {
 
                     console.log(response.data);
                     this.readQuestionario();
+                    this.dialogPerguntas = false;
 
                 } catch (error) {
                     console.error('Erro', error.response.data);
