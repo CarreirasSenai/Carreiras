@@ -26,12 +26,24 @@ exports.read = (req, res) => {
 
 exports.update = (req, res) => {
     const dados = req.body;
-    
+
     Questionario.update(dados, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else {
             return res.json({ sucess: true, result: result });
+        }
+    });
+};
+
+exports.delete = (req, res) => {
+    const { id } = req.params;
+
+    Questionario.delete(id, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.json({ sucess: true, result: 'Pergunta deletada!' });
         }
     });
 };

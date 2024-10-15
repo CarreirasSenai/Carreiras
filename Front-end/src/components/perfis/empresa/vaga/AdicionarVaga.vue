@@ -2,34 +2,33 @@
     <v-dialog v-model="dialog" max-width="700" persistent transition="dialog-center-transition">
         <template v-slot:activator="{ props: activatorProps }">
             <v-btn class="bg-deep-purple-accent-4" v-bind="activatorProps"
-                @click="fase = 0, iniciarProcesso(1), defineProgress(3000), progress = false">
+                @click="fase = 0, iniciarProcesso(0), defineProgress(3000), progress = false, dialogVaga = true">
                 Criar Vaga
             </v-btn>
         </template>
 
-        <v-form class="text-start" @submit.prevent="submitCreate">
-            <v-card>
-                <v-card-title class="border overflow-auto">
-                    <v-timeline :direction="resolucao.resolucaoDesktop ? 'horizontal' : 'vertical'" side="end">
-                        <v-timeline-item :dot-color="fase >= 1 ? 'primary' : 'grey'"
-                            :size="fase >= 1 ? 'small' : 'small'" fill-dot>
-                            <template v-slot:opposite>
-                                <div style="font-size: clamp(17px, 4vw, 20px);">Criar Vaga</div>
-                            </template>
-                        </v-timeline-item>
-                        <v-timeline-item dot-color="grey" size="x-small" fill-dot>
-                            <template v-slot:opposite>
-                                <div style="font-size: clamp(17px, 4vw, 20px);">Criar Questionário</div>
-                            </template>
-                        </v-timeline-item>
-                        <v-timeline-item dot-color="grey" size="x-small" fill-dot>
-                            <template v-slot:opposite>
-                                <div style="font-size: clamp(17px, 4vw, 20px);">Finalizar</div>
-                            </template>
-                        </v-timeline-item>
-                    </v-timeline>
-                </v-card-title>
-                <v-card-text v-if="progress" class="text-start overflow-auto" style="height: 70vh;">
+        <v-card>
+            <v-stepper :model-value="fase">
+                <v-stepper-header>
+                    <v-stepper-item title="Criar Vaga" value="1" :complete="fase > 0 ? true : false"
+                        :color="fase > 0 ? 'success' : 'grey-darken-3'">
+                    </v-stepper-item>
+
+                    <v-divider></v-divider>
+
+                    <v-stepper-item title="Criar Questionário" value="2" :complete="fase > 1 ? true : false"
+                        :color="fase > 1 ? 'success' : 'grey-darken-3'"></v-stepper-item>
+
+                    <v-divider></v-divider>
+
+                    <v-stepper-item title="Finalizar" value="3" :complete="fase > 2 ? true : false"
+                        :color="fase > 2 ? 'success' : 'grey-darken-3'"></v-stepper-item>
+                </v-stepper-header>
+            </v-stepper>
+
+            <!-- Criar Vaga -->
+            <v-form class="text-start" @submit.prevent="submitCreate" v-if="progress && dialogVaga">
+                <v-card-text class="text-start overflow-auto" style="height: 70vh;">
                     <v-row dense>
                         <v-col cols="12" md="12">
                             <v-text-field v-model="form.titulo" label="Nome do Vaga"
@@ -96,71 +95,67 @@
                         </v-col>
                     </v-row>
                 </v-card-text>
-                <v-divider v-if="progress"></v-divider>
-                <v-card-actions v-if="progress">
+                <v-divider></v-divider>
+                <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text="Cancelar" variant="plain" @click="dialog = false"></v-btn>
                     <v-btn text="Salvar" variant="tonal" type="submit"></v-btn>
                 </v-card-actions>
-            </v-card>
-        </v-form>
-    </v-dialog>
+            </v-form>
 
-    <v-dialog v-model="dialogQuestionario" max-width="700" persistent transition="dialog-center-transition">
-        <v-card>
-            <v-card-title class="border overflow-auto">
-                <v-timeline :direction="resolucao.resolucaoDesktop ? 'horizontal' : 'vertical'" side="end">
-                    <v-timeline-item :dot-color="fase >= 2 ? 'green' : 'primary'"
-                        :size="fase >= 2 ? 'x-small' : 'small'" :icon="fase >= 2 ? 'mdi-check' : ''" fill-dot>
-                        <template v-slot:opposite>
-                            <div style="font-size: clamp(17px, 4vw, 20px);">Criar Vaga</div>
-                        </template>
-                    </v-timeline-item>
-                    <v-timeline-item :dot-color="fase < 2 ? 'grey' : 'primary'" :size="fase < 2 ? 'x-small' : 'small'"
-                        fill-dot>
-                        <template v-slot:opposite>
-                            <div style="font-size: clamp(17px, 4vw, 20px);">Criar Questionário</div>
-                        </template>
-                    </v-timeline-item>
-                    <v-timeline-item dot-color="grey" size="x-small" fill-dot>
-                        <template v-slot:opposite>
-                            <div style="font-size: clamp(17px, 4vw, 20px);">Finalizar</div>
-                        </template>
-                    </v-timeline-item>
-                </v-timeline>
-            </v-card-title>
-            <v-card-text class="text-start overflow-auto" style="height: 70vh;" v-if="progress">
-                <v-row dense>
-                    <v-col cols="10">
-                        <small>
-                            Saiba mais
-                            <v-tooltip activator="parent" location="left">
-                                O questionário consiste de no minímo 3 até 30 perguntas alternativas que farão
-                                <br>
-                                a triagem dos candidatos atribuindo um nível de relevância a cada um deles. <br>
-                                Também é possivel adicionar perguntas discursivas que não terão relevância na
-                                <br>
-                                triagem.
-                            </v-tooltip>
-                        </small>
-                        <h3>Questionário para triagem dos candidatos</h3>
-                    </v-col>
-                    <v-col cols="2" class="text-end mt-5">
-                        <v-btn icon="mdi-plus" size="x-small" color="deep-purple-accent-4" title="Adicionar Pergunta"
-                            @click="dialogPerguntas = true"></v-btn>
-                    </v-col>
-                    <v-col cols="12" v-if="questionario">
-                        <div class="border pa-4 rounded mt-4" v-for="(questao, index) in questionario" :key="questao">
-                            <h3 class="text-primary">{{ index + 1 }}) {{ questao.pergunta }}</h3>
-                            <small>{{ questao.tipo }}</small>
-                        </div>
-                    </v-col>
-                </v-row>
-            </v-card-text>
-            <v-divider v-if="progress"></v-divider>
-            <v-card-actions v-if="progress">
-                <v-btn text="Finalizar" variant="tonal" @click="modalConfirmaQuestionario = true"></v-btn>
-            </v-card-actions>
+            <!-- Questionario -->
+            <div v-if="progress && dialogQuestionario">
+                <v-card-text class="text-start overflow-auto" style="height: 70vh;">
+                    <v-row dense>
+                        <v-col cols="10">
+                            <small>
+                                Saiba mais
+                                <v-tooltip activator="parent" location="left">
+                                    O questionário consiste de perguntas alternativas que farão a triagem <br>
+                                    dos candidatos atribuindo um nível de relevância a cada um deles. <br>
+                                    Também é possivel adicionar perguntas discursivas que não terão relevância <br>
+                                    na triagem.
+                                </v-tooltip>
+                            </small>
+                            <h3>Questionário para triagem dos candidatos</h3>
+                            <small>Você poderá fazer alterações nas perguntas em: <em>Vaga > Detalhes >
+                                    Questionário</em></small>
+                        </v-col>
+                        <v-col cols="2" class="text-end mt-5">
+                            <v-btn icon="mdi-plus" size="x-small" color="deep-purple-accent-4"
+                                title="Adicionar Pergunta" @click="dialogPerguntas = true"></v-btn>
+                        </v-col>
+                        <v-col cols="12" v-if="questionario">
+                            <div class="border pa-4 rounded mt-4" v-for="(questao, index) in questionario"
+                                :key="questao">
+                                <h3 class="text-primary">{{ index + 1 }}) {{ questao.pergunta }}</h3>
+                                <small>{{ questao.tipo }}</small>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text="Finalizar" variant="tonal"
+                        @click="this.defineFase(2), dialogFinalizar = true, dialogQuestionario = false, defineProgress(3000), progress = false"></v-btn>
+                </v-card-actions>
+            </div>
+
+            <!-- Finalizar -->
+            <div v-if="progress && dialogFinalizar">
+                <v-card-text class="text-center d-flex align-center justify-center flex-column ga-8" style="height: 70vh;">
+                    <h1 class="text-deep-purple-accent-4">Criação finalizada! 🎉</h1>
+                    <img src="\src\assets\empresas\3.png" style="min-width: 300px; max-width: 400px; width: 100%;">   
+                    <p>A vaga ficará pendente para análise e publicação. <br> Enviaremos mais informações por e-mail!</p>                 
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text="Concluir" variant="tonal"
+                        @click="dialogFinalizar = false, dialog = false, questionario = ''"></v-btn>
+                </v-card-actions>
+            </div>
         </v-card>
     </v-dialog>
 
@@ -203,6 +198,10 @@
                             <br><br>
                             <em>Questões discursivas não atribuem relevância ao candidato.</em>
                         </v-col>
+                        <v-col cols="12" v-else-if="perguntas.tipo === 'descricao'">
+                            Escreva uma descrição, algo que deseja informar ao candidato como instruções sobre o
+                            questionário por exemplo.
+                        </v-col>
                     </v-row>
                 </v-card-text>
                 <v-divider></v-divider>
@@ -212,21 +211,6 @@
                 </v-card-actions>
             </v-card>
         </v-form>
-    </v-dialog>
-
-    <v-dialog max-width="500" v-model="modalConfirmaQuestionario">
-        <v-card title="Leia com atenção!">
-            <v-card-text>
-                Certifique-se de que está tudo certo antes finalizar, você não poderá editar este questionário após
-                confirmar.
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text="Cancelar" @click="modalConfirmaQuestionario = false"></v-btn>
-                <v-btn variant="tonal" text="Confirmar"
-                    @click="modalConfirmaQuestionario = false, dialogQuestionario = false, questionario = ''"></v-btn>                
-            </v-card-actions>
-        </v-card>
     </v-dialog>
 </template>
 
@@ -243,8 +227,10 @@ export default {
         novaAlternativa: '',
         vet: [],
         count: 0,
+        dialogVaga: true,
         dialogPerguntas: false,
         dialogQuestionario: false,
+        dialogFinalizar: false,
         dialog: false,
         form: {
             titulo: 'Analista de Dados',
@@ -315,12 +301,10 @@ export default {
                     console.log(response.data);
                     this.perguntas.idVaga = response.data.idVaga;
                     this.MostrarVagas();
+                    this.dialogVaga = false;
                     this.dialogQuestionario = true;
                     this.defineProgress(5000);
-                    this.defineFase(2);
-                    setTimeout(() => {
-                        this.dialog = false;
-                    }, 5000);
+                    this.defineFase(1);
 
                 } catch (error) {
                     console.error('Erro', error.response.data);

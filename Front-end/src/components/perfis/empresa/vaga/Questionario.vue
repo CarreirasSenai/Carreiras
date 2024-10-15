@@ -18,13 +18,17 @@
             </v-card-title>
 
             <v-card-text class="overflow-auto">
-                <!-- <v-card variant="tonal" class="mb-6" color="deep-purple-accent-4" title="Atenção" prepend-icon="mdi-alert">
+                <v-card variant="tonal" class="mb-4" color="deep-purple-accent-4" title="Atenção"
+                    prepend-icon="mdi-alert">
                     <v-card-item>
                         Você poderá editar este questionário até o momento em que a vaga for aprovada.
                     </v-card-item>
-                </v-card> -->
+                </v-card>
 
-                <div v-for="(questao, i) in questionario" :key="questao" class="position-relative pt-10">
+                <AdicionarQuestionario v-if="idEmpresa === user.dadosUser.id && grupo === 'empresa'"
+                    :ReadQuestionario="readQuestionario" :IdVaga="idVaga" />
+
+                <div v-for="(questao, i) in questionario" :key="questao" class="position-relative pt-10">                    
                     <v-radio-group v-if="questao.tipo === 'alternativa'">
                         <h4 class="text-grey-darken-1 mb-2 text-body-1"> {{ i + 1 }}) {{ questao.pergunta }}</h4>
                         <v-radio v-for="(pergunta, index) in JSON.parse(questao.respostas)" :key="index"
@@ -58,6 +62,7 @@
 import { useCandidatoStore } from '@/stores/candidato';
 import { useResolucaoDesktop } from '@/stores/resolucao';
 import axios from 'axios';
+import AdicionarQuestionario from './AdicionarQuestionario.vue';
 
 export default {
     data: () => ({

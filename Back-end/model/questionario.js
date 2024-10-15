@@ -39,7 +39,7 @@ exports.update = ({ dados }, callback) => {
 
     db.query('update questionario set tipo = ?, pergunta = ?, respostas = ?, respCorreta = ? where id = ?',
         [tipo, pergunta, JSON.stringify(respostas), respCorreta, id], (err, result) => {
-           
+
             if (err) {
                 console.log(err);
                 return callback(err, null);
@@ -49,4 +49,16 @@ exports.update = ({ dados }, callback) => {
                 return callback(null, result);
             }
         });
+};
+
+exports.delete = (id, callback) => {
+    db.query('delete from questionario where id = ?', [id], (err, result) => {
+        if (err) {
+            console.log(err.message);
+            return callback(err.message, null);
+        } else if (result) {
+            console.log(result);
+            return callback(null, result);
+        }
+    });
 };
