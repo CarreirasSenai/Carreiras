@@ -1,5 +1,5 @@
 <template>
-<!--terminando o envio do usuario ao suporte do carreiras-->
+  <!--terminando o envio do usuario ao suporte do carreiras-->
 
   <div class="text pa-4">
     <div>
@@ -16,7 +16,9 @@
           </div>
           <v-divider class="mb-4"></v-divider>
 
-          <p class="text-center" style="font-size: 25px;">Estamos ansiosos para ouvir você!</p>
+          <p class="text-center" style="font-size: 25px">
+            Estamos ansiosos para ouvir você!
+          </p>
 
           <v-divider class="mb-4"></v-divider>
 
@@ -69,11 +71,6 @@
 export default {
   data: () => ({
     dialog: false,
-    methods: {
-    open() {
-      this.dialog = true;
-    },
-  },
     loading: false,
     success: false,
     error: false,
@@ -95,27 +92,49 @@ export default {
       },
     ],
   }),
-  
+
   methods: {
-    sendMessage() {
+    async sendMessage() {
       this.loading = true;
-      const careersEmail = "careers@institution.com";
-      const subject = "Message from " + this.firstName + " " + this.lastName;
-      const body = this.message;
+      const carreirasEmail = "carreirassenai@gmail.com";
+      const subject = "Message from " + this.email;
+      const body = `Email: ${this.email}\nMensagem: ${this.message}`;
 
       console.log(
         "Sending email to " +
-          careersEmail +
+          carreirasEmail +
           " with subject " +
           subject +
           " and body " +
           body
       );
 
-      setTimeout(() => {
+      try {
+        const response = await fetch("/formulario/emailEnvio", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: this.email,
+            mensagem: this.message,
+          }),
+        });
+
+        if (response.ok) {
+          this.success = true;
+          this.error = false;
+          this.loading = false;
+        } else {
+          this.error = true;
+          this.success = false;
+          this.loading = false;
+        }
+      } catch (error) {
+        this.error = true;
+        this.success = false;
         this.loading = false;
-        this.success = true;
-      }, 2000);
+      }
     },
   },
 };
@@ -123,7 +142,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 .form-container {
   padding: 20px 10px;
 }
