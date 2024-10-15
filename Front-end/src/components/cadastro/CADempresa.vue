@@ -8,7 +8,7 @@
         <v-card class="px-4 elevation-12 signup-card" rounded="xl">
           <v-card-text>
             <h1 class="text-center my-1">Cadastro</h1>
-            <v-form class="my-4" @submit.prevent>
+            <v-form ref="form" v-model="isValid" class="my-4" @submit.prevent>
               <v-row>
                 <v-col cols="12" sm="6" md="6" lg="6">
                   <v-text-field
@@ -17,6 +17,7 @@
                     label="Razão social"
                     bg-color="#F7F7F7"
                     density="compact"
+                    required
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
@@ -26,6 +27,7 @@
                     label="Nome fantasia"
                     bg-color="#F7F7F7"
                     density="compact"
+                    required
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -37,6 +39,7 @@
                       label="Email"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
@@ -47,6 +50,7 @@
                       label="Telefone"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="3" md="3" lg="3">
@@ -70,6 +74,7 @@
                       label="CNPJ"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                    ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
@@ -80,6 +85,7 @@
                       label="Inscrição estadual"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
@@ -92,6 +98,7 @@
                       bg-color="#F7F7F7"
                       density="compact"
                       @blur="retornarInformacoesCep"
+                      required
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="2" md="2" lg="2">
@@ -101,6 +108,7 @@
                       label="Nº"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                     ></v-text-field>
                 </v-col>
               </v-row>
@@ -120,6 +128,7 @@
                       label="Endereço"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                     ></v-text-field>
                 </v-col>
               </v-row>
@@ -131,6 +140,7 @@
                       label="Bairro"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
@@ -140,6 +150,7 @@
                       label="Cidade"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
@@ -150,6 +161,7 @@
                     label="Estado"
                     bg-color="#F7F7F7"
                     density="compact"
+                    required
                   ></v-select>
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
@@ -159,6 +171,7 @@
                       label="Responsável legal"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
@@ -169,59 +182,52 @@
                       label="CPF do responsável legal"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="4" md="4" lg="4">
+                <v-col cols="11" sm="4" md="4" lg="4">
                     <v-text-field
-                      v-model="responsavelAdm"
-                      :rules="responsavelAdmRules"
-                      label="Responsável administrativo (RA)"
+                      v-model="contatoRA"
+                      :rules="emailRules"
+                      label="Contato RA"
                       bg-color="#F7F7F7"
                       density="compact"
+                      required
                     ></v-text-field>
                 </v-col>
-                <v-row>
-                  <v-col cols="11" sm="4" md="4" lg="4">
-                      <v-text-field
-                        v-model="contatoRA"
-                        :rules="emailRules"
-                        label="Contato RA"
-                        bg-color="#F7F7F7"
-                        density="compact"
-                      ></v-text-field>
-                  </v-col>
-                  <v-col cols="11" sm="4" md="4" lg="4">
-                    <v-text-field
-                       v-model="senha"
-                      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                      :rules="[senhaRules.senhaRequired, senhaRules.senhaMin]"
-                      :type="showPassword ? 'text' : 'password'"
-                      class="input-group--focused"
-                      label="Senha"
-                      name="senha"
-                      counter
-                      @click:append="showPassword = !showPassword"
-                      density="compact"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="11" sm="4" md="4" lg="4">
-                    <v-text-field
-                      v-model="repSenha"
-                      :append-icon="showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
-                      :rules="[senhaRules.repSenhaRequired, senhaRules.repSenhaMin, senhaRules.confirmSenha]"
-                      :type="showRePassword ? 'text' : 'password'"
-                      class="input-group--focused"
-                      label="Repetir senha"
-                      name="rep-senha"
-                      counter
-                      density="compact"
-                      @click:append="showRePassword = !showRePassword"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
+                <v-col cols="11" sm="6" md="6" lg="6">
+                  <v-text-field
+                     v-model="senha"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="[senhaRules.senhaRequired, senhaRules.senhaMin, senhaRules.senhaComplexa]"
+                    :type="showPassword ? 'text' : 'password'"
+                    class="input-group--focused"
+                    label="Senha"
+                    name="senha"
+                    counter
+                    @click:append="showPassword = !showPassword"
+                    density="compact"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="11" sm="6" md="6" lg="6">
+                  <v-text-field
+                    v-model="repSenha"
+                    :append-icon="showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="[senhaRules.repSenhaRequired, senhaRules.repSenhaMin, senhaRules.confirmSenha]"
+                    :type="showRePassword ? 'text' : 'password'"
+                    class="input-group--focused"
+                    label="Repetir senha"
+                    name="rep-senha"
+                    counter
+                    density="compact"
+                    @click:append="showRePassword = !showRePassword"
+                    required
+                  ></v-text-field>
+                </v-col>
               </v-row>
               <div class="sign-in-buttons d-flex justify-center my-4">
-                <v-btn class="adm-button bg-purple-darken-4 mt-4 mb-2" size="large" @click="enviarCadastro()">Salvar</v-btn>
+                <v-btn :disabled="!isValid" class="adm-button bg-purple-darken-4 mt-4 mb-2" size="large" @click="enviarCadastro()">Salvar</v-btn>
               </div>
             </v-form>
             <div class="got-account-container my-3">
@@ -271,6 +277,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      isValid: false,
       razaoSocial: 'InfoTech S.A.',
       nomeFantasia: 'InfoTech',
       email: 'seuemail@gmail.com',
@@ -287,7 +294,6 @@ export default {
       estado: '',
       responsavelLegal: 'Fulano da Silva',
       cpfResponsavel: '90035392002',
-      responsavelAdm: 'Ciclano dos Santos',
       contatoRA: 'ciclano_santos@infotech.com.br',
       senha: '12345678Ww@',
       repSenha: '12345678Ww@',
@@ -300,7 +306,9 @@ export default {
           repSenhaRequired: value => !!value || 'Repetir senha requerida',
           senhaMin: v => v.length >= 8 || 'Senha deve ter pelo menos 8 caracteres',
           repSenhaMin: v => v.length >= 8 || 'Repetir senha deve ter pelo menos 8 caracteres',
-          confirmSenha: (v) => v === this.senha && v.length === this.senha.length || "Senhas não coincidem"
+          confirmSenha: (v) => v === this.senha && v.length === this.senha.length || "Senhas não coincidem",
+          senhaComplexa: (v) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(v) ||
+          "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
       },
       razaoSocialRules: [(v) => !!v || 'Razão social requerida'],
       nomeFantasiaRules: [(v) => !!v || 'Nome fantasia requerido'],
@@ -332,7 +340,6 @@ export default {
         (v) => !!v || "CPF Requerido",
         (v) => v.length === 14 || "CPF deve ter 14 caracteres",
       ],
-      responsavelAdmRules: [(v) => !!v || 'Responsável administrativo requerido'],
       items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
                 'CE', 'DF', 'ES', 'GO', 'MA',
                 'MT', 'MS', 'MG', 'PA', 'PB',
@@ -343,43 +350,47 @@ export default {
   },
   methods: {
     async enviarCadastro(){
-      this.cnpj = this.limparMascaraValores(this.cnpj);
-      this.celular = this.limparMascaraValores(this.celular);
-      this.telefone = this.limparMascaraValores(this.telefone);
-      this.inscricaoEstadual = this.limparMascaraValores(this.inscricaoEstadual);
-      this.cpfResponsavel = this.limparMascaraValores(this.cpfResponsavel);
-      try {
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/empresa/create`,
-          {
-            razaoSocial: this.razaoSocial,
-            nomeFantasia: this.nomeFantasia,
-            email: this.email,
-            telefone: this.telefone,
-            celular: this.celular,
-            cnpj: this.cnpj,
-            inscricaoEstadual: this.inscricaoEstadual,
-            cep: this.cep,
-            numero: this.numero,
-            complemento: this.complemento,
-            endereco: this.endereco,
-            bairro: this.bairro,
-            cidade: this.cidade,
-            estado: this.estado,
-            responsavelLegal: this.responsavelLegal,
-            cpfResponsavel: this.cpfResponsavel,
-            contatoRA: this.contatoRA,
-            senha: this.senha
-          }
-        );
-
-        this.resposta = true;
-        console.log("Cadastro bem sucedido!", response.data);
-        document.getElementById("btnAlertaCadastro").click();
-      } catch(error) {
-        this.resposta = false;
-        console.error("Erro no cadastro", error.response.data.error);
-        this.mensagemErro = error.response.data.error;
-        document.getElementById("btnAlertaCadastro").click();
+      if(this.$refs.form.validate()) {
+        this.cnpj = this.limparMascaraValores(this.cnpj);
+        this.celular = this.limparMascaraValores(this.celular);
+        this.telefone = this.limparMascaraValores(this.telefone);
+        this.inscricaoEstadual = this.limparMascaraValores(this.inscricaoEstadual);
+        this.cpfResponsavel = this.limparMascaraValores(this.cpfResponsavel);
+        try {
+          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/empresa/create`,
+            {
+              razaoSocial: this.razaoSocial,
+              nomeFantasia: this.nomeFantasia,
+              email: this.email,
+              telefone: this.telefone,
+              celular: this.celular,
+              cnpj: this.cnpj,
+              inscricaoEstadual: this.inscricaoEstadual,
+              cep: this.cep,
+              numero: this.numero,
+              complemento: this.complemento,
+              endereco: this.endereco,
+              bairro: this.bairro,
+              cidade: this.cidade,
+              estado: this.estado,
+              responsavelLegal: this.responsavelLegal,
+              cpfResponsavel: this.cpfResponsavel,
+              contatoRA: this.contatoRA,
+              senha: this.senha
+            }
+          );
+  
+          this.resposta = true;
+          console.log("Cadastro bem sucedido!", response.data);
+          document.getElementById("btnAlertaCadastro").click();
+        } catch(error) {
+          this.resposta = false;
+          console.error("Erro no cadastro", error.response.data.error);
+          this.mensagemErro = error.response.data.error;
+          document.getElementById("btnAlertaCadastro").click();
+        }
+      } else {
+        alert("Preencha os campos obrigatórios!")
       }
     },
     async retornarInformacoesCep(){

@@ -23,7 +23,7 @@
 
     <v-text-field v-model="busca" :loading="loading" append-inner-icon="mdi-magnify" density="compact"
       label="Procure um Usuário" variant="underlined" hide-details single-line @click:append-inner="searchUser"
-      @keyup.enter="searchUser" />
+      @keyup.enter="searchUser"/>
 
     <v-card v-for="user in usuarios" :key="user">
       <v-card-text>
@@ -157,10 +157,6 @@ export default {
 </script>
 
 <style>
-* {
-  /* border: 1px solid red; */
-}
-
 .text-align {
   text-align: center;
 }
