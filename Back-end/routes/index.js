@@ -31,6 +31,8 @@ router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
 router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
+// Rota para listar todos os candidatos
+router.get('/candidato/read/all', authMiddleware, Candidato.getAllUser);
 
 // rotas perfil
 router.put('/perfil/update', authMiddleware, Perfil.perfilUpdate);
@@ -92,6 +94,11 @@ router.get('/admin/read/all', authMiddleware, Admin.getAllUser);
 router.delete('/admin/delete/:id', authMiddleware, Admin.deleteUser);
 router.put('/admin/update', authMiddleware, Admin.updateUser);
 router.get('/admin/pesquisa', Admin.pesquisaUser);
+
+//rota enviar email
+//router.post('/admin/create', Admin.createUser);
+// Objetos
+//const DataHora = require('../services/dataHora');
 
 //rotas agendamento
 router.get('/agendamento/read', Agendamento.read);
