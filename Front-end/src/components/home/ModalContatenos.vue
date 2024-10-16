@@ -1,6 +1,4 @@
 <template>
-  <!--terminando o envio do usuario ao suporte do carreiras-->
-
   <div class="text pa-4">
     <div>
       <v-btn class="primary bg-purple-darken-2" @click="dialog = true">
@@ -10,6 +8,18 @@
 
     <v-dialog v-model="dialog" max-width="400" class="modal-container">
       <v-card class="form-container">
+        <!-- Botão "X" para fechar o modal -->
+        <v-btn
+          icon
+          @click="dialog = false"
+          class="close-btn"
+          style="position: absolute; top: 10px; right: 10px; background: transparent; elevation: 0;"
+          variant= "plain"
+          :ripple= "false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+
         <v-form fast-fail @submit.prevent="sendMessage">
           <div class="text-center mb-4">
             <img class="carreiras-logo" src="../../assets/logo.png" />
