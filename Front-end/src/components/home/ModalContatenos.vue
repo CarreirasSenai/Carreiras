@@ -68,6 +68,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data: () => ({
     dialog: false,
@@ -95,42 +97,29 @@ export default {
 
   methods: {
     async sendMessage() {
-      this.loading = true;
-      const carreirasEmail = "carreirassenai@gmail.com";
-      const subject = "Message from " + this.email;
-      const body = `Email: ${this.email}\nMensagem: ${this.message}`;
-
-      console.log(
-        "Sending email to " +
-          carreirasEmail +
-          " with subject " +
-          subject +
-          " and body " +
-          body
-      );
-
       try {
-        const response = await fetch("/formulario/emailEnvio", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/formulario/emailEnvio`,
+          {
             email: this.email,
             mensagem: this.message,
-          }),
-        });
+          },
+          { withCredentials: true }
+        );
 
-        if (response.ok) {
+        if (response && response.data) {
+          console.log("Mensagem enviada com sucesso", response.data);
           this.success = true;
           this.error = false;
           this.loading = false;
         } else {
+          console.error("Erro ao enviar mensagem");
           this.error = true;
           this.success = false;
           this.loading = false;
         }
       } catch (error) {
+        console.error("Erro ao enviar mensagem", error);
         this.error = true;
         this.success = false;
         this.loading = false;
@@ -138,7 +127,6 @@ export default {
     },
   },
 };
-
 </script>
 
 <style scoped lang="scss">
