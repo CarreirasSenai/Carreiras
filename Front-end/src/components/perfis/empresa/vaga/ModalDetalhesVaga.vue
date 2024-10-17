@@ -105,7 +105,6 @@
 import { useCandidatoStore } from '@/stores/candidato';
 import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
 import axios from 'axios';
-import Questionario from './Questionario.vue';
 
 export default {
     data() {

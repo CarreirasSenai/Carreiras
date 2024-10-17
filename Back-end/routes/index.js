@@ -18,6 +18,7 @@ const VerificarConta = require('../controller/verificarConta');
 const Empresa = require('../controller/empresa');
 const Admin = require('../controller/admin');
 const Questionario = require('../controller/questionario');
+const Candidatura = require('../controller/candidatura');
 
 // rota autenticacao
 router.get('/auth', authMiddleware, (req, res) => {
@@ -98,6 +99,9 @@ router.get('/admin/read/all', authMiddleware, Admin.getAllUser);
 router.delete('/admin/delete/:id', authMiddleware, Admin.deleteUser);
 router.put('/admin/update', authMiddleware, Admin.updateUser);
 router.get('/admin/pesquisa', Admin.pesquisaUser);
+
+// rotas candidatura
+router.post('/candidatura/create', Candidatura.create);
 
 // rota logout
 router.get('/logout', (req, res) => {
