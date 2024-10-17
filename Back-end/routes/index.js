@@ -17,6 +17,7 @@ const Habilidade = require('../controller/habilidades');
 const VerificarConta = require('../controller/verificarConta');
 const Empresa = require('../controller/empresa');
 const Admin = require('../controller/admin');
+const Formulario = require('../controller/formulario');
 const Agendamento = require('../controller/agendamento');
 
 // rota autenticacao
@@ -105,6 +106,9 @@ router.get('/agendamento/read', Agendamento.read);
 router.post('/agendamento/create', Agendamento.create);
 router.put('/agendamento/update', Agendamento.update);
 router.get('/agendamento/readCandidatos', Agendamento.readCandidatos);
+
+//rota suporte email
+router.post('/formulario/emailEnvio', Formulario.formularioEnvio);
 
 // rota logout
 router.get('/logout', (req, res) => {
