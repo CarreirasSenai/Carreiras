@@ -10,32 +10,27 @@
       </div>
       <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Vaga"
         variant="underlined" hide-details single-line/>
-      <v-card v-for="user in vagas" :key="user">
+      <v-card v-for="item in vagas" :key="item">
         <v-card-text>
           <v-row align="center">
-            <v-col cols="12" sm="4" class="d-flex align-center ga-2">
+            <v-col cols="6" sm="4" class="d-flex align-center ga-2">
               <v-avatar color="surface-variant" image="/src/assets/avatar.png">
               </v-avatar>
-              <!-- <v-avatar color="surface-variant" :image="user.foto" v-if="user.foto">
-              </v-avatar> -->
+              <v-avatar color="surface-variant" :image="item.foto" v-if="item.foto">
+              </v-avatar>
               <div>
-                <h3>{{user.titulo}}</h3>
-                <p>{{user.cidade}} - {{user.estado}}</p>
+                <h3>{{item.titulo}}</h3>
+                <p>{{item.cep}} - {{item.cidade}} - {{item.estado}}</p>
               </div>
             </v-col>
-            <v-col cols="12" sm="3" class="text-align">
-              <p>
-                <v-icon>mdi-cellphone</v-icon>
-                {{user.cep}}
-              </p>
+            <v-col cols="3" sm="4" class="text-align">
+              <v-chip size="small" :color="colorTipoVaga(item.status)">{{ item.status=== 1 ? 'Verificada' :
+                'Não verificada' }}</v-chip>
             </v-col>
-            <v-col cols="9" sm="4" class="text-align">
-              <!-- <v-chip size="small" :color="colorTipoUser(user.verificado)">{{ user.verificado === 1 ? 'Verificado' :
-                'Não verificado' }}</v-chip> -->
-            </v-col>
-            <v-col cols="3" sm="1" class="text-end">
-              <!-- <EditarCadEmpresaAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
-                :User="user" /> -->
+            <v-col cols="3" sm="4" class="text-end">
+              <!-- <EditarVaga
+                v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                :MostrarVagas="MostrarVagas" :Vagas="Vagas" /> -->
               <v-btn variant="plain" icon="mdi mdi-pencil">
               </v-btn>
             </v-col>
@@ -55,8 +50,16 @@ export default {
   data() {
     return {
       loading: false,
-      vagas: ""
+      vagas: "",
+      showSnackbar: false
     }
+  },
+  props: {
+      Vagas: Object,
+      MostrarVagas: {
+          type: Function,
+          required: true
+      }
   },
   computed: {
     auth() {
@@ -70,7 +73,7 @@ export default {
     this.auth.autenticacao();
   },
   mounted() {
-    this.mostrarUsuarios();
+    this.mostrarVagas();
   },
   methods: {
     onClick() {
@@ -80,7 +83,7 @@ export default {
         this.loading = false
       }, 2000)
     },
-    async mostrarUsuarios() {
+    async mostrarVagas() {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/vaga/read/all`, {
@@ -91,6 +94,12 @@ export default {
       } catch (error) {
         console.error("Erro: ", error.response.data);
       }
+    },
+    colorTipoVaga(value) {
+      if (value === 1)
+        return 'success';
+
+      return 'error';
     }
   }
 }
