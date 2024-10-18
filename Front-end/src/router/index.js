@@ -50,9 +50,9 @@ const router = createRouter({
     { path: '/minhas-vagas', component: MinhasVagas},
     { path: '/lista-candidatos', component: listaCandidatos},
     { path: '/contato', component: Contato},
-    //{ path: '/agenda-candidato', component: AgendaCandidato },
-    //{ path: '/agenda-empresa', component: AgendaEmpresa },
-    { path: '/agenda-alternativa', component: AgendaAlternativa}
+    // { path: '/agenda-empresa', component: AgendaEmpresa },
+    // { path: '/agenda-candidato', component: AgendaCandidato },
+    { path: '/agenda-alternativa', component: AgendaAlternativa},
   ],
 });
 
