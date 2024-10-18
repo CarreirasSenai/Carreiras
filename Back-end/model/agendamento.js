@@ -65,6 +65,28 @@ exports.readCandidatos = (id, callback) => {
     );
 };
 
+exports.readAllCandidatos = (id, callback) => {
+    var query = "SELECT DISTINCT u.id, u.nome_completo FROM vagas v"
+    query += " INNER JOIN vagas_candidatadas vc ON vc.id_vaga = v.id"
+    query += " INNER JOIN user_candidato u ON u.id = vc.id_user"
+    query += " WHERE v.id_empresa = ?;"
+
+    db.query( 
+        query, 
+        [id], 
+        (err, rows) => {
+            if (err) {
+                return callback(err, null);
+            }
+            const organizedData = rows.map(row => ({
+                id: row.id,
+                nome: row.nome_completo
+            }));
+            return callback(null, organizedData);
+        }
+    );
+};
+
 exports.update = (id, title, descricao, vaga, candidato, data, hora, callback) => {
     if (candidato) {
         db.query('UPDATE agendamento SET titulo = ?, vaga = ?, data = ?, hora = ?, id_candidato = ?, descricao = ?  where id = ?', [title, vaga, data, hora, candidato, descricao, id], (err, result) => {
@@ -92,7 +114,8 @@ exports.update = (id, title, descricao, vaga, candidato, data, hora, callback) =
 
 // Create
 exports.create = (title, descricao, vaga, candidato, empresa, data, hora, callback) => {
-    db.query('INSERT INTO agendamento (title, descricao, vaga, candidato, empresa, data, hora) VALUES (?, ?, ?, ?, ?, ?, ?)',[title, descricao, vaga, candidato, empresa, data, hora],(err, result) => {
+    vaga = vaga == 0 ? '' : vaga
+    db.query('INSERT INTO agendamento (titulo, descricao, vaga, id_candidato, id_empresa, data, hora) VALUES (?, ?, ?, ?, ?, ?, ?)',[title, descricao, vaga, candidato, empresa, data, hora],(err, result) => {
         if (err) {
             console.log(err);
             return callback(err, null);
@@ -102,10 +125,10 @@ exports.create = (title, descricao, vaga, candidato, empresa, data, hora, callba
 )};
 
 
-// // Delete
-// exports.delete = (id, callback) => {
-//     db.query('DELETE FROM agendamento WHERE id = ?', [id], (err, result) => {
-//         if (err) throw err;
-//         callback(result.affectedRows > 0);
-//     });
-// };
+//Delete
+exports.delete = (id, callback) => {
+    db.query('DELETE FROM agendamento WHERE id = ?', [id], (err, result) => {
+        if (err) throw err;
+        callback(result.affectedRows > 0);
+    });
+};

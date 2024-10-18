@@ -15,22 +15,17 @@
             <v-data-table height="400" v-model:search="search" :headers="headers" :items="eventos"
                 :sort-by="[{ key: 'vaga', order: 'asc' }]">
 
-                <template v-slot:item.candidato="{ item }">
-                    {{ item.candidato }}
-                </template>
-
                 <template v-slot:item.vaga="{ item }">
                     {{ item.vaga }}
                 </template>
 
-                <template v-slot:item.titulo="{ item }">
-                    {{ item.title }}
+                <template v-slot:item.candidato="{ item }">
+                    {{ item.candidato }}
                 </template>
 
                 <template v-slot:item.data="{ item }">
                     {{ new Date(item.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) }}
                 </template>
-
 
                 <template v-slot:item.horario="{ item }">
                     {{ item.hora }}
@@ -49,6 +44,10 @@
             <v-btn variant="flat" class="position-absolute left-0 ma-2 bottom-0"
                 @click="$emit('FecharTabela')">Fechar</v-btn>
         </v-card>
+
+        <v-alert v-if="successMessage" type="success" dismissible>
+            {{ successMessage }}
+        </v-alert>
     </v-dialog>
 
     <!-- Modal Edit -->
@@ -70,12 +69,14 @@
                         </v-col>
                         <v-col cols="12" md="12">
                             <v-select v-model="editedItem.vaga" :items="vagas" item-title="titulo" item-value="id"
-                                label="Selecione uma Vaga" persistent-hint return-object single-line variant="outlined" :clearable="true" @click="mostrarCandidatos">
+                                label="Selecione uma Vaga" persistent-hint return-object single-line variant="outlined"
+                                :clearable="true" @click="mostrarCandidatos">
                             </v-select>
                         </v-col>
                         <v-col cols="12" md="12">
                             <v-select v-model="editedItem.candidato" :items="candidatos" item-title="nome"
-                                item-value="id" label="Selecione un Candidato" persistent-hint return-object single-line variant="outlined" :clearable="true">
+                                item-value="id" label="Selecione un Candidato" persistent-hint return-object single-line
+                                variant="outlined" :clearable="true">
                             </v-select>
                         </v-col>
                         <v-col cols="12" md="6">
@@ -138,6 +139,7 @@ export default {
     },
 
     data: () => ({
+        successMessage: '',
         vagas: [],
         candidatos: [],
         search: '',
@@ -158,9 +160,8 @@ export default {
             ]
         },
         headers: [
-            { title: 'Título', align: 'start', sortable: false, key: 'title' },
+            { title: 'Vaga', key: 'title' },
             { title: 'Candidato', align: 'start', sortable: false, key: 'candidato' },
-            { title: 'Vaga', key: 'vaga' },
             { title: 'Data', key: 'data' },
             { title: 'Horário', key: 'hora' },
             { title: 'Ações', key: 'actions', sortable: false, align: 'end' },
@@ -280,7 +281,7 @@ export default {
                 this.vagas = response.data.result
                 console.log('construçao do this.vagas:', this.vagas);
             } catch (error) {
-                console.error('Erro', 'Erro ao mostrar vagas');
+                console.error('Erro', error.response.data);
             }
         },
 
@@ -297,15 +298,34 @@ export default {
         },
 
         deleteItem(item) {
-            console.log("Excluindo item:", item);
-            this.editedIndex = this.eventos.indexOf(item);
-            this.editedItem = Object.assign({}, item);
+            console.log("Excluindo item");
+            this.editedItem = Object.assign({}, item); 
+            this.editedIndex = this.eventos.indexOf(item); 
             this.dialogDelete = true;
         },
 
-        deleteItemConfirm() {
-            this.eventos.splice(this.editedIndex, 1)
-            this.closeDelete()
+        async deleteItemConfirm() {
+            console.log("ID do item a ser excluído:", this.editedItem.id);
+            try {
+                const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/agendamento/delete/${this.editedItem.id}`, {
+                    withCredentials: true,
+                });
+                this.successMessage = response.data.message;
+                setTimeout(() => {
+                    this.successMessage = '';
+                }, 3000);
+
+                this.eventos.splice(this.editedIndex, 1);
+
+                this.dialogDelete = false;
+
+                this.editedItem = Object.assign({}, this.defaultItem);
+                this.editedIndex = -1;
+
+                this.$emit('atualizarAgenda');
+            } catch (error) {
+                console.error('Erro ao atualizar a descrição:', error.response.data);
+            }
         },
 
         close() {
