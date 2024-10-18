@@ -9,7 +9,7 @@
         <v-spacer></v-spacer>
       </div>
       <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Vaga"
-        variant="underlined" hide-details single-line/>
+        variant="underlined" hide-details single-line />
       <v-card v-for="item in vagas" :key="item">
         <v-card-text>
           <v-row align="center">
@@ -19,19 +19,17 @@
               <v-avatar color="surface-variant" :image="item.foto" v-if="item.foto">
               </v-avatar>
               <div>
-                <h3>{{item.titulo}}</h3>
-                <p>{{item.cep}} - {{item.cidade}} - {{item.estado}}</p>
+                <h3>{{ item.titulo }}</h3>
+                <p>{{ item.cep }} - {{ item.cidade }} - {{ item.estado }}</p>
               </div>
             </v-col>
             <v-col cols="3" sm="4" class="text-align">
-              <v-chip size="small" :color="colorTipoVaga(item.status)">{{ item.status=== 1 ? 'Verificada' :
+              <v-chip size="small" :color="colorTipoVaga(item.status)">{{ item.status === 1 ? 'Verificada' :
                 'Não verificada' }}</v-chip>
             </v-col>
             <v-col cols="3" sm="4" class="text-end">
-              <!-- <EditarVaga
-                v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
-                :MostrarVagas="MostrarVagas" :Vagas="Vagas" /> -->
-              <v-btn variant="plain" icon="mdi mdi-pencil">
+              <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas"></ModalDetalhesVaga>
+              <v-btn variant="plain" icon="mdi mdi-pencil" @click="dialog = true">
               </v-btn>
             </v-col>
           </v-row>
@@ -55,11 +53,11 @@ export default {
     }
   },
   props: {
-      Vagas: Object,
-      MostrarVagas: {
-          type: Function,
-          required: true
-      }
+    Vagas: Object,
+    MostrarVagas: {
+      type: Function,
+      required: true
+    }
   },
   computed: {
     auth() {
@@ -87,8 +85,8 @@ export default {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/vaga/read/all`, {
-            withCredentials: true
-          }
+          withCredentials: true
+        }
         );
         this.vagas = response.data.result;
       } catch (error) {
@@ -107,7 +105,8 @@ export default {
 
 <style scoped lang="scss">
 .vacancy-list-container {
-  background-color: #e1d6f6;;
+  background-color: #e1d6f6;
+  ;
   display: flex;
   height: 100%;
   flex-direction: column;
