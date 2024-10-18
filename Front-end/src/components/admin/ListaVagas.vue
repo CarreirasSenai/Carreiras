@@ -1,40 +1,49 @@
 <template>
   <div style="height: 100%">
     <Navbar />
+
     <v-container class="d-flex flex-column ga-8 pa-6 mt-5">
       <div class="d-flex align-center ga-1">
         <h1 style="font-size: clamp(17px, 4vw, 25px);">
-          Vagas
+          Vagas em Aprovação
         </h1>
         <v-spacer></v-spacer>
       </div>
-      <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Vaga"
-        variant="underlined" hide-details single-line />
-      <v-card v-for="item in vagas" :key="item">
-        <v-card-text>
-          <v-row align="center">
-            <v-col cols="6" sm="4" class="d-flex align-center ga-2">
-              <v-avatar color="surface-variant" image="/src/assets/avatar.png">
-              </v-avatar>
-              <v-avatar color="surface-variant" :image="item.foto" v-if="item.foto">
-              </v-avatar>
-              <div>
-                <h3>{{ item.titulo }}</h3>
-                <p>{{ item.cep }} - {{ item.cidade }} - {{ item.estado }}</p>
-              </div>
-            </v-col>
-            <v-col cols="3" sm="4" class="text-align">
-              <v-chip size="small" :color="colorTipoVaga(item.status)">{{ item.status === 1 ? 'Verificada' :
-                'Não verificada' }}</v-chip>
-            </v-col>
-            <v-col cols="3" sm="4" class="text-end">
-              <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas"></ModalDetalhesVaga>
-              <v-btn variant="plain" icon="mdi mdi-pencil" @click="dialog = true">
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
+
+      <v-data-iterator :items="vagas" :items-per-page="6" :search="search">
+        <template v-slot:header>
+          <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Vaga"
+            variant="underlined" hide-details single-line />
+        </template>
+
+        <template v-slot:default="{ items }">
+          <v-card v-for="item in items" :key="item" class="my-8">
+            <v-card-text>
+              <v-row align="center">
+                <v-col cols="6" sm="4" class="d-flex align-center ga-2">
+                  <v-avatar color="surface-variant" image="/src/assets/avatar.png">
+                  </v-avatar>
+                  <v-avatar color="surface-variant" :image="item.raw.foto" v-if="item.raw.foto">
+                  </v-avatar>
+                  <div>
+                    <h3>{{ item.raw.titulo }}</h3>
+                    <p>{{ item.raw.cep }} - {{ item.raw.cidade }} - {{ item.raw.estado }}</p>
+                  </div>
+                </v-col>
+                <v-col cols="3" sm="4" class="text-align">
+                  <v-chip size="small" :color="colorTipoVaga(item.raw.status)">{{ item.raw.status === 1 ? 'Verificada' :
+                    'Não verificada' }}</v-chip>
+                </v-col>
+                <v-col cols="3" sm="4" class="text-end">
+                  <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas"></ModalDetalhesVaga>
+                  <v-btn variant="plain" icon="mdi mdi-pencil" @click="dialog = true">
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </template>
+      </v-data-iterator>
     </v-container>
   </div>
 </template>
@@ -50,13 +59,6 @@ export default {
       loading: false,
       vagas: "",
       showSnackbar: false
-    }
-  },
-  props: {
-    Vagas: Object,
-    MostrarVagas: {
-      type: Function,
-      required: true
     }
   },
   computed: {
