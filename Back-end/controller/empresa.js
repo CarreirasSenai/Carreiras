@@ -58,17 +58,6 @@ exports.createCompany = async (req, res) => {
     `;
 
     // Disparar e-mail
-    async function main() {
-        const info = await transporter.sendMail({
-            from: '"Carreiras" <carreirassenai@gmail.com>',
-            to: email,
-            subject: "Ativação de Conta",
-            html: corpo
-        });
-
-        console.log("Email de validação de conta enviado para:", info.accepted);
-    }
-    main().catch(console.error);
 
     Empresa.createCompany(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep,
         numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA,
@@ -77,30 +66,45 @@ exports.createCompany = async (req, res) => {
                 console.log(err.message);
                 return res.status(500).json({ error: err.message });
             }
-            return res.status(200).json({ success: true, userId: insertId });
+
+            if(insertId) {
+                async function main() {
+                    const info = await transporter.sendMail({
+                        from: '"Carreiras" <carreirassenai@gmail.com>',
+                        to: email,
+                        subject: "Ativação de Conta",
+                        html: corpo
+                    });
+            
+                    console.log("Email de validação de conta enviado para:", info.accepted);
+                }
+                main().catch(console.error);
+                
+                return res.status(200).json({ success: true, userId: insertId });
+            }
         });
 }
 
 //Login
 exports.login = (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     Empresa.getLogin(email, (err, user, status) => {
-        if(err)
+        if (err)
             return res.status(500).json({ error: err.message });
-        else if(status)
+        else if (status)
             return res.status(401).json({ aviso: status });
-        else if (user === null) 
+        else if (user === null)
             return res.status(401).json({ aviso: 'Email ou senha incorretos!' });
         else {
             bcrypt.compare(password, user.senha, (err, isMatch) => {
-                if(err)
+                if (err)
                     return res.status(500).json({ error: err.message });
-                
-                    if(isMatch) {
-                        req.session.usuario = user;
-                        res.json({ success: true, user: user});
-                    } else 
-                        res.status(401).json({ aviso: 'Email ou senha incorretos!' });
+
+                if (isMatch) {
+                    req.session.usuario = user;
+                    res.json({ success: true, user: user });
+                } else
+                    res.status(401).json({ aviso: 'Email ou senha incorretos!' });
             })
         }
     })
@@ -130,31 +134,41 @@ exports.getUser = (req, res) => {
     });
 };
 
+exports.getAllUser = (req, res) => {
+    Empresa.getAllUser((err, usuarios) => {
+        if (err)
+            return res.status(500).json({ error: err.message });
+
+        if (!usuarios)
+            return res.status(404).json({ error: "Usuários não encontrados" })
+
+        res.json({ success: true, usuarios: usuarios })
+    })
+}
+
 exports.updateUser = (req, res) => {
-    const {id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero,
-    complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA} = req.body;
+    const { id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpf_responsavel, contatoRA, statusUser } = req.body.dados;
     console.log('\n updateUser:');
-    console.log(req.body);
+    console.log(req.body.dados);
 
     const grupo = 'empresa';
 
-    Empresa.updateUser(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep,
-        numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, 
-        grupo, id, (err, success) => {
-            if(err)
-                return res.status(500).json({ error: err.message });
+    Empresa.updateUser(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpf_responsavel, contatoRA, statusUser, grupo, id, (err, success) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
 
-            return res.status(200).json({ success: 'Cadastro Atualizado!' })
-        })
+        return res.status(200).json({ success: 'Cadastro Atualizado!' });
+    });
 }
 
 exports.deleteUser = (req, res) => {
     const { id } = req.body;
-    
+
     Empresa.deleteUser(id, (err, success) => {
-        if(err) 
+        if (err)
             return res.status(500).json({ error: err.message });
-        
+
         return res.status(200).json({ success: 'Usuário Deletado!' })
     })
 }

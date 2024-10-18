@@ -17,14 +17,41 @@ exports.read = (req, res) => {
     });
 };
 
-exports.update = (req, res) => {
-    const { dados } = req.body;
-
-    Agendamento.update(dados, (err, result) => {
+exports.readCandidatos = (req, res) => {
+    const id = req.query.id;  
+    Agendamento.readCandidatos(id, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else if (result) {
-            return res.status(200).json({ sucess: true, result: 'Agendamento Atualizado!' });
+            return res.status(200).json({ sucess: 'readCandidatos:', result: result });
         }
     });
 }
+
+exports.update = (req, res) => {
+    if(req.body.params){
+        const { id, title, descricao, vaga, candidato, data, hora } = req.body.params;
+        Agendamento.update(id, title, descricao, vaga, candidato, data, hora, (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            } else if (result) {
+                return res.status(200).json({ sucess: true, result: 'Agendamento Atualizado!' });
+            }
+        });
+    }
+}
+
+// Create
+exports.create = async (req, res) => {
+    const { title, descricao, vaga, candidato, empresa, data, hora } = req.body.params;
+    Agendamento.create( title, descricao, vaga, candidato, empresa, data, hora, (err, insertId) => {
+        if (err) {
+            console.log(err.message);
+            return res.status(500).json({ error: err.message });
+
+        } if (insertId) {
+            console.log(insertId);
+            return res.json({ success: true, userId: insertId });
+        }
+    });
+};

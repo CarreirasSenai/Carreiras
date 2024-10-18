@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn @click.stop.prevent="dialog = true" style="max-height: 70vh;" class="overflow-auto">
+        <v-btn @click.stop.prevent="dialog = true" style="max-height: 70vh;" class="w-100 rounded-0 justify-start" variant="text">
             Desativar Empresa
         </v-btn>
 
@@ -39,7 +39,7 @@
 export default {
     data: () => ({
         dialog: false,
-        Empresas: 'TOTVS - Sistemas Inteligentes',
+        Empresas: '',
         isValid: false,
         isLoading: false,
         justificativa: '',
@@ -47,6 +47,19 @@ export default {
             length: len => v => (v || '').length >= len || `Necessário ${len} caracteres para enviar a justificativa!`
         },
     }),
+    props:{
+        MostrarUsuarios: {
+            type: Function,
+            required: true
+        },
+        User: {
+            type: Object,
+            required: true
+        }
+    },
+    mounted() {
+        this.Empresas = this.User.razao_social
+    },
     methods: {
         resetForm() {
             this.justificativa = '';

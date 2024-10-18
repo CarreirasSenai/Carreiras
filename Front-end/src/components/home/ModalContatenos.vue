@@ -1,5 +1,4 @@
 <template>
-
   <div class="text pa-4">
     <div>
       <v-btn class="primary bg-purple-darken-2" @click="dialog = true">
@@ -9,13 +8,27 @@
 
     <v-dialog v-model="dialog" max-width="400" class="modal-container">
       <v-card class="form-container">
+        <!-- Botão "X" para fechar o modal -->
+        <v-btn
+          icon
+          @click="dialog = false"
+          class="close-btn"
+          style="position: absolute; top: 10px; right: 10px; background: transparent; elevation: 0;"
+          variant= "plain"
+          :ripple= "false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+
         <v-form fast-fail @submit.prevent="sendMessage">
           <div class="text-center mb-4">
             <img class="carreiras-logo" src="../../assets/logo.png" />
           </div>
           <v-divider class="mb-4"></v-divider>
 
-          <p class="text-center" style="font-size: 25px;">Estamos ansiosos para ouvir você!</p>
+          <p class="text-center" style="font-size: 25px">
+            Estamos ansiosos para ouvir você!
+          </p>
 
           <v-divider class="mb-4"></v-divider>
 
@@ -65,14 +78,11 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data: () => ({
     dialog: false,
-    methods: {
-    open() {
-      this.dialog = true;
-    },
-  },
     loading: false,
     success: false,
     error: false,
@@ -94,35 +104,42 @@ export default {
       },
     ],
   }),
-  
+
   methods: {
-    sendMessage() {
-      this.loading = true;
-      const careersEmail = "careers@institution.com";
-      const subject = "Message from " + this.firstName + " " + this.lastName;
-      const body = this.message;
+    async sendMessage() {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/formulario/emailEnvio`,
+          {
+            email: this.email,
+            mensagem: this.message,
+          },
+          { withCredentials: true }
+        );
 
-      console.log(
-        "Sending email to " +
-          careersEmail +
-          " with subject " +
-          subject +
-          " and body " +
-          body
-      );
-
-      setTimeout(() => {
+        if (response && response.data) {
+          console.log("Mensagem enviada com sucesso", response.data);
+          this.success = true;
+          this.error = false;
+          this.loading = false;
+        } else {
+          console.error("Erro ao enviar mensagem");
+          this.error = true;
+          this.success = false;
+          this.loading = false;
+        }
+      } catch (error) {
+        console.error("Erro ao enviar mensagem", error);
+        this.error = true;
+        this.success = false;
         this.loading = false;
-        this.success = true;
-      }, 2000);
+      }
     },
   },
 };
-
 </script>
 
 <style scoped lang="scss">
-
 .form-container {
   padding: 20px 10px;
 }

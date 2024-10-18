@@ -17,6 +17,7 @@ const Habilidade = require('../controller/habilidades');
 const VerificarConta = require('../controller/verificarConta');
 const Empresa = require('../controller/empresa');
 const Admin = require('../controller/admin');
+const Formulario = require('../controller/formulario');
 const Agendamento = require('../controller/agendamento');
 
 // rota autenticacao
@@ -31,6 +32,8 @@ router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
 router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
+// Rota para listar todos os candidatos
+router.get('/candidato/read/all', authMiddleware, Candidato.getAllUser);
 
 // rotas perfil
 router.put('/perfil/update', authMiddleware, Perfil.perfilUpdate);
@@ -63,8 +66,9 @@ router.put('/habilidade/update/', authMiddleware, Habilidade.habilidadeUpdate);
 router.post('/empresa/login', Empresa.login);
 router.post('/empresa/create', Empresa.createCompany);
 router.get('/empresa/read', authMiddleware, Empresa.getUser);
+router.get('/empresa/read/all', authMiddleware, Empresa.getAllUser)
 router.delete('/empresa/delete', authMiddleware, Empresa.deleteUser);
-router.put('/empresa/update', authMiddleware, Empresa.updateUser);
+router.put('/empresa/update', Empresa.updateUser);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.vagaPesquisa);
@@ -92,8 +96,19 @@ router.delete('/admin/delete/:id', authMiddleware, Admin.deleteUser);
 router.put('/admin/update', authMiddleware, Admin.updateUser);
 router.get('/admin/pesquisa', Admin.pesquisaUser);
 
+//rota enviar email
+//router.post('/admin/create', Admin.createUser);
+// Objetos
+//const DataHora = require('../services/dataHora');
+
 //rotas agendamento
 router.get('/agendamento/read', Agendamento.read);
+router.post('/agendamento/create', Agendamento.create);
+router.put('/agendamento/update', Agendamento.update);
+router.get('/agendamento/readCandidatos', Agendamento.readCandidatos);
+
+//rota suporte email
+router.post('/formulario/emailEnvio', Formulario.formularioEnvio);
 
 // rota logout
 router.get('/logout', (req, res) => {

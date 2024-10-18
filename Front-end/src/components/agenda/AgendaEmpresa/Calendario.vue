@@ -49,7 +49,7 @@
 
         <div v-if="dadosCarregados">
             <ModalEvento :showModal="showModal" :eventos="getEvents(selectedDay)"
-            :title="selectedDay" @FecharTabela="fecharTabela" />
+            :title="selectedDay" @FecharTabela="fecharTabela" @atualizarAgenda="fetchEvents"/>
         </div>
     </v-container>
 </template>
@@ -138,10 +138,6 @@ export default {
                         year: year
                     }
                 });
-                setTimeout(() => {
-                    this.eventos = response.data;
-                    this.dadosCarregados = true;
-                }, 500);
             } catch (error) {
                 console.error('Erro ao buscar eventos na agenda:', error);
                 this.$notify({

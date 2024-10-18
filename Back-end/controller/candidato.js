@@ -59,24 +59,24 @@ exports.createUser = async (req, res) => {
         </div>
     `;
 
-    // Disparar e-mail
-    async function main() {
-        const info = await transporter.sendMail({
-            from: '"Carreiras" <carreirassenai@gmail.com>',
-            to: email,
-            subject: "Ativação de Conta",
-            html: corpo
-        });
-
-        console.log("Email de validação de conta enviado para:", info.accepted);
-    }
-    main().catch(console.error); // Executa a função
-
     Candidato.createUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, hashedPassword, area, profissao, grupo, token, (err, insertId) => {
         if (err) {
             return res.status(500).json({ error: err.message });
 
-        } if (insertId) {
+        } 
+        if (insertId) {
+            // Disparar e-mail
+            async function main() {
+                const info = await transporter.sendMail({
+                    from: '"Carreiras" <carreirassenai@gmail.com>',
+                    to: email,
+                    subject: "Ativação de Conta",
+                    html: corpo
+                });
+
+                console.log("Email de validação de conta enviado para:", info.accepted);
+            }
+            main().catch(console.error); // Executa a função
             return res.json({ success: true, userId: insertId });
         }
     });
@@ -164,5 +164,38 @@ exports.deleteUser = (req, res) => {
         }
 
         res.status(200).json({ success: 'Usuário Deletado!' });
+    });
+};
+
+// Read / Autenticar
+exports.getUser = (req, res) => {
+    const usuario_id = req.session.usuario.id;
+
+    Admin.getUser(usuario_id, (err, usuario) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado!' });
+        }
+
+        // console.log(req.session);
+        res.json({ success: true, usuario: usuario });
+    });
+};
+
+exports.getAllUser = (req, res) => {
+    Candidato.getAllCandidatos((err, usuarios) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        if (!usuarios) {
+            return res.status(404).json({ error: 'Usuário não encontrado!' });
+        }
+
+        // console.log(req.session);
+        res.json({ success: true, usuarios: usuarios });
     });
 };
