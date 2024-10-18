@@ -12,7 +12,7 @@
 
       <v-data-iterator :items="vagas" :items-per-page="6" :search="search">
         <template v-slot:header>
-          <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Vaga"
+          <v-text-field v-model="search" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Vaga"
             variant="underlined" hide-details single-line />
         </template>
 
@@ -58,7 +58,8 @@ export default {
     return {
       loading: false,
       vagas: "",
-      showSnackbar: false
+      showSnackbar: false,
+      search: ''
     }
   },
   computed: {
