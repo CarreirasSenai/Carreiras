@@ -102,6 +102,7 @@ router.get('/admin/pesquisa', Admin.pesquisaUser);
 
 // rotas candidatura
 router.post('/candidatura/create', Candidatura.create);
+router.get('/candidatura/read', Candidatura.read);
 
 // rota logout
 router.get('/logout', (req, res) => {

@@ -1,5 +1,5 @@
 <template>
-    <v-btn class="bg-deep-purple-accent-4" @click="handleButtonClick" :loading="loading">{{ nomeBtn }}</v-btn>
+    <v-btn variant="flat" :color="nomeBtn === 'Inscrito' ? 'success' : 'deep-purple-accent-4'" @click="handleButtonClick" :loading="loading">{{ nomeBtn }}</v-btn>
 
     <v-dialog v-model="dialog" fullscreen persistent>
         <v-card>
@@ -97,6 +97,7 @@ export default {
         this.idVaga = this.Vagas.raw.id;
         this.idEmpresa = this.Vagas.raw.id_empresa;
         this.readQuestionario();
+        this.readCandidatura();
     },
     methods: {
         async readQuestionario() {
@@ -117,13 +118,13 @@ export default {
         },
 
         handleButtonClick() {
-            if (this.user.dadosUser) {
+            if (this.user.dadosUser && this.nomeBtn != 'Inscrito') {
                 this.dialog = true;
                 this.populaForm();
                 if (!this.questionario.length && this.grupo === 'candidato') {
                     this.enviarCandidatura();
                 }
-            } else {
+            } else if (!this.user.dadosUser) {
                 this.showSnackbar = true;
             }
         },
@@ -157,9 +158,31 @@ export default {
 
                 console.log(response.data);
 
-                setTimeout(() => {
-                    this.loading = false;
-                }, 3000);
+                // setTimeout(() => {
+                //     this.loading = false;
+                // }, 3000);
+
+                this.readCandidatura();
+
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
+        },
+
+        async readCandidatura() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidatura/read`, {
+                    withCredentials: true 
+                });
+
+                console.log(response.data);
+                const candidatura = response.data.result[0].id_questionario;
+
+                if (candidatura === this.questionario[0].id) {
+                    this.nomeBtn = 'Inscrito';
+                }
+
+                this.loading = false;
 
             } catch (error) {
                 console.error('Erro', error.response.data);
