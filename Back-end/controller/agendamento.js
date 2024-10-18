@@ -28,6 +28,17 @@ exports.readCandidatos = (req, res) => {
     });
 }
 
+exports.readAllCandidatos = (req, res) => {
+    const id = req.query.id; 
+    Agendamento.readAllCandidatos(id, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.status(200).json({ sucess: 'readCandidatos:', result: result });
+        }
+    });
+}
+
 exports.update = (req, res) => {
     if(req.body.params){
         const { id, title, descricao, vaga, candidato, data, hora } = req.body.params;
@@ -43,8 +54,8 @@ exports.update = (req, res) => {
 
 // Create
 exports.create = async (req, res) => {
-    const { title, descricao, vaga, candidato, empresa, data, hora } = req.body.params;
-    Agendamento.create( title, descricao, vaga, candidato, empresa, data, hora, (err, insertId) => {
+    const { titulo, descricao, vaga, candidato, empresa, data, horario } = req.body.params;
+    Agendamento.create( titulo, descricao, vaga, candidato, empresa, data, horario, (err, insertId) => {
         if (err) {
             console.log(err.message);
             return res.status(500).json({ error: err.message });
@@ -52,6 +63,23 @@ exports.create = async (req, res) => {
         } if (insertId) {
             console.log(insertId);
             return res.json({ success: true, userId: insertId });
+        }
+    });
+};
+
+
+// Create
+exports.delete = async (req, res) => {
+    const { id } = req.params;
+    Agendamento.delete( id , (err, insertId) => {
+        if (!err) {
+            console.log('HELLO')
+            console.log(err.message)
+            console.log(err)
+            return res.status(500).json({ error: err.message });
+
+        } else {
+            return res.status(200).json({ success: true, message: 'Agendamento excluído com sucesso!' });
         }
     });
 };

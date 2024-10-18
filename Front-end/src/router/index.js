@@ -19,6 +19,7 @@ import DetalhesVaga from '@/pages/detalhesVaga.vue';
 import MinhasVagas from '@/pages/minhasVagas.vue';
 import listaCandidatos from '@/pages/listaCandidatos.vue';
 import Contato from '@/pages/contato.vue';
+import AgendaAlternativa from '@/pages/AgendaAlternativa.vue';
 
 
 
@@ -33,7 +34,6 @@ const router = createRouter({
     { path: '/editar-candidato', component: EDCcandidato },
     { path: '/perfil-candidato', component: PerfilCandidato },
     { path: '/perfil-empresa', component: PerfilEmpresa },
-    { path: '/agenda-candidato', component: AgendaCandidato },
     { path: '/redefinir-senha', component: RedefinirSenha },
     { path: '/modal-justificativa', component: ModalJustificativa },
     { path: '/login', component: Login },
@@ -42,7 +42,6 @@ const router = createRouter({
     { path: '/empresa-candidato', component: EntrarEmpresaOuCandidato },
     { path: '/editar-candidato', component: EDCcandidato },
     { path: '/perfil-candidato', component: PerfilCandidato },
-    { path: '/agenda-empresa', component: AgendaEmpresa },
     { path: '/lista-empresas', component: ListaEmpresas },
     { path: '/lista-usuarios', component: ListaDeUsuarios },
     { path: '/lista-vagas', component: ListaVagas},
@@ -50,7 +49,10 @@ const router = createRouter({
     { path: '/detalhes-vaga', component: DetalhesVaga},
     { path: '/minhas-vagas', component: MinhasVagas},
     { path: '/lista-candidatos', component: listaCandidatos},
-    { path: '/contato', component: Contato}
+    { path: '/contato', component: Contato},
+    //{ path: '/agenda-candidato', component: AgendaCandidato },
+    //{ path: '/agenda-empresa', component: AgendaEmpresa },
+    { path: '/agenda-alternativa', component: AgendaAlternativa}
   ],
 });
 

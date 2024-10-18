@@ -1,4 +1,3 @@
-
 <template>
     <v-container fluid>
         <v-card border>
@@ -8,7 +7,7 @@
                     {{ monthName }} {{ currentYear }}
                     <v-btn variant="text" icon="mdi-chevron-right" @click="nextMonth"></v-btn>
                 </div>
-                <CriarEvento showModal="showModal" @FecharTabela="fecharTabela"/>
+                <CriarEvento :showModal="showModal" @FecharTabela="fecharTabela" @agendamento-salvo="fetchEvents" />
             </v-card-title>
             <v-card-text>
                 <table>
@@ -48,8 +47,8 @@
         </v-card>
 
         <div v-if="dadosCarregados">
-            <ModalEvento :showModal="showModal" :eventos="getEvents(selectedDay)"
-            :title="selectedDay" @FecharTabela="fecharTabela" @atualizarAgenda="fetchEvents"/>
+            <ModalEvento :showModal="showModal" :eventos="getEvents(selectedDay)" :title="selectedDay"
+                @FecharTabela="fecharTabela" @atualizarAgenda="fetchEvents" />
         </div>
     </v-container>
 </template>
@@ -74,8 +73,7 @@ export default {
         };
     },
     async created() {
-        this.resolucao.verificaResolucao();
-        await this.fetchEvents();
+        await this.initialize();
     },
 
     computed: {
@@ -121,13 +119,15 @@ export default {
     watch: {
         currentMonth() {
             this.fetchEvents();
-        },
-        currentYear() {
-            this.fetchEvents();
         }
     },
 
     methods: {
+        async initialize() {
+            this.resolucao.verificaResolucao();
+            await this.fetchEvents();
+        },
+        
         async fetchEvents() {
             const month = String(this.currentMonth + 1).padStart(2, '0');
             const year = String(this.currentYear);
@@ -138,6 +138,10 @@ export default {
                         year: year
                     }
                 });
+                setTimeout(() => {
+                    this.eventos = response.data;
+                    this.dadosCarregados = true;
+                }, 500);
             } catch (error) {
                 console.error('Erro ao buscar eventos na agenda:', error);
                 this.$notify({
@@ -177,25 +181,20 @@ export default {
             return this.selectedDay === day;
         },
 
+        formatDate(date) {
+            return new Date(date).toLocaleDateString('pt-BR');
+        },
+
         hasEvents(day) {
             if (!day) return false;
-
-            const selectedDate = new Date(this.currentYear, this.currentMonth, day).toLocaleDateString('pt-BR');
-
-            return this.eventos.some(evento => {
-                const eventDate = new Date(evento.data).toLocaleDateString('pt-BR');
-                return eventDate === selectedDate;
-            });
+            const selectedDate = this.formatDate(new Date(this.currentYear, this.currentMonth, day));
+            return this.eventos.some(evento => this.formatDate(evento.data) === selectedDate);
         },
 
         getEvents(day) {
             if (!day) return [];
-            const selectedDate = new Date(this.currentYear, this.currentMonth, day).toLocaleDateString('pt-BR');
-
-            return this.eventos.filter(evento => {
-                const eventDate = new Date(evento.data).toLocaleDateString('pt-BR');
-                return eventDate === selectedDate;
-            });
+            const selectedDate = this.formatDate(new Date(this.currentYear, this.currentMonth, day));
+            return this.eventos.filter(evento => this.formatDate(evento.data) === selectedDate);
         },
 
         getLimitedEvents(day) {
@@ -204,7 +203,8 @@ export default {
         },
 
         hasMoreEvents(day) {
-            return this.getEvents(day).length > this.maxVisibleEvents;
+            const events = this.getEvents(day);
+            return events.length > this.maxVisibleEvents;
         },
 
         getMoreEventsCount(day) {
