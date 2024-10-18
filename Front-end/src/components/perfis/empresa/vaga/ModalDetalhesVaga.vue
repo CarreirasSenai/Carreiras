@@ -82,8 +82,7 @@
                             <v-card-actions class="d-flex justify-space-between">
                                 <div class="d-flex flex-wrap ga-2">
                                     <v-btn v-if="grupo === 'candidato'" class="bt-primario">Inscrever-se</v-btn>
-                                    <EditarVaga
-                                        v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                                    <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
                                 </div>
                                 <div class="d-flex align-center justify-center ga-2">
