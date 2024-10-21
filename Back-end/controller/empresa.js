@@ -112,25 +112,31 @@ exports.login = (req, res) => {
 
 // Read / Autenticar
 exports.getUser = (req, res) => {
-    const requisicao = req.query.requisicao;
-    const idReq = req.query.id;
-    const idSession = req.session.usuario.id;
+    const usuario_id = req.query.id ? req.query.id : req.session.usuario.id;
 
-    const usuario_id = requisicao ? idReq : idSession;
+    if (usuario_id) {
+        Empresa.getUser(usuario_id, (err, usuario) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
 
-    console.log("Usuário (empresa): ", usuario_id);
+            if (!usuario) {
+                return res.status(404).json({ error: 'Usuário não encontrado!' });
+            }
+            console.log(usuario);
 
-    Empresa.getUser(usuario_id, (err, usuario) => {
+            res.json({ success: true, usuario: usuario });
+        });
+    }
+};
+
+exports.getAllUser = (req, res) => {
+    Empresa.getAllUser((err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.status(200).json({ sucess: 'Empresas:', result: result });
         }
-
-        if (!usuario) {
-            return res.status(404).json({ error: 'Usuário não encontrado!' });
-        }
-        console.log(usuario);
-
-        res.json({ success: true, usuario: usuario });
     });
 };
 

@@ -3,7 +3,7 @@ const db = require("../config/db");
 exports.habilidadeCreate = (id, { dados }, callback) => {
     const { habilidades } = dados;
 
-    db.query('insert into habilidade (habilidades, id_candidato) value (?, ?)', [JSON.stringify(habilidades), id], (err, result) => {
+    db.query('insert into habilidade (habilidades, id_candidato) values (?, ?)', [JSON.stringify(habilidades), id], (err, result) => {
         if (err) {
             console.log(err);
             return callback(err, null);

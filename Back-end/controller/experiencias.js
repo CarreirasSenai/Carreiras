@@ -1,8 +1,10 @@
 const Experiencia = require("../model/experiencias")
 
 exports.experienciaRead = (req, res) => {
-    const id = req.session.usuario.id;
-    // const id = 1;
+    const idReq = req.query.id;
+    const idSession = req.session.usuario.id;
+
+    const id = idReq ? idReq : idSession;
 
     Experiencia.experienciaRead(id, (err, result) => {
         if (err) {

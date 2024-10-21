@@ -15,7 +15,7 @@ export const usePesquisaUsuarioStore = defineStore('pesquisaUsuario', {
     actions: {
         async pesquisaUser() {
             const grupo = this.requisicao;
-
+            
             if (grupo) {
                 try {
                     const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${grupo}/read`, {

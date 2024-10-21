@@ -14,7 +14,10 @@ exports.habilidadeCreate = (req, res) => {
 }
 
 exports.habilidadeRead = (req, res) => {
-    const id = req.session.usuario.id;
+    const idReq = req.query.id;
+    const idSession = req.session.usuario.id;
+
+    const id = idReq ? idReq : idSession;
 
     Habilidade.habilidadeRead(id, (err, result) => {
         if (err) {

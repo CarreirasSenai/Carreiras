@@ -14,23 +14,25 @@
                                 {{ items.lugar }} <br>
                                 {{ formatarData(items.inicio) }} - {{ formatarData(items.termino) }}
                             </v-card-text>
-                            <EditarCursos :MostrarFormacoes="mostrarFormacoes" :Formacoes="items" />
+                            <EditarCursos :MostrarFormacoes="mostrarFormacoes" :Formacoes="items" v-if="user.dadosUser.id === idCandidato"/>
                         </v-card>
                     </v-col>
                     <span v-if="!formacoes.length" class="ma-4">Adicione um curso.</span>
                 </v-row>
-                <AdicionarCurso :MostrarFormacoes="mostrarFormacoes" />
+                <AdicionarCurso :MostrarFormacoes="mostrarFormacoes" v-if="user.dadosUser.id === idCandidato"/>
             </v-expansion-panel-text>
         </v-expansion-panel>
     </v-col>
 </template>
 
 <script>
+import { useCandidatoStore } from '@/stores/candidato';
 import axios from 'axios';
 
 export default {
     data() {
         return {
+            idCandidato: '',
             formacoes: [
                 {
                     nome: '',
@@ -41,18 +43,29 @@ export default {
             ],
         };
     },
+    computed: {
+        user() {
+            return useCandidatoStore();
+        }
+    },
     mounted() {
         this.mostrarFormacoes();
     },
     methods: {
         async mostrarFormacoes() {
+            const id = this.$route.query.id;
+
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/curso/read`, {
+                    params: {
+                        id: id,
+                    },
                     withCredentials: true
                 });
 
                 console.log('Array de Cursos:', response.data);
                 this.formacoes = response.data.result;
+                this.idCandidato = response.data.result[0].id_candidato;
 
             } catch (error) {
                 console.error('Erro', error.response.data);
