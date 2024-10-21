@@ -10,11 +10,16 @@
                 <v-card-text>
                     <v-row dense>
                         <v-col cols="12" md="12">
-                            <v-text-field prepend-icon="mdi mdi-instagram" clearable label="instagram.com/" variant="underlined" v-model="instagram" required></v-text-field>
-                            <v-text-field prepend-icon="mdi mdi-facebook" clearable label="facebook.com/" variant="underlined" v-model="facebook" required></v-text-field>
-                            <v-text-field prepend-icon="mdi mdi-linkedin" clearable label="linkedin.com/" variant="underlined" v-model="linkedin" required></v-text-field>
-                            <v-text-field prepend-icon="mdi mdi-github" clearable label="github.com/" variant="underlined" v-model="github" required></v-text-field>
-                            <v-text-field prepend-icon="mdi mdi-web" clearable label="www.seusite.com" variant="underlined" v-model="site" required></v-text-field>
+                            <v-text-field prepend-icon="mdi mdi-instagram" clearable label="instagram.com/"
+                                variant="underlined" v-model="instagram" required></v-text-field>
+                            <v-text-field prepend-icon="mdi mdi-facebook" clearable label="facebook.com/"
+                                variant="underlined" v-model="facebook" required></v-text-field>
+                            <v-text-field prepend-icon="mdi mdi-linkedin" clearable label="linkedin.com/"
+                                variant="underlined" v-model="linkedin" required></v-text-field>
+                            <v-text-field prepend-icon="mdi mdi-github" clearable label="github.com/"
+                                variant="underlined" v-model="github" required></v-text-field>
+                            <v-text-field prepend-icon="mdi mdi-web" clearable label="www.seusite.com"
+                                variant="underlined" v-model="site" required></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -34,6 +39,33 @@
     </div>
 </template>
 
+<script>
+import axios from 'axios';
+import { useCandidatoStore } from '@/stores/candidato';
+
+export default {
+    data: () => ({
+        dialog: false,
+        instagram: '',
+        facebook: '',
+        linkedin: '',
+        github: '',
+        site: '',
+    }),
+    methods: {
+        // Função para filtrar profissões com base na entrada do usuário
+        filterProfissoes(item, queryText) {
+            // Converte o item e a consulta para minúsculas para comparação
+            const query = queryText.toLowerCase();
+            return item.toLowerCase().includes(query);
+        },
+        saveForm() {
+
+        }
+    }
+}
+</script>
+
 <style lang="scss" scoped>
 .mdi {
     color: #6732d2af;
@@ -52,24 +84,3 @@
     top: 115px;
 }
 </style>
-
-<script>
-export default {
-    data: () => ({
-        dialog: false,
-        instagram: '',
-        facebook: '',
-        linkedin: '',
-        github: '',
-        site: '',
-    }),
-    methods: {
-        // Função para filtrar profissões com base na entrada do usuário
-        filterProfissoes(item, queryText) {
-            // Converte o item e a consulta para minúsculas para comparação
-            const query = queryText.toLowerCase();
-            return item.toLowerCase().includes(query);
-        }
-    }
-}
-</script>

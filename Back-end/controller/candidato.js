@@ -63,7 +63,7 @@ exports.createUser = async (req, res) => {
         if (err) {
             return res.status(500).json({ error: err.message });
 
-        } 
+        }
         if (insertId) {
             // Disparar e-mail
             async function main() {
@@ -171,7 +171,7 @@ exports.deleteUser = (req, res) => {
 exports.getUser = (req, res) => {
     const usuario_id = req.session.usuario.id;
 
-    Admin.getUser(usuario_id, (err, usuario) => {
+    Candidato.getUser(usuario_id, (err, usuario) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
