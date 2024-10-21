@@ -1,5 +1,6 @@
 <template>
-    <v-btn variant="flat" :color="nomeBtn === 'Inscrito' ? 'success' : 'deep-purple-accent-4'" @click="handleButtonClick" :loading="loading">{{ nomeBtn }}</v-btn>
+    <v-btn variant="flat" :color="nomeBtn === 'Inscrito' ? 'success' : 'deep-purple-accent-4'"
+        @click="handleButtonClick" :loading="loading">{{ nomeBtn }}</v-btn>
 
     <v-dialog v-model="dialog" fullscreen persistent>
         <v-card>
@@ -154,15 +155,14 @@ export default {
             try {
                 const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/candidatura/create`, {
                     dados: this.form,
+                    idVaga: this.idVaga
                 }, { withCredentials: true });
 
                 console.log(response.data);
 
-                // setTimeout(() => {
-                //     this.loading = false;
-                // }, 3000);
-
-                this.readCandidatura();
+                setTimeout(() => {
+                    this.readCandidatura();
+                }, 3000);
 
             } catch (error) {
                 console.error('Erro', error.response.data);
@@ -170,15 +170,20 @@ export default {
         },
 
         async readCandidatura() {
+            console.log(this.idVaga);
+
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidatura/read`, {
-                    withCredentials: true 
+                    params: {
+                        idVaga: this.idVaga
+                    },
+                    withCredentials: true
                 });
 
                 console.log(response.data);
-                const candidatura = response.data.result[0].id_questionario;
+                const candidatura = response.data.result;
 
-                if (candidatura === this.questionario[0].id) {
+                if (candidatura.id_vaga === this.idVaga) {
                     this.nomeBtn = 'Inscrito';
                 }
 

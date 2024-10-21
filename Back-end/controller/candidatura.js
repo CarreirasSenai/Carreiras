@@ -1,11 +1,12 @@
 const Candidatura = require("../model/candidatura");
 
 exports.create = (req, res) => {
-    // const idCandidato = req.session.usuario.id;
-    const idCandidato = 25;
+    const idCandidato = req.session.usuario.id;
+    // const idCandidato = 25;
+    const idVaga = req.body.idVaga;
     const dados = req.body;
 
-    Candidatura.create(idCandidato, dados, (err, result) => {
+    Candidatura.create(idCandidato, idVaga, dados, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else if (result) {
@@ -16,8 +17,10 @@ exports.create = (req, res) => {
 
 exports.read = (req, res) => {
     const idCandidato = req.session.usuario.id;
+    // const idCandidato = 25;
+    const idVaga = req.query.idVaga;    
 
-    Candidatura.read(idCandidato, (err, result) => {
+    Candidatura.read(idCandidato, idVaga, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else if (result) {
