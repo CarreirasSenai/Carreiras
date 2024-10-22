@@ -27,7 +27,8 @@ DROP TABLE IF EXISTS `agendamento`;
 CREATE TABLE `agendamento` (
   `id` int NOT NULL AUTO_INCREMENT,
   `titulo` varchar(100) NOT NULL,
-  `vaga` varchar(45) NOT NULL,
+  `vaga` int,
+  `descricao` varchar(600),
   `data` date NOT NULL,
   `hora` time NOT NULL,
   `id_empresa` int NOT NULL,
@@ -36,20 +37,12 @@ CREATE TABLE `agendamento` (
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
   KEY `id_candidato` (`id_candidato`),
+  KEY `vaga` (`vaga`),
   CONSTRAINT `agendamento_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `user_empresa` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `agendamento_ibfk_2` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE
+  CONSTRAINT `agendamento_ibfk_2` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE,
+   CONSTRAINT `agendamento_ibfk_3` FOREIGN KEY (`vaga`) REFERENCES `vagas` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `agendamento`
---
-
-LOCK TABLES `agendamento` WRITE;
-/*!40000 ALTER TABLE `agendamento` DISABLE KEYS */;
-INSERT INTO `agendamento` VALUES (8,'Desenvolvedor Full Stack','Pleno','2024-09-17','09:00:00',1,25,'2024-09-18 00:00:26'),(9,'Engenheiro de Software','Sênior','2024-09-18','14:30:00',1,25,'2024-09-18 00:00:26'),(10,'Analista de Dados','Júnior','2024-09-19','11:00:00',1,25,'2024-09-18 00:00:26');
-/*!40000 ALTER TABLE `agendamento` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `candidatura`

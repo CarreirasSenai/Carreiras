@@ -127,8 +127,10 @@ export default {
         },
         async mostrarVagas() {
             try {
+
+                var id_empresa = this.editedItem.id_empresa
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read/empresa`, {
-                    params: { id: 18, requisicao: 'empresa' },
+                    params: { id: id_empresa, requisicao: 'empresa' },
                     withCredentials: true
                 });
                 this.vagas = response.data.result || [];
@@ -152,7 +154,7 @@ export default {
                     descricao: this.form.descricao,
                     vaga: this.form.vaga.id || 0,
                     candidato: this.form.candidato.id,
-                    empresa: 18,
+                    empresa: this.editedItem.id_empresa,
                     data: this.form.data,
                     horario: this.form.horario
                 };

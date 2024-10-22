@@ -2,11 +2,11 @@
 const Agendamento = require('../model/agendamento');
 
 exports.read = (req, res) => {
-    //const user_id = req.session.usuario.id;
-    //const grupo = req.session.usuario.grupo;
+    const user_id = req.session.usuario.id;
+    const grupo = req.session.usuario.grupo;
     
-    const user_id = 25;  
-    const grupo = 'candidato';  
+    //const user_id = 25;  
+    //const grupo = 'candidato';  
     const { month, year } = req.query;
     
     Agendamento.read(grupo, user_id, month, year, (err, data) => {
