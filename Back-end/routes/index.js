@@ -32,6 +32,7 @@ router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
 router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
+router.put('/candidato/update-links', authMiddleware, Candidato.updateUserLinks);
 // Rota para listar todos os candidatos
 router.get('/candidato/read/all', authMiddleware, Candidato.getAllUser);
 

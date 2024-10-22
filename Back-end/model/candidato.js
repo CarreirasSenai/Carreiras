@@ -133,3 +133,16 @@ exports.getAllCandidatos = (callback) => {
         return callback(null, result.length > 0 ? result : null);
     });
 };
+
+
+exports.updateUserLinks = (id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal, 
+    callback) => {
+        db.query(`UPDATE user_candidato SET link_instagram = ?, link_facebook = ?, link_linkedin = ?,
+        link_github = ?, link_site_pessoal = ? WHERE id = ?`, [link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal, id],
+        (err, result) => {
+            if(err)
+                return callback(err, null);
+            
+            return callback(null, result.length > 0 ? result : null);
+        });
+}

@@ -303,6 +303,11 @@ CREATE TABLE `user_candidato` (
   `descricao` text,
   `foto` varchar(200) DEFAULT NULL,
   `capa` varchar(200) DEFAULT NULL,
+  `link_instagram` varchar(255) DEFAULT NULL,
+  `link_facebook` varchar(255) DEFAULT NULL,
+  `link_linkedin` varchar(255) DEFAULT NULL,
+  `link_github` varchar(255) DEFAULT NULL,
+  `link_site_pessoal` varchar(255) DEFAULT NULL, 
   `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
@@ -316,7 +321,7 @@ CREATE TABLE `user_candidato` (
 
 LOCK TABLES `user_candidato` WRITE;
 /*!40000 ALTER TABLE `user_candidato` DISABLE KEYS */;
-INSERT INTO `user_candidato` VALUES (25,1,'ae605f546f2b651413dd4ef42bf12307b846ba6e6f883c93af2688ba9e2724e0','Thiagoo','Thiag Lima','mauesckt@gmail.com','(47) 0000-0000','(47) 00000-0000','00000000000','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','$2a$10$/F9WxjA262hh/euxjvBdP.VBEvMNtCTiijSt0HhxMvLXOFP0WZmGa','Engenharia','programador php','candidato','<h1><span style=\"font-weight: bolder; white-space-collapse: collapse;\">Olá, tudo bem?</span></h1><div style=\"white-space-collapse: collapse;\"><br></div><div style=\"white-space-collapse: collapse;\">Meu nome é Thiago, eu sou desenvolvedor Full Stack com ênfase na criação de aplicações web utilizando node.js.</div><div style=\"white-space-collapse: collapse;\"><br></div><div style=\"white-space-collapse: collapse;\">Veja meu portfólio -&gt;&nbsp;<font color=\"#0055ff\">https://mauesck.github.io/portfolio/</font></div>','perfil-foto-303555970711905-userId-25.jpg','perfil-capa-907946581442958-userId-25.jpeg','2024-10-03 05:58:46'),(26,1,'faa095dd29bbbfd1237c42c37b738e81f50f5a7756d8d3c04fac3c227ad737ce','Thiago','Thiag Lima','pibipax668@skrak.com','4700000000','47000000000','00000000323','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','$2b$10$dOVZucG0o1Q9M/YVpYGrbuzwtD2o3s6PWGxfy/hs.1GvHxyqDudNm','Tecnologia da Informação','programador node.js','candidato','Olá meu nome é nome e eu quero um emprego','perfil-foto-010968158942723-userId-26.jpg',NULL,'2024-09-30 18:18:40');
+INSERT INTO `user_candidato` VALUES (25,1,'ae605f546f2b651413dd4ef42bf12307b846ba6e6f883c93af2688ba9e2724e0','Thiagoo','Thiag Lima','mauesckt@gmail.com','(47) 0000-0000','(47) 00000-0000','00000000000','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','$2a$10$/F9WxjA262hh/euxjvBdP.VBEvMNtCTiijSt0HhxMvLXOFP0WZmGa','Engenharia','programador php','candidato','<h1><span style=\"font-weight: bolder; white-space-collapse: collapse;\">Olá, tudo bem?</span></h1><div style=\"white-space-collapse: collapse;\"><br></div><div style=\"white-space-collapse: collapse;\">Meu nome é Thiago, eu sou desenvolvedor Full Stack com ênfase na criação de aplicações web utilizando node.js.</div><div style=\"white-space-collapse: collapse;\"><br></div><div style=\"white-space-collapse: collapse;\">Veja meu portfólio -&gt;&nbsp;<font color=\"#0055ff\">https://mauesck.github.io/portfolio/</font></div>','perfil-foto-303555970711905-userId-25.jpg','perfil-capa-907946581442958-userId-25.jpeg', NULL, NULL, NULL, NULL, NULL, '2024-10-03 05:58:46'),(26,1,'faa095dd29bbbfd1237c42c37b738e81f50f5a7756d8d3c04fac3c227ad737ce','Thiago','Thiag Lima','pibipax668@skrak.com','4700000000','47000000000','00000000323','00000000','Rua Bonita',0,'cabana','Bairro Bonito','Bonita','SC','$2b$10$dOVZucG0o1Q9M/YVpYGrbuzwtD2o3s6PWGxfy/hs.1GvHxyqDudNm','Tecnologia da Informação','programador node.js','candidato','Olá meu nome é nome e eu quero um emprego','perfil-foto-010968158942723-userId-26.jpg',NULL, NULL, NULL, NULL, NULL, NULL, '2024-09-30 18:18:40');
 /*!40000 ALTER TABLE `user_candidato` ENABLE KEYS */;
 UNLOCK TABLES;
 

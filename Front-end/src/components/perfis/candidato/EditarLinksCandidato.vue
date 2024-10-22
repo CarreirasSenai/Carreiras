@@ -8,6 +8,7 @@
 
             <v-card title="Editar Links">
                 <v-card-text>
+
                     <v-row dense>
                         <v-col cols="12" md="12">
                             <v-text-field prepend-icon="mdi mdi-instagram" clearable label="instagram.com/"
@@ -46,11 +47,11 @@ import { useCandidatoStore } from '@/stores/candidato';
 export default {
     data: () => ({
         dialog: false,
-        instagram: '',
-        facebook: '',
-        linkedin: '',
-        github: '',
-        site: '',
+        link_instagram: '',
+        link_facebook: '',
+        link_linkedin: '',
+        link_github: '',
+        link_site_pessoal: '',
     }),
     methods: {
         // Função para filtrar profissões com base na entrada do usuário
@@ -59,8 +60,8 @@ export default {
             const query = queryText.toLowerCase();
             return item.toLowerCase().includes(query);
         },
-        saveForm() {
-
+        async saveForm() {
+            const response = axios.put(``); //TODO: terminar chamada da rota.
         }
     }
 }
