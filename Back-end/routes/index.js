@@ -106,6 +106,7 @@ router.get('/agendamento/read', Agendamento.read);
 router.post('/agendamento/create', Agendamento.create);
 router.put('/agendamento/update', Agendamento.update);
 router.get('/agendamento/readCandidatos', Agendamento.readCandidatos);
+router.delete('/agendamento/delete/:id', Agendamento.delete);
 
 //rota suporte email
 router.post('/formulario/emailEnvio', Formulario.formularioEnvio);

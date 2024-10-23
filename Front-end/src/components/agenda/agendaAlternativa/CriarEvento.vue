@@ -54,6 +54,7 @@
 
 <script>
 import axios from 'axios';
+import { useCandidatoStore } from '@/stores/candidato';
 
 export default {
     props: {
@@ -68,7 +69,7 @@ export default {
                 visible: false,
                 message: '',
                 type: '',
-                timeout: 3000
+                timeout: 10000
             },
             vagas: [],
             candidatos: [],
@@ -127,10 +128,8 @@ export default {
         },
         async mostrarVagas() {
             try {
-
-                var id_empresa = this.editedItem.id_empresa
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read/empresa`, {
-                    params: { id: id_empresa, requisicao: 'empresa' },
+                    params: { id: this.user.dadosUser.id, requisicao: 'empresa' },
                     withCredentials: true
                 });
                 this.vagas = response.data.result || [];
@@ -149,12 +148,13 @@ export default {
         },
         async agendar() {
             try {
+                var vaga = this.form.vaga.id != '' ? this.form.vaga.id : 0
                 const dadosAgendamento = {
                     titulo: this.form.titulo,
                     descricao: this.form.descricao,
-                    vaga: this.form.vaga.id || 0,
+                    vaga: vaga,
                     candidato: this.form.candidato.id,
-                    empresa: this.editedItem.id_empresa,
+                    empresa: this.user.dadosUser.id,
                     data: this.form.data,
                     horario: this.form.horario
                 };
@@ -167,6 +167,7 @@ export default {
                     this.dialog = false;
                     this.resetForm();
                     this.$emit('agendamento-salvo');
+                    this.showSnackbar('Agendamento salvo com sucesso!', 'success');
                 } else {
                     this.showSnackbar('Erro ao salvar agendamento: ' + response.data.message, 'error');
                 }
@@ -181,7 +182,7 @@ export default {
             this.snackbar.visible = true;
             setTimeout(() => {
                 this.snackbar.visible = false;
-            }, this.snackbar.timeout);
+            }, 10000);
         },
         resetForm() {
             this.form.titulo = '';
@@ -193,6 +194,7 @@ export default {
         }
     },
     computed: {
+        user() { return useCandidatoStore() },
         internalShowModal() {
             return this.showModal;
         },
