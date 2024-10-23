@@ -23,19 +23,25 @@
             </v-col>
             <v-col cols="12" sm="6" md="8">
               <v-card class="intro-card pa-4">
-                <v-card-title class="text-h5">Explore Our Careers</v-card-title>
+                <v-card-title class="text-h5"
+                  >Descubra Nossas Oportunidades</v-card-title
+                >
                 <v-card-text>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  sit amet nulla auctor, vestibulum magna sed, convallis ex.
-                  Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                  Cum sociis natoque penatibus et magnis dis parturient montes,
-                  nascetur ridiculus mus.
+                  Na nossa empresa, acreditamos que cada colaborador é
+                  fundamental para o nosso sucesso. Estamos sempre em busca de
+                  talentos que compartilhem nossa paixão por inovação e
+                  excelência. Oferecemos um ambiente dinâmico onde você pode
+                  crescer profissionalmente e contribuir para projetos
+                  impactantes. Venha fazer parte de uma equipe que valoriza a
+                  criatividade e o trabalho em equipe, e onde suas ideias podem
+                  se transformar em realidade.
                 </v-card-text>
                 <v-card-text>
-                  Our team is dedicated to delivering innovative solutions that
-                  exceed our customers' expectations. We're passionate about
-                  what we do, and we're looking for talented individuals to join
-                  our team.
+                  Está Com alguma <strong>Dúvida?</strong> Precisando de
+                  <strong>Ajuda?</strong> Quer resolver algo com o
+                  <strong>Suporte?</strong> Informe seu
+                  <strong>E-mail</strong> e envie sua Dúvida no formulario
+                  <strong>ABAIXO!</strong>
                 </v-card-text>
                 <div class="botao text-left">
                   <ModalContatenos ref="ModalContatenos" />
@@ -165,9 +171,12 @@
     <v-container>
       <!-- FAQ Section -->
       <div class="faq-container">
-        <h2 class="faq-title">Perguntas Frequentes - FAQ</h2>
-        <p>Conheça as respostas para as perguntas mais frequentes</p>
-        <v-row class="faq-ajuste" justify="space-between">
+        <h2 class="faq-title text-center">Perguntas Frequentes - FAQ</h2>
+        <p class="text-center">
+          Conheça as respostas para as perguntas mais frequentes
+        </p>
+        <v-row class="faq-ajuste" justify="center">
+          <!-- Alterado de "space-between" para "center" -->
           <v-col
             v-for="(question, index) in faq"
             :key="index"
