@@ -21,11 +21,20 @@
     </v-card>
 </template>
 
-<style scoped>
-* {
-    /* border: 1px solid red; */
-}
+<script>
+import { useCandidatoStore } from '@/stores/candidato';
 
+export default {
+    data: () => ({
+        instagram: '',
+        facebook: '',
+        linkedin: '',
+        github: '',
+        site: ''
+    }) 
+}
+</script>
+<style scoped>
 p {
     margin: 6.8px;
 }

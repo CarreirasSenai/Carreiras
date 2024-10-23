@@ -7,23 +7,24 @@
             </template>
 
             <v-card title="Editar Links">
-                <v-card-text>
-
-                    <v-row dense>
-                        <v-col cols="12" md="12">
-                            <v-text-field prepend-icon="mdi mdi-instagram" clearable label="instagram.com/"
-                                variant="underlined" v-model="instagram" required></v-text-field>
-                            <v-text-field prepend-icon="mdi mdi-facebook" clearable label="facebook.com/"
-                                variant="underlined" v-model="facebook" required></v-text-field>
-                            <v-text-field prepend-icon="mdi mdi-linkedin" clearable label="linkedin.com/"
-                                variant="underlined" v-model="linkedin" required></v-text-field>
-                            <v-text-field prepend-icon="mdi mdi-github" clearable label="github.com/"
-                                variant="underlined" v-model="github" required></v-text-field>
-                            <v-text-field prepend-icon="mdi mdi-web" clearable label="www.seusite.com"
-                                variant="underlined" v-model="site" required></v-text-field>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
+                <v-form @submit.prevent="saveForm">
+                    <v-card-text>
+                        <v-row dense>
+                            <v-col cols="12" md="12">
+                                <v-text-field prepend-icon="mdi mdi-instagram" clearable label="instagram.com/"
+                                    variant="underlined" v-model="link_instagram" required></v-text-field>
+                                <v-text-field prepend-icon="mdi mdi-facebook" clearable label="facebook.com/"
+                                    variant="underlined" v-model="link_facebook" required></v-text-field>
+                                <v-text-field prepend-icon="mdi mdi-linkedin" clearable label="linkedin.com/"
+                                    variant="underlined" v-model="link_linkedin" required></v-text-field>
+                                <v-text-field prepend-icon="mdi mdi-github" clearable label="github.com/"
+                                    variant="underlined" v-model="link_github" required></v-text-field>
+                                <v-text-field prepend-icon="mdi mdi-web" clearable label="www.seusite.com"
+                                    variant="underlined" v-model="link_site_pessoal" required></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-form>
 
                 <v-divider></v-divider>
 
@@ -32,7 +33,7 @@
 
                     <v-btn text="Limpar" variant="plain" @click="dialog = false" class="border-red-accent-4"></v-btn>
                     <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
-                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="dialog = false"
+                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="saveForm"
                         class="bg-purple-darken-4"></v-btn>
                 </v-card-actions>
             </v-card>
@@ -42,17 +43,38 @@
 
 <script>
 import axios from 'axios';
+import { useAuthStore } from '@/stores/auth';
 import { useCandidatoStore } from '@/stores/candidato';
 
 export default {
     data: () => ({
         dialog: false,
+        id: '',
         link_instagram: '',
         link_facebook: '',
         link_linkedin: '',
         link_github: '',
         link_site_pessoal: '',
     }),
+    computed: {
+        auth() {
+            return useAuthStore();
+        },
+        usuario() {
+            return useCandidatoStore();
+        }
+    },
+    created() {
+        this.auth.autenticacao();
+    },
+    mounted() {
+        this.id = useCandidatoStore().dadosUser.id,
+        this.link_instagram = useCandidatoStore().dadosUser.link_instagram,
+        this.link_facebook = useCandidatoStore().dadosUser.link_facebook,
+        this.link_linkedin = useCandidatoStore().dadosUser.link_linkedin,
+        this.link_github = useCandidatoStore().dadosUser.link_github,
+        this.link_site_pessoal = useCandidatoStore().dadosUser.link_site_pessoal;
+    },
     methods: {
         // Função para filtrar profissões com base na entrada do usuário
         filterProfissoes(item, queryText) {
@@ -61,7 +83,21 @@ export default {
             return item.toLowerCase().includes(query);
         },
         async saveForm() {
-            const response = axios.put(``); //TODO: terminar chamada da rota.
+            try{
+                const response = axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update-links`, {
+                    link_instagram: this.link_instagram,
+                    link_facebook: this.link_facebook,
+                    link_linkedin: this.link_linkedin,
+                    link_github: this.link_github,
+                    link_site_pessoal: this.link_site_pessoal
+                },
+                {
+                    withCredentials: true
+                });
+                console.log("Deu certo :) ", response.result);
+            } catch(error) {
+                console.log("Erro: ", error.response.data.error);
+            }
         }
     }
 }
