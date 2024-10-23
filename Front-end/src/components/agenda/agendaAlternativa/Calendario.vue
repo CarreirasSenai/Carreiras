@@ -1,5 +1,6 @@
 <template>
     <v-container fluid>
+        <div v-if="isLoading">Loading...</div>
         <v-card border>
             <v-card-title class="text-capitalize d-flex justify-space-between align-center">
                 <div>
@@ -7,7 +8,8 @@
                     {{ monthName }} {{ currentYear }}
                     <v-btn variant="text" icon="mdi-chevron-right" @click="nextMonth"></v-btn>
                 </div>
-                <CriarEvento :showModal="showModal" @FecharTabela="fecharTabela" @agendamento-salvo="fetchEvents" />
+                <CriarEvento v-if="grupo === 'empresa'" :showModal="showModal" @FecharTabela="fecharTabela"
+                    @agendamento-salvo="fetchEvents" />
             </v-card-title>
             <v-card-text>
                 <table>
@@ -58,10 +60,12 @@ import { useResolucaoDesktop } from '@/stores/resolucao';
 import ModalEvento from './ModalEvento.vue';
 import CriarEvento from './CriarEvento.vue';
 import axios from 'axios';
+import { useCandidatoStore } from '@/stores/candidato';
 
 export default {
     data() {
         return {
+            grupo: '',
             currentMonth: new Date().getMonth(),
             currentYear: new Date().getFullYear(),
             selectedDay: null,
@@ -70,13 +74,18 @@ export default {
             eventos: [],
             maxVisibleEvents: 2,
             dadosCarregados: false,
+            isLoading: false,
         };
     },
     async created() {
         await this.initialize();
+        if (this.user.dadosUser.id) {
+            this.fetchEvents();
+        }
     },
 
     computed: {
+        user() { return useCandidatoStore() },
         monthName() {
             return new Intl.DateTimeFormat("pt-BR", { month: "long" }).format(new Date(this.currentYear, this.currentMonth));
         },
@@ -117,9 +126,25 @@ export default {
     },
 
     watch: {
+        'user.dadosUser.id': {
+            immediate: true,
+            handler(newId) {
+                if (newId) {
+                    this.fetchEvents();
+                }
+            }
+        },
         currentMonth() {
-            this.fetchEvents();
+            if (this.user.dadosUser.id) {
+                this.fetchEvents();
+            }
         }
+    },
+
+    mounted() {
+        this.grupo = localStorage.getItem('grupo');
+        this.resolucao.verificaResolucao();
+        this.fetchEvents();
     },
 
     methods: {
@@ -127,21 +152,22 @@ export default {
             this.resolucao.verificaResolucao();
             await this.fetchEvents();
         },
-        
+
         async fetchEvents() {
+            this.isLoading = true;
             const month = String(this.currentMonth + 1).padStart(2, '0');
             const year = String(this.currentYear);
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/agendamento/read`, {
                     params: {
+                        user_id: this.user.dadosUser.id,
+                        grupo: this.user.grupo,
                         month: month,
                         year: year
                     }
                 });
-                setTimeout(() => {
-                    this.eventos = response.data;
-                    this.dadosCarregados = true;
-                }, 500);
+                this.eventos = response.data;
+                this.dadosCarregados = true;
             } catch (error) {
                 console.error('Erro ao buscar eventos na agenda:', error);
                 this.$notify({
@@ -149,6 +175,8 @@ export default {
                     message: 'Não foi possível carregar os eventos. Tente novamente mais tarde.',
                     type: 'error'
                 });
+            } finally {
+                this.isLoading = false;
             }
         },
 
