@@ -2,13 +2,7 @@
 const Agendamento = require('../model/agendamento');
 
 exports.read = (req, res) => {
-    const user_id = req.session.usuario.id;
-    const grupo = req.session.usuario.grupo;
-    
-    //const user_id = 25;  
-    //const grupo = 'candidato';  
-    const { month, year } = req.query;
-    
+    const { user_id, grupo, month, year } = req.query;
     Agendamento.read(grupo, user_id, month, year, (err, data) => {
         if (err) {
             return res.status(500).json({ error: err.message });
@@ -71,9 +65,9 @@ exports.create = async (req, res) => {
 // Create
 exports.delete = async (req, res) => {
     const { id } = req.params;
+    console.log(id)
     Agendamento.delete( id , (err, insertId) => {
         if (!err) {
-            console.log('HELLO')
             console.log(err.message)
             console.log(err)
             return res.status(500).json({ error: err.message });

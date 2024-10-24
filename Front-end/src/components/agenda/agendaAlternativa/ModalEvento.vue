@@ -12,8 +12,7 @@
             </v-card-title>
 
             <v-divider></v-divider>
-            <v-data-table height="400" v-model:search="search" :headers="headers" :items="eventos"
-                :sort-by="[{ key: 'vaga', order: 'asc' }]">
+            <v-data-table height="400" v-model:search="search" :headers="headersFiltrados" :items="eventos" :sort-by="[{ key: 'vaga', order: 'asc' }]">
 
                 <template v-slot:item.vaga="{ item }">
                     {{ item.vaga }}
@@ -31,7 +30,7 @@
                     {{ item.hora }}
                 </template>
 
-                <template v-slot:item.actions="{ item }">
+                <template v-if="grupo !== 'candidato'" v-slot:item.actions="{ item }">
                     <v-icon color="grey" class="me-2" @click="editItem(item)">
                         mdi-pencil
                     </v-icon>
@@ -139,6 +138,7 @@ export default {
     },
 
     data: () => ({
+        grupo: '',
         successMessage: '',
         vagas: [],
         candidatos: [],
@@ -160,7 +160,7 @@ export default {
             ]
         },
         headers: [
-            { title: 'Vaga', key: 'title' },
+            { title: 'Título', key: 'title' },
             { title: 'Candidato', align: 'start', sortable: false, key: 'candidato' },
             { title: 'Data', key: 'data' },
             { title: 'Horário', key: 'hora' },
@@ -188,6 +188,12 @@ export default {
     emits: ['FecharTabela'],
 
     computed: {
+        headersFiltrados() {
+            if (this.grupo === 'candidato') {
+                return this.headers.filter(header => header.key !== 'actions');
+            }
+            return this.headers;
+        },
         internalShowModal() {
             return this.showModal;
         },
@@ -212,6 +218,7 @@ export default {
     },
 
     mounted() {
+        this.grupo = localStorage.getItem('grupo');
         this.mostrarVagas();
         this.mostrarCandidatos();
     },
@@ -299,8 +306,8 @@ export default {
 
         deleteItem(item) {
             console.log("Excluindo item");
-            this.editedItem = Object.assign({}, item); 
-            this.editedIndex = this.eventos.indexOf(item); 
+            this.editedItem = Object.assign({}, item);
+            this.editedIndex = this.eventos.indexOf(item);
             this.dialogDelete = true;
         },
 
@@ -316,9 +323,7 @@ export default {
                 }, 3000);
 
                 this.eventos.splice(this.editedIndex, 1);
-
                 this.dialogDelete = false;
-
                 this.editedItem = Object.assign({}, this.defaultItem);
                 this.editedIndex = -1;
 
