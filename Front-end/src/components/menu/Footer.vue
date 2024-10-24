@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="bg-indigo-1 text-center d-flex flex-column">
+  <v-footer class="bg-indigo-1 text-center d-flex flex-column footer-border">
     <div class="footer-content">
       <div class="social-icons">
         <v-btn
@@ -46,15 +46,16 @@ export default {
   margin-bottom: 10px;
 }
 
-.footer-links {
-  margin: 10px 0;
-}
-
 .contact-info {
   margin: 10px 0;
 }
 
 .footer-bottom {
   padding: 10px 0;
+}
+
+/* Adicionando a borda */
+.footer-border {
+  border-top: 1px solid #d8d6d6; /* Para borda roxa */
 }
 </style>

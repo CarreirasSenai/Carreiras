@@ -199,9 +199,6 @@
         </v-row>
       </div>
     </v-container>
-
-    <v-divider class="my-12"></v-divider>
-
     <Footer />
   </v-app>
 </template>
