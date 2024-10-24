@@ -143,6 +143,6 @@ exports.updateUserLinks = (id, link_instagram, link_facebook, link_linkedin, lin
             if(err)
                 return callback(err, null);
             
-            return callback(null, result.length > 0 ? result : null);
+            return callback(null, result.affectedRows > 0 ? result : null);
         });
 }

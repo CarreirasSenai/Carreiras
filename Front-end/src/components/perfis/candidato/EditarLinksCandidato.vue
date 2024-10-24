@@ -83,20 +83,19 @@ export default {
             return item.toLowerCase().includes(query);
         },
         async saveForm() {
-            try{
-                const response = axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update-links`, {
+            try {
+                const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update/links`, {
+                    id: this.id,
                     link_instagram: this.link_instagram,
                     link_facebook: this.link_facebook,
                     link_linkedin: this.link_linkedin,
                     link_github: this.link_github,
                     link_site_pessoal: this.link_site_pessoal
                 },
-                {
-                    withCredentials: true
-                });
+                { withCredentials: true });
                 console.log("Deu certo :) ", response.result);
             } catch(error) {
-                console.log("Erro: ", error.response.data.error);
+                console.error("Erro: ", error);
             }
         }
     }
