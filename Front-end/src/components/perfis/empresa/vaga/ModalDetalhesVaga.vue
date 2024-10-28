@@ -1,6 +1,6 @@
 <template>
     <div class="text-center">
-        <v-btn variant="tonal" class="bg-deep-purple-accent-3" @click="dialog = true">
+        <v-btn variant="tonal" class="bg-deep-purple-accent-3" @click="dialog = true, getUserEmpresa()">
             Detalhes
         </v-btn>
 
@@ -17,7 +17,7 @@
                                 <v-btn size="x-small" class="mr-2 position-relative" icon="mdi-share-variant"
                                     variant="tonal" @click="compartilhar">
                                 </v-btn>
-                                {{ this.Vagas.raw.titulo }}
+                                <div style="font-size: clamp(10px, 4vw, 20px);">{{ this.Vagas.raw.titulo }}</div>
                                 <v-spacer></v-spacer>
                                 <v-btn size="x-small" icon="mdi-close" variant="tonal" @click="dialog = false"></v-btn>
                             </v-card-title>
@@ -79,17 +79,19 @@
 
                             </v-card-text>
 
-                            <v-card-actions class="d-flex justify-space-between">
-                                <div class="d-flex flex-wrap ga-2">
-                                    <v-btn v-if="grupo === 'candidato'" class="bt-primario">Inscrever-se</v-btn>
-                                    <EditarVaga
-                                        v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                            <v-card-actions class="d-flex justify-space-between border">
+                                <div class="d-flex flex-wrap ga-2">                                    
+                                    <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
+                                    <Questionario :Vagas="Vagas"/>
                                 </div>
-                                <div class="d-flex align-center justify-center ga-2">
-                                    TOTVS
-                                    <img src="/src/assets/avatar.png" width="50px">
-                                </div>
+                                <router-link :to="`/perfil-empresa?requisicao=empresa&id=${this.Vagas.raw.id_empresa}`"
+                                    class="text-black text-decoration-none">
+                                    <div class="d-flex align-center justify-center ga-2">
+                                        {{ empresa.nome_fantasia }}
+                                        <img :src="empresa.foto" width="50px" class="rounded-circle">
+                                    </div>
+                                </router-link>
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -102,13 +104,15 @@
 <script>
 import { useCandidatoStore } from '@/stores/candidato';
 import { usePesquisaUsuarioStore } from '@/stores/pesquisaUsuario';
+import axios from 'axios';
 
 export default {
     data() {
         return {
             grupo: '',
             dialog: false,
-            snackbar: false
+            snackbar: false,
+            empresa: '',
         }
     },
     props: {
@@ -124,7 +128,7 @@ export default {
         },
         pesquisaUser() {
             return usePesquisaUsuarioStore();
-        },
+        }
     },
     mounted() {
         this.grupo = localStorage.getItem('grupo');
@@ -132,7 +136,6 @@ export default {
     methods: {
         compartilhar() {
             const url = `${import.meta.env.VITE_FRONTEND_URL}/detalhes-vaga?id=${this.Vagas.raw.id}&titulo=${encodeURIComponent(this.Vagas.raw.titulo)}`;
-
             // Utiliza a API de Clipboard para copiar o URL
             navigator.clipboard.writeText(url)
                 .then(() => {
@@ -144,6 +147,38 @@ export default {
                 .catch(err => {
                     console.error('Erro ao copiar o URL para a área de transferência: ', err);
                 });
+        },
+
+        async getUserEmpresa() {
+            const id = this.Vagas.raw.id_empresa;
+
+            console.log(id)
+
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/empresa/read`, {
+                    params: {
+                        id: id,
+                    },
+                    withCredentials: true
+                });
+
+                this.empresa = response.data.usuario;
+
+                const path = `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/`;
+                const avatarPadrao = '/src/assets/avatar.png';
+                const capaPadrao = '/src/assets/capa (1).png';
+
+                const foto = this.empresa.foto;
+                const capa = this.empresa.capa;
+
+                this.empresa.foto = foto ? path + foto : avatarPadrao;
+                this.empresa.capa = capa ? path + capa : capaPadrao;
+
+                // console.log(this.empresa);                
+
+            } catch (error) {
+                console.error('Erro ao obter dados do usuário', error.response.data);
+            }
         }
     }
 }

@@ -7,7 +7,8 @@
                     <v-card-title class="pr-2 opacity-100 bg-deep-purple-accent-4 observavel d-flex align-center">
                         {{ vaga.titulo }}
                         <v-spacer></v-spacer>
-                        <v-chip size="small" variant="outlined" class="mr-15 bg-deep-purple-accent-2 position-absolute right-0" v-model="snackbar">
+                        <v-chip size="small" variant="outlined"
+                            class="mr-15 bg-deep-purple-accent-2 position-absolute right-0" v-model="snackbar">
                             Copiado para área de transferência!
                         </v-chip>
                         <v-btn size="small" icon="mdi-share-variant" variant="tonal" @click="compartilhar"></v-btn>
@@ -64,10 +65,13 @@
                         <div class="d-flex flex-wrap ga-2">
                             <v-btn class="bt-primario">Inscrever-se</v-btn>
                         </div>
-                        <div class="d-flex align-center justify-center ga-2">
-                            TOTVS
-                            <img src="/src/assets/avatar.png" width="50px">
-                        </div>
+                        <router-link :to="`/perfil-empresa?requisicao=empresa&id=${this.empresa.id}`"
+                            class="text-black text-decoration-none">
+                            <div class="d-flex align-center justify-center ga-2">
+                                {{ empresa.nome_fantasia }}
+                                <img :src="empresa.foto" width="50px" class="rounded-circle">
+                            </div>
+                        </router-link>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -85,7 +89,8 @@ export default {
         vaga: '',
         habilidadesExigidas: [],
         habilidadesOpcionais: [],
-        snackbar: false
+        snackbar: false,
+        empresa: '',
     }),
 
     computed: {
@@ -113,6 +118,8 @@ export default {
                 });
 
                 this.vaga = response.data.result;
+                console.log(this.vaga);
+                this.getUserEmpresa();
 
                 // Parse habilidades_exigidas e habilidades_opcionais se existirem
                 if (this.vaga.habilidades_exigidas) {
@@ -142,6 +149,34 @@ export default {
                 .catch(err => {
                     console.error('Erro ao copiar o URL para a área de transferência: ', err);
                 });
+        },
+
+        async getUserEmpresa() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/empresa/read`, {
+                    params: {
+                        id: this.vaga.id_empresa,
+                    },
+                    withCredentials: true
+                });
+
+                this.empresa = response.data.usuario;
+
+                const path = `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/`;
+                const avatarPadrao = '/src/assets/avatar.png';
+                const capaPadrao = '/src/assets/capa (1).png';
+
+                const foto = this.empresa.foto;
+                const capa = this.empresa.capa;
+
+                this.empresa.foto = foto ? path + foto : avatarPadrao;
+                this.empresa.capa = capa ? path + capa : capaPadrao;
+
+                // console.log(this.empresa);                
+
+            } catch (error) {
+                console.error('Erro ao obter dados do usuário', error.response.data);
+            }
         }
     }
 }

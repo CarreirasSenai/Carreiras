@@ -47,14 +47,25 @@ exports.getLogin = (email, callback) => {
             console.log(err);
             return callback(err, null, null);
 
-        } else if (rows.length > 0) {
-            console.log(rows[0]);
-            return callback(null, rows[0], null);
-
-        } else {
-            console.log('Não há cadastro com este e-mail!');
-            return callback(null, null, 'Não há cadastro com este e-mail!');
+        } else if (!rows.length) {
+            console.log('Não há cadastro com este e-mail.');
+            return callback(null, null, 'Não há cadastro com este e-mail.');
         }
+
+        db.query('SELECT * FROM user_admin WHERE email = ? AND status = 1', [email], (err, rows) => {
+            if (err) {
+                console.log(err);
+                return callback(err, null, null);
+
+            } else if (rows.length > 0) {
+                console.log(rows[0]);
+                return callback(null, rows[0], null);
+
+            } else {
+                console.log('Essa conta está desativada!');
+                return callback(null, null, 'Essa conta está desativada!');
+            }
+        });
     });
 };
 

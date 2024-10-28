@@ -112,25 +112,31 @@ exports.login = (req, res) => {
 
 // Read / Autenticar
 exports.getUser = (req, res) => {
-    const requisicao = req.query.requisicao;
-    const idReq = req.query.id;
-    const idSession = req.session.usuario.id;
+    const usuario_id = req.query.id ? req.query.id : req.session.usuario.id;
 
-    const usuario_id = requisicao ? idReq : idSession;
+    if (usuario_id) {
+        Empresa.getUser(usuario_id, (err, usuario) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
 
-    console.log("Usuário (empresa): ", usuario_id);
+            if (!usuario) {
+                return res.status(404).json({ error: 'Usuário não encontrado!' });
+            }
+            console.log(usuario);
 
-    Empresa.getUser(usuario_id, (err, usuario) => {
+            res.json({ success: true, usuario: usuario });
+        });
+    }
+};
+
+exports.getAllUser = (req, res) => {
+    Empresa.getAllUser((err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.status(200).json({ sucess: 'Empresas:', result: result });
         }
-
-        if (!usuario) {
-            return res.status(404).json({ error: 'Usuário não encontrado!' });
-        }
-        console.log(usuario);
-
-        res.json({ success: true, usuario: usuario });
     });
 };
 
@@ -147,16 +153,18 @@ exports.getAllUser = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
-    const { id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpf_responsavel, contatoRA, statusUser } = req.body.dados;
+    const { id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero,
+        complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA } = req.body;
     console.log('\n updateUser:');
     console.log(req.body.dados);
 
     const grupo = 'empresa';
 
-    Empresa.updateUser(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpf_responsavel, contatoRA, statusUser, grupo, id, (err, success) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
+    Empresa.updateUser(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep,
+        numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA,
+        grupo, id, (err, success) => {
+            if (err)
+                return res.status(500).json({ error: err.message });
 
         return res.status(200).json({ success: 'Cadastro Atualizado!' });
     });

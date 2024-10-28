@@ -73,20 +73,14 @@
                         </v-row>
                         <v-row dense>
                             <v-col cols="12">
-                                <v-combobox v-model="form.etapas" chips closable-chips multiple label="Etapas da Vaga"
-                                    hint="Escreva uma etapa e tecle enter" :rules="[rules.geral]"></v-combobox>
-                            </v-col>
-                        </v-row>
-                        <v-row dense>
-                            <v-col cols="12">
-                                <v-combobox v-model="form.questionario" chips closable-chips multiple
-                                    label="Questionário" hint="Escreva uma pergunta e tecle enter"></v-combobox>
+                                <v-text-field v-model="form.qtdCandidatos" label="Máximo de Candidaturas" type="number"
+                                    :rules="[rules.geral]"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-card-text>
                     <v-divider></v-divider>
                     <v-card-actions>
-                        <v-btn text="Excluir" color="error" @click="deletarVaga"></v-btn>
+                        <v-btn text="Excluir" color="error" @click="modalDelete = true"></v-btn>
                         <v-spacer></v-spacer>
                         <v-btn text="Fechar" variant="plain" @click="dialog = false"></v-btn>
                         <v-btn color="Enviar" text="Salvar" variant="tonal" type="submit"></v-btn>
@@ -95,6 +89,20 @@
             </v-form>
         </v-dialog>
     </div>
+
+    <v-dialog max-width="500" v-model="modalDelete">
+        <v-card :title="'Deletar ' + this.form.titulo">
+            <v-card-text>
+                Ao excluir essa vaga todos os candidatos pendentes serão notificados com a justificativa para não
+                contratação. Deseja continuar com a exclusão?
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn variant="tonal" text="Cancelar" @click="modalDelete = false"></v-btn>
+                <v-btn variant="tonal" class="bg-error" text="Excluir" @click="deletarVaga"></v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>
@@ -102,6 +110,7 @@ import axios from 'axios';
 
 export default {
     data: () => ({
+        modalDelete: false,
         dialog: false,
         form: {
             id: '',
@@ -116,8 +125,7 @@ export default {
             habsExigidas: [],
             habsOpcionais: [],
             descricao: '',
-            etapas: [],
-            questionario: []
+            qtdCandidatos: '',
         },
         rules: {
             geral: value => !!value || 'O campo obrigatório.'
@@ -146,6 +154,8 @@ export default {
         this.form.modalidade = this.Vagas.raw.modalidade;
         this.form.nivel = this.Vagas.raw.nivel;
         this.form.remuneracao = this.Vagas.raw.remuneracao;
+        this.form.qtdCandidatos = parseInt(this.Vagas.raw.max_candidaturas, 10);      
+        this.form.descricao = this.Vagas.raw.descricao; 
 
         // Remover os colchetes e as aspas da string e depois separar os valores por vírgula
         this.form.habsExigidas = this.Vagas.raw.habilidades_exigidas
@@ -156,19 +166,7 @@ export default {
         this.form.habsOpcionais = this.Vagas.raw.habilidades_opcionais
             .replace(/[\[\]"]/g, '')
             .split(', ')
-            .map(hab => hab.trim());
-
-        this.form.descricao = this.Vagas.raw.descricao;
-
-        this.form.etapas = this.Vagas.raw.etapas
-            .replace(/[\[\]"]/g, '')
-            .split(', ')
-            .map(etapa => etapa.trim());
-
-        this.form.questionario = this.Vagas.raw.questionario
-            .replace(/[\[\]"]/g, '')
-            .split(', ')
-            .map(quest => quest.trim());
+            .map(hab => hab.trim());        
     },
     methods: {
         async submitUpdate(event) {
@@ -201,7 +199,9 @@ export default {
 
                 console.log('Vaga Deletada!', response.data);
                 this.dialog = false;
+                this.modalDelete = false;
                 this.MostrarVagas();
+                window.location.reload;
 
             } catch (error) {
                 console.error('Erro', error.response.data);

@@ -51,10 +51,12 @@ export default {
     },
     methods: {
         async mostrarFormacoes() {
+            const id = this.$route.query.id;
+
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/formacao/read`, {
                     params: {
-                        idUser: '',
+                        id: id
                     },
                     withCredentials: true
                 });

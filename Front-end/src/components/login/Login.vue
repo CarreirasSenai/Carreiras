@@ -44,12 +44,12 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      email: 'admin@admin.com',
+      email: 'contato@thynkai.com.br',
       emailRules: [
         (v) => !!v || 'E-mail requerido',
         (v) => /.+@.+\..+/.test(v) || 'E-mail deve ser válido',
       ],
-      password: '123456',
+      password: 'Thiag01@',
       showPassword: false,
       passwordRules: [(v) => !!v || 'Senha requerida'],
       resposta: '',

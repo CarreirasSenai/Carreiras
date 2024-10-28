@@ -10,13 +10,13 @@
                     <v-col cols="12" class="bloco">
                         <v-card variant="text">
                             <v-chip class="ma-1" v-for="items in habilidades" :key="items">{{ items }}</v-chip>
-                            <EditarHabilidade v-if="visibilidade" :MostrarHabilidades="mostrarHabilidades"
+                            <EditarHabilidade v-if="visibilidade && grupo === 'candidato'" :MostrarHabilidades="mostrarHabilidades"
                                 :Habilidades="habilidades" :Id="id" />
                         </v-card>
                     </v-col>
                     <span v-if="!habilidades.length" class="ma-4">Adicione suas habilidades.</span>
                 </v-row>
-                <AdicionarHabilidade v-if="!visibilidade" :MostrarHabilidades="mostrarHabilidades" />
+                <AdicionarHabilidade v-if="!visibilidade && grupo === 'candidato'" :MostrarHabilidades="mostrarHabilidades" />
             </v-expansion-panel-text>
         </v-expansion-panel>
     </v-col>
@@ -29,6 +29,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            grupo: '',
             id: '',
             habilidades: [],
             visibilidade: false
@@ -36,11 +37,17 @@ export default {
     },
     mounted() {
         this.mostrarHabilidades();
+        this.grupo = localStorage.getItem('grupo');
     },
     methods: {
         async mostrarHabilidades() {
+            const id = this.$route.query.id;
+            
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/habilidade/read`, {
+                    params: {
+                        id: id,
+                    },
                     withCredentials: true
                 });
 

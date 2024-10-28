@@ -75,6 +75,36 @@ INSERT INTO `candidatura` VALUES (1,25,105,'2024-10-19 00:17:11'),(2,25,124,'202
 UNLOCK TABLES;
 
 --
+-- Table structure for table `candidatura`
+--
+
+DROP TABLE IF EXISTS `candidatura`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `candidatura` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_candidato` int NOT NULL,
+  `id_vaga` int NOT NULL,
+  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `id_candidato` (`id_candidato`),
+  KEY `id_vaga` (`id_vaga`),
+  CONSTRAINT `candidatura_ibfk_1` FOREIGN KEY (`id_candidato`) REFERENCES `user_candidato` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `candidatura_ibfk_2` FOREIGN KEY (`id_vaga`) REFERENCES `vagas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `candidatura`
+--
+
+LOCK TABLES `candidatura` WRITE;
+/*!40000 ALTER TABLE `candidatura` DISABLE KEYS */;
+INSERT INTO `candidatura` VALUES (1,25,105,'2024-10-19 00:17:11'),(2,25,124,'2024-10-19 01:01:19'),(3,25,4,'2024-10-19 21:20:57');
+/*!40000 ALTER TABLE `candidatura` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `curso`
 --
 

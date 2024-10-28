@@ -23,12 +23,12 @@
                                 <strong>{{ items.empresa }} </strong><br>
                                 {{ formatarData(items.inicio) }} - {{ formatarData(items.termino) }}
                             </v-card-text>
-                            <EditarExperiencias :MostrarExperiencias="mostrarExperiencias" :Experiencias="items"/>
+                            <EditarExperiencias :MostrarExperiencias="mostrarExperiencias" :Experiencias="items" v-if="user.dadosUser.id === idCandidato"/>
                         </v-card>
                     </v-col>
                     <span v-if="!formacoes.length" class="ma-4">Adicione uma experiência.</span>
                 </v-row>
-                <AdicionarExperiencia :MostrarExperiencias="mostrarExperiencias"/>
+                <AdicionarExperiencia :MostrarExperiencias="mostrarExperiencias" v-if="user.dadosUser.id === idCandidato"/>
             </v-expansion-panel-text>
         </v-expansion-panel>
     </v-col>
@@ -37,10 +37,12 @@
 
 <script>
 import axios from 'axios';
+import { useCandidatoStore } from '@/stores/candidato';
 
 export default {
     data() {
         return {
+            idCandidato: '',
             formacoes: [
                 {
                     cargo: '',
@@ -53,13 +55,23 @@ export default {
             ],
         };
     },
+    computed: {
+        user() {
+            return useCandidatoStore();
+        }
+    },
     mounted() {
         this.mostrarExperiencias();
     },
     methods: {
         async mostrarExperiencias() {
+            const id = this.$route.query.id;
+
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/experiencia/read`, {
+                    params: {
+                        id: id,
+                    },
                     withCredentials: true
                 });
 
@@ -70,6 +82,8 @@ export default {
                     }
                     return experiencia;
                 });
+
+                this.idCandidato = response.data.result[0].id_candidato;
 
             } catch (error) {
                 console.error('Erro', error.response.data);

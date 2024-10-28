@@ -1,7 +1,7 @@
 <template>
   <div>
     <ChatLayout ref="chatLayout" />
-    <ProgressLoader ref="showProgress" />
+    <!-- <ProgressLoader ref="showProgress" /> -->
     <v-container>
       <v-app-bar scroll-behavior="elevate">
         <div class="navbar-container position-relative">
@@ -285,7 +285,7 @@ export default {
           }
         );
 
-        sessionStorage.removeItem("grupo");
+        localStorage.removeItem("grupo");
         console.log(response.data);
         window.location.href = "/";
       } catch (error) {

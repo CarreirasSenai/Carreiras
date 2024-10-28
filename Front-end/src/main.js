@@ -26,7 +26,6 @@
 //   }).$mount('#app')
 
 // LEIA! ******* ACIMA CONFIGS ANTIGAS COMENTADAS, ABAIXO NOVAS CONFIGS QUE RESOLVERAM OS CONSTANTES ERROS OCUPANDO TODO O CONSOLE. AJUSTES FEITOS NOS ARQUIVOS (vuetify.js) e (main.js)
-
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
