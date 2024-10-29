@@ -155,7 +155,7 @@ export default {
     this.form.cpf = this.User.cpf;
     this.form.celular = this.User.celular;
     this.form.tipo = this.User.tipo_admin;
-    this.form.status = this.User.verificado.toString();
+    this.form.status = this.User.status.toString();
   },
 
   methods: {

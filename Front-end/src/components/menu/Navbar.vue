@@ -91,8 +91,8 @@
                       <a href="../../assets/meme.png"></a>
                     </v-btn>
 
-                    <v-divider class="my-2" v-if="user.grupo === 'admin'"></v-divider>
-                    <v-btn variant="text" rounded v-if="user.grupo === 'admin'">Painel</v-btn>
+                    <!-- <v-divider class="my-2" v-if="user.grupo === 'admin'"></v-divider>
+                    <v-btn variant="text" rounded v-if="user.grupo === 'admin'">Painel</v-btn> -->
 
                     <v-divider class="my-2" v-if="user.grupo === 'admin'"></v-divider>
                     <v-btn variant="text" rounded to="lista-vagas" v-if="user.grupo === 'admin'">Lista de
