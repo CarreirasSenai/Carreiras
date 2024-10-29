@@ -38,6 +38,9 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+         <v-snackbar :color="snackbarColor" v-model="snackbar" :timeout="4000">
+            <div class="text-center">{{ mensagem }}</div>
+        </v-snackbar>
     </div>
 </template>
 
@@ -55,6 +58,9 @@ export default {
         link_linkedin: '',
         link_github: '',
         link_site_pessoal: '',
+        snackbar: false,
+        snackbarColor: '',
+        mensagem: ''
     }),
     computed: {
         auth() {
@@ -94,8 +100,15 @@ export default {
                 },
                 { withCredentials: true });
                 console.log("Deu certo :) ", response.result);
+                this.snackbarColor = 'success';
+                this.mensagem = 'Links atualizados com sucesso.';
+                this.snackbar = true;
+                this.dialog = false;
             } catch(error) {
                 console.error("Erro: ", error);
+                this.snackbarColor = 'error';
+                this.mensagem = 'Houve um erro ao atualizar os links.';
+                this.snackbar = true;
             }
         }
     }
