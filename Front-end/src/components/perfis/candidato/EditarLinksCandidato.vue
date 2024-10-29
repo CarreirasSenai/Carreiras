@@ -31,7 +31,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
 
-                    <v-btn text="Limpar" variant="plain" @click="dialog = false" class="border-red-accent-4"></v-btn>
+                    <v-btn text="Limpar" variant="plain" @click="clearForm" class="border-red-accent-4"></v-btn>
                     <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
                     <v-btn text="Salvar" color="Enviar" variant="tonal" @click="saveForm"
                         class="bg-purple-darken-4"></v-btn>
@@ -79,7 +79,7 @@ export default {
         this.link_facebook = useCandidatoStore().dadosUser.link_facebook,
         this.link_linkedin = useCandidatoStore().dadosUser.link_linkedin,
         this.link_github = useCandidatoStore().dadosUser.link_github,
-        this.link_site_pessoal = useCandidatoStore().dadosUser.link_site_pessoal;
+        this.link_site_pessoal = useCandidatoStore().dadosUser.link_site_pessoal
     },
     methods: {
         // Função para filtrar profissões com base na entrada do usuário
@@ -87,6 +87,13 @@ export default {
             // Converte o item e a consulta para minúsculas para comparação
             const query = queryText.toLowerCase();
             return item.toLowerCase().includes(query);
+        },
+        clearForm() {
+            this.link_instagram = '';
+            this.link_facebook = '';
+            this.link_github = '';
+            this.link_linkedin = '';
+            this.link_site_pessoal = '';
         },
         async saveForm() {
             try {
@@ -104,6 +111,9 @@ export default {
                 this.mensagem = 'Links atualizados com sucesso.';
                 this.snackbar = true;
                 this.dialog = false;
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500)
             } catch(error) {
                 console.error("Erro: ", error);
                 this.snackbarColor = 'error';
