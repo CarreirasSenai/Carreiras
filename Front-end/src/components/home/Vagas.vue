@@ -197,9 +197,9 @@ export default {
           withCredentials: true
         });
 
-        console.log("Lista de empresas:", response.data.result);
+        console.log("Lista de empresas:", response.data.usuarios);
 
-        this.ListaEmpresas = response.data.result;
+        this.ListaEmpresas = response.data.usuarios;
 
         for (const key in this.ListaEmpresas) {
           const path = `${import.meta.env.VITE_BACKEND_URL}/uploads/perfil/`;
