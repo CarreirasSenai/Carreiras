@@ -5,6 +5,7 @@
     <FiltroVagas />
     <Vagas />
   </div>
+  <Footer />
 </template>
 
 <script>

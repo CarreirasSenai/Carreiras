@@ -34,7 +34,6 @@ router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
 router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
-// Rota para listar todos os candidatos
 router.get('/candidato/read/all', authMiddleware, Candidato.getAllUser);
 
 // rotas perfil
@@ -109,6 +108,7 @@ router.get('/agendamento/read', Agendamento.read);
 router.post('/agendamento/create', Agendamento.create);
 router.put('/agendamento/update', Agendamento.update);
 router.get('/agendamento/readCandidatos', Agendamento.readCandidatos);
+router.delete('/agendamento/delete/:id', Agendamento.delete);
 
 //rota suporte email
 router.post('/formulario/emailEnvio', Formulario.formularioEnvio);

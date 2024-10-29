@@ -71,17 +71,16 @@ exports.getUser = (id, callback) => {
 };
 
 exports.getAllUser = (callback) => {
-    db.query('select * from user_empresa', (err, result) => {
+    db.query('SELECT * FROM user_empresa', (err, result) => {
         if (err) {
             console.log(err);
             return callback(err, null);
-
-        } else if (result) {
-            console.log(result);
-            return callback(null, result);
         }
+
+        console.log(result);
+        return callback(null, result.length > 0 ? result : null);
     });
-};
+}
 
 exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, statusUser, grupo, id, callback) => {
 

@@ -14,6 +14,7 @@
       </div>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script>
@@ -38,7 +39,7 @@ export default {
 
 <style scoped>
 .suasVagas {
-  margin: 40px auto;
+  /* margin: 40px auto; */
   padding: 20px;
   background-color: #f7f7f7;
   border: 1px solid #ddd;
