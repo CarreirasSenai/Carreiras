@@ -6,20 +6,20 @@
                 <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Links</v-btn>
             </template>
 
-            <v-card title="Editar Links">
+            <v-card ref="form" title="Editar Links">
                 <v-form @submit.prevent="saveForm">
                     <v-card-text>
                         <v-row dense>
                             <v-col cols="12" md="12">
-                                <v-text-field prepend-icon="mdi mdi-instagram" clearable label="instagram.com/"
+                                <v-text-field :rules="instagramRules" prepend-icon="mdi mdi-instagram" label="instagram.com/"
                                     variant="underlined" v-model="link_instagram" required></v-text-field>
-                                <v-text-field prepend-icon="mdi mdi-facebook" clearable label="facebook.com/"
+                                <v-text-field :rules="facebookRules" prepend-icon="mdi mdi-facebook" label="facebook.com/"
                                     variant="underlined" v-model="link_facebook" required></v-text-field>
-                                <v-text-field prepend-icon="mdi mdi-linkedin" clearable label="linkedin.com/"
+                                <v-text-field :rules="linkedinRules" prepend-icon="mdi mdi-linkedin" label="linkedin.com/"
                                     variant="underlined" v-model="link_linkedin" required></v-text-field>
-                                <v-text-field prepend-icon="mdi mdi-github" clearable label="github.com/"
+                                <v-text-field :rules="githubRules" prepend-icon="mdi mdi-github" label="github.com/"
                                     variant="underlined" v-model="link_github" required></v-text-field>
-                                <v-text-field prepend-icon="mdi mdi-web" clearable label="www.seusite.com"
+                                <v-text-field prepend-icon="mdi mdi-web" label="www.seusite.com"
                                     variant="underlined" v-model="link_site_pessoal" required></v-text-field>
                             </v-col>
                         </v-row>
@@ -60,7 +60,11 @@ export default {
         link_site_pessoal: '',
         snackbar: false,
         snackbarColor: '',
-        mensagem: ''
+        mensagem: '',
+        instagramRules: [(v) => v.includes("instagram.com") || v === '' || "Insira um link válido do Instagram"],
+        facebookRules: [(v) => v.includes("facebook.com") || v === '' || "Insira um link válido do Facebook"],
+        linkedinRules: [(v) => v.includes("linkedin.com") || v === '' || "Insira um link válido do LinkedIn"],
+        githubRules: [(v) => v.includes("github.com") || v === '' || "Insira um link válido do Github"],
     }),
     computed: {
         auth() {
@@ -96,29 +100,36 @@ export default {
             this.link_site_pessoal = '';
         },
         async saveForm() {
-            try {
-                const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update/links`, {
-                    id: this.id,
-                    link_instagram: this.link_instagram,
-                    link_facebook: this.link_facebook,
-                    link_linkedin: this.link_linkedin,
-                    link_github: this.link_github,
-                    link_site_pessoal: this.link_site_pessoal
-                },
-                { withCredentials: true });
-                console.log("Deu certo :) ", response.result);
-                this.snackbarColor = 'success';
-                this.mensagem = 'Links atualizados com sucesso.';
-                this.snackbar = true;
-                this.dialog = false;
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500)
-            } catch(error) {
-                console.error("Erro: ", error);
-                this.snackbarColor = 'error';
-                this.mensagem = 'Houve um erro ao atualizar os links.';
-                this.snackbar = true;
+            const isInstagramValid = this.instagramRules.every(rule => rule(this.link_instagram) === true);
+            const isFacebookValid = this.facebookRules.every(rule => rule(this.link_facebook) === true);
+            const isLinkedinValid = this.linkedinRules.every(rule => rule(this.link_linkedin) === true);
+            const isGithubValid = this.githubRules.every(rule => rule(this.link_github) === true);
+
+            if(isInstagramValid && isFacebookValid && isLinkedinValid && isGithubValid) {
+                try {
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update/links`, {
+                        id: this.id,
+                        link_instagram: this.link_instagram,
+                        link_facebook: this.link_facebook,
+                        link_linkedin: this.link_linkedin,
+                        link_github: this.link_github,
+                        link_site_pessoal: this.link_site_pessoal
+                    },
+                    { withCredentials: true });
+                    console.log("Deu certo :) ", response.result);
+                    this.snackbarColor = 'success';
+                    this.mensagem = 'Links atualizados com sucesso.';
+                    this.snackbar = true;
+                    this.dialog = false;
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500)
+                } catch(error) {
+                    console.error("Erro: ", error);
+                    this.snackbarColor = 'error';
+                    this.mensagem = 'Houve um erro ao atualizar os links.';
+                    this.snackbar = true;
+                }
             }
         }
     }
