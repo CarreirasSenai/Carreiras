@@ -511,6 +511,7 @@ CREATE TABLE `vagas` (
   `descricao` text,
   `max_candidaturas` int DEFAULT NULL,
   `id_empresa` int NOT NULL,
+  `status` tinyint NOT NULL,
   `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
@@ -524,7 +525,7 @@ CREATE TABLE `vagas` (
 
 LOCK TABLES `vagas` WRITE;
 /*!40000 ALTER TABLE `vagas` DISABLE KEYS */;
-INSERT INTO `vagas` VALUES (4,'Desenvolvedor Junior','87775-435','Mafra','SC','Estágio','Presencial','Júnior','600,00','[\"JavaScript\", \"Vuejs\", \"react\", \"Angular\", \"Uma banheira do gugu\", \"3 soletrando\"]','[\"Boa comunication\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.',NULL,1,'2024-09-10 07:24:44'),(105,'Analista de Dados','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.',100,18,'2024-10-14 03:39:42'),(124,'Analista de Dados','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.',100,18,'2024-10-18 23:05:12');
+INSERT INTO `vagas` VALUES (4,'Desenvolvedor Junior','87775-435','Mafra','SC','Estágio','Presencial','Júnior','600,00','[\"JavaScript\", \"Vuejs\", \"react\", \"Angular\", \"Uma banheira do gugu\", \"3 soletrando\"]','[\"Boa comunication\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.',NULL,1,0,'2024-09-10 07:24:44'),(105,'Analista de Dados','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.',100,18,0,'2024-10-14 03:39:42'),(124,'Analista de Dados','87775-435','Joinville','SC','CLT','Remoto','Júnior','3.000,00','[\"Pacote Office\", \"Lógica de Programação\", \"Trabalho em Equipe\"]','[\"Malabarismo\", \"Conserto de Veículos\", \"Plantar Bananeira\"]','A vaga é uma vaga muito boa e precisa ser muito bom para essa vaga. Só quem é muito bom poderá passar nessa vaga, então se você é bom se inscreva nela.',100,18,0,'2024-10-18 23:05:12');
 /*!40000 ALTER TABLE `vagas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
