@@ -34,6 +34,7 @@ router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
 router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
+router.put('/candidato/update/links', authMiddleware, Candidato.updateUserLinks);
 router.get('/candidato/read/all', authMiddleware, Candidato.getAllUser);
 
 // rotas perfil

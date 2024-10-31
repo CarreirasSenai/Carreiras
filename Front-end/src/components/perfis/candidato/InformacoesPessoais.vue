@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-card-title class="cor-primaria" title="teste">Informações Pessoais</v-card-title>
-        <v-card-text class="d-flex">
+        <v-card-text class="d-flex text-card">
             <v-container>
                 <v-row no-gutters>
                     <v-col cols="6" md="2" class="infos-pessoais">
@@ -45,10 +45,6 @@ export default {
 </script>
 
 <style scoped>
-* {
-    /* border: 1px solid red; */
-}
-
 p {
     margin: 5px;
     overflow: hidden;
@@ -58,6 +54,17 @@ p {
 
 p title {
     color: red;
+}
+
+.text-card {
+    height: 150px;
+    min-height: 140px;
+}
+
+@media (max-width: 959px) {
+    .text-card {
+        height: 200px;
+    }
 }
 
 /* .infos-pessoais p {
