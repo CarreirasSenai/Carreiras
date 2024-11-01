@@ -77,7 +77,7 @@
                     </v-btn>
 
                     <v-divider class="my-2" v-if="user.grupo === 'candidato'"></v-divider>
-                    <v-btn variant="text" rounded v-if="user.grupo === 'candidato'">Minhas
+                    <v-btn variant="text" rounded v-if="user.grupo === 'candidato'" to="minhas-vagas">Minhas
                       Vagas</v-btn>
 
                     <v-divider class="my-2" v-if="user.grupo === 'candidato' || user.grupo === 'empresa'"></v-divider>

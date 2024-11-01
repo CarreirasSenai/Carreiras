@@ -177,7 +177,7 @@ export default {
           this.MostrarUsuarios();
           this.dialog = false;
 
-        } catch (error) {
+        } catch (error) {''
           console.error('Erro', error.response.data);
           this.mensagem = error.response.data.error;
         }
