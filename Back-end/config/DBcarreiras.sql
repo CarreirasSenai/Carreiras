@@ -511,7 +511,7 @@ CREATE TABLE `vagas` (
   `descricao` text,
   `max_candidaturas` int DEFAULT NULL,
   `id_empresa` int NOT NULL,
-  `status` tinyint NOT NULL,
+  `status` tinyint DEFAULT NULL,
   `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id_empresa` (`id_empresa`),
