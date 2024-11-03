@@ -80,6 +80,7 @@ router.get('/vaga/read/empresa', Vaga.vagaReadEmpresa);
 router.get('/vaga/read/all', Vaga.vagaReadAll);
 router.put('/vaga/update', authMiddleware, Vaga.vagaUpdate);
 router.delete('/vaga/delete/:id', Vaga.vagaDelete);
+router.put('/vaga/update/status', authMiddleware, Vaga.vagaUpdateStatus);
 
 // rotas questionario
 router.post('/questionario/create', Questionario.create);

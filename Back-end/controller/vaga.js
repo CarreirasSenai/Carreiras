@@ -85,3 +85,15 @@ exports.vagaPesquisa = (req, res) => {
         }
     });
 };
+
+exports.vagaUpdateStatus = (req, res) => {
+    const { id_vaga, id_empresa, status } = req.body;
+
+    Vaga.vagaUpdateStatus(id_vaga, id_empresa, status, (err, result) => {
+        if (err)
+            return res.status(500).json({ error: err.message });
+
+        if (result)
+            return res.status(200).json({ success: true, result: result });
+    })
+}

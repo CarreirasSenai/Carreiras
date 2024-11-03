@@ -80,10 +80,15 @@
                             </v-card-text>
 
                             <v-card-actions class="d-flex justify-space-between border">
-                                <div class="d-flex flex-wrap ga-2">                                    
+                                <div class="d-flex flex-wrap ga-2">
                                     <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
-                                    <Questionario :Vagas="Vagas"/>
+                                    <Questionario :Vagas="Vagas" />
+                                    <v-btn v-if="user.dadosUser.grupo === 'admin'"
+                                        :class="this.Vagas.raw.status === 0 || this.Vagas.raw.status == null ? 'bg-green-darken-1' : 'bg-red-darken-1'"
+                                        @click="aprovarVaga">
+                                        {{ this.Vagas.raw.status === 1 ? 'Reprovar vaga' : 'Aprovar vaga' }}
+                                    </v-btn>
                                 </div>
                                 <router-link :to="`/perfil-empresa?requisicao=empresa&id=${this.Vagas.raw.id_empresa}`"
                                     class="text-black text-decoration-none">
@@ -98,6 +103,9 @@
                 </v-row>
             </v-container>
         </v-dialog>
+        <v-snackbar :color="color" v-model="snackbarUpdate" :timeout="6000">
+            <div class="text-center">{{ mensagem }}</div>
+        </v-snackbar>
     </div>
 </template>
 
@@ -113,6 +121,9 @@ export default {
             dialog: false,
             snackbar: false,
             empresa: '',
+            snackbarUpdate: false,
+            mensagem: '',
+            color: '',
         }
     },
     props: {
@@ -178,6 +189,41 @@ export default {
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response.data);
+            }
+        },
+        async aprovarVaga() {
+            try {
+                let tipoOperacao = this.Vagas.raw.status === 1 ? 'reprovada' : 'aprovada';
+                //TODO: alterar nome do método, exibir snackbar e atualizar listagem
+                console.log(this.Vagas.raw.id);
+                console.log(this.Vagas.raw.status);
+                console.log(this.Vagas.raw.id_empresa);
+                const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/vaga/update/status`, {
+                    id_vaga: this.Vagas.raw.id,
+                    id_empresa: this.Vagas.raw.id_empresa,
+                    status: this.Vagas.raw.status
+                },
+                    {
+                        withCredentials: true
+                    })
+
+                this.mensagem = "A vaga foi " + tipoOperacao;
+                this.snackbarUpdate = true;
+                this.color = tipoOperacao.includes('aprovada') ? 'success' : 'warning';
+                this.dialog = false;
+                setTimeout(() => {
+                    this.snackbarUpdate = false;
+                    this.MostrarVagas();
+                }, 1500);
+            } catch (error) {
+                tipoOperacao = tipoOperacao.includes("aprovada") ? 'reprovar' : 'aprovar';
+                this.snackbarUpdate = true;
+                this.mensagem = "Houve um erro ao " + tipoOperacao + " a vaga";
+                this.color = 'danger'
+                setTimeout(() => {
+                    this.snackbarUpdate = false;
+                }, 3500)
+                console.error(error);
             }
         }
     }
