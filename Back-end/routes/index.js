@@ -74,6 +74,7 @@ router.post('/vaga/create', Vaga.vagaCreate);
 router.get('/vaga/read', Vaga.vagaRead);
 router.get('/vaga/read/empresa', Vaga.vagaReadEmpresa);
 router.get('/vaga/read/all', Vaga.vagaReadAll);
+router.get('/vaga/cidades', Vaga.getCidadesVagas);
 router.put('/vaga/update', authMiddleware, Vaga.vagaUpdate);
 router.delete('/vaga/delete/:id', Vaga.vagaDelete);
 
@@ -103,6 +104,7 @@ router.get('/admin/pesquisa', Admin.pesquisaUser);
 // rotas candidatura
 router.post('/candidatura/create', Candidatura.create);
 router.get('/candidatura/read', Candidatura.read);
+router.delete('/candidatura/delete/:idVaga', authMiddleware, Candidatura.delete);
 
 // rota logout
 router.get('/logout', (req, res) => {

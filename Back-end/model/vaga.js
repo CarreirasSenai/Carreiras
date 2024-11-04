@@ -1,7 +1,7 @@
 const db = require("../config/db");
 
 exports.vagaCreate = (id, { dados }, callback) => {
-    const { titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habsExigidas, habsOpcionais, descricao, qtdCandidatos  } = dados;    
+    const { titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habsExigidas, habsOpcionais, descricao, qtdCandidatos } = dados;
 
     db.query('insert into vagas (titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habilidades_exigidas, habilidades_opcionais, descricao, max_candidaturas, id_empresa) values (?,?,?,?,?,?,?,?,?,?,?,?,?)',
         [titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, JSON.stringify(habsExigidas), JSON.stringify(habsOpcionais), descricao, qtdCandidatos, id],
@@ -145,6 +145,18 @@ exports.vagaPesquisa = (dados, callback) => {
     }
 
     db.query(query, queryParams, (err, result) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+        } else {
+            console.log(result);
+            return callback(null, result);
+        }
+    });
+};
+
+exports.getCidadesVagas = (callback) => {
+    db.query('SELECT DISTINCT cidade FROM vagas', (err, result) => {
         if (err) {
             console.log(err);
             return callback(err, null);

@@ -16,24 +16,25 @@
                         <v-container>
                             <v-row class="justify-center">
                                 <v-col cols="12">
-                                    <v-text-field v-model="pesquisa.form.palavraChave" append-inner-icon="mdi-magnify" density="compact"
-                                        label="Nome da vaga" variant="outlined" hide-details single-line>
+                                    <v-text-field v-model="pesquisa.form.palavraChave" append-inner-icon="mdi-magnify"
+                                        density="compact" label="Nome da vaga" variant="outlined" hide-details
+                                        single-line>
                                     </v-text-field>
                                 </v-col>
-                                <v-col cols="12" sm="6">
-                                    <v-select v-model="pesquisa.form.cidade" label="Cidade"
-                                        :items="['','Jaraguá', 'Joinville', 'Blumenal', 'Rio do Sul', 'Timbó', 'Indaial']"
-                                        variant="outlined" density="compact" hide-details ingle-line></v-select>
+                                <v-col cols="12">
+                                    <v-combobox v-model="pesquisa.form.cidade" label="Cidade" :items="municipios"
+                                        variant="outlined" density="compact" hide-details ingle-line></v-combobox>
                                 </v-col>
-                                <v-col cols="12" sm="6">
+                                <!-- <v-col cols="12" sm="6">
                                     <v-select v-model="pesquisa.form.estado" label="Estado"
                                         :items="['','Tchê', 'Santa Catarina', 'Pia', 'São Paulo', 'Pão de Queijo']"
                                         variant="outlined" density="compact" hide-details ingle-line></v-select>
-                                </v-col>
+                                </v-col> -->
                             </v-row>
                             <v-row>
                                 <v-col cols="12" sm="6">
-                                    <v-radio-group v-model="pesquisa.form.contrato" label="Contrato" class="d-flex align-center">
+                                    <v-radio-group v-model="pesquisa.form.contrato" label="Contrato"
+                                        class="d-flex align-center">
                                         <v-radio label="CLT" value="clt"></v-radio>
                                         <v-radio label="PJ" value="pj"></v-radio>
                                         <v-radio label="Estágio" value="estagio"></v-radio>
@@ -41,7 +42,8 @@
                                     </v-radio-group>
                                 </v-col>
                                 <v-col cols="12" sm="6">
-                                    <v-radio-group v-model="pesquisa.form.modalidade" label="Modalidade" class="d-flex align-center">
+                                    <v-radio-group v-model="pesquisa.form.modalidade" label="Modalidade"
+                                        class="d-flex align-center">
                                         <v-radio label="Presencial" value="presencial"></v-radio>
                                         <v-radio label="Híbrido" value="hibrido"></v-radio>
                                         <v-radio label="Remoto" value="remoto"></v-radio>
@@ -76,7 +78,8 @@
                 </v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
-                    <v-btn class="text-grey-darken-4" variant="text" text="Cancelar" @click="pesquisa.dialog = false"></v-btn>
+                    <v-btn class="text-grey-darken-4" variant="text" text="Cancelar"
+                        @click="pesquisa.dialog = false"></v-btn>
                     <v-btn class="bt-primario" variant="tonal" text="Filtrar" @click="pesquisa.pesquisar"></v-btn>
                 </v-card-actions>
             </v-card>
@@ -87,6 +90,7 @@
 <script>
 import { usePesquisaVaga } from '@/stores/pesquisaVaga';
 import { useDataHora } from '@/stores/dataHora';
+import axios from 'axios';
 
 export default {
     data() {
@@ -97,12 +101,14 @@ export default {
                 'Design',
                 'Vue',
                 'Vuetify',
-            ]
+            ],
+            municipios: []
         }
     },
 
     mounted() {
         this.inputData();
+        this.getMunicipios();
     },
 
     computed: {
@@ -122,6 +128,20 @@ export default {
             const data = this.dataHora.ano + '-' + this.dataHora.mes + '-' + this.dataHora.dia;
             this.dataInicio = data;
             this.dataFim = data;
+        },
+
+        async getMunicipios() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/cidades`, {
+                    withCredentials: true
+                });
+
+                console.log(response.data);
+                this.municipios = response.data.result.map(item => item.cidade);
+
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
         }
     },
 

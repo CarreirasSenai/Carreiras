@@ -16,8 +16,8 @@ exports.create = (idCandidato, idVaga, { dados }, callback) => {
             const idQuestionario = key.match(/\d+$/)[0];
 
             return new Promise((resolve, reject) => {
-                db.query('insert into questionario_respostas (resposta, id_questionario, id_candidato) values (?, ?, ?)',
-                    [respostas[key], idQuestionario, idCandidato], (err, result) => {
+                db.query('insert into questionario_respostas (resposta, id_questionario, id_candidato, id_vaga) values (?, ?, ?, ?)',
+                    [respostas[key], idQuestionario, idCandidato, idVaga], (err, result) => {
                         if (err) {
                             reject(err.message);
                         } else {
@@ -51,5 +51,24 @@ exports.read = (idCandidato, idVaga, callback) => {
 
         console.log(result);
         return callback(null, result[0]);
+    });
+};
+
+exports.delete = (idCandidato, idVaga, callback) => {    
+    db.query('delete from candidatura where id_candidato = ? and id_vaga = ?', [idCandidato, idVaga], (err, result) => {
+        if (err) {
+            console.log(err.message);
+            return callback(err, null);
+        }
+
+        db.query('delete from questionario_respostas where id_candidato = ? and id_vaga = ?', [idCandidato, idVaga], (err, result) => {
+            if (err) {
+                console.log(err.message);
+                return callback(err, null);
+            } else {
+                console.log(result);
+                return callback(null, result);
+            }
+        });
     });
 };

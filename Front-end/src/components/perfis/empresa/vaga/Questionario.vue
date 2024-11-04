@@ -127,6 +127,8 @@ export default {
                 }
             } else if (!this.user.dadosUser) {
                 this.showSnackbar = true;
+            } else if (this.nomeBtn === 'Inscrito') {
+                this.deleteCandidatura();
             }
         },
 
@@ -203,6 +205,26 @@ export default {
                 this.nomeBtn = 'Inscrever-se';
             }
         },
+
+        async deleteCandidatura() {
+            this.loading = true;
+
+            try {
+                const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/candidatura/delete/${this.idVaga}`, {
+                    withCredentials: true
+                });
+
+                console.log(response.data);
+
+                setTimeout(() => {
+                    this.loading = false;
+                    this.nomeBtn = 'Inscrever-se';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
+        }
     },
 
     watch: {
