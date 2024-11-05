@@ -27,21 +27,13 @@
                 variant="underlined"></v-text-field>
             </v-col>
           </v-row>
-          <v-row v-if="usuario.dadosUser.tipo_admin === 'super'">
-            <v-col cols="12" md="6">
-              <v-radio-group v-model="form.tipo" :rules="geral" label="Classe do Usuário">
-                <v-radio label="SUPER" value="super"></v-radio>
-                <v-radio label="ADM" value="adm"></v-radio>
-                <v-radio label="USER" value="user"></v-radio>
-              </v-radio-group>
-            </v-col>
+          
             <v-col cols="12" md="6">
               <v-radio-group v-model="form.status" :rules="geral" label="Status Ativo">
                 <v-radio label="Ativado" value="1"></v-radio>
                 <v-radio label="Desativado" value="0"></v-radio>
               </v-radio-group>
             </v-col>
-          </v-row>
           <v-row>
             <v-col cols="12">
               <v-btn to="/redefinir-senha?resposta=admin" text="Redefinir Senha" append-icon="mdi-arrow-top-right-thick"
@@ -150,7 +142,7 @@ export default {
 
   mounted() {
     this.form.id = this.User.id;
-    this.form.nome = this.User.nome;
+    this.form.nome = this.User.nome_completo;
     this.form.email = this.User.email;
     this.form.cpf = this.User.cpf;
     this.form.celular = this.User.celular;

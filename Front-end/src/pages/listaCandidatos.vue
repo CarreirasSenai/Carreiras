@@ -41,7 +41,7 @@
             </v-avatar>
             <v-avatar
               color="surface-variant"
-              :image="user.foto"
+              :image="`http://localhost:4000/uploads/perfil/${user.foto}`"
               v-if="user.foto"
             >
             </v-avatar>
