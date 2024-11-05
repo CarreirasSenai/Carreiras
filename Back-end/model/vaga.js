@@ -155,13 +155,15 @@ exports.vagaPesquisa = (dados, callback) => {
     });
 };
 
-exports.vagaUpdateStatus = (id_vaga, id_empresa, status, callback) => {
+exports.vagaUpdateStatus = (id_vaga, id_empresa, opcaoSelecionada, callback) => {
     let updatedStatus = 0;
 
-    if (status === 0 || status == null)
-        updatedStatus = 1;
-    else if (status === 1)
-        updatedStatus = 0;
+   if(opcaoSelecionada === 'aprovar')
+      updatedStatus = 1;
+    else if(opcaoSelecionada === 'reprovar')
+      updatedStatus = 0;
+
+    console.log("Status após atualização: " + updatedStatus);
 
     db.query("UPDATE vagas SET status = ? WHERE id_empresa = ? AND id = ?", [updatedStatus, id_empresa, id_vaga], (err, result) => {
         if (err)

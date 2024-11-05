@@ -84,10 +84,11 @@
                                     <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
                                     <Questionario :Vagas="Vagas" />
-                                    <v-btn v-if="user.dadosUser.grupo === 'admin'"
-                                        :class="this.Vagas.raw.status === 0 || this.Vagas.raw.status == null ? 'bg-green-darken-1' : 'bg-red-darken-1'"
-                                        @click="aprovarVaga">
-                                        {{ this.Vagas.raw.status === 1 ? 'Reprovar vaga' : 'Aprovar vaga' }}
+                                    <v-btn v-if="user.dadosUser.grupo === 'admin'" 
+                                    variant="outlined" 
+                                    color="deep-purple-accent-3"
+                                    @click="dialogFormAprovacao = true">
+                                        Aprovação
                                     </v-btn>
                                 </div>
                                 <router-link :to="`/perfil-empresa?requisicao=empresa&id=${this.Vagas.raw.id_empresa}`"
@@ -98,6 +99,53 @@
                                     </div>
                                 </router-link>
                             </v-card-actions>
+                            <div>
+                                <v-dialog
+                                v-model="dialogFormAprovacao"
+                                max-width="600"
+                                >
+                                    <v-card
+                                        prepend-icon="mdi-briefcase"
+                                        title="Aprovação da vaga"
+                                    >
+                                    <v-card-text>
+                                        <v-col cols="12">
+                                            <v-radio-group
+                                                v-model="opcaoSelecionada"
+                                                :rules="[v => !!v || 'Selecione uma opção']"
+                                            >
+                                                <v-radio label="Aprovar" value="aprovar"></v-radio>
+                                                <v-radio label="Reprovar" value="reprovar"></v-radio>
+                                            </v-radio-group>
+                                            <p v-if="showError === true" style="color: red">Escolha uma das opções acima!</p>
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <v-textarea
+                                                v-if="opcaoSelecionada === 'reprovar'"
+                                                label="Motivo da Reprovação"
+                                                v-model="motivoReprovacao"
+                                                :rules="motivoReprovacaoRules"
+                                            ></v-textarea>
+                                        </v-col>
+                                    </v-card-text>
+                                    <v-divider></v-divider>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                text="Fechar"
+                                                variant="plain"
+                                                @click="dialogFormAprovacao = false"
+                                            ></v-btn>
+                                            <v-btn
+                                                color="deep-purple-accent-3"
+                                                text="Salvar"
+                                                variant="tonal"
+                                                @click="aprovarVaga"
+                                            ></v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
+                            </div>
                         </v-card>
                     </v-col>
                 </v-row>
@@ -124,6 +172,11 @@ export default {
             snackbarUpdate: false,
             mensagem: '',
             color: '',
+            dialogFormAprovacao: false,
+            opcaoSelecionada: null,
+            showError: false,
+            motivoReprovacao: '',
+            motivoReprovacaoRules: [v => !!v || 'Por favor, insira o motivo da reprovação']
         }
     },
     props: {
@@ -193,33 +246,32 @@ export default {
         },
         async aprovarVaga() {
             try {
-                let tipoOperacao = this.Vagas.raw.status === 1 ? 'reprovada' : 'aprovada';
-                //TODO: alterar nome do método, exibir snackbar e atualizar listagem
-                console.log(this.Vagas.raw.id);
-                console.log(this.Vagas.raw.status);
-                console.log(this.Vagas.raw.id_empresa);
-                const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/vaga/update/status`, {
-                    id_vaga: this.Vagas.raw.id,
-                    id_empresa: this.Vagas.raw.id_empresa,
-                    status: this.Vagas.raw.status
-                },
-                    {
-                        withCredentials: true
-                    })
-
-                this.mensagem = "A vaga foi " + tipoOperacao;
-                this.snackbarUpdate = true;
-                this.color = tipoOperacao.includes('aprovada') ? 'success' : 'warning';
-                this.dialog = false;
-                setTimeout(() => {
-                    this.snackbarUpdate = false;
-                    this.MostrarVagas();
-                }, 1500);
+                if(this.opcaoSelecionada !== null && (this.motivoReprovacaoRules.every(rule => rule(this.motivoReprovacao) === true) || this.motivoReprovacao !== '')) {
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/vaga/update/status`, {
+                        id_vaga: this.Vagas.raw.id,
+                        id_empresa: this.Vagas.raw.id_empresa,
+                        opcaoSelecionada: this.opcaoSelecionada
+                    },
+                        {
+                            withCredentials: true
+                        })
+    
+                    this.mensagem = "A operação foi realizada com sucesso.";
+                    this.snackbarUpdate = true;
+                    this.color = 'success';
+                    this.dialog = false;
+                    setTimeout(() => {
+                        this.snackbarUpdate = false;
+                        this.MostrarVagas();
+                    }, 1500);
+                } else {
+                    if(this.opcaoSelecionada === null)
+                        this.showError = true;
+                }
             } catch (error) {
-                tipoOperacao = tipoOperacao.includes("aprovada") ? 'reprovar' : 'aprovar';
                 this.snackbarUpdate = true;
-                this.mensagem = "Houve um erro ao " + tipoOperacao + " a vaga";
-                this.color = 'danger'
+                this.color = 'error';
+                this.mensagem = "Houve um erro ao realizar operação desejada.";
                 setTimeout(() => {
                     this.snackbarUpdate = false;
                 }, 3500)
