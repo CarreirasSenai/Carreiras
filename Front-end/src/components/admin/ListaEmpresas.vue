@@ -3,20 +3,39 @@
     <Navbar />
     <v-container class="d-flex flex-column ga-8 pa-6 mt-5">
       <div class="d-flex align-center ga-1">
-        <h1 style="font-size: clamp(17px, 4vw, 25px);">
-          Empresas do Sistema
-        </h1>
+        <h1 style="font-size: clamp(17px, 4vw, 25px)">Empresas do Sistema</h1>
         <v-spacer></v-spacer>
+        
       </div>
-      <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Empresa"
-        variant="underlined" hide-details single-line/>
+       <v-text-field
+          class="my-8"
+          v-model="busca"
+          :loading="loading"
+          append-inner-icon="mdi-magnify"
+          density="compact"
+          label="Procure um Usuário"
+          variant="underlined"
+          hide-details
+          single-line
+          @click:append-inner="searchUser"
+          @keyup.enter="searchUser"
+        />
+
       <v-card v-for="user in empresas" :key="user">
         <v-card-text>
           <v-row align="center">
             <v-col cols="12" sm="4" class="d-flex align-center ga-2">
-              <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.foto">
+              <v-avatar
+                color="surface-variant"
+                image="/src/assets/avatar.png"
+                v-if="!user.foto"
+              >
               </v-avatar>
-              <v-avatar color="surface-variant" :image="user.foto" v-if="user.foto">
+              <v-avatar
+                color="surface-variant"
+                :image="`http://localhost:4000/uploads/perfil/${user.foto}`"
+                v-if="user.foto"
+              >
               </v-avatar>
               <div>
                 <h3>{{ user.nome_fantasia }}</h3>
@@ -30,13 +49,22 @@
               </p>
             </v-col>
             <v-col cols="9" sm="4" class="text-align">
-              <v-chip size="small" :color="colorTipoUser(user.verificado)">{{ user.verificado === 1 ? 'Verificado' :
-                'Não verificado' }}</v-chip>
+              <v-chip size="small" :color="colorTipoUser(user.verificado)">{{
+                user.verificado === 1 ? "Verificado" : "Não verificado"
+              }}</v-chip>
             </v-col>
             <v-col cols="3" sm="1" class="text-end">
-              <EditarCadEmpresaAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
-                :User="user" />
-              <v-btn variant="plain" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
+              <EditarCadEmpresaAdmin
+                v-if="usuario.dadosUser.tipo_admin === 'super'"
+                :MostrarUsuarios="mostrarUsuarios"
+                :User="user"
+              />
+              <v-btn
+                variant="plain"
+                icon="mdi mdi-pencil"
+                v-else
+                @click="showSnackbar = true"
+              >
               </v-btn>
             </v-col>
           </v-row>
@@ -58,7 +86,7 @@ export default {
     showSnackbar: false,
     loading: false,
     dialog: false,
-    busca: ''
+    busca: "",
   }),
   computed: {
     auth() {
@@ -66,7 +94,7 @@ export default {
     },
     usuario() {
       return useCandidatoStore();
-    }
+    },
   },
   created() {
     this.auth.autenticacao();
@@ -90,22 +118,45 @@ export default {
         console.error("Erro: ", error.response.data);
       }
     },
-    colorTipoUser(value) {
-      if (value === 1)
-        return 'success';
+    
+    async searchUser() {
+      console.clear();
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/empresa/pesquisa`,
+          {
+            params: {
+              busca: this.busca,
+            },
+            withCredentials: true,
+          }
+        );
 
-      return 'error';
+        console.log(response.data);
+        this.usuarios = response.data.result;
+      } catch (error) {
+        console.error("Erro na busca:", error.response.data);
+        this.usuarios = "";
+      }
+    },
+
+    colorTipoUser(value) {
+      if (value === 1) return "success";
+
+      return "error";
     },
     formatarCelular(valorTelefone) {
       valorTelefone = valorTelefone.replace(/\D/g, "");
-      valorTelefone = valorTelefone.replace(/^(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+      valorTelefone = valorTelefone.replace(
+        /^(\d{2})(\d{5})(\d{4})/,
+        "($1) $2-$3"
+      );
       return valorTelefone;
-    }
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
-
 * {
   // border: 1px solid red;
 }
