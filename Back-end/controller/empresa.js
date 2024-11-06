@@ -112,7 +112,14 @@ exports.login = (req, res) => {
 
 // Read / Autenticar
 exports.getUser = (req, res) => {
-    const usuario_id = req.query.id ? req.query.id : req.session.usuario.id;
+    let usuario_id = 0;
+    if(req.query.id)
+        usuario_id = req.query.id;
+    else if(req.session.usuario.id)
+        usuario_id = req.session.usuario.id;
+    else if(req.body.id)
+        usuario_id = req.body.id;
+    //const usuario_id = req.query.id ? req.query.id : req.session.usuario.id;
 
     if (usuario_id) {
         Empresa.getUser(usuario_id, (err, usuario) => {

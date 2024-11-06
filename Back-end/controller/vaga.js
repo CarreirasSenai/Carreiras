@@ -1,4 +1,5 @@
 const Vaga = require("../model/vaga");
+const transporter = require('../services/nodemailer');
 
 exports.vagaCreate = (req, res) => {
     const id = req.session.usuario.id;
@@ -87,13 +88,57 @@ exports.vagaPesquisa = (req, res) => {
 };
 
 exports.vagaUpdateStatus = (req, res) => {
-    const { id_vaga, id_empresa, opcaoSelecionada } = req.body;
+    const { id_vaga, id_empresa, opcaoSelecionada, mensagem, titulo, email } = req.body;
+
+    const mensagemEmail = mensagem ? mensagem : 'Sua vaga foi aprovada. Ela está já disponível para que os candidatos possam inscrever-se!'; 
+
+    const corpo = `
+        <div style="font-family: Arial, Helvetica, sans-serif; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;">
+            <div style="text-align: center; width: 100%;">
+                <hr>
+                <h1 style="color: #333;">Carreiras 🐝</h1>
+                <div style="background: linear-gradient(to right, #6f00ff, #9341ff);
+                    padding: 50px;
+                    color: white;
+                    box-shadow: 0 1px 4px #333;">
+                    <div>
+                        <h2 style:"text-align: center;">Título da vaga: ${titulo}</h2>
+                        <br><br>
+                        <p>${mensagemEmail}</p>
+                        <br><br><br><br>
+                        <small>
+                            <a target="_blank" href="https://www.carreiras.com.br" style="color: white;">
+                                www.carreiras.com.br
+                            </a>
+                        </small>
+                    </div>
+                </div>
+                <br>
+                <hr>
+            </div>
+        </div>
+    `;
 
     Vaga.vagaUpdateStatus(id_vaga, id_empresa, opcaoSelecionada, (err, result) => {
         if (err)
             return res.status(500).json({ error: err.message });
 
-        if (result)
+        if (result){
+            async function main() {
+                const info = await transporter.sendMail({
+                    from: '"Carreiras" <carreirassenai@gmail.com>',
+                    to: email,
+                    subject: "Ativação de Conta",
+                    html: corpo
+                });
+            }
+            main().catch(console.error);
             return res.status(200).json({ success: true, result: result });
+        }
     })
 }
