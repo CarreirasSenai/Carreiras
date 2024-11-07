@@ -179,6 +179,7 @@ export default {
             dialogFormAprovacao: false,
             opcaoSelecionada: null,
             motivoReprovacao: '',
+            emailEmpresa: '',
             motivoReprovacaoRules: {
                 obrigatorioRules: v => !!v || 'Por favor, insira o motivo da reprovação',
                 tamanhoRules: v => v.length <= 200 && v.length >= 50 || 'O motivo deve ter no mínimo 50 caracteres e no máximo 200 caracteres'},
@@ -244,6 +245,8 @@ export default {
                 this.empresa.foto = foto ? path + foto : avatarPadrao;
                 this.empresa.capa = capa ? path + capa : capaPadrao;
 
+                this.emailEmpresa = this.empresa.email;
+
                 // console.log(this.empresa);                
 
             } catch (error) {
@@ -253,8 +256,8 @@ export default {
         async aprovarVaga() {
             try {
                 if(this.isFormValid && this.$refs.formAprovacao.validate()) {
-                    const responseCompany = this.getUserEmpresa();
-                    const companyEmail = responseCompany.id;
+                    this.getUserEmpresa();
+                    const companyEmail = this.emailEmpresa;
 
                     const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/vaga/update/status`, {
                         id_vaga: this.Vagas.raw.id,

@@ -163,8 +163,6 @@ exports.vagaUpdateStatus = (id_vaga, id_empresa, opcaoSelecionada, callback) => 
     else if(opcaoSelecionada === 'reprovar')
       updatedStatus = 0;
 
-    console.log("Status após atualização: " + updatedStatus);
-
     db.query("UPDATE vagas SET status = ? WHERE id_empresa = ? AND id = ?", [updatedStatus, id_empresa, id_vaga], (err, result) => {
         if (err)
             return callback(err, null);
