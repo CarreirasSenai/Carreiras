@@ -90,7 +90,7 @@ exports.vagaPesquisa = (req, res) => {
 exports.vagaUpdateStatus = (req, res) => {
     const { id_vaga, id_empresa, opcaoSelecionada, mensagem, titulo, email } = req.body;
 
-    const mensagemEmail = mensagem !== null && mensagem !== '' ? mensagem : 'Sua vaga foi aprovada.<br> Ela está já disponível para que os candidatos possam inscrever-se!'; 
+    const mensagemEmail = mensagem !== null && mensagem !== '' ? mensagem : 'Sua vaga foi aprovada.<br style="color: #fff"> Ela está já disponível para que os candidatos possam inscrever-se!'; 
 
     const corpo =`
     <div style="font-family: Arial, Helvetica, sans-serif;
