@@ -80,10 +80,16 @@
                             </v-card-text>
 
                             <v-card-actions class="d-flex justify-space-between border">
-                                <div class="d-flex flex-wrap ga-2">                                    
+                                <div class="d-flex flex-wrap ga-2">
                                     <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
-                                    <Questionario :Vagas="Vagas"/>
+                                    <Questionario :Vagas="Vagas" />
+                                    <v-btn v-if="user.dadosUser.grupo === 'admin'" 
+                                    variant="outlined" 
+                                    color="deep-purple-accent-3"
+                                    @click="dialogFormAprovacao = true">
+                                        Aprovação
+                                    </v-btn>
                                 </div>
                                 <router-link :to="`/perfil-empresa?requisicao=empresa&id=${this.Vagas.raw.id_empresa}`"
                                     class="text-black text-decoration-none">
@@ -93,11 +99,65 @@
                                     </div>
                                 </router-link>
                             </v-card-actions>
+                            <div>
+                                <v-form ref="formAprovacao" v-model="isFormValid">
+                                    <v-dialog
+                                    v-model="dialogFormAprovacao"
+                                    max-width="600"
+                                    >
+                                        <v-card
+                                            prepend-icon="mdi-briefcase"
+                                            title="Aprovação da vaga"
+                                        >
+                                        <v-card-text>
+                                            <v-col cols="12">
+                                                <v-radio-group
+                                                    v-model="opcaoSelecionada"
+                                                    :rules="[v => !!v || 'Selecione uma opção']"
+                                                >
+                                                    <v-radio label="Aprovar" value="aprovar"></v-radio>
+                                                    <v-radio label="Reprovar" value="reprovar"></v-radio>
+                                                </v-radio-group>
+                                            </v-col>
+                                            <v-col cols="12">
+                                                <v-textarea
+                                                    v-if="opcaoSelecionada === 'reprovar'"
+                                                    label="Motivo da Reprovação"
+                                                    v-model="motivoReprovacao"
+                                                    :rules="[motivoReprovacaoRules.obrigatorioRules, motivoReprovacaoRules.tamanhoRules]"
+                                                    counter
+                                                    no-resize
+                                                ></v-textarea>
+                                            </v-col>
+                                        </v-card-text>
+                                        <v-divider></v-divider>
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn
+                                                    text="Fechar"
+                                                    variant="plain"
+                                                    @click="dialogFormAprovacao = false"
+                                                ></v-btn>
+                                                <v-btn
+                                                    color="deep-purple-accent-3"
+                                                    text="Salvar"
+                                                    variant="tonal"
+                                                    @click="aprovarVaga"
+                                                    :disabled="!isFormValid"
+                                                ></v-btn>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-dialog>
+                                </v-form>
+                            </div>
                         </v-card>
                     </v-col>
                 </v-row>
             </v-container>
         </v-dialog>
+        <v-snackbar :color="color" v-model="snackbarUpdate" :timeout="6000">
+            <div class="text-center">{{ mensagem }}</div>
+        </v-snackbar>
     </div>
 </template>
 
@@ -113,6 +173,17 @@ export default {
             dialog: false,
             snackbar: false,
             empresa: '',
+            snackbarUpdate: false,
+            mensagem: '',
+            color: '',
+            dialogFormAprovacao: false,
+            opcaoSelecionada: null,
+            motivoReprovacao: '',
+            emailEmpresa: '',
+            motivoReprovacaoRules: {
+                obrigatorioRules: v => !!v || 'Por favor, insira o motivo da reprovação',
+                tamanhoRules: v => v.length <= 200 && v.length >= 50 || 'O motivo deve ter no mínimo 50 caracteres e no máximo 200 caracteres'},
+            isFormValid: false
         }
     },
     props: {
@@ -157,7 +228,7 @@ export default {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/empresa/read`, {
                     params: {
-                        id: id,
+                        id: this.Vagas.raw.id_empresa,
                     },
                     withCredentials: true
                 });
@@ -174,10 +245,49 @@ export default {
                 this.empresa.foto = foto ? path + foto : avatarPadrao;
                 this.empresa.capa = capa ? path + capa : capaPadrao;
 
+                this.emailEmpresa = this.empresa.email;
+
                 // console.log(this.empresa);                
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response.data);
+            }
+        },
+        async aprovarVaga() {
+            try {
+                if(this.isFormValid && this.$refs.formAprovacao.validate()) {
+                    this.getUserEmpresa();
+                    const companyEmail = this.emailEmpresa;
+
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/vaga/update/status`, {
+                        id_vaga: this.Vagas.raw.id,
+                        id_empresa: this.Vagas.raw.id_empresa,
+                        opcaoSelecionada: this.opcaoSelecionada,
+                        mensagem: this.motivoReprovacao,
+                        titulo: this.Vagas.raw.titulo,
+                        email: companyEmail
+                    },
+                        {
+                            withCredentials: true
+                        })
+    
+                    this.mensagem = "A operação foi realizada com sucesso.";
+                    this.snackbarUpdate = true;
+                    this.color = 'success';
+                    this.dialog = false;
+                    setTimeout(() => {
+                        this.snackbarUpdate = false;
+                        this.MostrarVagas();
+                    }, 1500);
+                }
+            } catch (error) {
+                this.snackbarUpdate = true;
+                this.color = 'error';
+                this.mensagem = "Houve um erro ao realizar operação desejada.";
+                setTimeout(() => {
+                    this.snackbarUpdate = false;
+                }, 3500)
+                console.error(error);
             }
         }
     }

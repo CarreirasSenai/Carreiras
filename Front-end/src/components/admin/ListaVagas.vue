@@ -10,7 +10,7 @@
         <v-spacer></v-spacer>
       </div>
 
-      <v-data-iterator :items="vagas" :items-per-page="6" :search="search">
+      <v-data-iterator :items="vagas" :items-per-page="10" :search="search">
         <template v-slot:header>
           <v-text-field v-model="search" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Vaga"
             variant="underlined" hide-details single-line />
@@ -41,6 +41,19 @@
             </v-card-text>
           </v-card>
         </template>
+          <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+            <div class="d-flex align-center justify-center pa-4">
+                <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
+                    @click="prevPage"></v-btn>
+
+                <div class="mx-2 text-caption">
+                    Página {{ page }} de {{ pageCount }}
+                </div>
+
+                <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal"
+                    rounded @click="nextPage"></v-btn>
+            </div>
+          </template>
       </v-data-iterator>
     </v-container>
   </div>

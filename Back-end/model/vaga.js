@@ -1,7 +1,7 @@
 const db = require("../config/db");
 
 exports.vagaCreate = (id, { dados }, callback) => {
-    const { titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habsExigidas, habsOpcionais, descricao, qtdCandidatos  } = dados;    
+    const { titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habsExigidas, habsOpcionais, descricao, qtdCandidatos } = dados;
 
     db.query('insert into vagas (titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, habilidades_exigidas, habilidades_opcionais, descricao, max_candidaturas, id_empresa) values (?,?,?,?,?,?,?,?,?,?,?,?,?)',
         [titulo, cep, cidade, estado, contrato, modalidade, nivel, remuneracao, JSON.stringify(habsExigidas), JSON.stringify(habsOpcionais), descricao, qtdCandidatos, id],
@@ -154,3 +154,19 @@ exports.vagaPesquisa = (dados, callback) => {
         }
     });
 };
+
+exports.vagaUpdateStatus = (id_vaga, id_empresa, opcaoSelecionada, callback) => {
+    let updatedStatus = 0;
+
+   if(opcaoSelecionada === 'aprovar')
+      updatedStatus = 1;
+    else if(opcaoSelecionada === 'reprovar')
+      updatedStatus = 0;
+
+    db.query("UPDATE vagas SET status = ? WHERE id_empresa = ? AND id = ?", [updatedStatus, id_empresa, id_vaga], (err, result) => {
+        if (err)
+            return callback(err, null);
+
+        return callback(null, result);
+    })
+}

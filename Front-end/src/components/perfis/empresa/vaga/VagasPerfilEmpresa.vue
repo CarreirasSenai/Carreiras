@@ -86,7 +86,7 @@
                         @click="prevPage"></v-btn>
 
                     <div class="mx-2 text-caption">
-                        Page {{ page }} of {{ pageCount }}
+                        Página {{ page }} de {{ pageCount }}
                     </div>
 
                     <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal"
