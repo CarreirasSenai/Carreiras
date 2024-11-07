@@ -180,3 +180,20 @@ exports.deleteUser = (req, res) => {
         return res.status(200).json({ success: 'Usuário Deletado!' })
     })
 }
+
+exports.pesquisaEmpresa = (req, res) => {
+    const busca = req.query.busca;
+
+    Empresa.pesquisaEmpresa(busca, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        if (result.length === 0) {
+            console.log('Busca não encontrada');            
+            return res.status(404).json({ error: 'Busca não encontrada' });
+        }
+
+        return res.json({ success: true, result: result });
+    });
+};

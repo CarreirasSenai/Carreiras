@@ -133,3 +133,22 @@ exports.getAllCandidatos = (callback) => {
         return callback(null, result.length > 0 ? result : null);
     });
 };
+
+exports.pesquisaCandidato = (busca, callback) => {
+    const buscaComCuringa = `%${busca}%`; // Adiciona o curinga para busca parcial
+
+    const sql = `
+        SELECT * FROM user_candidato
+        WHERE CONCAT(nome_social, ' ', nome_completo, ' ', email, ' ', cpf, ' ', celular) LIKE ?
+    `;
+
+    db.query(sql, [buscaComCuringa], (err, row) => {
+        if (err) {
+            // console.log(err);
+            return callback(err, null);
+        }
+
+        // console.log(row);
+        return callback(null, row);
+    });
+};

@@ -25,8 +25,8 @@
       variant="underlined"
       hide-details
       single-line
-      @click:append-inner="searchUser"
-      @keyup.enter="searchUser"
+      @click:append-inner="pesquisaCandidato"
+      @keyup.enter="pesquisaCandidato"
     />
 
     <v-card v-for="user in usuarios" :key="user">
@@ -154,11 +154,11 @@ export default {
       }
     },
 
-    async searchUser() {
+    async pesquisaCandidato() {
       console.clear();
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/admin/pesquisa`,
+          `${import.meta.env.VITE_BACKEND_URL}/candidato/pesquisaCandidato`,
           {
             params: {
               busca: this.busca,

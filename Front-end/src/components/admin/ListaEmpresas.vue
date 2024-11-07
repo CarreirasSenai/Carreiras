@@ -17,8 +17,8 @@
           variant="underlined"
           hide-details
           single-line
-          @click:append-inner="searchUser"
-          @keyup.enter="searchUser"
+          @click:append-inner="pesquisaEmpresa"
+          @keyup.enter="pesquisaEmpresa"
         />
 
       <v-card v-for="user in empresas" :key="user">
@@ -119,11 +119,11 @@ export default {
       }
     },
     
-    async searchUser() {
+    async pesquisaEmpresa() {
       console.clear();
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/empresa/pesquisa`,
+          `${import.meta.env.VITE_BACKEND_URL}/empresa/pesquisaEmpresa`,
           {
             params: {
               busca: this.busca,
@@ -133,10 +133,10 @@ export default {
         );
 
         console.log(response.data);
-        this.usuarios = response.data.result;
+        this.empresas = response.data.result;
       } catch (error) {
         console.error("Erro na busca:", error.response.data);
-        this.usuarios = "";
+        this.empresas = "";
       }
     },
 

@@ -137,3 +137,22 @@ exports.deleteUser = (id, callback) => {
             return callback(null, result.affectedRows > 0);
     });
 };
+
+exports.pesquisaEmpresa = (busca, callback) => {
+    const buscaComCuringa = `%${busca}%`; // Adiciona o curinga para busca parcial
+
+    const sql = `
+        SELECT * FROM user_empresa
+        WHERE CONCAT(nome_fantasia, ' ', email, ' ', cnpj, ' ', celular) LIKE ?
+    `;
+
+    db.query(sql, [buscaComCuringa], (err, row) => {
+        if (err) {
+            // console.log(err);
+            return callback(err, null);
+        }
+
+        // console.log(row);
+        return callback(null, row);
+    });
+};
