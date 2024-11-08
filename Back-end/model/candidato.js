@@ -79,7 +79,9 @@ exports.getLogin = (email, callback) => {
 
 // Update
 // Necesssário fazer a validação se o email ou cpf de atualziação já existe como no cadastro, a falta disso ocasionara um erro no database - thiago :)
-exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, callback) => {
+exports.updateUser  = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, callback) => {
+    console.log('Dados para atualização:', { nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id });
+    
     db.query(`UPDATE user_candidato 
         SET nome_social = ?, 
         nome_completo = ?, 
@@ -100,10 +102,9 @@ exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
         WHERE id = ?`,
         [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id], (err, result) => {
             if (err) {
-                console.log(err);
+                console.log("Erro na consulta de atualização:", err); // Log do erro
                 return callback(err, null);
             } else if (result) {
-                // console.log(result);
                 return callback(null, result.affectedRows > 0);
             }
         });

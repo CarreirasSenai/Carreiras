@@ -137,15 +137,16 @@ exports.getUser = (req, res) => {
 };
 
 // Update
-exports.updateUser = (req, res) => {
+exports.updateUser  = (req, res) => {
     const { id, nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao } = req.body;
-    console.log('\n updateUser:');
-    console.log(req.body);
+    console.log('\n update:User ');
+    console.log(req.body); // Adicione este log para verificar os dados recebidos
 
     const grupo = 'candidato';
 
-    Candidato.updateUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, (err, success) => {
+    Candidato.updateUser (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, (err, success) => {
         if (err) {
+            console.log("Erro ao atualizar usuário:", err); // Log do erro
             return res.status(500).json({ error: err.message });
         }
 
