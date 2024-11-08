@@ -49,6 +49,7 @@
               <v-btn variant="text" rounded to="/" class="text-none">Home</v-btn>
               <v-btn variant="text" rounded to="/sobre" class="text-none">Sobre o Carreiras</v-btn>
               <v-btn variant="text" rounded to="/contato" class="text-none">Contate-nos</v-btn>
+              <v-btn variant="text" rounded to="/politica-de-privacidade" class="text-none">Política de privacidade</v-btn>
             </div>
             <v-menu min-width="200px" rounded>
               <template v-slot:activator="{ props }">
