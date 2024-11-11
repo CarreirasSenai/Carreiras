@@ -71,11 +71,14 @@ export default {
         loading: false,
         showSnackbar: false,
         idVaga: '',
+        maxCandidaturas: '',
+        qtdCandidaturas: '',
         idEmpresa: '',
         dialog: false,
         questionario: {},
         grupo: '',
         form: {},
+        estadoBtnInscrever: false,
 
         rules: {
             geral: value => !!value || 'Rersponda a questão.'
@@ -96,9 +99,11 @@ export default {
         this.resolucao.verificaResolucao();
         this.grupo = localStorage.getItem('grupo');
         this.idVaga = this.Vagas.raw.id;
+        this.maxCandidaturas = this.Vagas.raw.max_candidaturas;
         this.idEmpresa = this.Vagas.raw.id_empresa;
         this.readQuestionario();
         this.readCandidatura();
+        this.readCandidaturaVaga();
     },
     methods: {
         async readQuestionario() {
@@ -119,14 +124,20 @@ export default {
         },
 
         handleButtonClick() {
-            if (this.user.dadosUser && this.nomeBtn != 'Inscrito') {
-                this.dialog = true;
-                this.populaForm();
-                if (!this.questionario.length && this.grupo === 'candidato') {
-                    this.enviarCandidatura();
+            if (this.qtdCandidaturas < this.maxCandidaturas) {
+                if (this.user.dadosUser && this.nomeBtn != 'Inscrito') {
+                    this.dialog = true;
+                    this.populaForm();
+                    if (!this.questionario.length && this.grupo === 'candidato') {
+                        this.enviarCandidatura();
+                    }
+                } else if (!this.user.dadosUser) {
+                    this.showSnackbar = true;
+                } else if (this.nomeBtn === 'Inscrito') {
+                    this.deleteCandidatura();
                 }
-            } else if (!this.user.dadosUser) {
-                this.showSnackbar = true;
+            } else {
+                alert('Limite de candidaturas atingido para essa vaga.')
             }
         },
 
@@ -165,7 +176,9 @@ export default {
                 }, 3000);
 
             } catch (error) {
-                console.error('Erro', error.response.data);
+                console.error('Erro', error.response.data.error);
+                this.loading = false;
+                alert(error.response.data.error);
             }
         },
 
@@ -203,6 +216,43 @@ export default {
                 this.nomeBtn = 'Inscrever-se';
             }
         },
+
+        async deleteCandidatura() {
+            this.loading = true;
+
+            try {
+                const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/candidatura/delete/${this.idVaga}`, {
+                    withCredentials: true
+                });
+
+                console.log(response.data);
+
+                setTimeout(() => {
+                    this.loading = false;
+                    this.nomeBtn = 'Inscrever-se';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
+        },
+
+        async readCandidaturaVaga() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidatura/read/vaga`, {
+                    params: {
+                        idVaga: this.idVaga
+                    },
+                    withCredentials: true
+                });
+
+                console.log(response.data);
+                this.qtdCandidaturas = response.data.result.length;
+
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
+        }
     },
 
     watch: {

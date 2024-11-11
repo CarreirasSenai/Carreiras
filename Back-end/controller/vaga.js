@@ -85,3 +85,13 @@ exports.vagaPesquisa = (req, res) => {
         }
     });
 };
+
+exports.getCidadesVagas = (req, res) => {
+    Vaga.getCidadesVagas((err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.status(200).json({ sucess: 'Cidades:', result: result });
+        }
+    });
+};

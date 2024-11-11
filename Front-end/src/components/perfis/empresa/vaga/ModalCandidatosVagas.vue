@@ -1,5 +1,5 @@
 <template>
-    <v-btn variant="text" icon="mdi-account-multiple-check" @click="dialog = true"></v-btn>
+    <v-btn variant="text" icon="mdi-account-multiple-check" @click="dialog = true, readCandidaturas()"></v-btn>
 
     <v-dialog v-model="dialog" min-width="300px">
         <v-container>
@@ -35,10 +35,10 @@
                                 </router-link>
                             </template>
 
-                            <template v-slot:item.indicacao="{ item }">
+                            <!-- <template v-slot:item.indicacao="{ item }">
                                 <v-icon :icon="item.indicacao ? 'mdi-circle' : ''" color="deep-purple-accent-3"
                                     size="x-small"></v-icon>
-                            </template>
+                            </template> -->
 
                             <template v-slot:item.relevancia="{ item }">
                                 <div class="d-flex">
@@ -66,15 +66,18 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
+            idVaga: '',
             dialog: false,
             search: '',
             headers: [
                 { title: 'Foto', value: 'foto', sortable: false },
                 { title: 'Nome', value: 'nome', sortable: false },
-                { title: 'Indicação', value: 'indicacao', sortable: true },
+                // { title: 'Indicação', value: 'indicacao', sortable: true },
                 { title: 'Profissão', value: 'profissao', sortable: false },
                 { title: 'Relevância', value: 'relevancia', sortable: true },
                 { title: 'Ação', value: 'acao', sortable: false },
@@ -115,6 +118,10 @@ export default {
         Vagas: Object,
     },
 
+    mounted() {
+        this.idVaga = this.Vagas.raw.id;        
+    },
+
     methods: {
         aprovarCandidato(id) {
             alert(id);
@@ -136,6 +143,22 @@ export default {
             }
             if (value >= 90) {
                 return 'success';
+            }
+        },
+
+        async readCandidaturas() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidatura/read/vaga`, {
+                    params: {
+                        idVaga: this.idVaga,
+                    },
+                    withCredentials: true
+                });
+
+                console.log(response.data.result);                
+
+            } catch (error) {
+                console.error('Erro ao obter dados do usuário', error.response.data);
             }
         }
     }
