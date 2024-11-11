@@ -1,14 +1,15 @@
 const Candidatura = require("../model/candidatura");
 
 exports.create = (req, res) => {
-    const idCandidato = req.session.usuario.id;
-    // const idCandidato = 25;
+    // const idCandidato = req.session.usuario.id;
+    const idCandidato = 25;
     const idVaga = req.body.idVaga;
     const dados = req.body;
 
     Candidatura.create(idCandidato, idVaga, dados, (err, result) => {
         if (err) {
-            return res.status(500).json({ error: err.message });
+            console.log(err);            
+            return res.status(500).json({ error: err });
         } else if (result) {
             return res.json({ success: true, result: 'Candidatura enviada!' })
         }
@@ -25,6 +26,30 @@ exports.read = (req, res) => {
             return res.status(500).json({ error: err.message });
         } else if (result) {
             return res.json({ success: 'Candidatura:', result: result });
+        }
+    });
+};
+
+// exports.readAll = (req, res) => {
+//     const idVaga = req.query.idVaga;    
+
+//     Candidatura.readAll(idVaga, (err, result) => {
+//         if (err) {
+//             return res.status(500).json({ error: err.message });
+//         } else if (result) {
+//             return res.json({ success: 'Candidaturas:', result: result });
+//         }
+//     });
+// };
+
+exports.readVaga = (req, res) => {
+    const idVaga = req.query.idVaga;    
+
+    Candidatura.readVaga(idVaga, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.json({ success: 'Candidaturas:', result: result });
         }
     });
 };
