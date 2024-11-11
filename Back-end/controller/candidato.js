@@ -63,7 +63,7 @@ exports.createUser = async (req, res) => {
         if (err) {
             return res.status(500).json({ error: err.message });
 
-        } 
+        }
         if (insertId) {
             // Disparar e-mail
             async function main() {
@@ -195,7 +195,19 @@ exports.getAllUser = (req, res) => {
             return res.status(404).json({ error: 'Usuário não encontrado!' });
         }
 
-        // console.log(req.session);
         res.json({ success: true, usuarios: usuarios });
     });
 };
+
+exports.updateUserLinks = (req, res) => {
+    const { id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal} = req.body;
+    Candidato.updateUserLinks(id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal, (err, result) => {
+        if(err)
+            return res.status(500).json({ error: err.message });
+        
+        if(!result)
+            return res.status(404).json({ error: 'Links não encontrados!' });
+
+        res.status(200).json({ success: true, result: result });
+    })
+}

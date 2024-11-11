@@ -1,82 +1,91 @@
 <template>
-  <div class="vacancy-list-container" style="height: 100%">
+  <div style="height: 100%">
     <Navbar />
-    <h1>Lista de vagas</h1>
-    <div class="busca">
-      <div class="procurar-Usuarios">
-        <v-card-text>
-          <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Pesquisar"
-            variant="solo" hide-details single-line @click:append-inner="onClick" @keyup.enter="onClick" />
-        </v-card-text>
+
+    <v-container class="d-flex flex-column ga-8 pa-6 mt-5">
+      <div class="d-flex align-center ga-1">
+        <h1 style="font-size: clamp(17px, 4vw, 25px);">
+          Vagas em Aprovação
+        </h1>
+        <v-spacer></v-spacer>
       </div>
-    </div>
-    <div class="empresa-info rounded">
-      <div>
-        <v-avatar color="surface-variant" size="60">
-          <v-icon>mdi-account-circle</v-icon>
-        </v-avatar>
-        <p>TOTVS - EMPRESAS INTELIGENTES</p>
-      </div>
-      <p><strong>Localização:</strong> Joinville, SC</p>
-      <p class="status"></p>
-    </div>
-    <div class="vagas-container rounded">
-      <div class="vagas-cadastradas-container rounded">
-        <div class="vagas-cadastradas rounded">
-          <p>Vagas Cadastradas</p>
-          <p>Data de postagem</p>
-          <span style="color: #ff0008;">1 Strike</span>
-        </div>
-        <v-expansion-panels>
-          <v-expansion-panel v-for="i in 5" :key="i">
-            <v-expansion-panel-title class="vagas-panel-title">
-              <v-row>
-                <div class="linha-vaga">
-                  <v-col cols="6">
-                    <p>Analista de Suporte ao Usuário Junior</p>
-                  </v-col>
-                  <v-col>
-                    <p>21/08/2024</p>
-                  </v-col>
-                </div>
+
+      <v-data-iterator :items="vagas" :items-per-page="10" :search="search">
+        <template v-slot:header>
+          <v-text-field v-model="search" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Vaga"
+            variant="underlined" hide-details single-line />
+        </template>
+
+        <template v-slot:default="{ items }">
+          <v-card v-for="item in items" :key="item" class="my-8">
+            <v-card-text>
+              <v-row align="center">
+                <v-col cols="6" sm="4" class="d-flex align-center ga-2">
+                  <v-avatar color="surface-variant" image="/src/assets/avatar.png">
+                  </v-avatar>
+                  <v-avatar color="surface-variant" :image="item.raw.foto" v-if="item.raw.foto">
+                  </v-avatar>
+                  <div>
+                    <h3>{{ item.raw.titulo }}</h3>
+                    <p>{{ item.raw.cep }} - {{ item.raw.cidade }} - {{ item.raw.estado }}</p>
+                  </div>
+                </v-col>
+                <v-col cols="3" sm="4" class="text-align">
+                  <v-chip size="small" :color="colorTipoVaga(item.raw.status)">{{ item.raw.status === 1 ? 'Verificada' :
+                    'Não verificada' }}</v-chip>
+                </v-col>
+                <v-col cols="3" sm="4" class="text-end">
+                  <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas"></ModalDetalhesVaga>
+                </v-col>
               </v-row>
-            </v-expansion-panel-title>
-            <v-expansion-panel-text class="vagas-panel-text">
-              <div class="vagas-text">
-                <p><strong>Nível do cargo:</strong> Júnior</p>
-                <p><strong>Habilidades exigidas:</strong> HTML, CSS, 2 anos de experiência com Java.</p>
-                <p><strong>Descrição:</strong> Buscamos um profissional que esteja disposto a aprender e busque melhorar
-                  suas habilidades no dia-a-dia.</p>
-              </div>
-              <div class="buttons-container mt-3 mb-2">
-                <v-btn class="bg-red-accent-4 me-2" density="compact">Strike</v-btn>
-                <v-btn class="bg-purple-darken-4 me-2" density="compact">Aprovar</v-btn>
-              </div>
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </div>
-    </div>
+            </v-card-text>
+          </v-card>
+        </template>
+          <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+            <div class="d-flex align-center justify-center pa-4">
+                <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
+                    @click="prevPage"></v-btn>
+
+                <div class="mx-2 text-caption">
+                    Página {{ page }} de {{ pageCount }}
+                </div>
+
+                <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal"
+                    rounded @click="nextPage"></v-btn>
+            </div>
+          </template>
+      </v-data-iterator>
+    </v-container>
   </div>
 </template>
 
 <script>
 import { useAuthStore } from '@/stores/auth';
 import { useCandidatoStore } from '@/stores/candidato';
+import axios from 'axios';
 
 export default {
   data() {
     return {
       loading: false,
+      vagas: "",
+      showSnackbar: false,
+      search: ''
     }
   },
   computed: {
     auth() {
       return useAuthStore();
+    },
+    usuario() {
+      return useCandidatoStore();
     }
   },
   created() {
     this.auth.autenticacao();
+  },
+  mounted() {
+    this.mostrarVagas();
   },
   methods: {
     onClick() {
@@ -86,17 +95,35 @@ export default {
         this.loading = false
       }, 2000)
     },
+    async mostrarVagas() {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/vaga/read/all`, {
+          withCredentials: true
+        }
+        );
+        this.vagas = response.data.result;
+      } catch (error) {
+        console.error("Erro: ", error.response.data);
+      }
+    },
+    colorTipoVaga(value) {
+      if (value === 1)
+        return 'success';
+
+      return 'error';
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
 .vacancy-list-container {
-  background-color: #E1D6F6;
+  background-color: #e1d6f6;
+  ;
   display: flex;
   height: 100%;
   flex-direction: column;
-  align-items: center;
 
   h1 {
     margin: 20px auto;
@@ -122,122 +149,5 @@ export default {
 
 .procurar-Usuarios {
   width: 400px;
-}
-
-.empresa-info {
-  background-color: #FAFAFA;
-  width: 95%;
-  padding: 10px 30px;
-  border: 1px solid #3A1C76;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  div {
-    display: inherit;
-    align-items: inherit;
-    gap: 20px;
-  }
-}
-
-.vagas-container {
-  display: flex;
-  justify-content: center;
-  background-color: #fafafa;
-  width: 95%;
-  padding: 20px 10px;
-  margin: 0 auto 15px auto;
-  border: 1px solid #3A1C76;
-}
-
-.vagas-cadastradas-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  padding: 30px 40px;
-  background-color: #fafafa;
-}
-
-.vagas-cadastradas {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  background-color: #3A1C76;
-  color: #ffffff;
-  padding: 15px 10px;
-}
-
-.vagas-panel-title {
-  border: 1px solid #3A1C76;
-  color: #000;
-}
-
-.linha-vaga {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 15px 10px;
-}
-
-.vagas-panel-text {
-  border: 1px solid #3A1C76;
-  border-top: none;
-}
-
-.vagas-text {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.buttons-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-}
-
-@media (max-width: 768px) {
-  .busca {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    flex-direction: column;
-    margin-bottom: 15px;
-  }
-
-  .procurar-Usuarios {
-    width: 100%;
-    margin: 10px 0;
-  }
-
-  .empresa-info {
-    padding: 10px 15px;
-
-    p {
-      text-align: center;
-      font-size: 13px;
-    }
-  }
-
-  .vagas-cadastradas {
-
-    p,
-    span {
-      text-align: center;
-      font-size: 15px;
-    }
-  }
-
-  .linha-vaga {
-    font-size: 14px;
-    text-align: center;
-  }
-
-  .status {
-    height: 25px;
-    width: 35px;
-  }
 }
 </style>

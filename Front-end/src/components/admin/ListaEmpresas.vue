@@ -105,11 +105,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
-* {
-  // border: 1px solid red;
-}
-
 .main-container {
   background-color: #e1d6f6;
   display: flex;

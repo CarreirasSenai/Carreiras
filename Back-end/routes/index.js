@@ -34,6 +34,7 @@ router.delete('/candidato/delete', authMiddleware, Candidato.deleteUser);
 router.post('/candidato/create', Candidato.createUser);
 router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
+router.put('/candidato/update/links', authMiddleware, Candidato.updateUserLinks);
 router.get('/candidato/read/all', authMiddleware, Candidato.getAllUser);
 
 // rotas perfil
@@ -80,6 +81,7 @@ router.get('/vaga/read/all', Vaga.vagaReadAll);
 router.get('/vaga/cidades', Vaga.getCidadesVagas);
 router.put('/vaga/update', authMiddleware, Vaga.vagaUpdate);
 router.delete('/vaga/delete/:id', Vaga.vagaDelete);
+router.put('/vaga/update/status', authMiddleware, Vaga.vagaUpdateStatus);
 
 // rotas questionario
 router.post('/questionario/create', Questionario.create);

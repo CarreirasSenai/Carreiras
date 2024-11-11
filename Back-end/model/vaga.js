@@ -166,3 +166,19 @@ exports.getCidadesVagas = (callback) => {
         }
     });
 };
+
+exports.vagaUpdateStatus = (id_vaga, id_empresa, opcaoSelecionada, callback) => {
+    let updatedStatus = 0;
+
+   if(opcaoSelecionada === 'aprovar')
+      updatedStatus = 1;
+    else if(opcaoSelecionada === 'reprovar')
+      updatedStatus = 0;
+
+    db.query("UPDATE vagas SET status = ? WHERE id_empresa = ? AND id = ?", [updatedStatus, id_empresa, id_vaga], (err, result) => {
+        if (err)
+            return callback(err, null);
+
+        return callback(null, result);
+    })
+}
