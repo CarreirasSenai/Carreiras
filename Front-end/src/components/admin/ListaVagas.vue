@@ -41,7 +41,7 @@
             </v-card-text>
           </v-card>
         </template>
-          <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+          <template v-if="vagas.length > 0" v-slot:footer="{ page, pageCount, prevPage, nextPage }">
             <div class="d-flex align-center justify-center pa-4">
                 <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
                     @click="prevPage"></v-btn>
@@ -55,6 +55,15 @@
             </div>
           </template>
       </v-data-iterator>
+      <template v-if="!vagas.length">
+      <v-empty-state icon="mdi-magnify"
+        text="Atualize a página ou espere que uma vaga seja cadastrada e tente novamente."
+        title="Não há vagas para aprovar."></v-empty-state>
+    </template>
+    <div v-if="dadosCarregados === false" class="text-center pt-9 d-flex align-center justify-center"
+      style="height: 45vh;">
+      <v-progress-circular color="deep-purple-accent-4" indeterminate :size="50"></v-progress-circular>
+    </div>
     </v-container>
   </div>
 </template>
@@ -102,7 +111,7 @@ export default {
           withCredentials: true
         }
         );
-        this.vagas = response.data.result;
+        this.vagas = response.data.result.filter(vaga => vaga.status === 0);
       } catch (error) {
         console.error("Erro: ", error.response.data);
       }

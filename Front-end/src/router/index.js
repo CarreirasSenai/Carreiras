@@ -18,6 +18,7 @@ import MinhasVagas from '@/pages/minhasVagas.vue';
 import listaCandidatos from '@/pages/listaCandidatos.vue';
 import Contato from '@/pages/contato.vue';
 import AgendaAlternativa from '@/pages/AgendaAlternativa.vue';
+import PoliticaDePrivacidade from '@/pages/PoliticaDePrivacidade.vue';
 
 
 const router = createRouter({
@@ -49,6 +50,7 @@ const router = createRouter({
     { path: '/contato', component: Contato},
     { path: '/agenda-empresa', component: AgendaAlternativa },
     { path: '/agenda-candidato', component: AgendaAlternativa },
+    { path: '/politica-de-privacidade', component: PoliticaDePrivacidade}
   ],
 });
 
