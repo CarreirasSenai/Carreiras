@@ -79,7 +79,7 @@
           </ul>
         </div>
         <p>
-          <span style="color: rgb(68, 68, 68)">Esta política é efetiva a partir de&nbsp;03 Desembro 2024.</span>
+          <span style="color: rgb(68, 68, 68)">Esta política é efetiva a partir de&nbsp;03 Dezembro 2024.</span>
         </p>
       </div>
       <Footer />
