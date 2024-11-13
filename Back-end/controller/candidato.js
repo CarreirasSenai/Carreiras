@@ -138,13 +138,13 @@ exports.getUser = (req, res) => {
 
 // Update
 exports.updateUser = (req, res) => {
-    const { id, nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao } = req.body;
+    const { id, nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, verificado } = req.body;
     console.log('\n updateUser:');
     console.log(req.body);
 
     const grupo = 'candidato';
 
-    Candidato.updateUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, (err, success) => {
+    Candidato.updateUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, verificado, grupo, id, (err, success) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }

@@ -151,6 +151,7 @@ export default {
       estado: useCandidatoStore().dadosUser.estado,
       area: useCandidatoStore().dadosUser.area,
       profissao: useCandidatoStore().dadosUser.profissao,
+      verificado: useCandidatoStore().dadosUser.verificado,
       isDisabled: false,
       dialog: false,
       modalDelete: false,
@@ -271,8 +272,8 @@ export default {
           bairro: this.bairro,
           cidade: this.cidade,
           estado: this.estado,
-          password: this.password,
           profissao: this.profissao,
+          verificado: this.verificado,
           area: this.area,
         }, { withCredentials: true });
 
