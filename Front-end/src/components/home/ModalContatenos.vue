@@ -88,25 +88,38 @@ export default {
     error: false,
     email: "",
     emailRules: [
+      (value) => !!value || "O e-mail é obrigatório!", // Verifica se o campo não está vazio
       (value) => {
         if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value))
           return true;
 
-        return "Email Invalido!";
+        return "Email Inválido!";
       },
     ],
     message: "",
     messageRules: [
+      (value) => !!value || "A mensagem é obrigatória!", // Verifica se o campo não está vazio
       (value) => {
         if (value?.length >= 10) return true;
 
-        return "A Mensagem deve ter no Minimo 10 letras";
+        return "A Mensagem deve ter no mínimo 10 letras";
       },
     ],
   }),
 
   methods: {
     async sendMessage() {
+      // Verifica se o formulário é válido antes de enviar
+      const emailValid = this.emailRules.every(rule => rule(this.email) === true);
+      const messageValid = this.messageRules.every(rule => rule(this.message) === true);
+
+      if (!emailValid || !messageValid) {
+        this.error = true;
+        this.success = false;
+        return; // Não envia a mensagem se a validação falhar
+      }
+
+      this.loading = true; // Inicia o carregamento
       try {
         const response = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/formulario/emailEnvio`,
@@ -121,18 +134,17 @@ export default {
           console.log("Mensagem enviada com sucesso", response.data);
           this.success = true;
           this.error = false;
-          this.loading = false;
         } else {
           console.error("Erro ao enviar mensagem");
           this.error = true;
           this.success = false;
-          this.loading = false;
         }
       } catch (error) {
         console.error("Erro ao enviar mensagem", error);
         this.error = true;
         this.success = false;
-        this.loading = false;
+      } finally {
+        this.loading = false; // Finaliza o carregamento
       }
     },
   },
