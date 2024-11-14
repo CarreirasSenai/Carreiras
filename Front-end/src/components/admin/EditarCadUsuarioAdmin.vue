@@ -2,12 +2,10 @@
   <div>
     <v-dialog v-model="dialog" max-width="600" persistent>
       <template v-slot:activator="{ props: activatorProps }">
-        <!-- <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Cadastro</v-btn> -->
         <v-btn variant="text" v-bind="activatorProps" icon="mdi-pencil"></v-btn>
       </template>
       <v-form class="my-4" @submit.prevent="updateUser">
         <v-card title="Editar Cadastro">
-          <small class="text-error position-absolute top-0 right-0 ma-4 mr-6">{{ mensagem }}</small>
           <v-card-text style="max-height: 70vh" class="overflow-auto">
             <v-row>
               <v-col cols="12" md="6">
@@ -28,8 +26,8 @@
               </v-col>
             </v-row>
             <v-row v-if="usuario.dadosUser.tipo_admin === 'super'">
-              <v-col cols="12" md="6">
-                <v-radio-group v-model="form.tipo" :rules="geral" label="Classe do Usuário" v-if="this.User.grupo === 'admin'">
+              <v-col cols="12" md="6" v-if="this.User.grupo === 'admin'">
+                <v-radio-group v-model="form.tipo" :rules="geral" label="Classe do Usuário">
                   <v-radio label="SUPER" value="super"></v-radio>
                   <v-radio label="ADM" value="adm"></v-radio>
                   <v-radio label="USER" value="user"></v-radio>
@@ -72,6 +70,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar :color="color" v-model="snackbar">
+      <div class="text-center">{{ mensagem }}</div>
+    </v-snackbar>
   </div>
 </template>
 
@@ -85,6 +86,8 @@ export default {
       dialog: false,
       modalDelete: false,
       mensagem: '',
+      color: '',
+      snackbar: false,
       form: {
         id: '',
         nome: '',
@@ -202,13 +205,18 @@ export default {
             }, { withCredentials: true });
           }
 
-          console.log(response.data);
-          this.MostrarUsuarios();
-          this.dialog = false;
+          this.mensagem = response.data.success;
+          this.snackbar = true;
+          this.color = 'success';
+          setTimeout(() => {
+            this.MostrarUsuarios();
+            this.dialog = false;
+          }, 1500)
 
-        } catch (error) {''
-          console.error('Erro', error.response.data);
+        } catch (error) {
           this.mensagem = error.response.data.error;
+          this.snackbar = true;
+          this.color = 'error';
         }
       }
     },

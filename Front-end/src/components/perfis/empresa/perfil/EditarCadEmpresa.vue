@@ -154,7 +154,7 @@
                       </v-col>
                       <v-col cols="12" sm="4" md="4" lg="4">
                         <v-text-field
-                          v-model="form.cpf_responsavel"
+                          v-model="form.cpfResponsavel"
                           :rules="cpfResponsavelRules"
                           v-mask="'###.###.###-##'"
                           label="CPF do responsável legal"
@@ -258,7 +258,7 @@ export default {
         cidade: useCandidatoStore().dadosUser.cidade,
         estado: useCandidatoStore().dadosUser.estado,
         responsavelLegal: useCandidatoStore().dadosUser.responsavel_legal,
-        cpf_responsavel: useCandidatoStore().dadosUser.cpf_responsavel,
+        cpfResponsavel: useCandidatoStore().dadosUser.cpf_responsavel,
         contatoRA: useCandidatoStore().dadosUser.contato_responsavel,
         statusUser: useCandidatoStore().dadosUser.verificado,
       },

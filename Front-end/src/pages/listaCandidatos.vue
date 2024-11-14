@@ -41,7 +41,7 @@
             </v-avatar>
             <v-avatar
               color="surface-variant"
-              :image="user.foto"
+              :image="`${this.dominio}/uploads/perfil/${user.foto}`"
               v-if="user.foto"
             >
             </v-avatar>
@@ -119,6 +119,7 @@ export default {
     dialog: false,
     usuarios: "",
     busca: "",
+    dominio: import.meta.env.VITE_BACKEND_URL
   }),
   computed: {
     auth() {
