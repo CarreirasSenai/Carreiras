@@ -14,7 +14,7 @@
               <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center">
                 <v-btn variant="text" rounded to="/" class="text-none">Home</v-btn>
                 <v-btn variant="text" rounded to="/sobre" class="text-none">Sobre o Carreiras</v-btn>
-                <v-btn variant="text" rounded to="/contato" class="text-none">Contate-nos</v-btn>
+                <v-btn variant="text" rounded to="/contato" class="text-none">Contacte-nos</v-btn>
                 <v-btn variant="text" rounded to="/politica-de-privacidade" class="text-none">Política de
                   privacidade</v-btn>
               </div>
@@ -50,7 +50,7 @@
             <div class="d-flex ga-5 position-absolute left-0 right-0 justify-center" v-if="visibilidadeMenuInicial">
               <v-btn variant="text" rounded to="/" class="text-none">Home</v-btn>
               <v-btn variant="text" rounded to="/sobre" class="text-none">Sobre o Carreiras</v-btn>
-              <v-btn variant="text" rounded to="/contato" class="text-none">Contate-nos</v-btn>
+              <v-btn variant="text" rounded to="/contato" class="text-none">Contacte-nos</v-btn>
               <v-btn variant="text" rounded to="/politica-de-privacidade" class="text-none">Política de
                 privacidade</v-btn>
             </div>

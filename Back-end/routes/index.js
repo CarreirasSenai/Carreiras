@@ -36,6 +36,7 @@ router.put('/candidato/update', authMiddleware, Candidato.updateUser);
 router.get('/candidato/read', authMiddleware, Candidato.getUser);
 router.put('/candidato/update/links', authMiddleware, Candidato.updateUserLinks);
 router.get('/candidato/read/all', authMiddleware, Candidato.getAllUser);
+router.get('/candidato/pesquisaCandidato', Candidato.pesquisaCandidato);
 
 // rotas perfil
 router.put('/perfil/update', authMiddleware, Perfil.perfilUpdate);
@@ -71,6 +72,7 @@ router.get('/empresa/read', Empresa.getUser);
 router.get('/empresa/read/all', Empresa.getAllUser);
 router.delete('/empresa/delete', authMiddleware, Empresa.deleteUser);
 router.put('/empresa/update', Empresa.updateUser);
+router.get('/empresa/pesquisaEmpresa', authMiddleware, Empresa.pesquisaEmpresa);
 
 // rotas vagas
 router.get('/vaga/pesquisa', Vaga.vagaPesquisa);

@@ -24,7 +24,7 @@
             <v-col cols="12" sm="6" md="8">
               <v-card class="intro-card pa-4">
                 <v-card-title class="text-h5"
-                  >Está com álgum Problema?  </v-card-title
+                  >Está com algum Problema?  </v-card-title
                 >
                 <v-card-text>
                   Na nossa empresa, acreditamos que cada colaborador é

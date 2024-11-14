@@ -132,6 +132,19 @@ exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj,
         });
 };
 
+exports.pesquisaEmpresa = (busca, callback) => {
+    const buscaComCuringa = `%${busca}%`; // Adiciona o curinga para busca parcial
+    const sql = `
+        SELECT * FROM user_empresa
+        WHERE CONCAT(nome_fantasia, ' ', email, ' ', cnpj, ' ', celular) LIKE ?
+    `;
+    db.query(sql, [buscaComCuringa], (err, row) => {
+        if (err) 
+            return callback(err, null);
+        
+        return callback(null, row);
+    });
+};
 
 exports.deleteUser = (id, callback) => {
     db.query('DELETE FROM user_empresa WHERE id = ?', [id], (err, result) => {

@@ -176,6 +176,19 @@ exports.updateUser = (req, res) => {
     });
 }
 
+exports.pesquisaEmpresa = (req, res) => {
+    const busca = req.query.busca;
+    Empresa.pesquisaEmpresa(busca, (err, result) => {
+        if (err) 
+            return res.status(500).json({ error: err.message });
+        
+        if (result.length === 0)             
+            return res.status(404).json({ error: 'Busca não encontrada' });
+        
+        return res.json({ success: true, result: result });
+    });
+};
+
 exports.deleteUser = (req, res) => {
     const { id } = req.body;
 

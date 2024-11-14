@@ -199,6 +199,19 @@ exports.getAllUser = (req, res) => {
     });
 };
 
+exports.pesquisaCandidato = (req, res) => {
+    const busca = req.query.busca;
+    Candidato.pesquisaCandidato(busca, (err, result) => {
+        if (err) 
+            return res.status(500).json({ error: err.message });
+        
+        if (result.length === 0) 
+            return res.status(404).json({ error: 'Busca não encontrada' });
+        
+        return res.json({ success: true, result: result });
+    });
+};
+
 exports.updateUserLinks = (req, res) => {
     const { id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal} = req.body;
     Candidato.updateUserLinks(id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal, (err, result) => {

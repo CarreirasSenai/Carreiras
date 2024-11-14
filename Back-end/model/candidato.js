@@ -131,6 +131,20 @@ exports.deleteUser = (id, callback) => {
     });
 };
 
+exports.pesquisaCandidato = (busca, callback) => {
+    const buscaComCuringa = `%${busca}%`; // Adiciona o curinga para busca parcial
+    const sql = `
+        SELECT * FROM user_candidato
+        WHERE CONCAT(nome_social, ' ', nome_completo, ' ', email, ' ', cpf, ' ', celular) LIKE ?
+    `;
+    db.query(sql, [buscaComCuringa], (err, row) => {
+        if (err) 
+            return callback(err, null);
+
+        return callback(null, row);
+    });
+};
+
 exports.getAllCandidatos = (callback) => {
     db.query('SELECT * FROM user_candidato', (err, result) => {
         if (err) {
