@@ -161,21 +161,33 @@ exports.getAllUser = (req, res) => {
 
 exports.updateUser = (req, res) => {
     const { id, razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero,
-        complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA } = req.body;
+        complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, verificado } = req.body.dados;
     console.log('\n updateUser:');
     console.log(req.body.dados);
 
     const grupo = 'empresa';
 
     Empresa.updateUser(razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep,
-        numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA,
-        grupo, id, (err, success) => {
+        numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, verificado, grupo, id, (err, success) => {
             if (err)
                 return res.status(500).json({ error: err.message });
 
         return res.status(200).json({ success: 'Cadastro Atualizado!' });
     });
 }
+
+exports.pesquisaEmpresa = (req, res) => {
+    const busca = req.query.busca;
+    Empresa.pesquisaEmpresa(busca, (err, result) => {
+        if (err) 
+            return res.status(500).json({ error: err.message });
+        
+        if (result.length === 0)             
+            return res.status(404).json({ error: 'Busca não encontrada' });
+        
+        return res.json({ success: true, result: result });
+    });
+};
 
 exports.deleteUser = (req, res) => {
     const { id } = req.body;

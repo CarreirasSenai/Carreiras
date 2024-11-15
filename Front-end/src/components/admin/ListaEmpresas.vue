@@ -8,8 +8,17 @@
         </h1>
         <v-spacer></v-spacer>
       </div>
-      <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact" label="Procure uma Empresa"
-        variant="underlined" hide-details single-line/>
+      <v-text-field v-model="busca" 
+        :loading="loading" 
+        append-inner-icon="mdi-magnify" 
+        density="compact" 
+        label="Procure uma Empresa"
+        variant="underlined" 
+        hide-details 
+        single-line
+        @click:append-inner="pesquisaEmpresa"
+        @keyup.enter="pesquisaEmpresa"
+      />
       <v-card v-for="user in empresas" :key="user">
         <v-card-text>
           <v-row align="center">
@@ -88,6 +97,25 @@ export default {
         this.empresas = response.data.usuarios;
       } catch (error) {
         console.error("Erro: ", error.response.data);
+      }
+    },
+    async pesquisaEmpresa() {
+      console.clear();
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/empresa/pesquisaEmpresa`,
+          {
+            params: {
+              busca: this.busca,
+            },
+            withCredentials: true,
+          }
+        );
+        console.log(response.data);
+        this.empresas = response.data.result;
+      } catch (error) {
+        console.error("Erro na busca:", error.response.data);
+        this.empresas = "";
       }
     },
     colorTipoUser(value) {

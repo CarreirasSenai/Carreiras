@@ -166,11 +166,11 @@
       </v-row>
     </v-container>
 
-    <v-divider class="my-12"></v-divider>
+    <!-- <v-divider class="my-12"></v-divider> -->
 
     <v-container>
       <!-- FAQ Section -->
-      <div class="faq-container">
+      <div class="faq-container" v-if="false">
         <h2 class="faq-title text-center">Perguntas Frequentes - FAQ</h2>
         <p class="text-center">
           Conheça as respostas para as perguntas mais frequentes

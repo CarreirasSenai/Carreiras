@@ -77,36 +77,45 @@ exports.getLogin = (email, callback) => {
     });
 };
 
-// Update
-// Necesssário fazer a validação se o email ou cpf de atualziação já existe como no cadastro, a falta disso ocasionara um erro no database - thiago :)
-exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, callback) => {
-    db.query(`UPDATE user_candidato 
-        SET nome_social = ?, 
-        nome_completo = ?, 
-        email = ?, 
-        telefone = ?, 
-        celular = ?, 
-        cpf = ?, 
-        cep = ?, 
-        rua = ?, 
-        numero = ?, 
-        complemento = ?, 
-        bairro = ?, 
-        cidade = ?, 
-        estado = ?,
-        area = ?,
-        profissao = ?, 
-        grupo = ?
-        WHERE id = ?`,
-        [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id], (err, result) => {
+exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, verificado, grupo, id, callback) => {
+    let query = `UPDATE user_candidato 
+    SET nome_social = ?, 
+    nome_completo = ?, 
+    email = ?, 
+    telefone = ?, 
+    celular = ?, 
+    cpf = ?, 
+    cep = ?, 
+    rua = ?, 
+    numero = ?, 
+    complemento = ?, 
+    bairro = ?, 
+    cidade = ?, 
+    estado = ?,
+    area = ?,
+    profissao = ?,`
+
+    let fields = [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao]
+
+    if(verificado != null && verificado != undefined && verificado !== '') {
+        query += 'verificado = ?,';
+        fields.push(verificado);
+    }
+
+    query += `grupo = ?
+    WHERE id = ?`;
+    fields.push(grupo);
+    fields.push(id);
+    
+    db.query(query, fields, 
+        (err, result) => {
             if (err) {
                 console.log(err);
                 return callback(err, null);
             } else if (result) {
-                // console.log(result);
                 return callback(null, result.affectedRows > 0);
             }
-        });
+    });
 };
 
 // Delete
@@ -119,6 +128,20 @@ exports.deleteUser = (id, callback) => {
             // console.log(result);
             return callback(null, result.affectedRows > 0);
         }
+    });
+};
+
+exports.pesquisaCandidato = (busca, callback) => {
+    const buscaComCuringa = `%${busca}%`; // Adiciona o curinga para busca parcial
+    const sql = `
+        SELECT * FROM user_candidato
+        WHERE CONCAT(nome_social, ' ', nome_completo, ' ', email, ' ', cpf, ' ', celular) LIKE ?
+    `;
+    db.query(sql, [buscaComCuringa], (err, row) => {
+        if (err) 
+            return callback(err, null);
+
+        return callback(null, row);
     });
 };
 

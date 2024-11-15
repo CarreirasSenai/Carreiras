@@ -138,13 +138,13 @@ exports.getUser = (req, res) => {
 
 // Update
 exports.updateUser = (req, res) => {
-    const { id, nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao } = req.body;
+    const { id, nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, verificado } = req.body;
     console.log('\n updateUser:');
     console.log(req.body);
 
     const grupo = 'candidato';
 
-    Candidato.updateUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, grupo, id, (err, success) => {
+    Candidato.updateUser(nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, verificado, grupo, id, (err, success) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -196,6 +196,19 @@ exports.getAllUser = (req, res) => {
         }
 
         res.json({ success: true, usuarios: usuarios });
+    });
+};
+
+exports.pesquisaCandidato = (req, res) => {
+    const busca = req.query.busca;
+    Candidato.pesquisaCandidato(busca, (err, result) => {
+        if (err) 
+            return res.status(500).json({ error: err.message });
+        
+        if (result.length === 0) 
+            return res.status(404).json({ error: 'Busca não encontrada' });
+        
+        return res.json({ success: true, result: result });
     });
 };
 

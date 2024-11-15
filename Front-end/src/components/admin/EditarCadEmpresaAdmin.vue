@@ -79,14 +79,13 @@
                       <v-text-field v-model="form.responsavelLegal" :rules="responsavelLegalRules"
                         label="Responsável legal" variant="underlined"></v-text-field>
                     </v-col>
-                    <!-- <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field
-                        v-model="responsavelAdm"
-                        :rules="responsavelAdmRules"
-                        label="Responsável administrativo (RA)"
+                     <v-text-field
+                        v-model="form.cpfResponsavel"
+                        :rules="cpfResponsavelRules"
+                        v-mask="'###.###.###-##'"
+                        label="CPF do responsável legal"
                         variant="underlined"
                       ></v-text-field>
-                    </v-col> -->
                     <v-col cols="12" sm="6" md="6" lg="6">
                       <v-text-field v-model="form.contatoRA" :rules="contatoRARules" label="Contato RA"
                         variant="underlined"></v-text-field>
@@ -94,7 +93,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-radio-group v-model="form.statusUser" :rules="geral" label="Status Ativo" inline>
+                      <v-radio-group v-model="form.verificado" :rules="geral" label="Status Ativo" inline>
                         <v-radio label="Ativado" value="1"></v-radio>
                         <v-radio label="Desativado" value="0"></v-radio>
                       </v-radio-group>
@@ -161,7 +160,8 @@ export default {
         estado: "",
         responsavelLegal: "",
         contatoRA: "",
-        statusUser: ""
+        cpfResponsavel: "",
+        verificado: ""
       },
       responsavelAdm: "",
       modalDelete: false,
@@ -211,6 +211,8 @@ export default {
       responsavelAdmRules: [
         (v) => !!v || "Responsável administrativo requerido",
       ],
+      cpfResponsavelRules: [(v) => !!v || "CPF Requerido",
+        (v) => v.length === 14 || "CPF deve ter 14 caracteres",],
       contatoRARules: [
         (v) => !!v || "Contato do Responsável administrativo requerido",
       ],
@@ -248,9 +250,9 @@ export default {
       console.clear();
       console.log("Passou no update")
       const dados = await event;
-      console.log(this.form);
 
       if (dados.valid === true) {
+        this.form.cpfResponsavel = this.limparMascaraValores(this.form.cpfResponsavel);
         try {
           const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/empresa/update`, {
             dados: this.form,
@@ -259,7 +261,6 @@ export default {
           console.log("Resposta: ", response.data);
           this.MostrarUsuarios();
           this.dialog = false;
-
         } catch (error) {
           console.error('Erro', error.response.data);
           this.mensagem = error.response.data.error;
@@ -286,6 +287,15 @@ export default {
         console.error('Erro', error.response.data);
         this.mensagem = error.response.data.error;
       }
+    },
+    limparMascaraValores(valor) {
+      if (typeof valor === 'string' && valor !== '') {
+        valor = valor.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
+      } else if (valor !== null) {
+        valor = String(valor).replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
+      }
+
+      return valor;
     }
   },
   mounted() {
@@ -305,9 +315,9 @@ export default {
       this.form.cidade = this.User.cidade,
       this.form.estado = this.User.estado,
       this.form.responsavelLegal = this.User.responsavel_legal,
-      this.form.cpf_responsavel = this.User.cpf_responsavel,
+      this.form.cpfResponsavel = this.User.cpf_responsavel,
       this.form.contatoRA = this.User.contato_responsavel,
-      this.form.statusUser = this.User.verificado.toString()
+      this.form.verificado = this.User.verificado.toString()
   }
 };
 </script>

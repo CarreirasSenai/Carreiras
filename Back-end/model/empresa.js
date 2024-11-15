@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const { update } = require('./agendamento');
 
 //Create    
 exports.createCompany = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep,
@@ -82,7 +83,7 @@ exports.getAllUser = (callback) => {
     });
 }
 
-exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, statusUser, grupo, id, callback) => {
+exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, numero, complemento, endereco, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA, verificado, grupo, id, callback) => {
 
     console.log(id);
 
@@ -107,16 +108,20 @@ exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj,
 
     let fields = [razaoSocial, nomeFantasia, email, telefone, celular, cnpj, inscricaoEstadual, cep, endereco, numero, complemento, bairro, cidade, estado, responsavelLegal, cpfResponsavel, contatoRA];
 
-    if (statusUser !== null && statusUser !== undefined) {
+    if (verificado != null && verificado != undefined) {
         updateQuery += 'verificado = ?,';
-        fields.push(statusUser);
+        fields.push(verificado);
     }
 
+    updateQuery += `grupo = ?
+        WHERE id = ?`
     fields.push(grupo);
     fields.push(id);
 
-    db.query(updateQuery + `grupo = ?
-        WHERE id = ?`, fields,
+    console.log("Consulta no banco de dados: " + updateQuery);
+    console.log("Array de campos no banco de dados: " + fields);
+
+    db.query(updateQuery, fields,
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -127,6 +132,19 @@ exports.updateUser = (razaoSocial, nomeFantasia, email, telefone, celular, cnpj,
         });
 };
 
+exports.pesquisaEmpresa = (busca, callback) => {
+    const buscaComCuringa = `%${busca}%`; // Adiciona o curinga para busca parcial
+    const sql = `
+        SELECT * FROM user_empresa
+        WHERE CONCAT(nome_fantasia, ' ', email, ' ', cnpj, ' ', celular) LIKE ?
+    `;
+    db.query(sql, [buscaComCuringa], (err, row) => {
+        if (err) 
+            return callback(err, null);
+        
+        return callback(null, row);
+    });
+};
 
 exports.deleteUser = (id, callback) => {
     db.query('DELETE FROM user_empresa WHERE id = ?', [id], (err, result) => {

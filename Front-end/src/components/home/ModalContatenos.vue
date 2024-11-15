@@ -2,7 +2,7 @@
   <div class="text pa-4">
     <div>
       <v-btn class="primary bg-purple-darken-2" @click="dialog = true">
-        Contate-nos!
+        Contacte-nos!
       </v-btn>
     </div>
 
