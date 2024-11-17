@@ -16,90 +16,71 @@
       </h1>
     </div>
 
-    <v-text-field
-      v-model="busca"
-      :loading="loading"
-      append-inner-icon="mdi-magnify"
-      density="compact"
-      label="Procure um Usuário"
-      variant="underlined"
-      hide-details
-      single-line
-      @click:append-inner="pesquisaCandidato"
-      @keyup.enter="pesquisaCandidato"
-    />
-
-    <v-card v-for="user in usuarios" :key="user">
-      <v-card-text>
-        <v-row align="center">
-          <v-col cols="3" sm="2">
-            <v-avatar
-              color="surface-variant"
-              image="/src/assets/avatar.png"
-              v-if="!user.foto"
-            >
-            </v-avatar>
-            <v-avatar
-              color="surface-variant"
-              :image="`${this.dominio}/uploads/perfil/${user.foto}`"
-              v-if="user.foto"
-            >
-            </v-avatar>
-          </v-col>
-
-          <v-col cols="9" sm="3">
-            <div class="ma-1">
-              <h3>{{ user.nome_completo }}</h3>
-              <p>{{ user.email }}</p>
-            </div>
-          </v-col>
-
-          <v-col cols="12" sm="3" class="text-align">
-            <p>
-              <v-icon>mdi-card-account-details-outline </v-icon>
-              {{ formattedCpf(user.cpf) }}
-            </p>
-          </v-col>
-
-          <v-col cols="4" sm="3" class="text-align text-uppercase">
-          </v-col>
-
-          <v-col cols="8" sm="1" class="text-end">
-            <EditarCadUsuarioAdmin 
-              v-if="
-                usuario.dadosUser.tipo_admin === 'super' ||
-                usuario.dadosUser.id === user.id
-              "
-              :MostrarUsuarios="mostrarUsuarios"
-              :User="user"
-            />
-            <v-btn
-              variant="text"
-              icon="mdi mdi-pencil"
-              v-else
-              @click="showSnackbar = true"
-            >
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
+    <v-data-iterator :items="usuarios" :items-per-page="10" :search="busca">
+      <template v-slot:header>
+        <v-text-field v-model="busca" :loading="loading" append-inner-icon="mdi-magnify" density="compact"
+          label="Procure um Usuário" variant="underlined" hide-details single-line />
+      </template>
+      <template v-slot:default="{ items }">
+        <v-card v-for="user in items" :key="user" class="my-8">
+          <v-card-text>
+            <v-row align="center">
+              <v-col cols="3" sm="2">
+                <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.raw.foto">
+                </v-avatar>
+                <v-avatar color="surface-variant" :image="`${this.dominio}/uploads/perfil/${user.raw.foto}`"
+                  v-if="user.raw.foto">
+                </v-avatar>
+              </v-col>
+              <v-col cols="9" sm="3">
+                <div class="ma-1">
+                  <h3>{{ user.raw.nome_completo }}</h3>
+                  <p>{{ user.raw.email }}</p>
+                </div>
+              </v-col>
+              <v-col cols="12" sm="3" class="text-align">
+                <p>
+                  <v-icon>mdi-card-account-details-outline </v-icon>
+                  {{ formattedCpf(user.raw.cpf) }}
+                </p>
+              </v-col>
+              <v-col cols="4" sm="3" class="text-align text-uppercase">
+              </v-col>
+              <v-col cols="8" sm="1" class="text-end">
+                <EditarCadUsuarioAdmin v-if="
+                  usuario.dadosUser.tipo_admin === 'super' ||
+                  usuario.dadosUser.id === user.raw.id
+                " :MostrarUsuarios="mostrarUsuarios" :User="user.raw" />
+                <v-btn variant="text" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </template>
+      <template v-if="usuarios.length > 0" v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+        <div class="d-flex align-center justify-center pa-4">
+          <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
+            @click="prevPage"></v-btn>
+          <div class="mx-2 text-caption">
+            Página {{ page }} de {{ pageCount }}
+          </div>
+          <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal" rounded
+            @click="nextPage"></v-btn>
+        </div>
+      </template>
+    </v-data-iterator>
+    <template v-if="!usuarios.length">
+      <v-empty-state icon="mdi-magnify" text="Atualize a página e tente novamente."
+        title="Não há candidatos cadastrados no momento."></v-empty-state>
+    </template>
   </v-container>
 
-  <v-snackbar
-    location="top right"
-    v-model="showSnackbar"
-    :timeout="4000"
-    color="red"
-    elevation="24"
-  >
+  <v-snackbar location="top right" v-model="showSnackbar" :timeout="4000" color="red" elevation="24">
     <div class="text-center">
       Você é
-      <span
-        class="text-uppercase rounded-xl pa-1 ma-1"
-        :class="'bg-' + colorTipoUser(usuario.dadosUser.tipo_admin)"
-        >{{ usuario.dadosUser.tipo_admin }}</span
-      >
+      <span class="text-uppercase rounded-xl pa-1 ma-1" :class="'bg-' + colorTipoUser(usuario.dadosUser.tipo_admin)">{{
+        usuario.dadosUser.tipo_admin }}</span>
       não tem acesso! 👎😂
     </div>
   </v-snackbar>
@@ -207,6 +188,7 @@ export default {
   align-items: center;
   flex-direction: column;
 }
+
 .text-align {
   text-align: center;
 }

@@ -22,47 +22,62 @@
           <CadUsuarioAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios" />
         </div>
 
-        <v-text-field class="my-8" v-model="busca" :loading="loading" append-inner-icon="mdi-magnify" density="compact"
-          label="Procure um Usuário" variant="underlined" hide-details single-line @click:append-inner="searchUser"
-          @keyup.enter="searchUser" />
-
-        <v-card v-for="user in usuarios" :key="user" class="my-4">
-          <v-card-text>
-            <v-row align="center">
-
-              <v-col cols="12" sm="4" class="d-flex align-center ga-2">
-                <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.foto">
-                </v-avatar>
-                <v-avatar color="surface-variant" :image="user.foto" v-if="user.foto">
-                </v-avatar>
-                <div>
-                  <h3>{{ user.nome }}</h3>
-                  <p>{{ user.email }}</p>
-                </div>
-              </v-col>
-
-              <v-col cols="12" sm="3" class="text-align">
-                <p>
-                  <v-icon>mdi-cellphone</v-icon>
-                  {{ formatarCelular(user.celular) }}
-                </p>
-              </v-col>
-
-              <v-col cols="4" sm="4" class="text-align text-uppercase">
-                <v-chip size="small" :color="colorTipoUser(user.tipo_admin)">{{ user.tipo_admin }}</v-chip>
-              </v-col>
-
-              <v-col cols="8" sm="1" class="text-end">
-                <EditarCadUsuarioAdmin
-                  v-if="usuario.dadosUser.tipo_admin === 'super' || usuario.dadosUser.id === user.id"
-                  :MostrarUsuarios="mostrarUsuarios" :User="user" />
-                <v-btn variant="plain" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
-                </v-btn>
-              </v-col>
-
-            </v-row>
-          </v-card-text>
-        </v-card>
+        <v-data-iterator :items="usuarios" :items-per-page="10" :search="busca">
+          <template v-slot:header>
+            <v-text-field class="my-8" v-model="busca" :loading="loading" append-inner-icon="mdi-magnify"
+              density="compact" label="Procure um Usuário" variant="underlined" hide-details single-line />
+          </template>
+          <template v-slot:default="{ items }">
+            <v-card v-for="user in items" :key="user" class="my-4">
+              <v-card-text>
+                <v-row align="center">
+                  <v-col cols="12" sm="4" class="d-flex align-center ga-2">
+                    <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.raw.foto">
+                    </v-avatar>
+                    <v-avatar color="surface-variant" :image="`${this.dominio}/uploads/perfil/${user.raw.foto}`"
+                      v-if="user.raw.foto">
+                    </v-avatar>
+                    <div>
+                      <h3>{{ user.raw.nome }}</h3>
+                      <p>{{ user.raw.email }}</p>
+                    </div>
+                  </v-col>
+                  <v-col cols="12" sm="3" class="text-align">
+                    <p>
+                      <v-icon>mdi-cellphone</v-icon>
+                      {{ formatarCelular(user.raw.celular) }}
+                    </p>
+                  </v-col>
+                  <v-col cols="4" sm="4" class="text-align text-uppercase">
+                    <v-chip size="small" :color="colorTipoUser(user.raw.tipo_admin)">{{ user.raw.tipo_admin }}</v-chip>
+                  </v-col>
+                  <v-col cols="8" sm="1" class="text-end">
+                    <EditarCadUsuarioAdmin
+                      v-if="usuario.dadosUser.tipo_admin === 'super' || usuario.dadosUser.id === user.raw.id"
+                      :MostrarUsuarios="mostrarUsuarios" :User="user.raw" />
+                    <v-btn variant="plain" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </template>
+          <template v-if="usuarios.length > 0" v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+            <div class="d-flex align-center justify-center pa-4">
+              <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
+                @click="prevPage"></v-btn>
+              <div class="mx-2 text-caption">
+                Página {{ page }} de {{ pageCount }}
+              </div>
+              <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal" rounded
+                @click="nextPage"></v-btn>
+            </div>
+          </template>
+        </v-data-iterator>
+        <template v-if="!usuarios.length">
+          <v-empty-state icon="mdi-magnify" text="Atualize a página e tente novamente."
+            title="Não há usuários cadastrados no momento."></v-empty-state>
+        </template>
       </v-col>
     </v-row>
   </v-container>
@@ -87,7 +102,8 @@ export default {
     loading: false,
     dialog: false,
     usuarios: '',
-    busca: ''
+    busca: '',
+    dominio: import.meta.env.VITE_BACKEND_URL
   }),
   computed: {
     auth() {
@@ -162,10 +178,6 @@ export default {
 </script>
 
 <style>
-* {
-  /* border: 1px solid red; */
-}
-
 .text-align {
   text-align: center;
 }
