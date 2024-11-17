@@ -23,7 +23,8 @@
                 <v-col cols="6" sm="4" class="d-flex align-center ga-2">
                   <v-avatar color="surface-variant" image="/src/assets/avatar.png">
                   </v-avatar>
-                  <v-avatar color="surface-variant" :image="item.raw.foto" v-if="item.raw.foto">
+                  <v-avatar color="surface-variant" :image="`${this.dominio}/uploads/perfil/${item.raw.foto}`"
+                    v-if="item.raw.foto">
                   </v-avatar>
                   <div>
                     <h3>{{ item.raw.titulo }}</h3>
@@ -41,29 +42,29 @@
             </v-card-text>
           </v-card>
         </template>
-          <template v-if="vagas.length > 0" v-slot:footer="{ page, pageCount, prevPage, nextPage }">
-            <div class="d-flex align-center justify-center pa-4">
-                <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
-                    @click="prevPage"></v-btn>
+        <template v-if="vagas.length > 0" v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+          <div class="d-flex align-center justify-center pa-4">
+            <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
+              @click="prevPage"></v-btn>
 
-                <div class="mx-2 text-caption">
-                    Página {{ page }} de {{ pageCount }}
-                </div>
-
-                <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal"
-                    rounded @click="nextPage"></v-btn>
+            <div class="mx-2 text-caption">
+              Página {{ page }} de {{ pageCount }}
             </div>
-          </template>
+
+            <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal" rounded
+              @click="nextPage"></v-btn>
+          </div>
+        </template>
       </v-data-iterator>
       <template v-if="!vagas.length">
-      <v-empty-state icon="mdi-magnify"
-        text="Atualize a página ou espere que uma vaga seja cadastrada e tente novamente."
-        title="Não há vagas para aprovar."></v-empty-state>
-    </template>
-    <div v-if="dadosCarregados === false" class="text-center pt-9 d-flex align-center justify-center"
-      style="height: 45vh;">
-      <v-progress-circular color="deep-purple-accent-4" indeterminate :size="50"></v-progress-circular>
-    </div>
+        <v-empty-state icon="mdi-magnify"
+          text="Atualize a página ou espere que uma vaga seja cadastrada e tente novamente."
+          title="Não há vagas para aprovar."></v-empty-state>
+      </template>
+      <div v-if="dadosCarregados === false" class="text-center pt-9 d-flex align-center justify-center"
+        style="height: 45vh;">
+        <v-progress-circular color="deep-purple-accent-4" indeterminate :size="50"></v-progress-circular>
+      </div>
     </v-container>
   </div>
 </template>
@@ -79,7 +80,8 @@ export default {
       loading: false,
       vagas: "",
       showSnackbar: false,
-      search: ''
+      search: '',
+      dominio: import.meta.env.VITE_BACKEND_URL
     }
   },
   computed: {
@@ -111,7 +113,7 @@ export default {
           withCredentials: true
         }
         );
-        this.vagas = response.data.result.filter(vaga => vaga.status === 0);
+        this.vagas = response.data.result;
       } catch (error) {
         console.error("Erro: ", error.response.data);
       }

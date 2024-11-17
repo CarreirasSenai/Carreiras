@@ -8,49 +8,63 @@
         </h1>
         <v-spacer></v-spacer>
       </div>
-      <v-text-field v-model="busca" 
-        :loading="loading" 
-        append-inner-icon="mdi-magnify" 
-        density="compact" 
-        label="Procure uma Empresa"
-        variant="underlined" 
-        hide-details 
-        single-line
-        @click:append-inner="pesquisaEmpresa"
-        @keyup.enter="pesquisaEmpresa"
-      />
-      <v-card v-for="user in empresas" :key="user">
-        <v-card-text>
-          <v-row align="center">
-            <v-col cols="12" sm="4" class="d-flex align-center ga-2">
-              <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!user.foto">
-              </v-avatar>
-              <v-avatar color="surface-variant" :image="user.foto" v-if="user.foto">
-              </v-avatar>
-              <div>
-                <h3>{{ user.nome_fantasia }}</h3>
-                <p>{{ user.email }}</p>
-              </div>
-            </v-col>
-            <v-col cols="12" sm="3" class="text-align">
-              <p>
-                <v-icon>mdi-cellphone</v-icon>
-                {{ this.formatarCelular(user.celular) }}
-              </p>
-            </v-col>
-            <v-col cols="9" sm="4" class="text-align">
-              <v-chip size="small" :color="colorTipoUser(user.verificado)">{{ user.verificado === 1 ? 'Verificado' :
-                'Não verificado' }}</v-chip>
-            </v-col>
-            <v-col cols="3" sm="1" class="text-end">
-              <EditarCadEmpresaAdmin v-if="usuario.dadosUser.tipo_admin === 'super'" :MostrarUsuarios="mostrarUsuarios"
-                :User="user" />
-              <v-btn variant="plain" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
+      <v-data-iterator :items="empresas" :items-per-page="10" :search="busca">
+        <template v-slot:header>
+          <v-text-field v-model="busca" :loading="loading" append-inner-icon="mdi-magnify" density="compact"
+            label="Procure uma Empresa" variant="underlined" hide-details single-line />
+        </template>
+        <template v-slot:default="{ items }">
+          <v-card v-for="item in items" :key="item" class="my-8">
+            <v-card-text>
+              <v-row align="center">
+                <v-col cols="12" sm="4" class="d-flex align-center ga-2">
+                  <v-avatar color="surface-variant" image="/src/assets/avatar.png" v-if="!item.raw.foto">
+                  </v-avatar>
+                  <v-avatar color="surface-variant" :image="`${this.dominio}/uploads/perfil/${item.raw.foto}`"
+                    v-if="item.raw.foto">
+                  </v-avatar>
+                  <div>
+                    <h3>{{ item.raw.nome_fantasia }}</h3>
+                    <p>{{ item.raw.email }}</p>
+                  </div>
+                </v-col>
+                <v-col cols="12" sm="3" class="text-align">
+                  <p>
+                    <v-icon>mdi-cellphone</v-icon>
+                    {{ this.formatarCelular(item.raw.celular) }}
+                  </p>
+                </v-col>
+                <v-col cols="9" sm="4" class="text-align">
+                  <v-chip size="small" :color="colorTipoUser(item.raw.verificado)">{{ item.raw.verificado === 1 ?
+                    'Verificado' :
+                    'Não verificado' }}</v-chip>
+                </v-col>
+                <v-col cols="3" sm="1" class="text-end">
+                  <EditarCadEmpresaAdmin v-if="usuario.dadosUser.tipo_admin === 'super'"
+                    :MostrarUsuarios="mostrarUsuarios" :User="item.raw" />
+                  <v-btn variant="plain" icon="mdi mdi-pencil" v-else @click="showSnackbar = true">
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </template>
+        <template v-if="empresas.length > 0" v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+          <div class="d-flex align-center justify-center pa-4">
+            <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
+              @click="prevPage"></v-btn>
+            <div class="mx-2 text-caption">
+              Página {{ page }} de {{ pageCount }}
+            </div>
+            <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal" rounded
+              @click="nextPage"></v-btn>
+          </div>
+        </template>
+      </v-data-iterator>
+      <template v-if="!empresas.length">
+        <v-empty-state icon="mdi-magnify" text="Atualize a página e tente novamente."
+          title="Não há empresas cadastradas no momento."></v-empty-state>
+      </template>
     </v-container>
   </div>
 </template>
@@ -67,7 +81,8 @@ export default {
     showSnackbar: false,
     loading: false,
     dialog: false,
-    busca: ''
+    busca: '',
+    dominio: import.meta.env.VITE_BACKEND_URL
   }),
   computed: {
     auth() {
