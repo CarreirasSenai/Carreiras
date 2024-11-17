@@ -86,6 +86,7 @@ router.put('/vaga/update/status', authMiddleware, Vaga.vagaUpdateStatus);
 // rotas questionario
 router.post('/questionario/create', Questionario.create);
 router.get('/questionario/read', Questionario.read);
+router.get('/questionario/read/resposta', Questionario.readResposta);
 router.put('/questionario/update', Questionario.update);
 router.delete('/questionario/delete/:id', Questionario.delete);
 
@@ -119,9 +120,8 @@ router.post('/formulario/emailEnvio', Formulario.formularioEnvio);
 // rotas candidatura
 router.post('/candidatura/create', Candidatura.create);
 router.get('/candidatura/read', Candidatura.read);
-// router.get('/candidatura/read/all', Candidatura.readAll);
 router.get('/candidatura/read/vaga', Candidatura.readVaga);
-router.delete('/candidatura/delete/:idVaga', authMiddleware, Candidatura.delete);
+router.delete('/candidatura/delete/:idVaga', Candidatura.delete);
 
 // rota logout
 router.get('/logout', (req, res) => {

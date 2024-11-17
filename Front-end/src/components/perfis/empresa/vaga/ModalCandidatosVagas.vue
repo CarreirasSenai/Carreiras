@@ -22,7 +22,8 @@
 
                             <template v-slot:item.foto="{ item }">
                                 <v-card class="my-2 rounded-circle" style="width:50px;">
-                                    <v-img :src="`https://randomuser.me/api/portraits/women/${item.foto}`"
+                                    <v-img
+                                        :src="item.foto ? `${caminhoFotos}/uploads/perfil/${item.foto}` : '/src/assets/avatar.png'"
                                         cover></v-img>
                                 </v-card>
                             </template>
@@ -82,35 +83,24 @@ export default {
                 { title: 'Relevância', value: 'relevancia', sortable: true },
                 { title: 'Ação', value: 'acao', sortable: false },
             ],
-            items: [
-                {
-                    foto: '1.jpg',
-                    nome: 'João Pereira',
-                    indicacao: 'true',
-                    profissao: 'Engenheiro de Software',
-                    relevancia: '70',
-                    acao: '',
-                    id: 25,
-                },
-                {
-                    foto: '2.jpg',
-                    nome: 'Maria Fernandes',
-                    indicacao: '',
-                    profissao: 'Desenvolvedora Full Stack',
-                    relevancia: '64',
-                    acao: '',
-                    id: 2,
-                },
-                {
-                    foto: '3.jpg',
-                    nome: 'Carlos Silva',
-                    indicacao: 'true',
-                    profissao: 'Especialista em DevOps',
-                    relevancia: '90',
-                    acao: '',
-                    id: 3,
-                },
-            ],
+            items: [],
+            candidaturas: [],
+            candidatos: [],
+            questionario: [],
+            respostas: [],
+            caminhoFotos: import.meta.env.VITE_BACKEND_URL,
+
+            // items: [
+            //     {
+            //         foto: '1.jpg',
+            //         nome: 'João Pereira',
+            //         indicacao: 'true',
+            //         profissao: 'Engenheiro de Software',
+            //         relevancia: '70',
+            //         acao: '',
+            //         id: 25,
+            //     }
+            // ],
         }
     },
 
@@ -119,7 +109,7 @@ export default {
     },
 
     mounted() {
-        this.idVaga = this.Vagas.raw.id;        
+        this.idVaga = this.Vagas.raw.id;
     },
 
     methods: {
@@ -147,6 +137,10 @@ export default {
         },
 
         async readCandidaturas() {
+            this.items = [];
+            this.candidatos = [];
+            this.candidaturas = [];
+
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidatura/read/vaga`, {
                     params: {
@@ -155,11 +149,92 @@ export default {
                     withCredentials: true
                 });
 
-                console.log(response.data.result);                
+                console.log('Candidaturas: ', response.data.result);
+                this.candidaturas = response.data.result;
+                this.readCandidatos();
+                this.readQuestionario();
+                this.readQuestionarioResposta();
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response.data);
             }
+        },
+
+        async readCandidatos() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidato/read/all`, {
+                    withCredentials: true
+                });
+
+                console.log('Candidatos: ', response.data.usuarios);
+                this.candidatos = response.data.usuarios;
+                this.validarCandidaturas();
+
+            } catch (error) {
+                console.error('Erro ao obter candidatos', error.response.data);
+            }
+        },
+
+        validarCandidaturas() {
+            this.candidaturas.forEach(candidatura => {
+                const candidato = this.candidatos.find(c => c.id === candidatura.id_candidato);
+                if (candidato) {
+                    this.items.push({
+                        // ...candidato,                            
+                        foto: candidato.foto,
+                        nome: candidato.nome_completo,
+                        profissao: candidato.profissao,
+                        id: candidato.id,
+                    });
+                }
+            });
+            console.log(this.items);
+        },
+
+        async readQuestionario() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/questionario/read`, {
+                    params: {
+                        id: this.idVaga,
+                    },
+                    withCredentials: true
+                });
+
+                console.log(response.data);
+                this.questionario = response.data.result;
+
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
+        },
+
+        async readQuestionarioResposta() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/questionario/read/resposta`, {
+                    params: {
+                        id: this.idVaga,
+                    },
+                    withCredentials: true
+                });
+
+                console.log(response.data);
+                this.respostas = response.data.result;
+                this.relevanciaQuestionario();
+
+            } catch (error) {
+                console.error('Erro', error.response.data);
+            }
+        },
+
+        relevanciaQuestionario() {
+            this.respostas.forEach(resposta => {
+                const questao = this.questionario.find(q => q.id === resposta.id_questionario);
+                if (questao.tipo === 'alternativa') {
+                    console.log(questao);
+                    console.log(resposta.resposta);
+                    console.log(resposta.id_candidato);
+                }
+            });
         }
     }
 }

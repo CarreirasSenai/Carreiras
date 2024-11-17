@@ -2,63 +2,105 @@ const db = require("../config/db");
 
 exports.create = (idCandidato, idVaga, { dados }, callback) => {
     const respostas = dados;
+    let qtdAlternativas = 0;
+    let qtdCorretas = 0;
 
-    db.query('select count(*) as total from carreiras.candidatura where id_vaga = ?', [idVaga], (err, result) => {
+    // Inserir candidatura no banco
+    db.query('insert into candidatura (id_candidato, id_vaga) values (?, ?)', [idCandidato, idVaga], (err, result) => {
         if (err) {
             return callback(err.message, null);
         }
-        
-        const qtdCandidaturas = result[0].total;
-        console.log(qtdCandidaturas);
 
-        db.query('select max_candidaturas as total from carreiras.vagas where id = ?', [idVaga], (err, result) => {
-            if (err) {
-                return callback(err.message, null);
-            }
+        const idCandidatura = result.insertId;
+        console.log('idCandidatura: ', idCandidatura);
 
-            const maxCandidaturas = result[0].total;
-            console.log(maxCandidaturas);
+        // Obter habilidades exigidas da vaga
+        const getHabilidadesExigidas = new Promise((resolve, reject) => {
+            db.query('select * from vagas where id = ?', [idVaga], (err, rows) => {
+                if (err) return reject(err);
 
-            if (qtdCandidaturas < maxCandidaturas) {
-                db.query('insert into candidatura (id_candidato, id_vaga) values (?, ?)', [idCandidato, idVaga], (err, result) => {
-                    if (err) {
-                        return callback(err.message, null);
-                    }
+                try {
+                    const habilidadesExigidas = JSON.parse(rows[0].habilidades_exigidas);
+                    resolve(habilidadesExigidas);
+                } catch (parseErr) {
+                    reject('Erro ao parsear habilidades exigidas.');
+                }
+            });
+        });
 
-                    if (!Object.keys(respostas).length) {
-                        return callback(null, result);
-                    }
+        // Obter habilidades do candidato
+        const getHabilidadesCandidato = new Promise((resolve, reject) => {
+            db.query('SELECT * FROM habilidade WHERE id_candidato = ?', [idCandidato], (err, rows) => {
+                if (err) return reject(err);
 
-                    const promises = Object.keys(respostas).map((key) => {
-                        const idQuestionario = key.match(/\d+$/)[0];
+                try {
+                    const habilidadesCandidato = JSON.parse(rows[0].habilidades);
+                    resolve(habilidadesCandidato);
+                } catch (parseErr) {
+                    reject('Erro ao parsear habilidades do candidato.');
+                }
+            });
+        });
 
-                        return new Promise((resolve, reject) => {
-                            db.query('insert into questionario_respostas (resposta, id_questionario, id_candidato, id_vaga) values (?, ?, ?, ?)',
-                                [respostas[key], idQuestionario, idCandidato, idVaga], (err, result) => {
-                                    if (err) {
-                                        reject(err.message);
-                                    } else {
-                                        resolve(result);
-                                    }
-                                });
+        // Processar habilidades
+        Promise.all([getHabilidadesExigidas, getHabilidadesCandidato])
+            .then(([habilidadesExigidas, habilidadesCandidato]) => {
+                const qtdHabilidadesExigidas = habilidadesExigidas.length;
+                const habilidadesPossuidas = habilidadesExigidas.filter((habilidade) =>
+                    habilidadesCandidato.includes(habilidade)
+                );
+                const qtdHabilidadesPossuidas = habilidadesPossuidas.length;
+
+                console.log('Habilidades exigidas:', qtdHabilidadesExigidas);
+                console.log('Habilidades possuídas:', qtdHabilidadesPossuidas);
+
+                // Processar questionário
+                const promises = Object.keys(respostas).map((key) => {
+                    const idQuestionario = key.match(/\d+$/)[0];
+
+                    return new Promise((resolve, reject) => {
+                        db.query('select * from questionario where id = ?', [idQuestionario], (err, rows) => {
+                            if (err) return reject(err);
+
+                            if (rows[0].tipo === 'alternativa') {
+                                qtdAlternativas += 1;
+                                if (rows[0].respCorreta === respostas[key]) {
+                                    qtdCorretas += 1;
+                                }
+                            }
+
+                            db.query(
+                                'insert into questionario_respostas (resposta, id_questionario, id_candidato, id_vaga) values (?, ?, ?, ?)',
+                                [respostas[key], idQuestionario, idCandidato, idVaga],
+                                (err, result) => {
+                                    if (err) return reject(err);
+                                    resolve(result);
+                                }
+                            );
                         });
                     });
-
-                    Promise.all(promises)
-                        .then(results => {
-                            callback(null, results);
-                        })
-                        .catch(err => {
-                            callback(err, null);
-                        });
                 });
-            } else {
-                return callback('Limite de Candidaturas atingido nesta vaga!', null)
-            }
-        });
+
+                return Promise.all(promises).then(() => ({
+                    qtdHabilidadesExigidas,
+                    qtdHabilidadesPossuidas,
+                }));
+            })
+            .then(({ qtdHabilidadesExigidas, qtdHabilidadesPossuidas }) => {
+                const percentQuestionario = (qtdCorretas / qtdAlternativas) * 100 || 0;
+                const percentHabilidades = (qtdHabilidadesPossuidas / qtdHabilidadesExigidas) * 100 || 0;
+
+                console.log('Questionário:', percentQuestionario, '%');
+                console.log('Habilidades:', percentHabilidades, '%');
+                console.log('Total:', percentQuestionario + percentHabilidades, '%');
+
+                callback(null, { percentQuestionario, percentHabilidades });
+            })
+            .catch((err) => {
+                callback(err, null);
+            });
     });
 };
-
 
 exports.read = (idCandidato, idVaga, callback) => {
     db.query('select * from carreiras.candidatura where id_candidato = ? and id_vaga = ?', [idCandidato, idVaga], (err, result) => {
