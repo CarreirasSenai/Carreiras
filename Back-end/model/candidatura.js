@@ -19,12 +19,11 @@ exports.create = (idCandidato, idVaga, { dados }, callback) => {
             db.query('select * from vagas where id = ?', [idVaga], (err, rows) => {
                 if (err) return reject(err);
 
-                try {
-                    const habilidadesExigidas = JSON.parse(rows[0].habilidades_exigidas);
-                    resolve(habilidadesExigidas);
-                } catch (parseErr) {
-                    reject('Erro ao parsear habilidades exigidas.');
+                let habilidadesExigidas = [];
+                if (rows[0].habilidades_exigidas) {
+                    habilidadesExigidas = JSON.parse(rows[0].habilidades_exigidas);
                 }
+                resolve(habilidadesExigidas);
             });
         });
 
@@ -33,12 +32,11 @@ exports.create = (idCandidato, idVaga, { dados }, callback) => {
             db.query('SELECT * FROM habilidade WHERE id_candidato = ?', [idCandidato], (err, rows) => {
                 if (err) return reject(err);
 
-                try {
-                    const habilidadesCandidato = JSON.parse(rows[0].habilidades);
-                    resolve(habilidadesCandidato);
-                } catch (parseErr) {
-                    reject('Erro ao parsear habilidades do candidato.');
+                let habilidadesCandidato = [];
+                if (rows.length) {
+                    habilidadesCandidato = JSON.parse(rows[0].habilidades);
                 }
+                resolve(habilidadesCandidato);
             });
         });
 
@@ -89,12 +87,23 @@ exports.create = (idCandidato, idVaga, { dados }, callback) => {
             .then(({ qtdHabilidadesExigidas, qtdHabilidadesPossuidas }) => {
                 const percentQuestionario = (qtdCorretas / qtdAlternativas) * 100 || 0;
                 const percentHabilidades = (qtdHabilidadesPossuidas / qtdHabilidadesExigidas) * 100 || 0;
+                const percentTotal = (percentQuestionario + percentHabilidades) / 2;
 
                 console.log('Questionário:', percentQuestionario, '%');
                 console.log('Habilidades:', percentHabilidades, '%');
-                console.log('Total:', percentQuestionario + percentHabilidades, '%');
+                console.log('Total:', percentTotal, '%');
 
-                callback(null, { percentQuestionario, percentHabilidades });
+                db.query('update candidatura set relevancia = ? where id = ?', [percentTotal, idCandidatura], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        return callback(err, null);
+
+                    } else if (result) {
+                        console.log(result);
+                    }
+                });
+
+                callback(null, { percentTotal });
             })
             .catch((err) => {
                 callback(err, null);

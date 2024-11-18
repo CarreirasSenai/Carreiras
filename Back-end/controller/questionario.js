@@ -25,9 +25,9 @@ exports.read = (req, res) => {
 }
 
 exports.readResposta = (req, res) => {
-    const { id } = req.query;
+    const { idVaga, idCandidato } = req.query;
 
-    Questionario.readResposta(id, (err, result) => {
+    Questionario.readResposta(idVaga, idCandidato, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         } else if (result) {

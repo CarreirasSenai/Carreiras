@@ -42,10 +42,8 @@
                             </template> -->
 
                             <template v-slot:item.relevancia="{ item }">
-                                <div class="d-flex">
-                                    <v-sheet class="text-center rounded-lg pa-1 elevation-1"
-                                        :color="validaCorRelevancia(item.relevancia)">{{ item.relevancia }}%</v-sheet>
-                                </div>
+                                <QuestionarioRespostas :Candidato="item" :Vaga="this.Vagas"
+                                    :Relevancia="item.relevancia" />
                             </template>
 
                             <template v-slot:item.acao="{ item }">
@@ -74,6 +72,7 @@ export default {
         return {
             idVaga: '',
             dialog: false,
+            dialogModal: false,
             search: '',
             headers: [
                 { title: 'Foto', value: 'foto', sortable: false },
@@ -86,8 +85,6 @@ export default {
             items: [],
             candidaturas: [],
             candidatos: [],
-            questionario: [],
-            respostas: [],
             caminhoFotos: import.meta.env.VITE_BACKEND_URL,
 
             // items: [
@@ -121,21 +118,6 @@ export default {
             alert(id);
         },
 
-        validaCorRelevancia(value) {
-            if (value < 50) {
-                return 'error';
-            }
-            if (value >= 50 && value < 70) {
-                return 'warning';
-            }
-            if (value >= 70 && value < 90) {
-                return 'info';
-            }
-            if (value >= 90) {
-                return 'success';
-            }
-        },
-
         async readCandidaturas() {
             this.items = [];
             this.candidatos = [];
@@ -152,8 +134,6 @@ export default {
                 console.log('Candidaturas: ', response.data.result);
                 this.candidaturas = response.data.result;
                 this.readCandidatos();
-                this.readQuestionario();
-                this.readQuestionarioResposta();
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response.data);
@@ -184,58 +164,13 @@ export default {
                         foto: candidato.foto,
                         nome: candidato.nome_completo,
                         profissao: candidato.profissao,
+                        relevancia: candidatura.relevancia,
                         id: candidato.id,
                     });
                 }
             });
             console.log(this.items);
         },
-
-        async readQuestionario() {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/questionario/read`, {
-                    params: {
-                        id: this.idVaga,
-                    },
-                    withCredentials: true
-                });
-
-                console.log(response.data);
-                this.questionario = response.data.result;
-
-            } catch (error) {
-                console.error('Erro', error.response.data);
-            }
-        },
-
-        async readQuestionarioResposta() {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/questionario/read/resposta`, {
-                    params: {
-                        id: this.idVaga,
-                    },
-                    withCredentials: true
-                });
-
-                console.log(response.data);
-                this.respostas = response.data.result;
-                this.relevanciaQuestionario();
-
-            } catch (error) {
-                console.error('Erro', error.response.data);
-            }
-        },
-
-        relevanciaQuestionario() {
-            this.respostas.forEach(resposta => {
-                const questao = this.questionario.find(q => q.id === resposta.id_questionario);
-                if (questao.tipo === 'alternativa') {
-                    console.log(questao);
-                    console.log(resposta.resposta);
-                    console.log(resposta.id_candidato);
-                }
-            });
-        }
     }
 }
 </script>

@@ -1,10 +1,10 @@
 const Candidatura = require("../model/candidatura");
 
 exports.create = (req, res) => {
-    // const idCandidato = req.session.usuario.id;
-    const idCandidato = 25;
+    const idCandidato = req.session.usuario.id;
     const idVaga = req.body.idVaga;
     const dados = req.body;
+    // const idCandidato = 25;
 
     Candidatura.create(idCandidato, idVaga, dados, (err, result) => {
         if (err) {
@@ -17,9 +17,9 @@ exports.create = (req, res) => {
 }
 
 exports.read = (req, res) => {
-    // const idCandidato = req.session.usuario.id;
-    const idCandidato = 25;
+    const idCandidato = req.session.usuario.id;    
     const idVaga = req.query.idVaga;
+    // const idCandidato = 25;
 
     Candidatura.read(idCandidato, idVaga, (err, result) => {
         if (err) {
@@ -43,9 +43,9 @@ exports.readVaga = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    // const idCandidato = req.session.usuario.id;
+    const idCandidato = req.session.usuario.id;
     const idVaga = req.params.idVaga;
-    const idCandidato = 25;
+    // const idCandidato = 25;
 
     Candidatura.delete(idCandidato, idVaga, (err, result) => {
         if (err) {

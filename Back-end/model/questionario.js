@@ -33,10 +33,8 @@ exports.read = (id, callback) => {
     });
 };
 
-exports.readResposta = (id, callback) => {
-    console.log(id);
-
-    db.query('select * from questionario_respostas where id_vaga = ?', [id], (err, row) => {
+exports.readResposta = (idVaga, idCandidato, callback) => {
+    db.query('select * from questionario_respostas where id_vaga = ? and id_candidato = ?', [idVaga, idCandidato], (err, row) => {
         if (err) {
             console.log(err);
             return callback(err, null);
