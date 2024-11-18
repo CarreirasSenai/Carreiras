@@ -52,9 +52,11 @@
                                 <h3 class="text-center mb-2 text-h6 text-sm-h5 font-weight-bold	">Crie uma Nova Senha
                                 </h3>
                                 <v-text-field v-model="novaSenha" label="Nova senha" :rules="rules.novaSenha"
-                                    type="password"></v-text-field>
+                                    :type="show1 ? 'text' : 'password'" :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"  
+                                    counter @click:append-inner="show1 = !show1"></v-text-field>
                                 <v-text-field v-model="confirmaSenha" label="Confirme a senha"
-                                    :rules="rules.confirmaSenha" type="password"></v-text-field>
+                                    :rules="rules.confirmaSenha" :type="show2 ? 'text' : 'password'" :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" 
+                                    counter @click:append-inner="show2 = !show2"></v-text-field>
                                 <v-btn elevation="0" class="bg-purple-darken-4" block type="submit">Salvar</v-btn>
                                 <v-btn variant="text" to="/" block>cancelar</v-btn>
                             </v-form>
@@ -91,6 +93,8 @@ export default {
             snackbarColor: '',
             novaSenha: 'Thiago1#',
             confirmaSenha: 'Thiago1#',
+            show1: false,
+            show2: false,
             rules: {
                 novaSenha: [
                     (v) => !!v || 'Campo obrigatório.',
