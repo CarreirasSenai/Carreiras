@@ -63,7 +63,7 @@
 
                     <v-card-actions class="d-flex justify-space-between">
                         <div class="d-flex flex-wrap ga-2">
-                            <v-btn class="bt-primario">Inscrever-se</v-btn>
+                            <v-btn class="bt-primario" :to="`/perfil-empresa?requisicao=empresa&id=${this.empresa.id}`">Inscrever-se</v-btn>
                         </div>
                         <router-link :to="`/perfil-empresa?requisicao=empresa&id=${this.empresa.id}`"
                             class="text-black text-decoration-none">

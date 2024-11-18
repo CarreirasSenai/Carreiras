@@ -33,6 +33,19 @@ exports.read = (id, callback) => {
     });
 };
 
+exports.readResposta = (idVaga, idCandidato, callback) => {
+    db.query('select * from questionario_respostas where id_vaga = ? and id_candidato = ?', [idVaga, idCandidato], (err, row) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+
+        } else if (row) {
+            console.log(row);
+            return callback(null, row);
+        }
+    });
+};
+
 exports.update = ({ dados }, callback) => {
     console.log(dados);
     const { id, tipo, pergunta, respostas, respCorreta } = dados;

@@ -24,6 +24,18 @@ exports.read = (req, res) => {
     });
 }
 
+exports.readResposta = (req, res) => {
+    const { idVaga, idCandidato } = req.query;
+
+    Questionario.readResposta(idVaga, idCandidato, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.status(200).json({ sucess: 'Respostas:', result: result });
+        }
+    });
+}
+
 exports.update = (req, res) => {
     const dados = req.body;
 

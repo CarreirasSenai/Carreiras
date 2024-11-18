@@ -22,7 +22,8 @@
 
                             <template v-slot:item.foto="{ item }">
                                 <v-card class="my-2 rounded-circle" style="width:50px;">
-                                    <v-img :src="`https://randomuser.me/api/portraits/women/${item.foto}`"
+                                    <v-img
+                                        :src="item.foto ? `${caminhoFotos}/uploads/perfil/${item.foto}` : '/src/assets/avatar.png'"
                                         cover></v-img>
                                 </v-card>
                             </template>
@@ -41,10 +42,8 @@
                             </template> -->
 
                             <template v-slot:item.relevancia="{ item }">
-                                <div class="d-flex">
-                                    <v-sheet class="text-center rounded-lg pa-1 elevation-1"
-                                        :color="validaCorRelevancia(item.relevancia)">{{ item.relevancia }}%</v-sheet>
-                                </div>
+                                <QuestionarioRespostas :Candidato="item" :Vaga="this.Vagas"
+                                    :Relevancia="item.relevancia" />
                             </template>
 
                             <template v-slot:item.acao="{ item }">
@@ -73,6 +72,7 @@ export default {
         return {
             idVaga: '',
             dialog: false,
+            dialogModal: false,
             search: '',
             headers: [
                 { title: 'Foto', value: 'foto', sortable: false },
@@ -82,35 +82,22 @@ export default {
                 { title: 'Relevância', value: 'relevancia', sortable: true },
                 { title: 'Ação', value: 'acao', sortable: false },
             ],
-            items: [
-                {
-                    foto: '1.jpg',
-                    nome: 'João Pereira',
-                    indicacao: 'true',
-                    profissao: 'Engenheiro de Software',
-                    relevancia: '70',
-                    acao: '',
-                    id: 25,
-                },
-                {
-                    foto: '2.jpg',
-                    nome: 'Maria Fernandes',
-                    indicacao: '',
-                    profissao: 'Desenvolvedora Full Stack',
-                    relevancia: '64',
-                    acao: '',
-                    id: 2,
-                },
-                {
-                    foto: '3.jpg',
-                    nome: 'Carlos Silva',
-                    indicacao: 'true',
-                    profissao: 'Especialista em DevOps',
-                    relevancia: '90',
-                    acao: '',
-                    id: 3,
-                },
-            ],
+            items: [],
+            candidaturas: [],
+            candidatos: [],
+            caminhoFotos: import.meta.env.VITE_BACKEND_URL,
+
+            // items: [
+            //     {
+            //         foto: '1.jpg',
+            //         nome: 'João Pereira',
+            //         indicacao: 'true',
+            //         profissao: 'Engenheiro de Software',
+            //         relevancia: '70',
+            //         acao: '',
+            //         id: 25,
+            //     }
+            // ],
         }
     },
 
@@ -119,7 +106,7 @@ export default {
     },
 
     mounted() {
-        this.idVaga = this.Vagas.raw.id;        
+        this.idVaga = this.Vagas.raw.id;
     },
 
     methods: {
@@ -131,22 +118,11 @@ export default {
             alert(id);
         },
 
-        validaCorRelevancia(value) {
-            if (value < 50) {
-                return 'error';
-            }
-            if (value >= 50 && value < 70) {
-                return 'warning';
-            }
-            if (value >= 70 && value < 90) {
-                return 'info';
-            }
-            if (value >= 90) {
-                return 'success';
-            }
-        },
-
         async readCandidaturas() {
+            this.items = [];
+            this.candidatos = [];
+            this.candidaturas = [];
+
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidatura/read/vaga`, {
                     params: {
@@ -155,12 +131,46 @@ export default {
                     withCredentials: true
                 });
 
-                console.log(response.data.result);                
+                console.log('Candidaturas: ', response.data.result);
+                this.candidaturas = response.data.result;
+                this.readCandidatos();
 
             } catch (error) {
                 console.error('Erro ao obter dados do usuário', error.response.data);
             }
-        }
+        },
+
+        async readCandidatos() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/candidato/read/all`, {
+                    withCredentials: true
+                });
+
+                console.log('Candidatos: ', response.data.usuarios);
+                this.candidatos = response.data.usuarios;
+                this.validarCandidaturas();
+
+            } catch (error) {
+                console.error('Erro ao obter candidatos', error.response.data);
+            }
+        },
+
+        validarCandidaturas() {
+            this.candidaturas.forEach(candidatura => {
+                const candidato = this.candidatos.find(c => c.id === candidatura.id_candidato);
+                if (candidato) {
+                    this.items.push({
+                        // ...candidato,                            
+                        foto: candidato.foto,
+                        nome: candidato.nome_completo,
+                        profissao: candidato.profissao,
+                        relevancia: candidatura.relevancia,
+                        id: candidato.id,
+                    });
+                }
+            });
+            console.log(this.items);
+        },
     }
 }
 </script>

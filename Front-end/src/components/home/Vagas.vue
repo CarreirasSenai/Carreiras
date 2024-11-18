@@ -10,7 +10,8 @@
           </template> -->
       <template v-slot:default="{ items }">
         <v-row>
-          <v-col cols="12" lg="4" md="6" sm="6" v-for="item in items" :key="item.id">
+          <v-col cols="12" lg="4" md="6" sm="6" v-for="(item, index) in items" :key="item.id"
+            :style="{ order: items.length - index }">
             <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;" :ref="item.id">
               <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
                 {{ item.raw.titulo }}
@@ -47,10 +48,14 @@
                 <v-row dense>
                   <v-col cols="12">
                     <p class="observavel overflow-hidden" style="white-space: nowrap;">
-                      <v-chip size="small" variant="outlined" color="deep-purple-accent-4" class="mr-2"
-                        v-for="(habilidade, index) in JSON.parse(item.raw.habilidades_exigidas).slice(0, 3)"
-                        :key="index">
+                      <v-chip v-for="(habilidade, index) in JSON.parse(item.raw.habilidades_exigidas).slice(0, 3)"
+                        :key="index" size="small" variant="outlined" color="deep-purple-accent-4" class="mr-2">
                         {{ habilidade }}
+                      </v-chip>
+
+                      <!-- Caso não existam habilidades -->
+                      <v-chip v-if="JSON.parse(item.raw.habilidades_exigidas).length === 0" size="small" class="mr-2"
+                        color="white">
                       </v-chip>
                     </p>
                   </v-col>
