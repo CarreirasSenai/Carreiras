@@ -17,16 +17,16 @@
                                 label="Descrição" :rules="rules.descricaoRules"></v-textarea>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-select v-model="form.vaga" :items="vagas" item-title="titulo" item-value="id"
+                            <v-combobox v-model="form.vaga" :items="vagas" item-title="titulo" item-value="id"
                                 label="Selecione uma Vaga" persistent-hint return-object single-line variant="outlined"
                                 :clearable="true" @focus="mostrarVagas" @update:modelValue="onVagaSelecionada">
-                            </v-select>
+                            </v-combobox>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-select v-model="form.candidato" :items="candidatos" item-title="nome" item-value="id"
+                            <v-combobox v-model="form.candidato" :items="candidatos" item-title="nome" item-value="id"
                                 label="Selecione um Candidato" persistent-hint return-object single-line
                                 variant="outlined" :clearable="true">
-                            </v-select>
+                            </v-combobox>
                         </v-col>
                         <v-col cols="12" md="6">
                             <v-text-field v-model="form.data" label="Data" type="date"
