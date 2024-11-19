@@ -1,5 +1,5 @@
 <template>
-  <v-div class="bg-indigo-1 text-center d-flex flex-column position-relative">
+  <v-div class="bg-indigo-1 text-center d-flex flex-column">
     <div class="footer-content">
       <div class="social-icons">
         <v-btn
