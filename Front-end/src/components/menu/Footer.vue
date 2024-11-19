@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="bg-indigo-1 text-center d-flex flex-column footer-border">
+  <v-div class="bg-indigo-1 text-center d-flex flex-column position-relative">
     <div class="footer-content">
       <div class="social-icons">
         <v-btn
@@ -22,7 +22,7 @@
     <div class="footer-bottom">
       <p>{{ new Date().getFullYear() }} — <strong>Carreiras</strong>. Todos os direitos reservados.</p>
     </div>
-  </v-footer>
+  </v-div>
 </template>
 
 <script>

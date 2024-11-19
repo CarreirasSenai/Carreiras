@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from "@/stores/auth";
 
 export default {
   computed: {
@@ -20,5 +20,8 @@ export default {
   mounted() {
     this.auth.autenticacao();
   },
-}
+};
 </script>
+
+<style scoped>
+</style>

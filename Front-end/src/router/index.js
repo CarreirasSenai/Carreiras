@@ -20,7 +20,6 @@ import Contato from '@/pages/contato.vue';
 import AgendaAlternativa from '@/pages/AgendaAlternativa.vue';
 import PoliticaDePrivacidade from '@/pages/PoliticaDePrivacidade.vue';
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -34,23 +33,18 @@ const router = createRouter({
     { path: '/perfil-empresa', component: PerfilEmpresa },
     { path: '/redefinir-senha', component: RedefinirSenha },
     { path: '/modal-justificativa', component: ModalJustificativa },
-    { path: '/login', component: Login },
-    { path: '/cadastro-empresa', component: CADempresa },
-    { path: '/cadastro-candidato', component: CADcandidato },
-    { path: '/empresa-candidato', component: EntrarEmpresaOuCandidato },
-    { path: '/editar-candidato', component: EDCcandidato },
-    { path: '/perfil-candidato', component: PerfilCandidato },
     { path: '/lista-empresas', component: ListaEmpresas },
     { path: '/lista-usuarios', component: ListaDeUsuarios },
-    { path: '/lista-vagas', component: ListaVagas},
+    { path: '/lista-vagas', component: ListaVagas },
     { path: '/sobre', component: Sobre },
-    { path: '/detalhes-vaga', component: DetalhesVaga},
-    { path: '/minhas-vagas', component: MinhasVagas},
-    { path: '/lista-candidatos', component: listaCandidatos},
-    { path: '/contato', component: Contato},
+    { path: '/detalhes-vaga', component: DetalhesVaga },
+    { path: '/minhas-vagas', component: MinhasVagas },
+    { path: '/lista-candidatos', component: listaCandidatos },
+    { path: '/contato', component: Contato },
     { path: '/agenda-empresa', component: AgendaAlternativa },
     { path: '/agenda-candidato', component: AgendaAlternativa },
-    { path: '/politica-de-privacidade', component: PoliticaDePrivacidade}
+    { path: '/politica-de-privacidade', component: PoliticaDePrivacidade },
+    { path: '/:catchAll(.*)', redirect: '/' } // Redireciona para a página inicial em caso de rota não encontrada
   ],
 });
 

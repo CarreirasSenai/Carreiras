@@ -77,6 +77,7 @@
             </v-col>
         </v-row>
     </v-container>
+    <Footer />
 </template>
 
 <script>
