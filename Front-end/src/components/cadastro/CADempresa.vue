@@ -8,7 +8,7 @@
         <v-card class="px-4 elevation-12 signup-card" rounded="xl">
           <v-card-text>
             <h1 class="text-center my-1">Cadastro</h1>
-            <v-form ref="form" v-model="isValid" class="my-4" @submit.prevent>
+            <v-form class="my-4" @submit.prevent="enviarCadastro">
               <v-row>
                 <v-col cols="12" sm="6" md="6" lg="6">
                   <v-text-field
@@ -227,7 +227,7 @@
                 </v-col>
               </v-row>
               <div class="sign-in-buttons d-flex justify-center my-4">
-                <v-btn :disabled="!isValid" class="adm-button bg-purple-darken-4 mt-4 mb-2" size="large" @click="enviarCadastro()">Salvar</v-btn>
+                <v-btn class="adm-button bg-purple-darken-4 mt-4 mb-2" size="large" type="submit">Salvar</v-btn>
               </div>
             </v-form>
             <div class="got-account-container my-3">
@@ -349,8 +349,10 @@ export default {
     };
   },
   methods: {
-    async enviarCadastro(){
-      if(this.$refs.form.validate()) {
+    async enviarCadastro(event){
+      const dados = await event;
+
+      if(dados.valid === true) {
         this.cnpj = this.limparMascaraValores(this.cnpj);
         this.celular = this.limparMascaraValores(this.celular);
         this.telefone = this.limparMascaraValores(this.telefone);
@@ -389,8 +391,6 @@ export default {
           this.mensagemErro = error.response.data.error;
           document.getElementById("btnAlertaCadastro").click();
         }
-      } else {
-        alert("Preencha os campos obrigatórios!")
       }
     },
     async retornarInformacoesCep(){
