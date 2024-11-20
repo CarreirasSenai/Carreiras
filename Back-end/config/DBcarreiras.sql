@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS `agendamento`;
 CREATE TABLE `agendamento` (
   `id` int NOT NULL AUTO_INCREMENT,
   `titulo` varchar(100) NOT NULL,
-  `descricao` varchar(600) DEFAULT NULL,
+  `descricao` varchar(600) DEFAULT NULL, 
   `vaga` varchar(45) NOT NULL,
   `data` date NOT NULL,
   `hora` time NOT NULL,
