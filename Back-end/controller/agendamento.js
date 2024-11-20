@@ -34,9 +34,11 @@ exports.readAllCandidatos = (req, res) => {
     });
 }
 
+
 exports.update = (req, res) => {
     if (req.body.params) {
         const { id, title, descricao, vaga, candidato, data, hora } = req.body.params;
+        
         Agendamento.update(id, title, descricao, vaga, candidato, data, hora, (err, result) => {
             if (err) {
                 return res.status(500).json({ error: err.message });
@@ -78,19 +80,8 @@ exports.create = async (req, res) => {
                     color: white;
                     box-shadow: 0 1px 4px #333;">
                     <div>
-                        <div>Clique no botão para ativar sua conta</div>
+                        <div>Ebaaa! Alguém marcou uma entrevista com você! Entre na sua agenda do Carreiras para visualizar.</div>
                         <br><br>
-                        box-shadow: 0 1px 4px #333;
-                        padding: 10px;
-                        text-decoration: none;
-                        border-radius: 10px;
-                        width: 100px;
-                        font-weight: bold;
-                        font-size: small;
-                        background-color: #6f00ff;">
-                            Ativar Conta
-                        </a>
-                        <br><br><br><br>
                         <small>
                             <a target="_blank" href="https://www.carreiras.com.br" style="color: white;">
                                 www.carreiras.com.br
