@@ -80,7 +80,7 @@ exports.create = async (req, res) => {
                     color: white;
                     box-shadow: 0 1px 4px #333;">
                     <div>
-                        <div>Ebaaa! Aguém marcou uma entrevista com você! Entre na sua agenda do Carreiras para visualizar.</div>
+                        <div>Ebaaa! Alguém marcou uma entrevista com você! Entre na sua agenda do Carreiras para visualizar.</div>
                         <br><br>
                         <small>
                             <a target="_blank" href="https://www.carreiras.com.br" style="color: white;">
