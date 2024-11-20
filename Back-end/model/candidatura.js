@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const transporter = require('../services/nodemailer');
 
 exports.create = (idCandidato, idVaga, { dados }, callback) => {
     const respostas = dados;
@@ -161,3 +162,73 @@ exports.delete = (idCandidato, idVaga, callback) => {
         });
     });
 };
+
+exports.update = (idCandidato, idVaga, selecao, justificativa, callback) => {
+
+    let email;
+    db.query('SELECT * FROM user_candidato WHERE id = ?', [idCandidato], (err, rows) => {
+        if (err) {
+            return callback(err, null);
+        }
+
+        email = rows[0].email;
+        console.log(email);
+
+        if (selecao === 0) {
+            const corpo =
+                `
+        <div style="font-family: Arial, Helvetica, sans-serif; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;">
+            <div style="text-align: center; width: 100%;">
+                <hr>
+                <h1 style="color: #333;">Carreiras 🐝</h1>
+                <div style="background: linear-gradient(to right, #6f00ff, #9341ff);
+                    padding: 50px;
+                    color: white;
+                    box-shadow: 0 1px 4px #333;">
+                    <div>
+                        <div style="font-size: 17px">
+                            ${justificativa}
+                        </div>
+                        <br><br><br>
+                        <small>
+                            <a target="_blank" href="https://www.carreiras.com.br" style="color: white;">
+                                www.carreiras.com.br
+                            </a>
+                        </small>
+                    </div>
+                </div>
+                <br>
+                <hr>
+            </div>
+        </div>
+        `;
+
+            async function main() {
+                const info = await transporter.sendMail({
+                    from: '"Carreiras" <carreirassenai@gmail.com>',
+                    to: email,
+                    subject: 'Justificativa para não Contratação',
+                    html: corpo
+                });
+
+                console.log("Email enviado para:", info.accepted);
+            }
+            main().catch(console.error);
+        }
+    });
+
+    db.query('update candidatura set status = ? where id_candidato = ? and id_vaga = ?', [selecao, idCandidato, idVaga], (err, result) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+        } else if (result) {
+            console.log(result);
+            return callback(null, result.affectedRows > 0);
+        }
+    });
+}

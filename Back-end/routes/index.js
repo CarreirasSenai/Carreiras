@@ -124,6 +124,7 @@ router.post('/candidatura/create', Candidatura.create);
 router.get('/candidatura/read', Candidatura.read);
 router.get('/candidatura/read/vaga', Candidatura.readVaga);
 router.delete('/candidatura/delete/:idVaga', Candidatura.delete);
+router.put('/candidatura/update', Candidatura.update);
 
 // rota logout
 router.get('/logout', (req, res) => {

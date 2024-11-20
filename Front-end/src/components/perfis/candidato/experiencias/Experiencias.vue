@@ -23,12 +23,12 @@
                                 <strong>{{ items.empresa }} </strong><br>
                                 {{ formatarData(items.inicio) }} - {{ formatarData(items.termino) }}
                             </v-card-text>
-                            <EditarExperiencias :MostrarExperiencias="mostrarExperiencias" :Experiencias="items" v-if="user.dadosUser.id === idCandidato"/>
+                            <EditarExperiencias :MostrarExperiencias="mostrarExperiencias" :Experiencias="items" v-if="grupo === 'candidato'"/>
                         </v-card>
                     </v-col>
                     <span v-if="!formacoes.length" class="ma-4">Adicione uma experiência.</span>
                 </v-row>
-                <AdicionarExperiencia :MostrarExperiencias="mostrarExperiencias" v-if="user.dadosUser.id === idCandidato"/>
+                <AdicionarExperiencia :MostrarExperiencias="mostrarExperiencias" v-if="grupo === 'candidato'"/>
             </v-expansion-panel-text>
         </v-expansion-panel>
     </v-col>
@@ -42,7 +42,6 @@ import { useCandidatoStore } from '@/stores/candidato';
 export default {
     data() {
         return {
-            idCandidato: '',
             formacoes: [
                 {
                     cargo: '',
@@ -62,6 +61,7 @@ export default {
     },
     mounted() {
         this.mostrarExperiencias();
+        this.grupo = localStorage.getItem('grupo');
     },
     methods: {
         async mostrarExperiencias() {
@@ -82,8 +82,6 @@ export default {
                     }
                     return experiencia;
                 });
-
-                this.idCandidato = response.data.result[0].id_candidato;
 
             } catch (error) {
                 console.error('Erro', error.response.data);

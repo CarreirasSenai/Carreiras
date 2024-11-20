@@ -76,6 +76,9 @@
                             </small>
                             <v-card-actions class="d-flex justify-space-between">
                                 <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
+                                <v-spacer></v-spacer>
+                                <v-chip :color="item.raw.status === 0 ? 'error' : 'success'">{{ item.raw.status
+                                    === 0 ? 'Em análise' : 'Aprovada' }}</v-chip>
                                 <ModalCandidatosVagas
                                     v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
                                     :Vagas="item" />

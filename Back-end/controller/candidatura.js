@@ -8,7 +8,7 @@ exports.create = (req, res) => {
 
     Candidatura.create(idCandidato, idVaga, dados, (err, result) => {
         if (err) {
-            console.log(err);            
+            console.log(err);
             return res.status(500).json({ error: err });
         } else if (result) {
             return res.json({ success: true, result: 'Candidatura enviada!' })
@@ -17,7 +17,7 @@ exports.create = (req, res) => {
 }
 
 exports.read = (req, res) => {
-    const idCandidato = req.session.usuario.id;    
+    const idCandidato = req.session.usuario.id;
     const idVaga = req.query.idVaga;
     // const idCandidato = 25;
 
@@ -31,7 +31,7 @@ exports.read = (req, res) => {
 };
 
 exports.readVaga = (req, res) => {
-    const idVaga = req.query.idVaga;    
+    const idVaga = req.query.idVaga;
 
     Candidatura.readVaga(idVaga, (err, result) => {
         if (err) {
@@ -55,3 +55,20 @@ exports.delete = (req, res) => {
         }
     });
 };
+
+exports.update = (req, res) => {
+    const idCandidato = req.body.idCandidato;
+    const idVaga = req.body.idVaga;
+    const justificativa = req.body.justificativa;
+
+    const selecao = justificativa ? 0 : 1;
+
+    Candidatura.update(idCandidato, idVaga, selecao, justificativa, (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: err });
+        } else if (result) {
+            return res.json({ success: true, result: 'Candidatura atualizada!' })
+        }
+    });
+}

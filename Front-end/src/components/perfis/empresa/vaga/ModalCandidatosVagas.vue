@@ -50,18 +50,39 @@
                                 <div class="d-flex">
                                     <v-btn icon="mdi-check-bold" size="x-small" class="mx-2 bg-success"
                                         @click="aprovarCandidato(item.id)"></v-btn>
-                                    <ModalJustificativa :Candidato="item" :Vaga="this.Vagas" />
+                                    <ModalJustificativa :Candidato="item" :Vaga="this.Vagas" :ReadCandidaturas="readCandidaturas"/>
                                 </div>
                             </template>
 
+                            <template v-slot:item.status="{ item }">
+                                <v-chip v-if="item.status === 0 || item.status === 1"
+                                    :color="validaStatusCor(item.status)">{{ validaStatusTexto(item.status) }}</v-chip>
+                            </template>
+
                         </v-data-table>
-                        <v-btn class="bt-primario position-absolute bottom-0 ma-2 elevation-0"
-                            @click="dialog = false">Fechar</v-btn>
+                        <div class="d-flex position-absolute bottom-0 ma-2 ga-2">
+                            <v-btn class="bt-primario elevation-0" @click="dialog = false">Fechar</v-btn>
+                            <!-- <v-btn variant="tonal" class="elevation-0" @click="modalSelecao = true">Iniciar
+                                Seleção</v-btn> -->
+                        </div>
                     </v-card>
                 </v-col>
             </v-row>
         </v-container>
     </v-dialog>
+
+    <!-- <v-dialog max-width="500" v-model="modalSelecao">
+        <v-card title="Atenção!">
+            <v-card-text>
+                Ao iniciar a seleção não será mais possível receber inscrições na vaga.
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn variant="tonal" text="Cancelar" @click="modalSelecao = false"></v-btn>
+                <v-btn variant="tonal" class="bt-primario" text="Iniciar" @click="iniciarSelecao"></v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog> -->
 </template>
 
 <script>
@@ -73,6 +94,7 @@ export default {
             idVaga: '',
             dialog: false,
             dialogModal: false,
+            modalSelecao: false,
             search: '',
             headers: [
                 { title: 'Foto', value: 'foto', sortable: false },
@@ -80,6 +102,7 @@ export default {
                 // { title: 'Indicação', value: 'indicacao', sortable: true },
                 { title: 'Profissão', value: 'profissao', sortable: false },
                 { title: 'Relevância', value: 'relevancia', sortable: true },
+                { title: 'Status', value: 'status', sortable: true },
                 { title: 'Ação', value: 'acao', sortable: false },
             ],
             items: [],
@@ -159,18 +182,46 @@ export default {
             this.candidaturas.forEach(candidatura => {
                 const candidato = this.candidatos.find(c => c.id === candidatura.id_candidato);
                 if (candidato) {
-                    this.items.push({
-                        // ...candidato,                            
-                        foto: candidato.foto,
-                        nome: candidato.nome_completo,
-                        profissao: candidato.profissao,
-                        relevancia: candidatura.relevancia,
-                        id: candidato.id,
-                    });
+                    if (candidatura.status === 1 || candidatura.status === null) {
+                        this.items.push({
+                            // ...candidato,                            
+                            foto: candidato.foto,
+                            nome: candidato.nome_completo,
+                            profissao: candidato.profissao,
+                            relevancia: candidatura.relevancia,
+                            id: candidato.id,
+                            status: candidatura.status
+                        });
+                    }
                 }
             });
             console.log(this.items);
         },
+
+        validaStatusTexto(value) {
+            if (value === 1) {
+                return 'Selecionado';
+            }
+        },
+
+        validaStatusCor(value) {
+            if (value === 1) {
+                return 'success';
+            }
+        }
+
+        // async iniciarSelecao() {
+        //     try {
+        //         const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}//`, {                    
+        //             idVaga: this.idVaga
+        //         }, { withCredentials: true });
+
+        //         console.log(response.data);
+
+        //     } catch (error) {
+        //         console.error('Erro', error.response.data.error);
+        //     }
+        // }
     }
 }
 </script>
