@@ -45,9 +45,10 @@ exports.readCandidatos = (id, callback) => {
     var query = "SELECT DISTINCT user_candidato.id , user_candidato.nome_completo FROM vagas "
     query += " INNER JOIN candidatura ON vagas.id = candidatura.id_vaga";
     query += " INNER JOIN user_candidato ON candidatura.id_candidato = user_candidato.id";
-
+    query += " WHERE vagas.status = 1 AND candidatura.status >= 1 "
+ 
     if (id && id != 0) {  
-        query += " WHERE vagas.id = ?"
+        query += " AND vagas.id = ?"
     }
     
     db.query( 
@@ -70,7 +71,7 @@ exports.readAllCandidatos = (id, callback) => {
     var query = "SELECT DISTINCT u.id, u.nome_completo FROM vagas v"
     query += " INNER JOIN candidatura c ON c.id_vaga = v.id"
     query += " INNER JOIN user_candidato u ON u.id = c.id_candidato"
-    query += " WHERE v.id_empresa = ?;"
+    query += " WHERE v.id_empresa = ? AND v.status = 1 AND c.status >= 1;"
 
     db.query( 
         query, 
