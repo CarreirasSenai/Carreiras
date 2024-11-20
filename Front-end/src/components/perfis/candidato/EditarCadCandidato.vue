@@ -61,8 +61,8 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field v-model="numCasa" :rules="confirmnumeroRules" label="Nº" variant="underlined" type="text"
-                        :disabled="isDisabled"></v-text-field>
+                      <v-text-field v-model="numCasa" :rules="confirmnumeroRules" label="Nº" variant="underlined"
+                        type="text" :disabled="isDisabled"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
                       <v-text-field v-model="complemento" :rules="complementoRules" label="Complemento"
@@ -96,7 +96,7 @@
                   <v-spacer></v-spacer>
                   <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
                   <v-btn text="Atualizar" color="Enviar" variant="tonal" class="bg-purple-darken-4"
-                    @click="atualizarCadastro"></v-btn>
+                    type="submit"></v-btn>
                 </v-card-actions>
               </v-card>
             </v-form>
@@ -247,50 +247,53 @@ export default {
         'SE', 'TO'],
     };
   },
-  
+
   computed: {
     user() { return useCandidatoStore(); },
   },
 
   methods: {
 
-    async atualizarCadastro() {
+    async atualizarCadastro(event) {
       console.clear();
-      this.cpf = this.limparMascaraValores(this.cpf);
-      try {
-        const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update`, {
-          id: this.id,
-          nomeSocial: this.nomeSocial,
-          nomeCompleto: this.nomeCompleto,
-          email: this.email,
-          phone: this.phone,
-          cellphone: this.cellphone,
-          cpf: this.cpf,
-          cep: this.cep,
-          rua: this.rua,
-          numCasa: this.numCasa,
-          complemento: this.complemento,
-          bairro: this.bairro,
-          cidade: this.cidade,
-          estado: this.estado,
-          profissao: this.profissao,
-          verificado: this.verificado,
-          area: this.area,
-        }, { withCredentials: true });
+      const dados = await event;
+      if (dados.valid === true) {
+        try {
+          this.cpf = this.limparMascaraValores(this.cpf);
+          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update`, {
+            id: this.id,
+            nomeSocial: this.nomeSocial,
+            nomeCompleto: this.nomeCompleto,
+            email: this.email,
+            phone: this.phone,
+            cellphone: this.cellphone,
+            cpf: this.cpf,
+            cep: this.cep,
+            rua: this.rua,
+            numCasa: this.numCasa,
+            complemento: this.complemento,
+            bairro: this.bairro,
+            cidade: this.cidade,
+            estado: this.estado,
+            profissao: this.profissao,
+            verificado: this.verificado,
+            area: this.area,
+          }, { withCredentials: true });
 
-        this.mensagem = 'Cadastro atualizado com Sucesso!';
-        this.color = 'success';
-        this.snackbar = true;
+          this.mensagem = 'Cadastro atualizado com Sucesso!';
+          this.color = 'success';
+          this.snackbar = true;
 
-        this.user.userLogado();
+          this.user.userLogado();
 
-        console.info('%cAtualização bem-sucedida ✔👌', 'color: lightgreen; padding: 20px 0;', response.data);
+          console.info('%cAtualização bem-sucedida ✔👌', 'color: lightgreen; padding: 20px 0;', response.data);
 
-      } catch (error) {
-        this.mensagem = 'Erro na atualização do Cadastro!';
-        this.color = 'error';
-        this.snackbar = true;
-        console.error('Erro ao atualizar o cadastro', error.response.data);
+        } catch (error) {
+          this.mensagem = 'Erro na atualização do Cadastro!';
+          this.color = 'error';
+          this.snackbar = true;
+          console.error('Erro ao atualizar o cadastro', error.response.data);
+        }
       }
     },
 
