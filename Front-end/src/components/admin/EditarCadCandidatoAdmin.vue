@@ -17,8 +17,8 @@
                         variant="underlined"></v-autocomplete>
                     </v-col>
                     <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-autocomplete label="Profissão ou Cargo Desejado" v-model="form.profissao" :items="listaProfissoes"
-                        variant="underlined"></v-autocomplete>
+                      <v-autocomplete label="Profissão ou Cargo Desejado" v-model="form.profissao"
+                        :items="listaProfissoes" variant="underlined"></v-autocomplete>
                     </v-col>
                     <v-col cols="12" sm="6" md="6" lg="6">
                       <v-text-field v-model="form.nomeSocial" :rules="nomeSocialRules" label="Nome social"
@@ -45,7 +45,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field v-model="form.cpf" :rules="cpfRules" label="CPF"
+                      <v-text-field v-model="form.cpf" :rules="cpfRules" label="CPF" v-mask="'###.###.###-##'"
                         variant="underlined"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
@@ -90,7 +90,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-btn to="/redefinir-senha?resposta=empresa" text="Redefinir Senha"
+                      <v-btn to="/redefinir-senha?resposta=candidato" text="Redefinir Senha"
                         append-icon="mdi-arrow-top-right-thick" block></v-btn>
                     </v-col>
                   </v-row>
@@ -166,15 +166,15 @@ export default {
       ],
       telefoneRules: [
         (v) => !!v || "Telefone requerido",
-        (v) => v.length >= 10 || "Telefone deve ter pelo menos 10 caracteres",
+        (v) => v.length >= 14 || "Telefone deve ter pelo menos 14 caracteres",
       ],
       celularRules: [
         (v) => !!v || "Celular requerido",
-        (v) => v.length >= 10 || "Celular deve ter pelo menos 10 caracteres",
+        (v) => v.length >= 15 || "Celular deve ter pelo menos 15 caracteres",
       ],
       cpfRules: [
         (v) => !!v || "CPF requerido",
-        (v) => /^\d+$/.test(v) || "CPF deve conter apenas números",
+        (v) => v.length >= 14 || "CPF deve ter pelo menos 14 caracteres",
       ],
       inscricaoEstadualRules: [(v) => !!v || "Inscrição estadual requerida"],
       cepRules: [
@@ -236,7 +236,7 @@ export default {
       const dados = await event;
 
       if (dados.valid === true) {
-        this.form.cpfResponsavel = this.limparMascaraValores(this.form.cpfResponsavel);
+        this.form.cpf = this.limparMascaraValores(this.form.cpf);
         try {
           const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update`, {
             id: this.form.id,
@@ -266,8 +266,6 @@ export default {
           this.mensagem = error.response.data.error;
         }
       }
-      this.mensagem = "Preencha todos os campos";
-      console.log("Mensagem: ", this.mensagem);
     },
     async deletarEmpresa() {
       console.clear();
@@ -299,7 +297,7 @@ export default {
     }
   },
   mounted() {
-      this.form.id = this.User.id,
+    this.form.id = this.User.id,
       this.form.nomeSocial = this.User.nome_social,
       this.form.nomeCompleto = this.User.nome_completo,
       this.form.email = this.User.email,

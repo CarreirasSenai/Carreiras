@@ -247,12 +247,11 @@ export default {
       console.log("VALORES DO FORMULÁRIO:", this.form);
 
       const dados = await event;
-      console.log("Dados válidos: ", dados.valid)
+
       if (dados.valid === true) {
         this.form.cnpj = this.limparMascaraValores(this.form.cnpj);
         this.form.inscricaoEstadual = this.limparMascaraValores(this.form.inscricaoEstadual);
         this.form.cpfResponsavel = this.limparMascaraValores(this.form.cpfResponsavel);
-        console.log("VALORES ALTERADOS DO FORMULÁRIO:", this.form);
         try {
           const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/empresa/update`, {
             dados: this.form
