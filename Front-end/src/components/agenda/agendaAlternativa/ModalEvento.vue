@@ -122,6 +122,7 @@
 import axios from 'axios';
 
 export default {
+    emits: ['atualizarAgenda', 'FecharTabela'],
     props: {
         showModal: {
             type: Boolean,
@@ -265,18 +266,17 @@ export default {
                     },
                     withCredentials: true
                 });
-
                 this.candidatos = response.data.result
                 console.log('construçao do this.candidatos:', this.candidatos);
             } catch (error) {
-                console.error('Erro', error.response.data);
+                console.error('Erro', error);
             }
         },
 
         async mostrarVagas() {
             this.loadingVagas = true;
             try {
-                id_empresa = this.editedItem.id_empresa
+                var id_empresa = this.editedItem.id_empresa
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vaga/read/empresa`, {
                     params: {
                         id: id_empresa,
@@ -284,11 +284,10 @@ export default {
                     },
                     withCredentials: true
                 });
-
                 this.vagas = response.data.result
                 console.log('construçao do this.vagas:', this.vagas);
             } catch (error) {
-                console.error('Erro', error.response.data);
+                console.error('Erro', error);
             }
         },
 
@@ -296,6 +295,10 @@ export default {
             console.log("Editando item");
             this.editedIndex = this.eventos.indexOf(item);
             this.editedItem = Object.assign({}, item);
+            const vagaEncontrada = this.vagas.find(v => v.id === Number(this.editedItem.vaga));
+            if (vagaEncontrada) {
+                this.editedItem.vaga = vagaEncontrada;
+            }
             if (this.editedItem.data) {
                 this.editedItem.data = new Date(this.editedItem.data).toISOString().split('T')[0];
             }
@@ -329,7 +332,7 @@ export default {
 
                 this.$emit('atualizarAgenda');
             } catch (error) {
-                console.error('Erro ao atualizar a descrição:', error.response.data);
+                console.error('Erro ao atualizar a descrição:', error);
             }
         },
 
@@ -375,7 +378,7 @@ export default {
                 }, { withCredentials: true });
                 this.$emit('atualizarAgenda');
             } catch (error) {
-                console.error('Erro ao atualizar a descrição:', error.response.data);
+                console.error('Erro ao atualizar a descrição:', error);
             }
 
             this.close();
