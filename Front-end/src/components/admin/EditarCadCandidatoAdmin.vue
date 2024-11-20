@@ -13,11 +13,19 @@
                 <v-card-text style="max-height: 70vh" class="overflow-auto">
                   <v-row>
                     <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field v-model="form.razaoSocial" :rules="razaoSocialRules" label="Razão social"
+                      <v-autocomplete label="Área de Atuação" v-model="form.area" :items="listaSegmentos"
+                        variant="underlined"></v-autocomplete>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="6" lg="6">
+                      <v-autocomplete label="Profissão ou Cargo Desejado" v-model="form.profissao" :items="listaProfissoes"
+                        variant="underlined"></v-autocomplete>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="6" lg="6">
+                      <v-text-field v-model="form.nomeSocial" :rules="nomeSocialRules" label="Nome social"
                         variant="underlined"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field v-model="form.nomeFantasia" :rules="nomeFantasiaRules" label="Nome fantasia"
+                      <v-text-field v-model="form.nomeCompleto" :rules="nomeCompletoRules" label="Nome completo"
                         variant="underlined"></v-text-field>
                     </v-col>
                   </v-row>
@@ -37,19 +45,15 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field v-model="form.cnpj" :rules="cnpjRules" label="CNPJ"
+                      <v-text-field v-model="form.cpf" :rules="cpfRules" label="CPF"
                         variant="underlined"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field v-model="form.inscricaoEstadual" :rules="inscricaoEstadualRules"
-                        label="Inscrição estadual" variant="underlined"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="4" md="4" lg="4">
                       <v-text-field v-model="form.cep" :rules="cepRules" label="CEP"
                         variant="underlined"></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="2" md="2" lg="2">
-                      <v-text-field v-model="form.numero" :rules="numeroRules" label="Nº"
+                    <v-col cols="12" sm="6" md="6" lg="6">
+                      <v-text-field v-model="form.rua" :rules="ruaRules" label="Rua"
                         variant="underlined"></v-text-field>
                     </v-col>
                   </v-row>
@@ -57,8 +61,8 @@
                     <v-col cols="12" sm="6" md="6" lg="6">
                       <v-text-field v-model="form.complemento" label="Complemento" variant="underlined"></v-text-field>
                     </v-col>
-                    <v-col>
-                      <v-text-field v-model="form.endereco" :rules="enderecoRules" label="Endereço"
+                    <v-col cols="12" sm="6" md="6" lg="6">
+                      <v-text-field v-model="form.numero" :rules="numeroRules" label="Nº"
                         variant="underlined"></v-text-field>
                     </v-col>
                   </v-row>
@@ -74,21 +78,6 @@
                     <v-col cols="12" sm="6" md="6" lg="6">
                       <v-select v-model="form.estado" :rules="estadoRules" :items="items" label="Estado"
                         variant="underlined"></v-select>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field v-model="form.responsavelLegal" :rules="responsavelLegalRules"
-                        label="Responsável legal" variant="underlined"></v-text-field>
-                    </v-col>
-                     <v-text-field
-                        v-model="form.cpfResponsavel"
-                        :rules="cpfResponsavelRules"
-                        v-mask="'###.###.###-##'"
-                        label="CPF do responsável legal"
-                        variant="underlined"
-                      ></v-text-field>
-                    <v-col cols="12" sm="6" md="6" lg="6">
-                      <v-text-field v-model="form.contatoRA" :rules="contatoRARules" label="Contato RA"
-                        variant="underlined"></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -140,33 +129,36 @@
 <script>
 import axios from "axios";
 import { useCandidatoStore } from "@/stores/candidato";
+import listaProfissoes from '@/assets/profissoes.json';
+import listaSegmentos from '@/assets/segmentos.json';
 export default {
   data() {
     return {
       form: {
-        razaoSocial: "",
-        nomeFantasia: "",
+        area: "",
+        profissao: "",
+        nomeSocial: "",
+        nomeCompleto: "",
         email: "",
         telefone: "",
         celular: "",
-        cnpj: "",
+        cpf: "",
         inscricaoEstadual: "",
         cep: "",
         numero: "",
         complemento: "",
-        endereco: "",
+        rua: "",
         bairro: "",
         cidade: "",
         estado: "",
-        responsavelLegal: "",
-        contatoRA: "",
-        cpfResponsavel: "",
         verificado: ""
       },
       responsavelAdm: "",
+      listaProfissoes: listaProfissoes,
+      listaSegmentos: listaSegmentos,
       modalDelete: false,
-      razaoSocialRules: [(v) => !!v || "Razão social requerida"],
-      nomeFantasiaRules: [(v) => !!v || "Nome fantasia requerido"],
+      nomeSocialRules: [(v) => !!v || "Razão social requerida"],
+      nomeCompletoRules: [(v) => !!v || "Nome completo requerido"],
       emailRules: [
         (v) => !!v || "E-mail requerido",
         (v) => /.+@.+\..+/.test(v) || "E-mail precisa ser válido",
@@ -180,9 +172,9 @@ export default {
         (v) => !!v || "Celular requerido",
         (v) => v.length >= 10 || "Celular deve ter pelo menos 10 caracteres",
       ],
-      cnpjRules: [
-        (v) => !!v || "CNPJ requerido",
-        (v) => /^\d+$/.test(v) || "CNPJ deve conter apenas números",
+      cpfRules: [
+        (v) => !!v || "CPF requerido",
+        (v) => /^\d+$/.test(v) || "CPF deve conter apenas números",
       ],
       inscricaoEstadualRules: [(v) => !!v || "Inscrição estadual requerida"],
       cepRules: [
@@ -193,30 +185,21 @@ export default {
       numeroRules: [
         (v) => !!v || "Número requerido",
         (v) => v > 0 || "O Número deve ser maior que zero",
-        (v) => /^\d+$/.test(v) || "Número deve conter apenas números",
+        (v) => /^\d+$/.test(v) || "Nº deve conter apenas números",
       ],
-      enderecoRules: [
-        (v) => !!v || "Endereço Requerido",
-        (v) => v.length >= 5 || "Endereço deve ter pelo menos 5 caracteres",
+      ruaRules: [
+        (v) => !!v || "Rua requerida",
+        (v) => v.length >= 5 || "Rua deve ter pelo menos 5 caracteres",
       ],
       bairroRules: [
-        (v) => !!v || "Bairro Requerido",
+        (v) => !!v || "Bairro requerido",
         (v) => v.length >= 3 || "Bairro deve ter pelo menos 3 caracteres",
       ],
       cidadeRules: [
-        (v) => !!v || "Cidade Requerida",
+        (v) => !!v || "Cidade requerida",
         (v) => v.length >= 3 || "Cidade deve ter pelo menos 3 caracteres",
       ],
       estadoRules: [(v) => !!v || "Estado requerido"],
-      responsavelLegalRules: [(v) => !!v || "Responsável legal requerido"],
-      responsavelAdmRules: [
-        (v) => !!v || "Responsável administrativo requerido",
-      ],
-      cpfResponsavelRules: [(v) => !!v || "CPF Requerido",
-        (v) => v.length === 14 || "CPF deve ter 14 caracteres",],
-      contatoRARules: [
-        (v) => !!v || "Contato do Responsável administrativo requerido",
-      ],
       senhaRules: [(v) => !!v || "Senha requerida"],
       repSenhaRules: [(v) => !!v || "Repetir senha requerido"],
       items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
@@ -255,8 +238,24 @@ export default {
       if (dados.valid === true) {
         this.form.cpfResponsavel = this.limparMascaraValores(this.form.cpfResponsavel);
         try {
-          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/empresa/update`, {
-            dados: this.form,
+          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update`, {
+            id: this.form.id,
+            nomeSocial: this.form.nomeSocial,
+            nomeCompleto: this.form.nomeCompleto,
+            email: this.form.email,
+            phone: this.form.telefone,
+            cellphone: this.form.celular,
+            cpf: this.form.cpf,
+            cep: this.form.cep,
+            rua: this.form.rua,
+            numCasa: this.form.numero,
+            complemento: this.form.complemento,
+            bairro: this.form.bairro,
+            cidade: this.form.cidade,
+            estado: this.form.estado,
+            profissao: this.form.profissao,
+            verificado: this.form.verificado,
+            area: this.form.area
           }, { withCredentials: true });
 
           console.log("Resposta: ", response.data);
@@ -275,7 +274,7 @@ export default {
       console.log("Id da empresa: ", this.User.id);
 
       try {
-        const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/empresa/delete`, {
+        const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/candidato/delete`, {
           data: { id: this.form.id },
           withCredentials: true,
         });
@@ -301,23 +300,21 @@ export default {
   },
   mounted() {
       this.form.id = this.User.id,
-      this.form.razaoSocial = this.User.razao_social,
-      this.form.nomeFantasia = this.User.nome_fantasia,
+      this.form.nomeSocial = this.User.nome_social,
+      this.form.nomeCompleto = this.User.nome_completo,
       this.form.email = this.User.email,
       this.form.telefone = this.User.telefone,
       this.form.celular = this.User.celular,
-      this.form.cnpj = this.User.cnpj,
-      this.form.inscricaoEstadual = this.User.inscricao_estadual,
+      this.form.cpf = this.User.cpf,
       this.form.cep = this.User.cep,
       this.form.numero = this.User.numero,
       this.form.complemento = this.User.complemento,
-      this.form.endereco = this.User.endereco,
+      this.form.rua = this.User.rua,
       this.form.bairro = this.User.bairro,
       this.form.cidade = this.User.cidade,
       this.form.estado = this.User.estado,
-      this.form.responsavelLegal = this.User.responsavel_legal,
-      this.form.cpfResponsavel = this.User.cpf_responsavel,
-      this.form.contatoRA = this.User.contato_responsavel,
+      this.form.profissao = this.User.profissao,
+      this.form.area = this.User.area,
       this.form.verificado = this.User.verificado.toString()
   }
 };

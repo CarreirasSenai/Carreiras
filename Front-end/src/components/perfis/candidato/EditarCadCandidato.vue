@@ -61,7 +61,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="3" md="3" lg="3">
-                      <v-text-field v-model="numCasa" :rules="confirmnumeroRules" label="Nº" variant="underlined"
+                      <v-text-field v-model="numCasa" :rules="confirmnumeroRules" label="Nº" variant="underlined" type="text"
                         :disabled="isDisabled"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
@@ -199,7 +199,8 @@ export default {
 
       confirmnumeroRules: [
         (v) => !!v || "Nº Requerido",
-        (v) => v.length >= 1 || "Nº deve ter pelo menos 1 caractere",
+        (v) => v > 0 || "Nº deve ser maior que zero",
+        (v) => /^\d+$/.test(v) || "Nº deve conter apenas números",
       ],
 
       complementoRules: [

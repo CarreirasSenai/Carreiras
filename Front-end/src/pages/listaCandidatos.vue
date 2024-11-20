@@ -47,7 +47,7 @@
               <v-col cols="4" sm="3" class="text-align text-uppercase">
               </v-col>
               <v-col cols="8" sm="1" class="text-end">
-                <EditarCadUsuarioAdmin v-if="
+                <EditarCadCandidatoAdmin v-if="
                   usuario.dadosUser.tipo_admin === 'super' ||
                   usuario.dadosUser.id === user.raw.id
                 " :MostrarUsuarios="mostrarUsuarios" :User="user.raw" />
