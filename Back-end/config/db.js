@@ -2,10 +2,11 @@ const mysql = require('mysql');
 
 // Criação de uma conexão com o banco de dados MySQL
 const db = mysql.createConnection({
-  host: 'localhost',       // Host do banco de dados
-  user: 'root',     // Nome de usuário do banco de dados
-  password: 'root',   // Senha do banco de dados
-  database: 'carreiras',  // Nome do banco de dados
+  host: process.env.DB_HOST || 'localhost', // Host do banco de dados
+  user: process.env.DB_USER || 'root', // Nome de usuário do banco de dados
+  password: process.env.DB_PASS || 'root', // Senha do banco de dados
+  database: process.env.DB_NAME || 'carreiras', // Nome do banco de dados
+  port: 3306,
   charset: 'utf8mb4' // Especifique a codificação UTF-8
 });
 

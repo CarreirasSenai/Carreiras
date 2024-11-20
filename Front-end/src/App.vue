@@ -7,6 +7,18 @@
 </template>
 
 <script>
+import { useResolucaoDesktop } from "@/stores/resolucao";
+
+export default {
+  computed: {
+    resolucao() {
+      return useResolucaoDesktop();
+    }
+  },
+  mounted() {
+    this.resolucao.verificaResolucao();
+  }
+}
 </script>
 
 <style>
@@ -28,7 +40,7 @@
 }
 
 .bt-primario {
-  background-color: #6832D2 !important;
+  background-color: #6E3AD4 !important;
   color: white !important;
 }
 
@@ -46,5 +58,9 @@
 
 .box-shadow {
   box-shadow: 0 2px 4px gray;
+}
+
+.v-container {
+  padding: 0 !important;
 }
 </style>

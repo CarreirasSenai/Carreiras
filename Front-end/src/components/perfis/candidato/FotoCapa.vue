@@ -1,17 +1,32 @@
 <template>
     <div class="div-capa-foto">
-        <img class="capa" src="/src/assets/capa (1).png">
+        <img class="capa" :src="Dados.capa" alt="Capa">
         <div class="pos-capa"></div>
-        <div class="div-foto-perfil">
-            <img src="/src/assets/avatar.png" class="foto-perfil" alt="Foto de Perfil">
-            <h3 class="cor-primaria">Nome do Elemento</h3>
-            <h4 class="text-grey-darken-2">Desenvolvedor Full Stack</h4>
-            <EditarFotoCapa />
+        <div class="div-foto-perfil text-center">
+            <img :src="Dados.foto" class="foto-perfil" alt="Foto de Perfil">
+            <h3 class="cor-primaria">{{ Dados.nome_completo }}</h3>
+            <h4 class="text-grey-darken-2">{{ Dados.profissao }}</h4>
+            <MenuEditarCandidato style="height: 20px !important;" class="d-flex align-center"
+                v-if="grupo === 'candidato'" />
         </div>
     </div>
 </template>
 
 <script>
+export default {
+    data: () => ({
+        grupo: '',
+    }),
+    props: {
+        Dados: {
+            type: Object,
+            required: true
+        },
+    },
+    mounted() {
+        this.grupo = localStorage.getItem('grupo');
+    },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -52,6 +67,7 @@
             border-radius: 100%;
             border: 2px solid #6832D2;
             background-color: #eee;
+            object-fit: cover;
         }
 
         h3,

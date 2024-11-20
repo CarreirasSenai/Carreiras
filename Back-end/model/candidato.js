@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 // Create
-exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, profissao, grupo, dataAtu, callback) => {
+exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao, grupo, token, callback) => {
 
     // Verificar se o email já existe
     db.query('SELECT * FROM user_candidato WHERE email = ?', [email], (err, results) => {
@@ -25,16 +25,14 @@ exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
             }
 
             db.query(
-                'INSERT INTO user_candidato (nome_social, nome_completo, email, telefone, celular, cpf, cep, rua, numero, complemento, bairro, cidade, estado, senha, profissao, grupo, data_atu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, profissao, grupo, dataAtu],
+                `INSERT INTO user_candidato (nome_social, nome_completo, email, telefone, celular, cpf, cep, rua, numero, complemento, bairro, cidade, estado, senha, area, profissao, grupo, token_ativacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, password, area, profissao, grupo, token],
                 (err, result) => {
 
                     if (err) {
-                        // Se houver um erro na inserção, retornar o erro no callback
                         console.log(err);
                         return callback(err, null);
                     }
-                    // Se a inserção for bem-sucedida, retornar o ID do novo registro
                     callback(null, result.insertId);
                 }
             );
@@ -54,30 +52,120 @@ exports.getUser = (id, callback) => {
 };
 
 // Login
-exports.getLogin = (email, password, callback) => {
-    db.query('SELECT * FROM user_candidato WHERE email = ? AND senha = ?', [email, password], (err, rows) => {
+exports.getLogin = (email, callback) => {
+    db.query('SELECT * FROM user_candidato WHERE email = ?', [email], (err, rows) => {
         if (err) {
-            return callback(err, null);
+            console.log(err);
+            return callback(err, null, null);
+            
+        } else if (rows.length > 0) {
+            db.query('SELECT * FROM user_candidato WHERE email = ? AND verificado = ?', [email, 1], (err, rows) => {
+                if (err) {
+                    console.log(err);
+                    return callback(err, null, null);
+                } else if (rows.length > 0) {
+                    return callback(null, rows[0], null);
+                } else {
+                    console.log('Conta não Verificada!');
+                    return callback(null, null, 'Conta não Verificada!');
+                }
+            });
+        } else {
+            console.log('Não há cadastro com este e-mail!');
+            return callback(null, null, 'Não há cadastro com este e-mail!');
         }
-
-        // Retorna o primeiro usuário encontrado ou null se nenhum usuário for encontrado
-        return callback(null, rows.length > 0 ? rows[0] : null);
     });
 };
 
-// Update
-exports.updateUser = (id, nome, email, senha, foto, descricao, callback) => {
-    db.query('UPDATE users SET nome = ?, email = ?, senha = ?, foto = ?, descricao = ? WHERE id = ?', [nome, email, senha, foto, descricao, id], (err, result) => {
-        if (err) throw err;
-        callback(result.affectedRows > 0);
+exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao, verificado, grupo, id, callback) => {
+    let query = `UPDATE user_candidato 
+    SET nome_social = ?, 
+    nome_completo = ?, 
+    email = ?, 
+    telefone = ?, 
+    celular = ?, 
+    cpf = ?, 
+    cep = ?, 
+    rua = ?, 
+    numero = ?, 
+    complemento = ?, 
+    bairro = ?, 
+    cidade = ?, 
+    estado = ?,
+    area = ?,
+    profissao = ?,`
+
+    let fields = [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao]
+
+    if(verificado != null && verificado != undefined && verificado !== '') {
+        query += 'verificado = ?,';
+        fields.push(verificado);
+    }
+
+    query += `grupo = ?
+    WHERE id = ?`;
+    fields.push(grupo);
+    fields.push(id);
+    
+    db.query(query, fields, 
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                return callback(err, null);
+            } else if (result) {
+                return callback(null, result.affectedRows > 0);
+            }
     });
 };
 
 // Delete
 exports.deleteUser = (id, callback) => {
-    db.query('DELETE FROM users WHERE id = ?', [id], (err, result) => {
-        if (err) throw err;
-        callback(result.affectedRows > 0);
+    db.query('DELETE FROM user_candidato WHERE id = ?', [id], (err, result) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+        } else if (result) {
+            // console.log(result);
+            return callback(null, result.affectedRows > 0);
+        }
     });
 };
 
+exports.pesquisaCandidato = (busca, callback) => {
+    const buscaComCuringa = `%${busca}%`; // Adiciona o curinga para busca parcial
+    const sql = `
+        SELECT * FROM user_candidato
+        WHERE CONCAT(nome_social, ' ', nome_completo, ' ', email, ' ', cpf, ' ', celular) LIKE ?
+    `;
+    db.query(sql, [buscaComCuringa], (err, row) => {
+        if (err) 
+            return callback(err, null);
+
+        return callback(null, row);
+    });
+};
+
+exports.getAllCandidatos = (callback) => {
+    db.query('SELECT * FROM user_candidato', (err, result) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+        }
+
+        console.log(result);
+        return callback(null, result.length > 0 ? result : null);
+    });
+};
+
+
+exports.updateUserLinks = (id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal, 
+    callback) => {
+        db.query(`UPDATE user_candidato SET link_instagram = ?, link_facebook = ?, link_linkedin = ?,
+        link_github = ?, link_site_pessoal = ? WHERE id = ?`, [link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal, id],
+        (err, result) => {
+            if(err)
+                return callback(err, null);
+            
+            return callback(null, result.affectedRows > 0 ? result : null);
+        });
+}

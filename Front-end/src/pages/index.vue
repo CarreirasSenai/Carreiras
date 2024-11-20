@@ -1,8 +1,24 @@
 <template>
-  <Home />
   <Navbar />
+  <div class="ma-3">
+    <Home />
+    <FiltroVagas />
+    <Vagas />
+  </div>
+  <Footer />
 </template>
 
 <script>
-import Home from '@/components/home/Home.vue';
+import { useAuthStore } from '@/stores/auth';
+
+export default {
+  computed: {
+    auth() {
+      return useAuthStore();
+    },
+  },
+  mounted() {
+    this.auth.autenticacao();
+  },
+}
 </script>

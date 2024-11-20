@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
 const fileupload = require('express-fileupload');
+require('dotenv').config();
 
 // Middleware de sessão
 app.use(session({
@@ -17,9 +18,12 @@ app.use(session({
 
 // Use o CORS para permitir todas as origens ou especifique as origens permitidas
 app.use(cors({
-  origin: 'http://localhost:3000', // O domínio do seu front-end
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000', // O domínio do seu front-end
   credentials: true // Permitir envio de cookies
 }));
+
+//habilitando upload de arquivos
+app.use(fileupload());
 
 // Configura o body-parser para analisar application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,13 +38,13 @@ app.set('view engine', 'ejs');
 //app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-//habilitando upload de arquivos
-app.use(fileupload());
-
 // Use suas rotas
 app.use('/', routes);
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server is running in http://localhost:${PORT}`);
+// Extrair a porta da URL de BACKEND_URL
+const backendUrl = new URL(process.env.BACKEND_URL || 'http://localhost:4000');
+const port = backendUrl.port || 4000; // Se não tiver uma porta definida, usa 4000 como fallback
+
+app.listen(port, () => {
+  console.log(`Server is running at ${backendUrl.origin}`);
 });
