@@ -13,16 +13,18 @@
                   variant="underlined"></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
-                <v-text-field v-model="form.email" :rules="emailRules" label="E-mail" variant="underlined"></v-text-field>
+                <v-text-field v-model="form.email" :rules="emailRules" label="E-mail"
+                  variant="underlined"></v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field v-model="form.cpf" :rules="cpfRules" label="CPF" variant="underlined"></v-text-field>
+                <v-text-field v-model="form.cpf" :rules="cpfRules" label="CPF" variant="underlined"
+                  v-mask="'###.###.###-##'"></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
-                <v-text-field v-model="form.celular" :rules="cellphoneRules" label="Celular"
-                  variant="underlined"></v-text-field>
+                <v-text-field v-model="form.celular" :rules="cellphoneRules" label="Celular" variant="underlined"
+                  v-mask="'(##) #####-####'"></v-text-field>
               </v-col>
             </v-row>
             <v-row v-if="usuario.dadosUser.tipo_admin === 'super'">
@@ -42,8 +44,8 @@
             </v-row>
             <v-row>
               <v-col cols="12">
-                <v-btn to="/redefinir-senha?resposta=admin" text="Redefinir Senha" append-icon="mdi-arrow-top-right-thick"
-                  block></v-btn>
+                <v-btn to="/redefinir-senha?resposta=admin" text="Redefinir Senha"
+                  append-icon="mdi-arrow-top-right-thick" block></v-btn>
               </v-col>
             </v-row>
           </v-card-text>
@@ -115,18 +117,15 @@ export default {
       ],
       cpfRules: [
         (v) => !!v || "Cpf requerido",
-        (v) => v.length === 11 || "Celular deve ter pelo menos 10 caracteres",
-        (v) => /^\d+$/.test(v) || "Celular deve conter apenas números",
+        (v) => v.length >= 14 || "Cpf deve ter pelo menos 14 caracteres"
       ],
       cellphoneRules: [
         (v) => !!v || "Celular requerido",
-        (v) => v.length >= 10 || "Celular deve ter pelo menos 10 caracteres",
-        (v) => /^\d+$/.test(v) || "Celular deve conter apenas números",
+        (v) => v.length >= 15 || "Celular deve ter pelo menos 15 caracteres",
       ],
       phoneRules: [
         (v) => !!v || "Telefone requerido",
         (v) => v.length >= 10 || "Telefone deve ter pelo menos 10 caracteres",
-        (v) => /^\d+$/.test(v) || "Telefone deve conter apenas números",
       ],
       geral: [
         (v) => !!v || "Escolha uma opção",
@@ -153,17 +152,17 @@ export default {
 
   mounted() {
     this.form.id = this.User.id;
-    if(this.User.nome != null && this.User.nome != undefined)
+    if (this.User.nome != null && this.User.nome != undefined)
       this.form.nome = this.User.nome;
-    else if(this.User.nome_completo != null && this.User.nome_completo != undefined)
+    else if (this.User.nome_completo != null && this.User.nome_completo != undefined)
       this.form.nome = this.User.nome_completo;
     this.form.email = this.User.email;
     this.form.cpf = this.User.cpf;
     this.form.celular = this.User.celular;
     this.form.tipo = this.User.tipo_admin;
-    if(this.User.status != null && this.User.status != undefined && this.User.grupo === 'admin')
+    if (this.User.status != null && this.User.status != undefined && this.User.grupo === 'admin')
       this.form.status = this.User.status.toString();
-    else if(this.User.verificado != null && this.User.verificado != undefined && this.User.grupo === 'candidato')
+    else if (this.User.verificado != null && this.User.verificado != undefined && this.User.grupo === 'candidato')
       this.form.status = this.User.verificado.toString();
   },
 
@@ -176,10 +175,11 @@ export default {
 
       if (dados.valid === true) {
         console.log(this.form);
-
+        this.form.cpf = this.limparMascaraValores(this.form.cpf);
+        this.form.celular = this.limparMascaraValores(this.form.celular);
         try {
           let response = '';
-          if(this.User.grupo === 'admin') {
+          if (this.User.grupo === 'admin') {
             response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/admin/update`, {
               dados: this.form,
             }, { withCredentials: true });
@@ -226,17 +226,17 @@ export default {
       console.log(this.User.id);
       try {
         let response = '';
-        if(this.User.grupo === 'admin'){
-          response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/admin/delete/${this.User.id}`, 
-          {
-            withCredentials: true,
-          });
-        } else if(this.User.grupo === 'candidato') {
-          response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/candidato/delete/`, 
-          {
-            data: {id: this.User.id},
-            withCredentials: true
-          });
+        if (this.User.grupo === 'admin') {
+          response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/admin/delete/${this.User.id}`,
+            {
+              withCredentials: true,
+            });
+        } else if (this.User.grupo === 'candidato') {
+          response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/candidato/delete/`,
+            {
+              data: { id: this.User.id },
+              withCredentials: true
+            });
         }
 
         console.log(response.data);
@@ -247,6 +247,16 @@ export default {
         console.error('Erro', error.response.data);
         this.mensagem = error.response.data.error;
       }
+    },
+    limparMascaraValores(valor) {
+      console.log("VALOR MÁSCARA:", valor)
+      if (typeof valor === 'string' && valor !== '') {
+        valor = valor.replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
+      } else if (valor !== null) {
+        valor = String(valor).replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
+      }
+
+      return valor;
     }
   },
 };

@@ -149,7 +149,7 @@ export default {
         });
 
         setTimeout(() => {
-          this.vagas = response.data.result;
+          this.vagas = response.data.result.filter(vaga => vaga.status === 1);
           this.dadosCarregados = true;
         }, 2000);
 

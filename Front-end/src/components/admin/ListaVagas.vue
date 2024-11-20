@@ -56,7 +56,7 @@
           </div>
         </template>
       </v-data-iterator>
-      <template v-if="!vagas.length">
+      <template v-if="vagas.length === 0">
         <v-empty-state icon="mdi-magnify"
           text="Atualize a página ou espere que uma vaga seja cadastrada e tente novamente."
           title="Não há vagas para aprovar."></v-empty-state>
@@ -113,7 +113,7 @@ export default {
           withCredentials: true
         }
         );
-        this.vagas = response.data.result;
+        this.vagas = response.data.result.filter(vaga => vaga.status === 0);
       } catch (error) {
         console.error("Erro: ", error.response.data);
       }
