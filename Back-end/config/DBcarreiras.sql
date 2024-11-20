@@ -63,6 +63,7 @@ CREATE TABLE `candidatura` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_candidato` int NOT NULL,
   `relevancia` int DEFAULT NULL,
+  `status` tinyint DEFAULT NULL,
   `id_vaga` int NOT NULL,
   `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
