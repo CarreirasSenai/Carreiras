@@ -1,5 +1,6 @@
 const db = require("../config/db");
 const transporter = require('../services/nodemailer');
+const cron = require('node-cron');
 
 exports.create = (idCandidato, idVaga, { dados }, callback) => {
     const respostas = dados;
@@ -310,3 +311,125 @@ exports.justificaGeral = (candidatos, idVaga, justificativa, callback) => {
         }
     });
 };
+
+// */20 * *
+exports.startCronJob = () => {
+    cron.schedule('0 0 * * *', () => {
+        console.log('Verificação diária de vagas');
+
+        let vagas;
+        db.query('select * from vagas where TIMESTAMPDIFF(DAY, data_atu, NOW()) >= 30', (err, result) => {
+            if (err) {
+                console.error('Erro ao executar tarefa CRON:', err.message);
+                return;
+            }
+            vagas = result;
+            console.log(vagas);
+
+            let candidatos;
+            for (const key in vagas) {
+                const idVaga = vagas[key].id;
+                const nomeVaga = vagas[key].titulo;
+                const nomeEmpresa = vagas[key].nome_fantasia;
+
+                db.query('select * from candidatura where id_vaga = ?', (idVaga), (err, result) => {
+                    if (err) {
+                        console.error(err.message);
+                        return;
+                    }
+                    candidatos = result;
+                    console.log(candidatos);
+
+                    for (const key in candidatos) {
+                        const idCandidato = candidatos[key].id_candidato;
+                        const status = candidatos[key].status;
+                        console.log(idCandidato);
+                        console.log(status);
+
+                        db.query('select * from user_candidato where id = ?', (idCandidato), (err, result) => {
+                            if (err) {
+                                console.error(err.message);
+                                return;
+                            }
+                            const nome = result[0].nome_completo;
+                            const email = result[0].email;
+                            console.log(nome);
+                            console.log(email);
+
+                            if (status != 2) {
+                                enviarEmail(nome, nomeVaga, nomeEmpresa, email);
+                            }
+                        });
+                    }
+                });
+
+                db.query(`DELETE FROM vagas WHERE TIMESTAMPDIFF(DAY, data_atu, NOW()) >= 30`, (err, result) => {
+                    if (err) {
+                        console.error(err.message);
+                        return;
+                    }
+                    console.log(`${result.affectedRows} vagas excluídas.`);
+                });
+            }
+        });
+    });
+}
+
+function enviarEmail(candidato, vaga, empresa, email) {
+    const justificativa =
+        `Prezado(a) ${candidato},
+
+Agradecemos sinceramente por sua participação no processo seletivo para a vaga de ${vaga} em nossa empresa. Foi um prazer conhecer seu perfil e avaliar suas qualificações.
+Após uma análise detalhada de todos os candidatos, decidimos seguir com outro profissional cujo perfil está mais alinhado às necessidades específicas da posição no momento.
+Gostaríamos de enfatizar que sua candidatura foi muito valorizada, e seu histórico demonstra competências e habilidades que consideramos muito relevantes. Encorajamos que continue acompanhando futuras oportunidades em nossa empresa, pois seria um prazer contar com você em processos futuros.
+Desejamos sucesso em sua trajetória profissional e estamos à disposição para quaisquer esclarecimentos.
+
+Atenciosamente,
+${empresa}        
+    `;
+
+    const corpo =
+        `
+            <div style="font-family: Arial, Helvetica, sans-serif; 
+                text-align: center; 
+                display: flex; 
+                flex-direction: column; 
+                justify-content: center; 
+                align-items: center;">
+                <div style="text-align: center; width: 100%;">
+                    <hr>
+                    <h1 style="color: #333;">Carreiras 🐝</h1>
+                    <div style="background: linear-gradient(to right, #6f00ff, #9341ff);
+                        padding: 50px;
+                        color: white;
+                        box-shadow: 0 1px 4px #333;">
+                        <div>
+                            <div style="font-size: 17px">
+                                ${justificativa}
+                            </div>
+                            <br><br><br>
+                            <small>
+                                <a target="_blank" href="https://www.carreiras.com.br" style="color: white;">
+                                    www.carreiras.com.br
+                                </a>
+                            </small>
+                        </div>
+                    </div>
+                    <br>
+                    <hr>
+                </div>
+            </div>
+        `;
+
+    async function main() {
+        const info = await transporter.sendMail({
+            from: '"Carreiras" <carreirassenai@gmail.com>',
+            to: email,
+            subject: 'Justificativa para não Contratação',
+            html: corpo
+        });
+
+        console.log("Email enviado para:", info.accepted);
+    }
+    main().catch(console.error);
+}

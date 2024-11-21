@@ -17,7 +17,8 @@
 
             <template v-slot:default="{ items }">
                 <v-row class="ma-1">
-                    <v-col cols="12" lg="4" md="6" sm="6" v-for="item in items" :key="item.id">
+                    <v-col cols="12" lg="4" md="6" sm="6" v-for="(item, index) in items" :key="item.id"
+                        :style="{ order: items.length - index }">
                         <v-card
                             v-if="user.dadosUser.grupo === 'admin' || (user.dadosUser.id === item.raw.id_empresa && user.dadosUser.grupo === 'empresa') || (item.raw.status === 1 && grupo === 'candidato')"
                             class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
@@ -79,8 +80,9 @@
                             <v-card-actions class="d-flex justify-space-between">
                                 <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
                                 <v-spacer></v-spacer>
-                                <v-chip :color="item.raw.status === 0 ? 'error' : 'success'">{{ item.raw.status
-                                    === 0 ? 'Em análise' : 'Aprovada' }}</v-chip>
+                                <v-chip v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                                    :color="item.raw.status === 0 ? 'error' : 'success'">{{ item.raw.status
+                                        === 0 ? 'Em análise' : 'Aprovada' }}</v-chip>
                                 <ModalCandidatosVagas
                                     v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
                                     :Vagas="item" :MostrarVagas="mostrarVagas" />
