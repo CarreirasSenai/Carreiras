@@ -284,7 +284,9 @@ export default {
                     },
                     withCredentials: true
                 });
-                this.vagas = response.data.result
+                var vagasSemFiltro = response.data.result
+                this.vagas =  vagasSemFiltro.filter(vagasSF => vagasSF.status === 1);
+
                 console.log('construçao do this.vagas:', this.vagas);
             } catch (error) {
                 console.error('Erro', error);
