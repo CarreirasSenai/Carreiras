@@ -44,7 +44,7 @@ export default {
         },
     },
     created() {
-        // this.auth.autenticacao();
+        this.auth.autenticacao();
         this.pesquisaUser.id = this.$route.query.id;
         this.pesquisaUser.requisicao = this.$route.query.requisicao;
     },

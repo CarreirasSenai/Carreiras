@@ -37,7 +37,7 @@ export const usePesquisaUsuarioStore = defineStore('pesquisaUsuario', {
 
                 } catch (error) {
                     console.error('Erro ao obter dados do usuário', error.response.data);
-                    // this.router.push('/');
+                    this.router.push('/');
                 }
             }
         },
