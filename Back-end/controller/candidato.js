@@ -114,27 +114,37 @@ exports.login = (req, res) => {
 };
 
 
-// Read / Autenticar
 exports.getUser = (req, res) => {
+    console.log('Query recebida:', req.query);
+
     const requisicao = req.query.requisicao;
     const idReq = req.query.id;
-    const idSession = req.session.usuario.id;
+    const idSession = req.session?.usuario?.id;
+
+    console.log('ID da Query:', idReq);
+    console.log('Requisição:', requisicao);
+    console.log('ID da Sessão:', idSession);
 
     const usuario_id = requisicao ? idReq : idSession;
 
+    console.log('ID usado para consulta:', usuario_id);
+
     Candidato.getUser(usuario_id, (err, usuario) => {
         if (err) {
+            console.error('Erro na query:', err.message);
             return res.status(500).json({ error: err.message });
         }
 
         if (!usuario) {
+            console.log('Usuário não encontrado!');
             return res.status(404).json({ error: 'Usuário não encontrado!' });
         }
 
-        // console.log(req.session);
-        res.json({ success: true, usuario: usuario });
+        console.log('Usuário encontrado:', usuario);
+        res.json({ success: true, usuario });
     });
 };
+
 
 // Update
 exports.updateUser = (req, res) => {
@@ -202,23 +212,23 @@ exports.getAllUser = (req, res) => {
 exports.pesquisaCandidato = (req, res) => {
     const busca = req.query.busca;
     Candidato.pesquisaCandidato(busca, (err, result) => {
-        if (err) 
+        if (err)
             return res.status(500).json({ error: err.message });
-        
-        if (result.length === 0) 
+
+        if (result.length === 0)
             return res.status(404).json({ error: 'Busca não encontrada' });
-        
+
         return res.json({ success: true, result: result });
     });
 };
 
 exports.updateUserLinks = (req, res) => {
-    const { id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal} = req.body;
+    const { id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal } = req.body;
     Candidato.updateUserLinks(id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal, (err, result) => {
-        if(err)
+        if (err)
             return res.status(500).json({ error: err.message });
-        
-        if(!result)
+
+        if (!result)
             return res.status(404).json({ error: 'Links não encontrados!' });
 
         res.status(200).json({ success: true, result: result });
