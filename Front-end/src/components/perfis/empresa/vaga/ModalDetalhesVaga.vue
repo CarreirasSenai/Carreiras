@@ -81,13 +81,11 @@
 
                             <v-card-actions class="d-flex justify-space-between border">
                                 <div class="d-flex flex-wrap ga-2">
-                                    <EditarVaga v-if="user.dadosUser.id === this.Vagas.raw.id_empresa"
+                                    <EditarVaga v-if="this.user.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
                                     <Questionario :Vagas="Vagas" />
-                                    <v-btn v-if="user.dadosUser.grupo === 'admin'" 
-                                    variant="outlined" 
-                                    color="deep-purple-accent-3"
-                                    @click="dialogFormAprovacao = true">
+                                    <v-btn v-if="user.dadosUser.grupo === 'admin'" variant="outlined"
+                                        color="deep-purple-accent-3" @click="dialogFormAprovacao = true">
                                         Aprovação
                                     </v-btn>
                                 </div>
@@ -101,50 +99,30 @@
                             </v-card-actions>
                             <div>
                                 <v-form ref="formAprovacao" v-model="isFormValid">
-                                    <v-dialog
-                                    v-model="dialogFormAprovacao"
-                                    max-width="600"
-                                    >
-                                        <v-card
-                                            prepend-icon="mdi-briefcase"
-                                            title="Aprovação da vaga"
-                                        >
-                                        <v-card-text>
-                                            <v-col cols="12">
-                                                <v-radio-group
-                                                    v-model="opcaoSelecionada"
-                                                    :rules="[v => !!v || 'Selecione uma opção']"
-                                                >
-                                                    <v-radio label="Aprovar" value="aprovar"></v-radio>
-                                                    <v-radio label="Reprovar" value="reprovar"></v-radio>
-                                                </v-radio-group>
-                                            </v-col>
-                                            <v-col cols="12">
-                                                <v-textarea
-                                                    v-if="opcaoSelecionada === 'reprovar'"
-                                                    label="Motivo da Reprovação"
-                                                    v-model="motivoReprovacao"
-                                                    :rules="[motivoReprovacaoRules.obrigatorioRules, motivoReprovacaoRules.tamanhoRules]"
-                                                    counter
-                                                    no-resize
-                                                ></v-textarea>
-                                            </v-col>
-                                        </v-card-text>
-                                        <v-divider></v-divider>
+                                    <v-dialog v-model="dialogFormAprovacao" max-width="600">
+                                        <v-card prepend-icon="mdi-briefcase" title="Aprovação da vaga">
+                                            <v-card-text>
+                                                <v-col cols="12">
+                                                    <v-radio-group v-model="opcaoSelecionada"
+                                                        :rules="[v => !!v || 'Selecione uma opção']">
+                                                        <v-radio label="Aprovar" value="aprovar"></v-radio>
+                                                        <v-radio label="Reprovar" value="reprovar"></v-radio>
+                                                    </v-radio-group>
+                                                </v-col>
+                                                <v-col cols="12">
+                                                    <v-textarea v-if="opcaoSelecionada === 'reprovar'"
+                                                        label="Motivo da Reprovação" v-model="motivoReprovacao"
+                                                        :rules="[motivoReprovacaoRules.obrigatorioRules, motivoReprovacaoRules.tamanhoRules]"
+                                                        counter no-resize></v-textarea>
+                                                </v-col>
+                                            </v-card-text>
+                                            <v-divider></v-divider>
                                             <v-card-actions>
                                                 <v-spacer></v-spacer>
-                                                <v-btn
-                                                    text="Fechar"
-                                                    variant="plain"
-                                                    @click="dialogFormAprovacao = false"
-                                                ></v-btn>
-                                                <v-btn
-                                                    color="deep-purple-accent-3"
-                                                    text="Salvar"
-                                                    variant="tonal"
-                                                    @click="aprovarVaga"
-                                                    :disabled="!isFormValid"
-                                                ></v-btn>
+                                                <v-btn text="Fechar" variant="plain"
+                                                    @click="dialogFormAprovacao = false"></v-btn>
+                                                <v-btn color="deep-purple-accent-3" text="Salvar" variant="tonal"
+                                                    @click="aprovarVaga" :disabled="!isFormValid"></v-btn>
                                             </v-card-actions>
                                         </v-card>
                                     </v-dialog>
@@ -182,7 +160,8 @@ export default {
             emailEmpresa: '',
             motivoReprovacaoRules: {
                 obrigatorioRules: v => !!v || 'Por favor, insira o motivo da reprovação',
-                tamanhoRules: v => v.length <= 200 && v.length >= 50 || 'O motivo deve ter no mínimo 50 caracteres e no máximo 200 caracteres'},
+                tamanhoRules: v => v.length <= 200 && v.length >= 50 || 'O motivo deve ter no mínimo 50 caracteres e no máximo 200 caracteres'
+            },
             isFormValid: false
         }
     },
@@ -255,7 +234,7 @@ export default {
         },
         async aprovarVaga() {
             try {
-                if(this.isFormValid && this.$refs.formAprovacao.validate()) {
+                if (this.isFormValid && this.$refs.formAprovacao.validate()) {
                     this.getUserEmpresa();
                     const companyEmail = this.emailEmpresa;
 
@@ -270,7 +249,7 @@ export default {
                         {
                             withCredentials: true
                         })
-    
+
                     this.mensagem = "A operação foi realizada com sucesso.";
                     this.snackbarUpdate = true;
                     this.color = 'success';
@@ -289,7 +268,7 @@ export default {
                 }, 3500)
                 console.error(error);
             }
-        }
+        },        
     }
 }
 </script>

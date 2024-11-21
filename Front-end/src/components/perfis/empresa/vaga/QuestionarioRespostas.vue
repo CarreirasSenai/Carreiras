@@ -14,7 +14,7 @@
                             :src="candidato.foto ? `${caminhoFotos}/uploads/perfil/${candidato.foto}` : '/src/assets/avatar.png'"
                             cover></v-img>
                     </v-card>
-                    <div class="ml-2" style="font-size: clamp(17px, 4vw, 20px);">{{ candidato.nome }}</div>                    
+                    <div class="ml-2" style="font-size: clamp(17px, 4vw, 20px);">{{ candidato.nome }}</div>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
                         <v-sheet class="text-center rounded-lg pa-1 ma-3 elevation-1" style="width: 60px;"
@@ -24,6 +24,13 @@
             </v-card-title>
 
             <v-card-text class="mt-4">
+                <v-card v-if="!questionario.length" variant="tonal" class="mb-4" color="deep-purple-accent-4" title="Atenção"
+                    prepend-icon="mdi-alert">
+                    <v-card-item>
+                        Não há questionário para esta vaga. A relevância do candidato será, no máximo, de 50% e será
+                        definida apenas pelas <strong>Habilidades Exigidas</strong> para a vaga.
+                    </v-card-item>
+                </v-card>
                 <div v-for="(questao, i) in questionario" :key="questao.id" class="position-relative pt-10">
                     <!-- Para perguntas de múltipla escolha -->
                     <v-radio-group disabled v-model="form[questao.id]" v-if="questao.tipo === 'alternativa'">

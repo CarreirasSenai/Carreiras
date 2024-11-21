@@ -14,12 +14,12 @@
                                 {{ items.lugar }} <br>
                                 {{ formatarData(items.inicio) }} - {{ formatarData(items.termino) }}
                             </v-card-text>
-                            <EditarCursos :MostrarFormacoes="mostrarFormacoes" :Formacoes="items" v-if="user.dadosUser.id === idCandidato"/>
+                            <EditarCursos :MostrarFormacoes="mostrarFormacoes" :Formacoes="items" v-if="grupo === 'candidato'"/>
                         </v-card>
                     </v-col>
                     <span v-if="!formacoes.length" class="ma-4">Adicione um curso.</span>
                 </v-row>
-                <AdicionarCurso :MostrarFormacoes="mostrarFormacoes" v-if="user.dadosUser.id === idCandidato"/>
+                <AdicionarCurso :MostrarFormacoes="mostrarFormacoes" v-if="grupo === 'candidato'"/>
             </v-expansion-panel-text>
         </v-expansion-panel>
     </v-col>
@@ -32,7 +32,6 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            idCandidato: '',
             formacoes: [
                 {
                     nome: '',
@@ -50,6 +49,7 @@ export default {
     },
     mounted() {
         this.mostrarFormacoes();
+        this.grupo = localStorage.getItem('grupo');
     },
     methods: {
         async mostrarFormacoes() {
@@ -65,7 +65,6 @@ export default {
 
                 console.log('Array de Cursos:', response.data);
                 this.formacoes = response.data.result;
-                this.idCandidato = response.data.result[0].id_candidato;
 
             } catch (error) {
                 console.error('Erro', error.response.data);

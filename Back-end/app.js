@@ -6,7 +6,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
 const fileupload = require('express-fileupload');
+const { startCronJob } = require('./model/candidatura');
+
 require('dotenv').config();
+startCronJob();
 
 // Middleware de sessão
 app.use(session({

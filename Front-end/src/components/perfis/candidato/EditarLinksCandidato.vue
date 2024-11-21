@@ -6,39 +6,38 @@
                 <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Links</v-btn>
             </template>
 
-            <v-card ref="form" title="Editar Links">
+            <v-card title="Editar Links">
                 <v-form @submit.prevent="saveForm">
                     <v-card-text>
                         <v-row dense>
                             <v-col cols="12" md="12">
-                                <v-text-field :rules="instagramRules" prepend-icon="mdi mdi-instagram" label="instagram.com/"
-                                    variant="underlined" v-model="link_instagram" required></v-text-field>
-                                <v-text-field :rules="facebookRules" prepend-icon="mdi mdi-facebook" label="facebook.com/"
-                                    variant="underlined" v-model="link_facebook" required></v-text-field>
-                                <v-text-field :rules="linkedinRules" prepend-icon="mdi mdi-linkedin" label="linkedin.com/"
-                                    variant="underlined" v-model="link_linkedin" required></v-text-field>
+                                <v-text-field :rules="instagramRules" prepend-icon="mdi mdi-instagram"
+                                    label="instagram.com/" variant="underlined" v-model="link_instagram"></v-text-field>
+                                <v-text-field :rules="facebookRules" prepend-icon="mdi mdi-facebook"
+                                    label="facebook.com/" variant="underlined" v-model="link_facebook"></v-text-field>
+                                <v-text-field :rules="linkedinRules" prepend-icon="mdi mdi-linkedin"
+                                    label="linkedin.com/" variant="underlined" v-model="link_linkedin"></v-text-field>
                                 <v-text-field :rules="githubRules" prepend-icon="mdi mdi-github" label="github.com/"
-                                    variant="underlined" v-model="link_github" required></v-text-field>
-                                <v-text-field prepend-icon="mdi mdi-web" label="www.seusite.com"
-                                    variant="underlined" v-model="link_site_pessoal" required></v-text-field>
+                                    variant="underlined" v-model="link_github"></v-text-field>
+                                <v-text-field prepend-icon="mdi mdi-web" label="www.seusite.com" variant="underlined"
+                                    v-model="link_site_pessoal" :rules="siteRules"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-card-text>
+                    <v-divider></v-divider>
+
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+
+                        <v-btn text="Limpar" variant="plain" @click="clearForm" class="border-red-accent-4"></v-btn>
+                        <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
+                        <v-btn text="Salvar" color="Enviar" variant="tonal" type="submit"
+                            class="bg-purple-darken-4"></v-btn>
+                    </v-card-actions>
                 </v-form>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-
-                    <v-btn text="Limpar" variant="plain" @click="clearForm" class="border-red-accent-4"></v-btn>
-                    <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
-                    <v-btn text="Salvar" color="Enviar" variant="tonal" @click="saveForm"
-                        class="bg-purple-darken-4"></v-btn>
-                </v-card-actions>
             </v-card>
         </v-dialog>
-         <v-snackbar :color="snackbarColor" v-model="snackbar" :timeout="4000">
+        <v-snackbar :color="snackbarColor" v-model="snackbar" :timeout="4000">
             <div class="text-center">{{ mensagem }}</div>
         </v-snackbar>
     </div>
@@ -61,10 +60,39 @@ export default {
         snackbar: false,
         snackbarColor: '',
         mensagem: '',
-        instagramRules: [(v) => v.includes("instagram.com") || v === '' || "Insira um link válido do Instagram"],
-        facebookRules: [(v) => v.includes("facebook.com") || v === '' || "Insira um link válido do Facebook"],
-        linkedinRules: [(v) => v.includes("linkedin.com") || v === '' || "Insira um link válido do LinkedIn"],
-        githubRules: [(v) => v.includes("github.com") || v === '' || "Insira um link válido do Github"],
+        instagramRules: [
+            (v) => {
+                if (!v || v.trim() === '') return true;
+                const regex = /^https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9._-]+\/?$/;
+                return regex.test(v) || "Insira um link válido do Instagram com HTTPS";
+            },
+        ],
+        facebookRules: [
+            (v) => {
+                if (!v || v.trim() === '') return true;
+                const regex = /^https:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9._-]+\/?$/;
+                return regex.test(v) || "Insira um link válido do Facebook com HTTPS";
+            },
+        ],
+        linkedinRules: [
+            (v) => {
+                if (!v || v.trim() === '') return true;
+                const regex = /^https:\/\/(www\.)?linkedin\.com\/[a-zA-Z0-9._-]+(?:\/.*)?$/;
+                return regex.test(v) || "Insira um link válido para o LinkedIn com HTTPS";
+            },
+        ],
+        githubRules: [
+            (v) => {
+                if (!v || v.trim() === '') return true;
+                const regex = /^https:\/\/(www\.)?github\.com\/[a-zA-Z0-9._-]+\/?$/;
+                return regex.test(v) || "Insira um link válido do Github com HTTPS";
+            },
+        ],
+        siteRules: [(v) => {
+            if (!v || v.trim() === '') return true;
+            const regex = /^https:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/;
+            return regex.test(v) || "Insira um link válido que comece com HTTPS";
+        }]
     }),
     computed: {
         auth() {
@@ -79,11 +107,11 @@ export default {
     },
     mounted() {
         this.id = useCandidatoStore().dadosUser.id,
-        this.link_instagram = useCandidatoStore().dadosUser.link_instagram,
-        this.link_facebook = useCandidatoStore().dadosUser.link_facebook,
-        this.link_linkedin = useCandidatoStore().dadosUser.link_linkedin,
-        this.link_github = useCandidatoStore().dadosUser.link_github,
-        this.link_site_pessoal = useCandidatoStore().dadosUser.link_site_pessoal
+            this.link_instagram = useCandidatoStore().dadosUser.link_instagram,
+            this.link_facebook = useCandidatoStore().dadosUser.link_facebook,
+            this.link_linkedin = useCandidatoStore().dadosUser.link_linkedin,
+            this.link_github = useCandidatoStore().dadosUser.link_github,
+            this.link_site_pessoal = useCandidatoStore().dadosUser.link_site_pessoal
     },
     methods: {
         // Função para filtrar profissões com base na entrada do usuário
@@ -99,13 +127,10 @@ export default {
             this.link_linkedin = '';
             this.link_site_pessoal = '';
         },
-        async saveForm() {
-            const isInstagramValid = this.instagramRules.every(rule => rule(this.link_instagram) === true);
-            const isFacebookValid = this.facebookRules.every(rule => rule(this.link_facebook) === true);
-            const isLinkedinValid = this.linkedinRules.every(rule => rule(this.link_linkedin) === true);
-            const isGithubValid = this.githubRules.every(rule => rule(this.link_github) === true);
+        async saveForm(event) {
+            const dados = await event;
 
-            if(isInstagramValid && isFacebookValid && isLinkedinValid && isGithubValid) {
+            if (dados.valid === true) {
                 try {
                     const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidato/update/links`, {
                         id: this.id,
@@ -115,7 +140,7 @@ export default {
                         link_github: this.link_github,
                         link_site_pessoal: this.link_site_pessoal
                     },
-                    { withCredentials: true });
+                        { withCredentials: true });
                     console.log("Deu certo :) ", response.result);
                     this.snackbarColor = 'success';
                     this.mensagem = 'Links atualizados com sucesso.';
@@ -124,7 +149,7 @@ export default {
                     setTimeout(() => {
                         window.location.reload();
                     }, 1500)
-                } catch(error) {
+                } catch (error) {
                     console.error("Erro: ", error);
                     this.snackbarColor = 'error';
                     this.mensagem = 'Houve um erro ao atualizar os links.';

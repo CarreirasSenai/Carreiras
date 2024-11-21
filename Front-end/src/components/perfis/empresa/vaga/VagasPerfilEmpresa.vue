@@ -17,8 +17,11 @@
 
             <template v-slot:default="{ items }">
                 <v-row class="ma-1">
-                    <v-col cols="12" lg="4" md="6" sm="6" v-for="item in items" :key="item.id">
-                        <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
+                    <v-col cols="12" lg="4" md="6" sm="6" v-for="(item, index) in items" :key="item.id"
+                        :style="{ order: items.length - index }">
+                        <v-card
+                            v-if="user.dadosUser.grupo === 'admin' || (user.dadosUser.id === item.raw.id_empresa && user.dadosUser.grupo === 'empresa') || (item.raw.status === 1 && grupo === 'candidato')"
+                            class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
                             <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
                                 {{ item.raw.titulo }}
                             </v-card-title>
@@ -76,9 +79,13 @@
                             </small>
                             <v-card-actions class="d-flex justify-space-between">
                                 <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
+                                <v-spacer></v-spacer>
+                                <v-chip v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                                    :color="item.raw.status === 0 ? 'error' : 'success'">{{ item.raw.status
+                                        === 0 ? 'Em análise' : 'Aprovada' }}</v-chip>
                                 <ModalCandidatosVagas
                                     v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
-                                    :Vagas="item" />
+                                    :Vagas="item" :MostrarVagas="mostrarVagas" />
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -190,10 +197,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-* {
-    // border: 1px solid red;
-}
-
 .box-shadow {
     box-shadow: 0 2px 4px gray;
 }

@@ -19,6 +19,10 @@ exports.cursoRead = (req, res) => {
 
     const id = idReq ? idReq : idSession;
 
+    console.log(idReq);    
+    console.log(idSession);    
+    console.log(id);    
+
     Curso.cursoRead(id, (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });

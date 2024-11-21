@@ -192,7 +192,8 @@ export default {
       ],
       numeroRules: [
         (v) => !!v || "Número requerido",
-        (v) => v.length >= 1 || "Nº Casa deve ter pelo menos 1 caractere",
+        (v) => v > 0 || "O Número deve ser maior que zero",
+        (v) => /^\d+$/.test(v) || "Número deve conter apenas números",
       ],
       enderecoRules: [
         (v) => !!v || "Endereço Requerido",

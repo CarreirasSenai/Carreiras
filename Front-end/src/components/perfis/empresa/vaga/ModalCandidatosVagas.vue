@@ -48,31 +48,74 @@
 
                             <template v-slot:item.acao="{ item }">
                                 <div class="d-flex">
+                                    <v-btn icon="mdi-medal" size="x-small" class="bg-deep-orange-accent-3"
+                                        @click="updateCandidatura(item.id, 2)"></v-btn>
                                     <v-btn icon="mdi-check-bold" size="x-small" class="mx-2 bg-success"
-                                        @click="aprovarCandidato(item.id)"></v-btn>
-                                    <ModalJustificativa :Candidato="item" :Vaga="this.Vagas" />
+                                        @click="updateCandidatura(item.id, 1)"></v-btn>
+                                    <ModalJustificativa :Candidato="item" :Vaga="this.Vagas"
+                                        :ReadCandidaturas="readCandidaturas" />
                                 </div>
                             </template>
 
+                            <template v-slot:item.status="{ item }">
+                                <v-chip v-if="item.status != null" :color="validaStatusCor(item.status)">
+                                    <v-icon v-if="item.status === 2">mdi-medal</v-icon>
+                                    {{ validaStatusTexto(item.status) }}
+                                </v-chip>
+                            </template>
+
                         </v-data-table>
-                        <v-btn class="bt-primario position-absolute bottom-0 ma-2 elevation-0"
-                            @click="dialog = false">Fechar</v-btn>
+                        <div class="d-flex position-absolute bottom-0 ma-2 ga-2">
+                            <v-btn variant="tonal" @click="dialog = false">Fechar</v-btn>
+                            <!-- <v-btn variant="tonal" class="elevation-0" @click="modalSelecao = true">Iniciar
+                                Seleção</v-btn> -->
+                            <ModalJustificativaGeral :Candidatos="items" :Vaga="this.Vagas" :MostrarVagas="this.MostrarVagas"/>
+                        </div>
                     </v-card>
                 </v-col>
             </v-row>
         </v-container>
     </v-dialog>
+
+    <!-- <v-dialog max-width="500" v-model="modalSelecao">
+        <v-card title="Qual status deseja atribuir ao candidato?">
+            <v-card-actions>
+                <v-btn text="Cancelar" @click="modalSelecao = false"></v-btn>
+                <v-spacer></v-spacer>
+                <v-btn variant="tonal" color="success" text="Selecionado" @click="updateCandidatura(1)"></v-btn>
+                <v-btn variant="tonal" color="deep-orange-accent-3" text="Finalista"
+                    @click="updateCandidatura(2)"></v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog> -->
+
+    <!-- <v-dialog max-width="500" v-model="modalFecharVaga">
+        <v-card title="Confirme o término do processo seletivo">
+            <v-card-text>
+                Ao finalizar essa vaga, todos os candidatos a não ser o finalista, receberão uma justificativa para a não contratação!
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn variant="tonal" text="Cancelar" @click="modalFecharVaga = false"></v-btn>
+                <v-btn variant="tonal" class="bt-primario" text="Iniciar" @click="deleteVaga"></v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog> -->
 </template>
 
 <script>
 import axios from 'axios';
+import ModalJustificativaGeral from './ModalJustificativaGeral.vue';
 
 export default {
     data() {
         return {
             idVaga: '',
+            idCandidato: '',
+            status: '',
             dialog: false,
             dialogModal: false,
+            modalSelecao: false,
             search: '',
             headers: [
                 { title: 'Foto', value: 'foto', sortable: false },
@@ -80,29 +123,19 @@ export default {
                 // { title: 'Indicação', value: 'indicacao', sortable: true },
                 { title: 'Profissão', value: 'profissao', sortable: false },
                 { title: 'Relevância', value: 'relevancia', sortable: true },
+                { title: 'Status', value: 'status', sortable: true },
                 { title: 'Ação', value: 'acao', sortable: false },
             ],
             items: [],
             candidaturas: [],
             candidatos: [],
             caminhoFotos: import.meta.env.VITE_BACKEND_URL,
-
-            // items: [
-            //     {
-            //         foto: '1.jpg',
-            //         nome: 'João Pereira',
-            //         indicacao: 'true',
-            //         profissao: 'Engenheiro de Software',
-            //         relevancia: '70',
-            //         acao: '',
-            //         id: 25,
-            //     }
-            // ],
         }
     },
 
     props: {
         Vagas: Object,
+        MostrarVagas: Function
     },
 
     mounted() {
@@ -110,12 +143,20 @@ export default {
     },
 
     methods: {
-        aprovarCandidato(id) {
-            alert(id);
-        },
+        async updateCandidatura(id, status) {
+            try {
+                const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidatura/update`, {
+                    idVaga: this.idVaga,
+                    idCandidato: id,
+                    status: status,
+                }, { withCredentials: true });
 
-        removerCandidato(id) {
-            alert(id);
+                console.log(response.data.result);
+                this.readCandidaturas();
+
+            } catch (error) {
+                console.error('Erro ao Atualizar:', error.response.data);
+            }
         },
 
         async readCandidaturas() {
@@ -159,18 +200,51 @@ export default {
             this.candidaturas.forEach(candidatura => {
                 const candidato = this.candidatos.find(c => c.id === candidatura.id_candidato);
                 if (candidato) {
-                    this.items.push({
-                        // ...candidato,                            
-                        foto: candidato.foto,
-                        nome: candidato.nome_completo,
-                        profissao: candidato.profissao,
-                        relevancia: candidatura.relevancia,
-                        id: candidato.id,
-                    });
+                    if (candidatura.status != 0) {
+                        this.items.push({
+                            // ...candidato,                            
+                            foto: candidato.foto,
+                            nome: candidato.nome_completo,
+                            profissao: candidato.profissao,
+                            relevancia: candidatura.relevancia,
+                            id: candidato.id,
+                            status: candidatura.status,
+                            email: candidato.email
+                        });
+                    }
                 }
             });
             console.log(this.items);
         },
+
+        validaStatusTexto(value) {
+            if (value === 1) {
+                return 'Selecionado';
+            } else if (value === 2) {
+                return 'Finalista';
+            }
+        },
+
+        validaStatusCor(value) {
+            if (value === 1) {
+                return 'success';
+            } else if (value === 2) {
+                return 'deep-orange-accent-3';
+            }
+        }
+
+        // async iniciarSelecao() {
+        //     try {
+        //         const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}//`, {                    
+        //             idVaga: this.idVaga
+        //         }, { withCredentials: true });
+
+        //         console.log(response.data);
+
+        //     } catch (error) {
+        //         console.error('Erro', error.response.data.error);
+        //     }
+        // }
     }
 }
 </script>

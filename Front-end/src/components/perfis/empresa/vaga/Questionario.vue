@@ -25,7 +25,8 @@
                             Você poderá editar este questionário até o momento em que a vaga for aprovada.
                         </v-card-item>
                     </v-card>
-                    <AdicionarQuestionario v-if="idEmpresa === user.dadosUser.id && grupo === 'empresa'"
+                    <AdicionarQuestionario :disabled="this.Vagas.raw.status === 1"
+                        v-if="idEmpresa === user.dadosUser.id && grupo === 'empresa'"
                         :ReadQuestionario="readQuestionario" :IdVaga="idVaga" />
                     <div v-for="(questao, i) in questionario" :key="questao" class="position-relative pt-10">
                         <v-radio-group v-model="form['questionarioId' + questao.id]" :rules="[rules.geral]"
@@ -41,7 +42,8 @@
                                 variant="outlined" rows="2" auto-grow placeholder="Responda aqui..." maxlength="2000"
                                 counter></v-textarea>
                         </div>
-                        <EditarQuestionario v-if="idEmpresa === user.dadosUser.id && grupo === 'empresa'"
+                        <EditarQuestionario :disabled="this.Vagas.raw.status === 1"
+                            v-if="idEmpresa === user.dadosUser.id && grupo === 'empresa'"
                             :ReadQuestionario="readQuestionario" :Pergunta="questao" />
                     </div>
                 </v-card-text>
@@ -79,6 +81,7 @@ export default {
         grupo: '',
         form: {},
         estadoBtnInscrever: false,
+        candidatura: '',
 
         rules: {
             geral: value => !!value || 'Rersponda a questão.'
@@ -124,7 +127,15 @@ export default {
         },
 
         handleButtonClick() {
-            if (this.qtdCandidaturas < this.maxCandidaturas) {
+            // Validação se o candidato for justificado na vaga
+            if (this.nomeBtn === 'Inscrito' && this.candidatura.status != 0) {
+                this.deleteCandidatura();
+            } else if (this.candidatura.status === 0) {
+                alert('Seu perfil já foi avaliado, não é possível desfazer sua candidatura.');
+            }
+
+            // Validação do máximo de candidaturas
+            if (this.qtdCandidaturas < this.maxCandidaturas && this.candidatura.status != 0) {
                 if (this.user.dadosUser && this.nomeBtn != 'Inscrito') {
                     this.dialog = true;
                     this.populaForm();
@@ -133,11 +144,12 @@ export default {
                     }
                 } else if (!this.user.dadosUser) {
                     this.showSnackbar = true;
-                } else if (this.nomeBtn === 'Inscrito') {
-                    this.deleteCandidatura();
                 }
-            } else {
-                alert('Limite de candidaturas atingido para essa vaga.')
+            } else if (this.grupo === 'empresa' || this.grupo === 'admin') {
+                this.dialog = true;
+                this.populaForm();
+            } else if (this.candidatura.status != 0) {
+                alert('Esta vaga não aceita mais candidaturas.')
             }
         },
 
@@ -194,10 +206,12 @@ export default {
                 });
 
                 console.log(response.data);
-                const candidatura = response.data.result;
+                this.candidatura = response.data.result;
 
-                if (candidatura.id_vaga === this.idVaga) {
+                if (this.candidatura.id_vaga === this.idVaga && this.candidatura.status != 0) {
                     this.nomeBtn = 'Inscrito';
+                } else if (this.candidatura.status === 0) {
+                    this.nomeBtn = 'Justificado';
                 }
 
                 this.loading = false;
@@ -208,9 +222,9 @@ export default {
         },
 
         nomeBotao() {
-            if (this.grupo === 'empresa') {
+            if (this.grupo === 'empresa' || this.grupo === 'admin') {
                 this.nomeBtn = 'Questionário';
-            } else if (this.grupo === 'candidato') {
+            } else if (this.grupo === 'candidato' && this.candidatura.status != 0) {
                 this.nomeBtn = 'Inscrever-se';
             } else {
                 this.nomeBtn = 'Inscrever-se';
