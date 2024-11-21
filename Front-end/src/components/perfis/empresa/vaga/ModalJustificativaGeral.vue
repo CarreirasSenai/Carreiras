@@ -1,20 +1,27 @@
 <template>
-    <v-btn icon="mdi-minus" size="x-small" class="bg-error" @click="dialog = true"></v-btn>
+    <v-btn color="deep-purple-accent-4" variant="outlined" @click="dialog = true" text="Finalizar Vaga"></v-btn>
 
     <v-dialog v-model="dialog">
         <v-container>
             <v-row class="d-flex justify-center">
                 <v-col cols="12">
                     <v-form ref="form" v-model="isValid" class="my-4">
-                        <v-card title="Justificativa para não Contratação">
+                        <v-card title="Justificativa para não Contratação dos Candidatos">
                             <v-card-text>
                                 <div class="mb-5 d-flex flex-wrap ga-2">
-                                    <p>Candidato: <v-chip variant="outlined">{{ candidato }}</v-chip></p>
                                     <p>Vaga: <v-chip variant="outlined">{{ vaga }}</v-chip></p>
                                 </div>
-                                <v-textarea rows="15" label="Justifique a não contratação do candidato"
+                                <v-textarea rows="13" label="Justifique a não contratação dos candidatos desta vaga"
                                     v-model="justificativa" :rules="[rules.justificativa, rules.length(200)]"
                                     counter="200" variant="outlined"></v-textarea>
+                                <v-card variant="tonal" class="mb-4" color="deep-purple-accent-4" title="Atenção"
+                                    prepend-icon="mdi-alert">
+                                    <v-card-item>
+                                        Ao clicar em Enviar, todos os candidatos receberão a justificativa, com exceção
+                                        do candidato finalista, pois presume-se que a empresa manterá contato
+                                        diretamente com ele.
+                                    </v-card-item>
+                                </v-card>
                             </v-card-text>
                             <v-card-actions class="d-flex justify-space-between">
                                 <v-btn text @click="dialog = false">Cancelar</v-btn>
@@ -27,7 +34,6 @@
             </v-row>
         </v-container>
     </v-dialog>
-    <!-- </div> -->
 </template>
 
 <script>
@@ -37,8 +43,7 @@ import axios from 'axios';
 export default {
     data: () => ({
         dialog: false,
-        candidato: 'Tyrion Lannister',
-        vaga: 'Gerente de Projetos',
+        vaga: '',
         isValid: false,
         isLoading: false,
         justificativa: '',
@@ -48,10 +53,9 @@ export default {
     }),
 
     props: {
-        Candidato: Object,
+        Candidatos: Object,
         Vaga: Object,
-        IdCandidatura: Number,
-        ReadCandidaturas: Function
+        MostrarVagas: Function
     },
 
     computed: {
@@ -61,10 +65,9 @@ export default {
     },
 
     mounted() {
-        this.candidato = this.Candidato.nome;
         this.vaga = this.Vaga.raw.titulo;
 
-        this.justificativa = `Prezado(a) ${this.candidato},
+        this.justificativa = `Prezado(a) Candidato,
 
 Agradecemos sinceramente por sua participação no processo seletivo para a vaga de ${this.vaga} em nossa empresa. Foi um prazer conhecer seu perfil e avaliar suas qualificações.
 Após uma análise detalhada de todos os candidatos, decidimos seguir com outro profissional cujo perfil está mais alinhado às necessidades específicas da posição no momento.
@@ -80,15 +83,15 @@ ${this.user.dadosUser.nome_fantasia}
         async submitForm() {
             if (this.justificativa.length >= 200) {
                 try {
-                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidatura/update`, {
+                    const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/candidatura/justifica/all`, {
                         justificativa: this.justificativa,
                         idVaga: this.Vaga.raw.id,
-                        idCandidato: this.Candidato.id
+                        candidatos: this.Candidatos
                     }, { withCredentials: true });
 
                     console.log(response.data);
                     this.dialog = false;
-                    this.ReadCandidaturas();
+                    this.MostrarVagas();
 
                 } catch (error) {
                     console.error('Erro ao Atualizar Curso:', error.response.data);

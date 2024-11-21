@@ -81,7 +81,7 @@
                                     === 0 ? 'Em análise' : 'Aprovada' }}</v-chip>
                                 <ModalCandidatosVagas
                                     v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
-                                    :Vagas="item" />
+                                    :Vagas="item" :MostrarVagas="mostrarVagas" />
                             </v-card-actions>
                         </v-card>
                     </v-col>

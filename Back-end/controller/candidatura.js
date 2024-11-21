@@ -60,15 +60,36 @@ exports.update = (req, res) => {
     const idCandidato = req.body.idCandidato;
     const idVaga = req.body.idVaga;
     const justificativa = req.body.justificativa;
+    const status = req.body.status;
 
-    const selecao = justificativa ? 0 : 1;
+    const selecao = justificativa ? 0 : status;
+
+    console.log(idCandidato);
+    console.log(req.body);
 
     Candidatura.update(idCandidato, idVaga, selecao, justificativa, (err, result) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ error: err });
         } else if (result) {
+            console.log(result);
             return res.json({ success: true, result: 'Candidatura atualizada!' })
+        }
+    });
+}
+
+exports.justificaGeral = (req, res) => {
+    const candidatos = req.body.candidatos;
+    const idVaga = req.body.idVaga;
+    const justificativa = req.body.justificativa;
+
+    Candidatura.justificaGeral(candidatos, idVaga, justificativa, (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: err });
+        } else if (result) {
+            console.log(result);
+            return res.json({ success: true, result: 'Candidatura finalizada!' })
         }
     });
 }

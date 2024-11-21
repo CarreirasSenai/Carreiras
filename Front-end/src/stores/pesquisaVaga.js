@@ -54,7 +54,7 @@ export const usePesquisaVaga = defineStore('pesquisaVaga', {
                 this.visibilidadeFiltroVagas = true;
                 this.dialog = false,
 
-                this.pesquisa = response.data.result;
+                this.pesquisa = response.data.result.filter(vaga => vaga.status === 1);
                 console.log(this.pesquisa);
 
                 console.log('Busca enviada!', response.data);

@@ -32,7 +32,7 @@ color: white; display: flex;
     text-align: center;
     border-radius: 15px;">
         <h2 style="margin: 0;">Sua conta está verificada ✅</h2>
-        <p>Parabéns seu Abelhudo!</p>
+        <p>Parabéns!🎉 Sucesso em suas candidaturas!</p>
         <a href="${process.env.FRONTEND_URL}/login?resposta=${grupo}" style="margin-top: 30px; color: white;">Entrar na Conta</a>
     </div>
 </body>

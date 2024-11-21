@@ -127,11 +127,15 @@ export default {
         },
 
         handleButtonClick() {
+            // Validação se o candidato for justificado na vaga
             if (this.nomeBtn === 'Inscrito' && this.candidatura.status != 0) {
                 this.deleteCandidatura();
+            } else if (this.candidatura.status === 0) {
+                alert('Seu perfil já foi avaliado, não é possível desfazer sua candidatura.');
+            }
 
-            } else if (this.qtdCandidaturas < this.maxCandidaturas) {
-
+            // Validação do máximo de candidaturas
+            if (this.qtdCandidaturas < this.maxCandidaturas && this.candidatura.status != 0) {
                 if (this.user.dadosUser && this.nomeBtn != 'Inscrito') {
                     this.dialog = true;
                     this.populaForm();
@@ -144,7 +148,7 @@ export default {
             } else if (this.grupo === 'empresa' || this.grupo === 'admin') {
                 this.dialog = true;
                 this.populaForm();
-            } else {
+            } else if (this.candidatura.status != 0) {
                 alert('Esta vaga não aceita mais candidaturas.')
             }
         },
@@ -204,8 +208,10 @@ export default {
                 console.log(response.data);
                 this.candidatura = response.data.result;
 
-                if (this.candidatura.id_vaga === this.idVaga) {
+                if (this.candidatura.id_vaga === this.idVaga && this.candidatura.status != 0) {
                     this.nomeBtn = 'Inscrito';
+                } else if (this.candidatura.status === 0) {
+                    this.nomeBtn = 'Justificado';
                 }
 
                 this.loading = false;
@@ -218,7 +224,7 @@ export default {
         nomeBotao() {
             if (this.grupo === 'empresa' || this.grupo === 'admin') {
                 this.nomeBtn = 'Questionário';
-            } else if (this.grupo === 'candidato') {
+            } else if (this.grupo === 'candidato' && this.candidatura.status != 0) {
                 this.nomeBtn = 'Inscrever-se';
             } else {
                 this.nomeBtn = 'Inscrever-se';
