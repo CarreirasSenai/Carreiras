@@ -24,8 +24,8 @@
               >
             </p>
           </v-col>
-          <v-col cols="12" md="6" :class="{ 'no-hover': github === 'Não informado' }">
-            <p class="mdi mdi-github text-truncate">
+          <v-col cols="12" md="6">
+            <p class="mdi mdi-github text-truncate"  :class="{ 'no-hover': github === 'Não informado' }">
               <a v-if="github" target="_blank" 
               class="mdi ml-2 link-size"
               :href="github"
