@@ -102,6 +102,7 @@
       style="height: 45vh;">
       <v-progress-circular color="deep-purple-accent-4" indeterminate :size="50"></v-progress-circular>
     </div>
+    <Footer />
   </div>
 </template>
 

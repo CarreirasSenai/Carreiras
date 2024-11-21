@@ -182,3 +182,19 @@ exports.vagaUpdateStatus = (id_vaga, id_empresa, opcaoSelecionada, callback) => 
         return callback(null, result);
     })
 }
+
+// No modelo Vaga
+exports.vagasInscritasPorCandidato = (idCandidato, callback) => {
+    db.query(`
+        SELECT vagas.* FROM vagas
+        JOIN candidatura ON vagas.id = candidatura.id_vaga
+        WHERE candidatura.id_candidato = ?
+    `, [idCandidato], (err, result) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+        } else {
+            return callback(null, result);
+        }
+    });
+};

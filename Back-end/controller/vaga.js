@@ -155,3 +155,16 @@ exports.vagaUpdateStatus = (req, res) => {
         }
     })
 }
+
+// No controlador Vaga
+exports.vagasInscritas = (req, res) => {
+    const idCandidato = req.session.usuario.id;
+
+    Vaga.vagasInscritasPorCandidato(idCandidato, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        } else if (result) {
+            return res.status(200).json({ success: 'Vagas inscritas:', result: result });
+        }
+    });
+};
