@@ -41,12 +41,16 @@ exports.createUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
 };
 
 // Read
-exports.getUser = (id, callback) => {
-    db.query('SELECT * FROM user_candidato WHERE id = ?', [id], (err, rows) => {
+exports.getUser = (usuario_id, callback) => {
+    console.log('ID recebido no modelo:', usuario_id);
+
+    db.query('SELECT * FROM user_candidato WHERE id = ?', [usuario_id], (err, rows) => {
         if (err) {
+            console.error('Erro ao consultar banco de dados:', err.message);
             return callback(err, null);
         }
 
+        console.log('Resultado da consulta:', rows);
         return callback(null, rows.length > 0 ? rows[0] : null);
     });
 };
@@ -57,7 +61,7 @@ exports.getLogin = (email, callback) => {
         if (err) {
             console.log(err);
             return callback(err, null, null);
-            
+
         } else if (rows.length > 0) {
             db.query('SELECT * FROM user_candidato WHERE email = ? AND verificado = ?', [email, 1], (err, rows) => {
                 if (err) {
@@ -97,7 +101,7 @@ exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
 
     let fields = [nomeSocial, nomeCompleto, email, phone, cellphone, cpf, cep, rua, numCasa, complemento, bairro, cidade, estado, area, profissao]
 
-    if(verificado != null && verificado != undefined && verificado !== '') {
+    if (verificado != null && verificado != undefined && verificado !== '') {
         query += 'verificado = ?,';
         fields.push(verificado);
     }
@@ -106,8 +110,8 @@ exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
     WHERE id = ?`;
     fields.push(grupo);
     fields.push(id);
-    
-    db.query(query, fields, 
+
+    db.query(query, fields,
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -115,7 +119,7 @@ exports.updateUser = (nomeSocial, nomeCompleto, email, phone, cellphone, cpf, ce
             } else if (result) {
                 return callback(null, result.affectedRows > 0);
             }
-    });
+        });
 };
 
 // Delete
@@ -138,7 +142,7 @@ exports.pesquisaCandidato = (busca, callback) => {
         WHERE CONCAT(nome_social, ' ', nome_completo, ' ', email, ' ', cpf, ' ', celular) LIKE ?
     `;
     db.query(sql, [buscaComCuringa], (err, row) => {
-        if (err) 
+        if (err)
             return callback(err, null);
 
         return callback(null, row);
@@ -158,14 +162,14 @@ exports.getAllCandidatos = (callback) => {
 };
 
 
-exports.updateUserLinks = (id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal, 
+exports.updateUserLinks = (id, link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal,
     callback) => {
-        db.query(`UPDATE user_candidato SET link_instagram = ?, link_facebook = ?, link_linkedin = ?,
+    db.query(`UPDATE user_candidato SET link_instagram = ?, link_facebook = ?, link_linkedin = ?,
         link_github = ?, link_site_pessoal = ? WHERE id = ?`, [link_instagram, link_facebook, link_linkedin, link_github, link_site_pessoal, id],
         (err, result) => {
-            if(err)
+            if (err)
                 return callback(err, null);
-            
+
             return callback(null, result.affectedRows > 0 ? result : null);
         });
 }

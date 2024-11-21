@@ -44,7 +44,7 @@ export default {
         },
     },
     created() {
-        this.auth.autenticacao();
+        // this.auth.autenticacao();
         this.pesquisaUser.id = this.$route.query.id;
         this.pesquisaUser.requisicao = this.$route.query.requisicao;
     },
@@ -81,6 +81,7 @@ export default {
             setTimeout(() => {
                 this.dadosCarregados = true;
                 this.dados = requisitante.dadosUser;
+                console.log(this.dados);                
                 console.log("Atribuindo novos valores a this.dados");
             }, 1000);
             // }
@@ -90,7 +91,7 @@ export default {
         // Observa mudanças no objeto user.dadosUser
         'user.dadosUser': {
             handler(novo, antigo) {
-                console.clear();
+                // console.clear();
                 console.log('O objeto dadosUser foi alterado: \n', 'Novo:', novo, '\n', 'Antigo:', antigo);
 
                 // Evita chamar atribuirValores se os dados não mudaram de fato
