@@ -169,24 +169,6 @@ exports.deleteUser = (req, res) => {
     });
 };
 
-// Read / Autenticar
-// exports.getUser = (req, res) => {
-//     const usuario_id = req.session.usuario.id;
-
-//     Candidato.getUser(usuario_id, (err, usuario) => {
-//         if (err) {
-//             return res.status(500).json({ error: err.message });
-//         }
-
-//         if (!usuario) {
-//             return res.status(404).json({ error: 'Usuário não encontrado!' });
-//         }
-
-//         // console.log(req.session);
-//         res.json({ success: true, usuario: usuario });
-//     });
-// };
-
 exports.getAllUser = (req, res) => {
     Candidato.getAllCandidatos((err, usuarios) => {
         if (err) {
