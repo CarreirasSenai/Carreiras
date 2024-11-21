@@ -3,210 +3,108 @@
     <div class="text-center">
       <v-dialog v-model="dialog" max-width="800px">
         <template v-slot:activator="{ props: activatorProps }">
-          <v-btn
-            variant="text"
-            v-bind="activatorProps"
-            class="w-100 rounded-0 justify-start"
-            >Editar Cadastro</v-btn
-          >
+          <v-btn variant="text" v-bind="activatorProps" class="w-100 rounded-0 justify-start">Editar Cadastro</v-btn>
         </template>
         <v-container>
           <v-row no-gutters>
             <v-col cols="12">
               <v-card title="Editar Cadastro" class="pa-2">
                 <v-card-text style="max-height: 70vh" class="overflow-auto">
-                  <v-form class="my-4" @submit.prevent>
+                  <v-form class="my-4" @submit.prevent="atualizarCadastro">
                     <v-row>
                       <v-col cols="12" sm="6" md="6" lg="6">
-                        <v-text-field
-                          v-model="form.razaoSocial"
-                          :rules="razaoSocialRules"
-                          label="Razão social"
-                          variant="underlined"
-                        ></v-text-field>
+                        <v-text-field v-model="form.razaoSocial" :rules="razaoSocialRules" label="Razão social"
+                          variant="underlined"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6" lg="6">
-                        <v-text-field
-                          v-model="form.nomeFantasia"
-                          :rules="nomeFantasiaRules"
-                          label="Nome fantasia"
-                          variant="underlined"
-                        ></v-text-field>
+                        <v-text-field v-model="form.nomeFantasia" :rules="nomeFantasiaRules" label="Nome fantasia"
+                          variant="underlined"></v-text-field>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="12" sm="6" md="6" lg="6">
-                        <v-text-field
-                          v-model="form.email"
-                          :rules="emailRules"
-                          label="Email"
-                          variant="underlined"
-                        ></v-text-field>
+                        <v-text-field v-model="form.email" :rules="emailRules" label="Email"
+                          variant="underlined"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="3" md="3" lg="3">
-                        <v-text-field
-                          v-model="form.telefone"
-                          :rules="telefoneRules"
-                          label="Telefone"
-                          variant="underlined"
-                          v-mask="'(##) ####-####'"
-                        ></v-text-field>
+                        <v-text-field v-model="form.telefone" :rules="telefoneRules" label="Telefone"
+                          variant="underlined" v-mask="'(##) ####-####'"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="3" md="3" lg="3">
-                        <v-text-field
-                          v-model="form.celular"
-                          :rules="celularRules"
-                          label="Celular"
-                          variant="underlined"
-                          v-mask="'(##) #####-####'"
-                        ></v-text-field>
+                        <v-text-field v-model="form.celular" :rules="celularRules" label="Celular" variant="underlined"
+                          v-mask="'(##) #####-####'"></v-text-field>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="12" sm="3" md="3" lg="3">
-                        <v-text-field
-                          v-model="form.cnpj"
-                          :rules="cnpjRules"
-                          label="CNPJ"
-                          variant="underlined"
-                          v-mask="'##.###.###/####-##'"
-                        ></v-text-field>
+                        <v-text-field v-model="form.cnpj" :rules="cnpjRules" label="CNPJ" variant="underlined"
+                          v-mask="'##.###.###/####-##'"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="3" md="3" lg="3">
-                        <v-text-field
-                          v-model="form.inscricaoEstadual"
-                          :rules="inscricaoEstadualRules"
-                          v-mask='"###.###.###.###"'
-                          label="Inscrição estadual"
-                          variant="underlined"
-                        ></v-text-field>
+                        <v-text-field v-model="form.inscricaoEstadual" :rules="inscricaoEstadualRules"
+                          v-mask='"###.###.###.###"' label="Inscrição estadual" variant="underlined"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="4" md="4" lg="4">
-                        <v-text-field
-                          v-mask="'########'"
-                          maxlength="8"
-                          v-model="form.cep"
-                          :rules="cepRules"
-                          label="CEP"
-                          variant="underlined"
-                          @blur="retornarInformacoesCep"
-                        ></v-text-field>
+                        <v-text-field v-mask="'########'" maxlength="8" v-model="form.cep" :rules="cepRules" label="CEP"
+                          variant="underlined" @blur="retornarInformacoesCep"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="2" md="2" lg="2">
-                        <v-text-field
-                          v-model="form.numero"
-                          :rules="numeroRules"
-                          label="Nº"
-                          variant="underlined"
-                        ></v-text-field>
+                        <v-text-field v-model="form.numero" :rules="numeroRules" label="Nº"
+                          variant="underlined"></v-text-field>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="12" sm="6" md="6" lg="6">
-                        <v-text-field
-                          v-model="form.complemento"
-                          label="Complemento"
-                          variant="underlined"
-                        ></v-text-field>
+                        <v-text-field v-model="form.complemento" label="Complemento"
+                          variant="underlined"></v-text-field>
                       </v-col>
                       <v-col>
-                        <v-text-field
-                          v-model="form.endereco"
-                          :rules="enderecoRules"
-                          label="Endereço"
-                          variant="underlined"
-                        ></v-text-field>
+                        <v-text-field v-model="form.endereco" :rules="enderecoRules" label="Endereço"
+                          variant="underlined"></v-text-field>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="12" sm="3" md="3" lg="3">
-                        <v-text-field
-                          v-model="form.bairro"
-                          :rules="bairroRules"
-                          label="Bairro"
-                          variant="underlined"
-                        ></v-text-field>
+                        <v-text-field v-model="form.bairro" :rules="bairroRules" label="Bairro"
+                          variant="underlined"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="3" md="3" lg="3">
-                        <v-text-field
-                          v-model="form.cidade"
-                          :rules="cidadeRules"
-                          label="Cidade"
-                          variant="underlined"
-                        ></v-text-field>
+                        <v-text-field v-model="form.cidade" :rules="cidadeRules" label="Cidade"
+                          variant="underlined"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6" lg="6">
-                        <v-select
-                          v-model="form.estado"
-                          :rules="estadoRules"
-                          :items="items"
-                          label="Estado"
-                          variant="underlined"
-                        ></v-select>
+                        <v-select v-model="form.estado" :rules="estadoRules" :items="items" label="Estado"
+                          variant="underlined"></v-select>
                       </v-col>
-                      <v-col cols="12" sm="4" md="4" lg="4">
-                        <v-text-field
-                          v-model="form.responsavelLegal"
-                          :rules="responsavelLegalRules"
-                          label="Responsável legal"
-                          variant="underlined"
-                        ></v-text-field>
+                      <v-col cols="12" sm="6" md="6" lg="6">
+                        <v-text-field v-model="form.responsavelLegal" :rules="responsavelLegalRules"
+                          label="Responsável legal" variant="underlined"></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="4" md="4" lg="4">
-                        <v-text-field
-                          v-model="form.cpfResponsavel"
-                          :rules="cpfResponsavelRules"
-                          v-mask="'###.###.###-##'"
-                          label="CPF do responsável legal"
-                          variant="underlined"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="4" md="4" lg="4">
-                        <v-text-field
-                          v-model="responsavelAdm"
-                          :rules="responsavelAdmRules"
-                          label="Responsável administrativo (RA)"
-                          variant="underlined"
-                        ></v-text-field>
+                      <v-col cols="12" sm="6" md="6" lg="6">
+                        <v-text-field v-model="form.cpfResponsavel" :rules="cpfResponsavelRules"
+                          v-mask="'###.###.###-##'" label="CPF do responsável legal"
+                          variant="underlined"></v-text-field>
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="11" sm="6" md="6" lg="6">
-                        <v-text-field
-                          v-model="form.contatoRA"
-                          :rules="emailRules"
-                          label="Contato RA"
-                          density="compact"
-                          variant="underlined"
-                        ></v-text-field>
+                        <v-text-field v-model="form.contatoRA" :rules="emailRules" label="Contato RA" density="compact"
+                          variant="underlined"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6" lg="6">
                         <v-btn to="/redefinir-senha?resposta=empresa" text="Redefinir Senha"
                           append-icon="mdi-arrow-top-right-thick" block></v-btn>
                       </v-col>
                     </v-row>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                      <v-btn text="Excluir" variant="text" @click="dialog = false, modalDelete = true"></v-btn>
+                      <v-spacer></v-spacer>
+                      <v-btn text="Fechar" variant="outlined" @click="dialog = false"></v-btn>
+                      <v-btn text="Atualizar" variant="tonal" class="bg-purple-darken-4" type="submit"></v-btn>
+                    </v-card-actions>
                   </v-form>
                 </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                  <v-btn
-                    text="Excluir"
-                    variant="text"
-                    @click="dialog = false, modalDelete = true"
-                  ></v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    text="Fechar"
-                    variant="outlined"
-                    @click="dialog = false"
-                  ></v-btn>
-                  <v-btn
-                    text="Atualizar"
-                    variant="tonal"
-                    class="bg-purple-darken-4"
-                    @click="atualizarCadastro()"
-                  ></v-btn>
-                </v-card-actions>
               </v-card>
             </v-col>
           </v-row>
@@ -275,16 +173,19 @@ export default {
       ],
       telefoneRules: [
         (v) => !!v || "Telefone requerido",
-        (v) => v.length >= 10 || "Telefone deve ter pelo menos 10 caracteres",
+        (v) => v.length >= 14 || "Telefone deve ter pelo menos 14 caracteres",
       ],
       celularRules: [
         (v) => !!v || "Celular requerido",
-        (v) => v.length >= 10 || "Celular deve ter pelo menos 10 caracteres",
+        (v) => v.length >= 15 || "Celular deve ter pelo menos 15 caracteres",
       ],
       cnpjRules: [
         (v) => !!v || "CNPJ requerido",
+        (v) => v.length >= 18 || "CNPJ deve ter pelo menos 18 caracteres"
       ],
-      inscricaoEstadualRules: [(v) => !!v || "Inscrição estadual requerida"],
+      inscricaoEstadualRules: [(v) => !!v || "Inscrição estadual requerida",
+      (v) => v.length >= 15 || "Inscrição estadual deve ter pelo menos 15 caracteres"
+      ],
       cepRules: [
         (v) => !!v || "CEP requerido",
         (v) => v.length === 8 || "CEP deve ter 8 caracteres",
@@ -309,16 +210,16 @@ export default {
       estadoRules: [(v) => !!v || "Estado requerido"],
       responsavelLegalRules: [(v) => !!v || "Responsável legal requerido"],
       cpfResponsavelRules: [(v) => !!v || "CPF Requerido",
-        (v) => v.length === 14 || "CPF deve ter 14 caracteres",],
+      (v) => v.length === 14 || "CPF deve ter 14 caracteres",],
       responsavelAdmRules: [
         (v) => !!v || "Responsável administrativo requerido",
       ],
       items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
-                'CE', 'DF', 'ES', 'GO', 'MA',
-                'MT', 'MS', 'MG', 'PA', 'PB',
-                'PR', 'PE', 'PI', 'RJ', 'RN',
-                'RS', 'RO', 'RR', 'SC', 'SP',
-                'SE', 'TO'],
+        'CE', 'DF', 'ES', 'GO', 'MA',
+        'MT', 'MS', 'MG', 'PA', 'PB',
+        'PR', 'PE', 'PI', 'RJ', 'RN',
+        'RS', 'RO', 'RR', 'SC', 'SP',
+        'SE', 'TO'],
       dialog: false,
     };
   },
@@ -326,14 +227,14 @@ export default {
     user() { return useCandidatoStore() },
   },
   methods: {
-    async retornarInformacoesCep(){
-      if(this.form.cep !== "" && this.form.cep.length === 8) {
+    async retornarInformacoesCep() {
+      if (this.form.cep !== "" && this.form.cep.length === 8) {
         try {
           const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
           this.form.endereco = response.data.street,
-          this.form.bairro = response.data.neighborhood,
-          this.form.cidade = response.data.city,
-          this.form.estado = response.data.state
+            this.form.bairro = response.data.neighborhood,
+            this.form.cidade = response.data.city,
+            this.form.estado = response.data.state
         }
         catch (error) {
           console.log("Houve um erro ao validar o CEP. Erro: ", error);
@@ -341,28 +242,34 @@ export default {
         }
       }
     },
-    async atualizarCadastro(){
+    async atualizarCadastro(event) {
       console.clear();
-      this.form.cnpj = this.limparMascaraValores(this.form.cnpj);
-      this.form.inscricaoEstadual = this.limparMascaraValores(this.form.inscricaoEstadual);
-      this.form.cpf_responsavel = this.limparMascaraValores(this.form.cpf_responsavel);
-      try {
-        const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/empresa/update`, {
-          dados: this.form
-        }, { withCredentials: true });
+      console.log("VALORES DO FORMULÁRIO:", this.form);
 
-        this.mensagem = 'Cadastro atualizado com Sucesso!',
-        this.color = 'success',
-        this.snackbar = true
+      const dados = await event;
 
-        this.user.userLogado();
+      if (dados.valid === true) {
+        this.form.cnpj = this.limparMascaraValores(this.form.cnpj);
+        this.form.inscricaoEstadual = this.limparMascaraValores(this.form.inscricaoEstadual);
+        this.form.cpfResponsavel = this.limparMascaraValores(this.form.cpfResponsavel);
+        try {
+          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/empresa/update`, {
+            dados: this.form
+          }, { withCredentials: true });
 
-        console.info('%cAtualização bem-sucedida ✔👌', 'color: lightgreen; padding: 20px 0;', response.data);
-      } catch (error) {
-        this.mensagem = 'Erro na atualização do Cadastro!';
-        this.color = 'error';
-        this.snackbar = true;
-        console.error('Erro ao atualizar o cadastro', error.response.data);
+          this.mensagem = 'Cadastro atualizado com Sucesso!',
+            this.color = 'success',
+            this.snackbar = true
+
+          this.user.userLogado();
+
+          console.info('%cAtualização bem-sucedida ✔👌', 'color: lightgreen; padding: 20px 0;', response.data);
+        } catch (error) {
+          this.mensagem = 'Erro na atualização do Cadastro!';
+          this.color = 'error';
+          this.snackbar = true;
+          console.error('Erro ao atualizar o cadastro', error.response.data);
+        }
       }
     },
     async deletarConta() {
@@ -399,7 +306,6 @@ export default {
       } else if (valor !== null) {
         valor = String(valor).replace(/[\s~`!@#$%^&*(){}\[\];:"'<,.>?\/\\|_+=-]/g, "");
       }
-
       return valor;
     }
   }
