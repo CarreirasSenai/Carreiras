@@ -23,9 +23,9 @@
                             </v-combobox>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-combobox v-model="form.candidato" :items="candidatos" item-title="nome" item-value="id"
-                                label="Selecione um Candidato" persistent-hint return-object single-line
-                                variant="outlined" :clearable="true">
+                            <v-combobox v-model="form.candidato" :items="candidatos" :rules="rules.candidatoRules"
+                                item-title="nome" item-value="id" label="Selecione um Candidato" persistent-hint
+                                return-object single-line variant="outlined" :clearable="true">
                             </v-combobox>
                         </v-col>
                         <v-col cols="12" md="6">
@@ -146,34 +146,38 @@ export default {
                 this.mostrarCandidatos();
             }
         },
-        async agendar() {
-            try {
-                var vaga = this.form.vaga.id != '' ? this.form.vaga.id : 0
-                const dadosAgendamento = {
-                    titulo: this.form.titulo,
-                    descricao: this.form.descricao,
-                    vaga: vaga,
-                    candidato: this.form.candidato.id,
-                    empresa: this.user.dadosUser.id,
-                    data: this.form.data,
-                    horario: this.form.horario
-                };
-                const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/agendamento/create`, {
-                    params: dadosAgendamento,
-                }, { withCredentials: true });
+        async agendar(event) {
+            const dados = await event;
+            if (dados.valid === true) {
+
+                try {
+                    var vaga = this.form.vaga.id != '' ? this.form.vaga.id : 0
+                    const dadosAgendamento = {
+                        titulo: this.form.titulo,
+                        descricao: this.form.descricao,
+                        vaga: vaga,
+                        candidato: this.form.candidato.id,
+                        empresa: this.user.dadosUser.id,
+                        data: this.form.data,
+                        horario: this.form.horario
+                    };
+                    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/agendamento/create`, {
+                        params: dadosAgendamento,
+                    }, { withCredentials: true });
 
 
-                if (response.data.success) {
-                    this.dialog = false;
-                    this.resetForm();
-                    this.$emit('agendamento-salvo');
-                    this.showSnackbar('Agendamento salvo com sucesso!', 'success');
-                } else {
-                    this.showSnackbar('Erro ao salvar agendamento: ' + response.data.message, 'error');
+                    if (response.data.success) {
+                        this.dialog = false;
+                        this.resetForm();
+                        this.$emit('agendamento-salvo');
+                        this.showSnackbar('Agendamento salvo com sucesso!', 'success');
+                    } else {
+                        this.showSnackbar('Erro ao salvar agendamento: ' + response.data.message, 'error');
+                    }
+                } catch (error) {
+                    console.error('Erro ao salvar agendamento:', error.response ? error.response.data : error.message);
+                    this.showSnackbar('Erro ao salvar agendamento.', 'error');
                 }
-            } catch (error) {
-                console.error('Erro ao salvar agendamento:', error.response ? error.response.data : error.message);
-                this.showSnackbar('Erro ao salvar agendamento.', 'error');
             }
         },
         showSnackbar(message, type) {
