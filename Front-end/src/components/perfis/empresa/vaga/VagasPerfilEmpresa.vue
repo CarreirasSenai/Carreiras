@@ -16,7 +16,8 @@
                 </template>
                 <template v-slot:default="{ items }">
                     <v-row class="ma-1">
-                        <v-col cols="12" lg="4" md="6" sm="6" v-for="(item, index) in items" :key="item.id" :style="{ order: items.length - index }">
+                        <v-col cols="12" lg="4" md="6" sm="6" v-for="(item, index) in items" :key="item.id"
+                            :style="{ order: items.length - index }">
                             <v-card
                                 v-if="user.dadosUser.grupo === 'admin' || (user.dadosUser.id === item.raw.id_empresa && user.dadosUser.grupo === 'empresa') || item.raw.status === 1"
                                 class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
@@ -77,7 +78,8 @@
                                 <v-card-actions class="d-flex justify-space-between">
                                     <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
                                     <v-spacer></v-spacer>
-                                    <v-chip v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                                    <v-chip
+                                        v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
                                         :color="item.raw.status === 0 ? 'error' : 'success'">{{ item.raw.status
                                             === 0 ? 'Em análise' : 'Aprovada' }}</v-chip>
                                     <ModalCandidatosVagas
@@ -90,13 +92,13 @@
                 </template>
                 <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
                     <div class="d-flex align-center justify-center pa-4">
-                        <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
-                            @click="prevPage"></v-btn>
+                        <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal"
+                            rounded @click="prevPage"></v-btn>
                         <div class="mx-2 text-caption">
                             Página {{ page }} de {{ pageCount }}
                         </div>
-                        <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal"
-                            rounded @click="nextPage"></v-btn>
+                        <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right"
+                            variant="tonal" rounded @click="nextPage"></v-btn>
                     </div>
                 </template>
             </v-data-iterator>

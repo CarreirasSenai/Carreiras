@@ -170,10 +170,10 @@ exports.getCidadesVagas = (callback) => {
 exports.vagaUpdateStatus = (id_vaga, id_empresa, opcaoSelecionada, callback) => {
     let updatedStatus = 0;
 
-   if(opcaoSelecionada === 'aprovar')
-      updatedStatus = 1;
-    else if(opcaoSelecionada === 'reprovar')
-      updatedStatus = 0;
+    if (opcaoSelecionada === 'aprovar')
+        updatedStatus = 1;
+    else if (opcaoSelecionada === 'reprovar')
+        updatedStatus = 0;
 
     db.query("UPDATE vagas SET status = ? WHERE id_empresa = ? AND id = ?", [updatedStatus, id_empresa, id_vaga], (err, result) => {
         if (err)
@@ -186,7 +186,8 @@ exports.vagaUpdateStatus = (id_vaga, id_empresa, opcaoSelecionada, callback) => 
 // No modelo Vaga
 exports.vagasInscritasPorCandidato = (idCandidato, callback) => {
     db.query(`
-        SELECT vagas.* FROM vagas
+        SELECT vagas.* 
+        FROM vagas
         JOIN candidatura ON vagas.id = candidatura.id_vaga
         WHERE candidatura.id_candidato = ?
     `, [idCandidato], (err, result) => {
