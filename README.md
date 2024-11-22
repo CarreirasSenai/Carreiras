@@ -102,8 +102,7 @@ Passo a Passo para Instalação dos Aplicativos:
  
 
  
-
--##Em caso de problemas com o banco crie a tabela user_candidato: 
+## Caso deseja importar pelo arquivo do banco a parte
 -
 1. Abrir o MySQL Workbench 
 
@@ -117,11 +116,16 @@ Passo a Passo para Instalação dos Aplicativos:
 -Clique com o botão direito sobre o banco de dados carreiras e selecione Set as Default Schema para defini-lo como padrão. 
 
 
-3. Criar a Estrutura da Tabela user_candidato 
+3. Adicione as tabelas todos os aquivos do pasta 'dump_carreiras_estrutura_dados_db'
 
 -Clique em File > New Query Tab para abrir uma nova aba de consulta SQL. 
 
--Insira o código SQL fornecido para criar a tabela: 
+-Crie o Banco de Dados "carreiras" antes de tudo, como: 
+CREATE DATABASE  IF NOT EXISTS `carreiras` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `carreiras`;
+
+
+-Insira o código SQL fornecido para criar a tabela, exemplo: 
 
 DROP TABLE IF EXISTS `user_candidato`; 
 
@@ -194,8 +198,6 @@ CREATE TABLE `user_candidato` (
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci; 
 
 -Clique no botão Execute (ícone de raio) para rodar a consulta. 
-
-4. Importar os Dados na Tabela user_candidato 
 
 -Após criar a tabela, insira os dados com o seguinte comando: 
 
