@@ -103,7 +103,7 @@ Passo a Passo para Instalação dos Aplicativos:
 
  
 ## Caso deseja importar pelo arquivo do banco a parte
--
+
 1. Abrir o MySQL Workbench 
 
 -Inicie o MySQL Workbench e conecte-se ao servidor local usando suas credenciais. 
@@ -124,91 +124,52 @@ Passo a Passo para Instalação dos Aplicativos:
 CREATE DATABASE  IF NOT EXISTS `carreiras` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `carreiras`;
 
-
--Insira o código SQL fornecido para criar a tabela, exemplo: 
-
-DROP TABLE IF EXISTS `user_candidato`; 
-
-CREATE TABLE `user_candidato` ( 
-
-  `id` int NOT NULL AUTO_INCREMENT, 
-
-  `verificado` tinyint(1) DEFAULT '0', 
-
-  `token_ativacao` varchar(64) DEFAULT NULL, 
-
-  `nome_social` varchar(100) NOT NULL, 
-
-  `nome_completo` varchar(100) NOT NULL, 
-
-  `email` varchar(100) NOT NULL, 
-
-  `telefone` varchar(20) DEFAULT NULL, 
-
-  `celular` varchar(20) NOT NULL, 
-
-  `cpf` char(11) NOT NULL, 
-
-  `cep` char(8) NOT NULL, 
-
-  `rua` varchar(100) NOT NULL, 
-
-  `numero` int NOT NULL, 
-
-  `complemento` varchar(100) NOT NULL, 
-
-  `bairro` varchar(45) NOT NULL, 
-
-  `cidade` varchar(45) NOT NULL, 
-
-  `estado` char(2) NOT NULL, 
-
-  `senha` varchar(250) NOT NULL, 
-
-  `area` varchar(150) NOT NULL, 
-
-  `profissao` varchar(200) DEFAULT NULL, 
-
-  `grupo` varchar(9) NOT NULL, 
-
-  `descricao` text, 
-
-  `foto` varchar(200) DEFAULT NULL, 
-
-  `capa` varchar(200) DEFAULT NULL, 
-
-  `link_instagram` varchar(250) DEFAULT NULL, 
-
-  `link_facebook` varchar(250) DEFAULT NULL, 
-
-  `link_linkedin` varchar(250) DEFAULT NULL, 
-
-  `link_github` varchar(250) DEFAULT NULL, 
-
-  `link_site_pessoal` varchar(250) DEFAULT NULL, 
-
-  `data_atu` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-
-  PRIMARY KEY (`id`), 
-
-  UNIQUE KEY `email` (`email`), 
-
-  UNIQUE KEY `cpf` (`cpf`) 
-
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci; 
+Para criar cada tabela utilizada pelo sistema, crie as tabelas na seguinte ordem:
+<div>
+ Primeiras tabelas (a ordem independe):
+ <ul> 
+  <li>user_candidato</li>
+  <li>user_empresa</li> 
+  <li>user_admin</li>
+ </ul>
+ 
+ Tabelas que dependem de user_candidato (a ordem independe):
+ <ul> 
+  <li>curso</li>
+  <li>experiencia</li>
+  <li>formacao</li> 
+  <li>habilidade</li>
+ </ul>
+ 
+ Tabelas que dependem de user_empresa:
+ <ul>
+  <li>vagas</li> 
+ </ul>
+ 
+ Tabelas que dependem de user_empresa e user_candidato (a ordem independe):
+  <ul> 
+  <li>perfil</li>
+  <li>agendamento</li>
+  <li>mensagem</li> 
+ </ul>
+ 
+ Tabelas que dependem de vagas:
+  <ul> 
+   <li>questionario</li>
+  </ul>
+ 
+ Tabelas que dependem de user_candidato e vagas:
+  <ul> 
+   <li>candidatura</li>
+  </ul>
+ 
+ Tabelas que dependem de vagas, user_candidato e questionario:
+  <ul> 
+  <li>questionario_respostas</li>
+ </ul>
+</div>
 
 -Clique no botão Execute (ícone de raio) para rodar a consulta. 
-
--Após criar a tabela, insira os dados com o seguinte comando: 
-
-INSERT INTO `user_candidato` VALUES  
-
-(25, 1, 'ae605f546f2b651413dd4ef42bf12307b846ba6e6f883c93af2688ba9e2724e0', 'Thiago', 'Thiago Mauesck', 'mauesckt@gmail.com', '(47) 0000-0000', '(47) 00000-0000', '00000000000', '00000000', 'Rua Bonita', 0, 'cabana', 'Bairro Bonito', 'Bonita', 'SC', '$2a$10$/F9WxjA262hh/euxjvBdP.VBEvMNtCTiijSt0HhxMvLXOFP0WZmGa', 'Engenharia', 'programador node.js', 'candidato', '<h1 style=\"text-align: center; white-space-collapse: collapse;\"><span style=\"font-weight: 400; letter-spacing: 0.249999px;\"><i><font color=\"#00ff91\">Me contrata!</font></i></span></h1>', 'perfil-foto-303555970711905-userId-25.jpg', 'perfil-capa-907946581442958-userId-25.jpeg', NULL, NULL, NULL, NULL, NULL, '2024-11-17 02:19:36'), 
-
-(28, 1, '653fd71d3b4b9bbf64292641ea5d5697e0db8c9f1bdbc3a1078e5486abe01091', 'Luquinhas', 'Lucas Santos', 'thiago_mauesck-lima@estudante.sc.senai.br', '4700000000', '47000000000', '00000000011', '00000000', 'Rua Bonita', 0, 'cabana', 'Bairro Bonito', 'Bonita', 'SC', '$2a$10$dafpDAi0Z6B0ucx7yXrRxuVGqx/wh2lVkrg6BUuSB.f.DTrJh66Z6', 'Tecnologia da Informação', 'analista de sistemas', 'candidato', NULL, 'perfil-foto-432522924559963-userId-28.jpg', 'perfil-capa-432522924559963-userId-28.jpg', NULL, NULL, NULL, NULL, NULL, '2024-11-21 00:55:10'); 
-
- -Clique no botão Execute para inserir os registros na tabela.
-
 
 5. Verificar os Dados 
 
