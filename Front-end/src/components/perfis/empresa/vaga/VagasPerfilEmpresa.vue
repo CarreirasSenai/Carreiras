@@ -16,7 +16,7 @@
                 </template>
                 <template v-slot:default="{ items }">
                     <v-row class="ma-1">
-                        <v-col cols="12" lg="4" md="6" sm="6" v-for="item in items" :key="item.id">
+                        <v-col cols="12" lg="4" md="6" sm="6" v-for="(item, index) in items" :key="item.id" :style="{ order: items.length - index }">
                             <v-card
                                 v-if="user.dadosUser.grupo === 'admin' || (user.dadosUser.id === item.raw.id_empresa && user.dadosUser.grupo === 'empresa') || item.raw.status === 1"
                                 class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;">
