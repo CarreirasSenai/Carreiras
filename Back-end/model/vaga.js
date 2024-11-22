@@ -33,7 +33,7 @@ exports.vagaRead = (id, callback) => {
 };
 
 exports.vagaReadEmpresa = (id, callback) => {
-    db.query('select * from vagas where id_empresa = ?', [id], (err, result) => {
+    db.query('select * from vagas where id_empresa = ? order by data_atu desc', [id], (err, result) => {
         if (err) {
             console.log(err);
             return callback(err, null);

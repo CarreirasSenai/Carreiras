@@ -79,7 +79,7 @@
                                     <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas" />
                                     <v-spacer></v-spacer>
                                     <v-chip
-                                        v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id"
+                                        v-if="grupo === 'empresa' && user.dadosUser.id === pesquisaUser.dadosUser.id || !pesquisaUser.dadosUser.id || grupo === 'admin'"
                                         :color="item.raw.status === 0 ? 'error' : 'success'">{{ item.raw.status
                                             === 0 ? 'Em análise' : 'Aprovada' }}</v-chip>
                                     <ModalCandidatosVagas
