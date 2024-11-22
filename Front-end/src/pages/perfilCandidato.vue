@@ -7,7 +7,7 @@
                 <InformacoesPessoais :Dados="dados" />
             </v-col>
             <v-col cols="12" md="6" sm="6" xs="12">
-                <LinksCandidato />
+                <LinksCandidato :Dados="dados"/>
             </v-col>
         </v-row>
         <v-divider class="ma-7"></v-divider>

@@ -6,47 +6,23 @@
         <v-row no-gutters>
           <v-col cols="12" md="6">
             <p class="mdi mdi-instagram text-truncate" :class="{ 'no-hover': instagram === 'Não informado' }">
-              <a
-                v-if="instagram"
-                target="_blank"
-                class="mdi ml-2 link-size"
-                :href="instagram"
-                >{{instagram}}</a
-              >
+              <a v-if="instagram" target="_blank" class="mdi ml-2 link-size" :href="instagram">{{ instagram }}</a>
             </p>
             <p class="mdi mdi-linkedin text-truncate" :class="{ 'no-hover': linkedin === 'Não informado' }">
-              <a
-                v-if="linkedin"
-                target="_blank"
-                class="mdi ml-2 link-size"
-                :href="linkedin"
-                >{{linkedin}}</a
-              >
+              <a v-if="linkedin" target="_blank" class="mdi ml-2 link-size" :href="linkedin">{{ linkedin }}</a>
             </p>
           </v-col>
           <v-col cols="12" md="6">
-            <p class="mdi mdi-github text-truncate"  :class="{ 'no-hover': github === 'Não informado' }">
-              <a v-if="github" target="_blank" 
-              class="mdi ml-2 link-size"
-              :href="github"
-                >{{github}}</a
-              >
+            <p class="mdi mdi-github text-truncate" :class="{ 'no-hover': github === 'Não informado' }">
+              <a v-if="github" target="_blank" class="mdi ml-2 link-size" :href="github">{{ github }}</a>
             </p>
             <p class="mdi mdi-web text-truncate" :class="{ 'no-hover': site === 'Não informado' }">
-              <a v-if="site" target="_blank" 
-              class="mdi ml-2 link-size"
-              :href="site"
-                >{{site}}</a
-              >
+              <a v-if="site" target="_blank" class="mdi ml-2 link-size" :href="site">{{ site }}</a>
             </p>
           </v-col>
           <v-col cols="12" md="6">
             <p class="mdi mdi-facebook text-truncate" :class="{ 'no-hover': facebook === 'Não informado' }">
-              <a v-if="facebook" target="_blank" 
-              class="mdi ml-2 link-size"
-              :href="facebook"
-                >{{facebook}}</a
-              >
+              <a v-if="facebook" target="_blank" class="mdi ml-2 link-size" :href="facebook">{{ facebook }}</a>
             </p>
           </v-col>
         </v-row>
@@ -66,22 +42,28 @@ export default {
     github: "",
     site: "",
   }),
+  props: {
+    Dados: {
+      type: Object,
+      required: true
+    },
+  },
   computed: {
     usuario() {
       return useCandidatoStore();
     },
   },
   mounted() {
-    const linkInstagram = useCandidatoStore().dadosUser.link_instagram;
-    const linkFacebook = useCandidatoStore().dadosUser.link_facebook;
-    const linkGithub = useCandidatoStore().dadosUser.link_github;
-    const linkLinkedin = useCandidatoStore().dadosUser.link_linkedin;
-    const linkSite = useCandidatoStore().dadosUser.link_site_pessoal;
+    const linkInstagram = this.Dados.link_instagram;
+    const linkFacebook = this.Dados.link_facebook;
+    const linkGithub = this.Dados.link_github;
+    const linkLinkedin = this.Dados.link_linkedin;
+    const linkSite = this.Dados.link_site_pessoal;
     (this.instagram = linkInstagram != null && linkInstagram != undefined && linkInstagram !== '' ? linkInstagram : 'Não informado'),
-    (this.facebook =  linkFacebook != null && linkFacebook != undefined && linkFacebook !== '' ? linkFacebook : 'Não informado'),
-    (this.linkedin =  linkLinkedin != null && linkLinkedin != undefined && linkLinkedin !== '' ? linkLinkedin : 'Não informado'),
-    (this.github =  linkGithub != null && linkGithub != undefined && linkGithub !== '' ? linkGithub : 'Não informado'),
-    (this.site =  linkSite != null && linkSite != undefined && linkSite !== '' ? linkSite : 'Não informado');
+      (this.facebook = linkFacebook != null && linkFacebook != undefined && linkFacebook !== '' ? linkFacebook : 'Não informado'),
+      (this.linkedin = linkLinkedin != null && linkLinkedin != undefined && linkLinkedin !== '' ? linkLinkedin : 'Não informado'),
+      (this.github = linkGithub != null && linkGithub != undefined && linkGithub !== '' ? linkGithub : 'Não informado'),
+      (this.site = linkSite != null && linkSite != undefined && linkSite !== '' ? linkSite : 'Não informado');
   },
 };
 </script>
@@ -100,8 +82,8 @@ a {
 }
 
 .text-card {
-    height: 150px;
-    min-height: 140px;
+  height: 150px;
+  min-height: 140px;
 }
 
 .no-hover {
@@ -115,12 +97,12 @@ a {
 }
 
 .link-size {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 @media (max-width: 959px) {
   .text-card {
-      height: 200px;
+    height: 200px;
   }
 }
 </style>
