@@ -84,8 +84,9 @@
                                     <EditarVaga v-if="this.user.dadosUser.id === this.Vagas.raw.id_empresa"
                                         :MostrarVagas="MostrarVagas" :Vagas="Vagas" />
                                     <Questionario :Vagas="Vagas" />
-                                    <v-btn v-if="user.dadosUser.grupo === 'admin'" variant="outlined"
-                                        color="deep-purple-accent-3" @click="dialogFormAprovacao = true">
+                                    <v-btn v-if="user.dadosUser.grupo === 'admin'"
+                                        :disabled="user.dadosUser.tipo_admin === 'user'" color="deep-purple-accent-3"
+                                        @click="dialogFormAprovacao = true">
                                         Aprovação
                                     </v-btn>
                                 </div>
@@ -268,7 +269,7 @@ export default {
                 }, 3500)
                 console.error(error);
             }
-        },        
+        },
     }
 }
 </script>

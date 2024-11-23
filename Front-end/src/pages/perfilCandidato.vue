@@ -7,7 +7,7 @@
                 <InformacoesPessoais :Dados="dados" />
             </v-col>
             <v-col cols="12" md="6" sm="6" xs="12">
-                <LinksCandidato />
+                <LinksCandidato :Dados="dados"/>
             </v-col>
         </v-row>
         <v-divider class="ma-7"></v-divider>
@@ -81,6 +81,7 @@ export default {
             setTimeout(() => {
                 this.dadosCarregados = true;
                 this.dados = requisitante.dadosUser;
+                console.log(this.dados);                
                 console.log("Atribuindo novos valores a this.dados");
             }, 1000);
             // }
@@ -90,7 +91,7 @@ export default {
         // Observa mudanças no objeto user.dadosUser
         'user.dadosUser': {
             handler(novo, antigo) {
-                console.clear();
+                // console.clear();
                 console.log('O objeto dadosUser foi alterado: \n', 'Novo:', novo, '\n', 'Antigo:', antigo);
 
                 // Evita chamar atribuirValores se os dados não mudaram de fato

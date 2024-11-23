@@ -84,6 +84,7 @@ router.get('/vaga/cidades', Vaga.getCidadesVagas);
 router.put('/vaga/update', authMiddleware, Vaga.vagaUpdate);
 router.delete('/vaga/delete/:id', Vaga.vagaDelete);
 router.put('/vaga/update/status', authMiddleware, Vaga.vagaUpdateStatus);
+router.get('/vaga/vagas-inscritas', authMiddleware, Vaga.vagasInscritas);
 
 // rotas questionario
 router.post('/questionario/create', Questionario.create);

@@ -33,7 +33,7 @@ exports.vagaRead = (id, callback) => {
 };
 
 exports.vagaReadEmpresa = (id, callback) => {
-    db.query('select * from vagas where id_empresa = ?', [id], (err, result) => {
+    db.query('select * from vagas where id_empresa = ? order by data_atu desc', [id], (err, result) => {
         if (err) {
             console.log(err);
             return callback(err, null);
@@ -156,7 +156,7 @@ exports.vagaPesquisa = (dados, callback) => {
 };
 
 exports.getCidadesVagas = (callback) => {
-    db.query('SELECT DISTINCT cidade FROM vagas', (err, result) => {
+    db.query('SELECT DISTINCT cidade FROM vagas WHERE status = 1', (err, result) => {
         if (err) {
             console.log(err);
             return callback(err, null);
@@ -170,10 +170,10 @@ exports.getCidadesVagas = (callback) => {
 exports.vagaUpdateStatus = (id_vaga, id_empresa, opcaoSelecionada, callback) => {
     let updatedStatus = 0;
 
-   if(opcaoSelecionada === 'aprovar')
-      updatedStatus = 1;
-    else if(opcaoSelecionada === 'reprovar')
-      updatedStatus = 0;
+    if (opcaoSelecionada === 'aprovar')
+        updatedStatus = 1;
+    else if (opcaoSelecionada === 'reprovar')
+        updatedStatus = 0;
 
     db.query("UPDATE vagas SET status = ? WHERE id_empresa = ? AND id = ?", [updatedStatus, id_empresa, id_vaga], (err, result) => {
         if (err)
@@ -182,3 +182,20 @@ exports.vagaUpdateStatus = (id_vaga, id_empresa, opcaoSelecionada, callback) => 
         return callback(null, result);
     })
 }
+
+// No modelo Vaga
+exports.vagasInscritasPorCandidato = (idCandidato, callback) => {
+    db.query(`
+        SELECT vagas.* 
+        FROM vagas
+        JOIN candidatura ON vagas.id = candidatura.id_vaga
+        WHERE candidatura.id_candidato = ?
+    `, [idCandidato], (err, result) => {
+        if (err) {
+            console.log(err);
+            return callback(err, null);
+        } else {
+            return callback(null, result);
+        }
+    });
+};

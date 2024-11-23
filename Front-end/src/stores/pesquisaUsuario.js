@@ -14,7 +14,7 @@ export const usePesquisaUsuarioStore = defineStore('pesquisaUsuario', {
     }),
     actions: {
         async pesquisaUser() {
-            const grupo = this.requisicao;
+            const grupo = this.requisicao;           
             
             if (grupo) {
                 try {

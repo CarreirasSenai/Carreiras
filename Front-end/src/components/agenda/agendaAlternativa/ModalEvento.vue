@@ -12,7 +12,8 @@
             </v-card-title>
 
             <v-divider></v-divider>
-            <v-data-table height="400" v-model:search="search" :headers="headersFiltrados" :items="eventos" :sort-by="[{ key: 'vaga', order: 'asc' }]">
+            <v-data-table height="400" v-model:search="search" :headers="headersFiltrados" :items="eventos"
+                :sort-by="[{ key: 'vaga', order: 'asc' }]">
 
                 <template v-slot:item.vaga="{ item }">
                     {{ item.vaga }}
@@ -93,10 +94,10 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue-darken-1" variant="text" @click="close">
-                    Cancel
+                    Cancelar
                 </v-btn>
-                <v-btn color="blue-darken-1" variant="text" @click="save">
-                    Save
+                <v-btn color="blue-darken-1" variant="tonal" @click="save">
+                    Salvar
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -285,7 +286,7 @@ export default {
                     withCredentials: true
                 });
                 var vagasSemFiltro = response.data.result
-                this.vagas =  vagasSemFiltro.filter(vagasSF => vagasSF.status === 1);
+                this.vagas = vagasSemFiltro.filter(vagasSF => vagasSF.status === 1);
 
                 console.log('construçao do this.vagas:', this.vagas);
             } catch (error) {
