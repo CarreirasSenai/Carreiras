@@ -11,7 +11,7 @@
                                 <div class="mb-5 d-flex flex-wrap ga-2">
                                     <p>Vaga: <v-chip variant="outlined">{{ vaga }}</v-chip></p>
                                 </div>
-                                <v-textarea rows="13" label="Justifique a não contratação dos candidatos desta vaga"
+                                <v-textarea rows="9" label="Justifique a não contratação dos candidatos desta vaga"
                                     v-model="justificativa" :rules="[rules.justificativa, rules.length(200)]"
                                     counter="200" variant="outlined"></v-textarea>
                                 <v-card variant="tonal" class="mb-4" color="deep-purple-accent-4" title="Atenção"
