@@ -1,26 +1,17 @@
 <template>
-  <v-footer class="bg-indigo-1 text-center d-flex flex-column footer-border">
-    <div class="footer-content">
-      <div class="social-icons">
-        <v-btn
-          v-for="icon in icons"
-          :key="icon"
-          :icon="icon"
-          class="mx-2"
-          variant="text"
-        ></v-btn>
+  <v-footer class="pa-0">
+    <div class="text-center w-100 bg-deep-purple-accent-3 pa-2">
+      <div class="ma-2">
+        <v-btn v-for="icon in icons" size="small" :key="icon" :icon="icon" class="mx-2 bg-white" variant="text"></v-btn>
       </div>
-
-      <div class="contact-info">
-        <p>Email: carreiras@gmail.com</p>
+      <div class="ma-2 mb-4">
+        <p>E-mail: carreiras@gmail.com</p>
         <p>Telefone: (xx) xxxx-xxxx</p>
       </div>
-    </div>
-
-    <v-divider></v-divider>
-
-    <div class="footer-bottom">
-      <p>{{ new Date().getFullYear() }} — <strong>Carreiras</strong>. Todos os direitos reservados.</p>
+      <v-divider></v-divider>
+      <div class="mt-2">
+        <p>{{ new Date().getFullYear() }} — <strong>Carreiras</strong>. Todos os direitos reservados.</p>
+      </div>
     </div>
   </v-footer>
 </template>
@@ -37,7 +28,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .footer-content {
   padding: 20px;
 }
@@ -58,4 +49,4 @@ export default {
 .footer-border {
   border-top: 1px solid #d8d6d6; /* Para borda roxa */
 }
-</style>
+</style> -->

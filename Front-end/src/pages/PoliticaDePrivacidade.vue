@@ -81,10 +81,10 @@
         <p>
           <span style="color: rgb(68, 68, 68)">Esta política é efetiva a partir de&nbsp;03 Dezembro 2024.</span>
         </p>
-      </div>
-      <Footer />
+      </div>      
     </v-container>
   </div>
+  <Footer />
 </template>
 
 <script>

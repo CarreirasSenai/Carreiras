@@ -10,7 +10,8 @@
           </template> -->
       <template v-slot:default="{ items }">
         <v-row>
-          <v-col cols="12" lg="4" md="6" sm="6" v-for="(item, index) in items" :key="item.id" :style="{ order: items.length - index }">
+          <v-col cols="12" lg="4" md="6" sm="6" v-for="(item, index) in items" :key="item.id"
+            :style="{ order: items.length - index }">
             <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;" :ref="item.id">
               <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
                 {{ item.raw.titulo }}
@@ -101,7 +102,6 @@
       style="height: 45vh;">
       <v-progress-circular color="deep-purple-accent-4" indeterminate :size="50"></v-progress-circular>
     </div>
-    <Footer />
   </div>
 </template>
 

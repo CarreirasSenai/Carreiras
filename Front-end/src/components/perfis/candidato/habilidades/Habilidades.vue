@@ -14,7 +14,7 @@
                                 :Habilidades="habilidades" :Id="id" />
                         </v-card>
                     </v-col>
-                    <span v-if="!habilidades.length" class="ma-4">Adicione suas habilidades.</span>
+                    <span v-if="!habilidades.length" class="ma-4">Não há habilidades.</span>
                 </v-row>
                 <AdicionarHabilidade v-if="!visibilidade && grupo === 'candidato'" :MostrarHabilidades="mostrarHabilidades" />
             </v-expansion-panel-text>
