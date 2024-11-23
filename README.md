@@ -125,49 +125,20 @@ CREATE DATABASE  IF NOT EXISTS `carreiras` /*!40100 DEFAULT CHARACTER SET utf8mb
 USE `carreiras`;
 
 Para criar cada tabela utilizada pelo sistema, crie as tabelas na seguinte ordem:
-<div>
- Primeiras tabelas (a ordem independe):
- <ul> 
-  <li>user_candidato</li>
-  <li>user_empresa</li> 
-  <li>user_admin</li>
- </ul>
+
+ Primeiras tabelas (a ordem independe):user_candidato, user_empresa, user_admin.
  
- Tabelas que dependem de user_candidato (a ordem independe):
- <ul> 
-  <li>curso</li>
-  <li>experiencia</li>
-  <li>formacao</li> 
-  <li>habilidade</li>
- </ul>
+ Tabelas que dependem de user_candidato (a ordem independe):curso, experiencia, formacao, habilidade.
+
+ Tabelas que dependem de user_empresa: vagas
  
- Tabelas que dependem de user_empresa:
- <ul>
-  <li>vagas</li> 
- </ul>
+ Tabelas que dependem de user_empresa e user_candidato (a ordem independe):perfil, agendamento, mensagem.
  
- Tabelas que dependem de user_empresa e user_candidato (a ordem independe):
-  <ul> 
-  <li>perfil</li>
-  <li>agendamento</li>
-  <li>mensagem</li> 
- </ul>
+ Tabelas que dependem de vagas: questionario
+
+ Tabelas que dependem de user_candidato e vagas: candidatura.
  
- Tabelas que dependem de vagas:
-  <ul> 
-   <li>questionario</li>
-  </ul>
- 
- Tabelas que dependem de user_candidato e vagas:
-  <ul> 
-   <li>candidatura</li>
-  </ul>
- 
- Tabelas que dependem de vagas, user_candidato e questionario:
-  <ul> 
-  <li>questionario_respostas</li>
- </ul>
-</div>
+ Tabelas que dependem de vagas, user_candidato e questionario: questionario_respostas
 
 -Clique no botão Execute (ícone de raio) para rodar a consulta. 
 
