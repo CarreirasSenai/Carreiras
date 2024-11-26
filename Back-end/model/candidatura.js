@@ -89,7 +89,17 @@ exports.create = (idCandidato, idVaga, { dados }, callback) => {
             .then(({ qtdHabilidadesExigidas, qtdHabilidadesPossuidas }) => {
                 const percentQuestionario = (qtdCorretas / qtdAlternativas) * 100 || 0;
                 const percentHabilidades = (qtdHabilidadesPossuidas / qtdHabilidadesExigidas) * 100 || 0;
-                const percentTotal = (percentQuestionario + percentHabilidades) / 2;
+                // const percentTotal = (percentQuestionario + percentHabilidades) / 2;
+
+                let percentTotal;
+                if (qtdAlternativas) {
+                    console.log('qtdAlternativas: ', qtdAlternativas);
+                    console.log('qtdCorretas: ', qtdAlternativas);
+                    percentTotal = (percentQuestionario + percentHabilidades) / 2;
+
+                } else if (!qtdAlternativas) {
+                    percentTotal = percentHabilidades;
+                }
 
                 console.log('Questionário:', percentQuestionario, '%');
                 console.log('Habilidades:', percentHabilidades, '%');
