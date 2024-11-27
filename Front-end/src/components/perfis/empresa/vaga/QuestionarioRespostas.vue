@@ -24,11 +24,15 @@
             </v-card-title>
 
             <v-card-text class="mt-4">
-                <v-card v-if="!questionario.length" variant="tonal" class="mb-4" color="deep-purple-accent-4" title="Atenção"
-                    prepend-icon="mdi-alert">
-                    <v-card-item>
+                <v-card v-if="!questionario.length" variant="tonal" class="mb-4" color="deep-purple-accent-4"
+                    title="Atenção" prepend-icon="mdi-alert">
+                    <!-- <v-card-item>
                         Não há questionário para esta vaga. A relevância do candidato será, no máximo, de 50% e será
                         definida apenas pelas <strong>Habilidades Exigidas</strong> para a vaga.
+                    </v-card-item> -->
+                    <v-card-item>
+                        Não há questionário para esta vaga. A relevância do candidato será definida apenas pelas
+                        <strong>Habilidades Exigidas</strong> para a vaga.
                     </v-card-item>
                 </v-card>
                 <div v-for="(questao, i) in questionario" :key="questao.id" class="position-relative pt-10">

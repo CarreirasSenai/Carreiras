@@ -57,12 +57,12 @@
                                         multiple variant="outlined" density="compact"></v-combobox>
                                 </v-col>
                             </v-row> -->
-                            <v-row no-gutters>
+                            <!-- <v-row no-gutters>
                                 <v-col cols="12" class="mt-3">
                                     <v-text-field v-model="pesquisa.form.remuneracao" prefix="R$" label="Remuneração"
                                         variant="outlined" density="compact" hide-details ingle-line></v-text-field>
                                 </v-col>
-                            </v-row>
+                            </v-row> -->
                             <v-row>
                                 <v-col cols="6">
                                     <label for="data-inicio">De</label>
