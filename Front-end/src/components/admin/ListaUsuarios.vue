@@ -15,7 +15,7 @@
               Cadastro de usuários (SUPER) <br>
               Controle dos próprios dados cadastrais (TODOS) <br>
               Controle total de empresas e candidatos (SUPER e ADM) <br>
-              Vizualização e leitura (TODOS)
+              Visualização e leitura (TODOS)
             </v-tooltip>
           </h1>
           <v-spacer></v-spacer>

@@ -4,15 +4,6 @@
     <div class="d-flex align-center ga-1">
       <h1 style="font-size: clamp(17px, 4vw, 25px)">
         Lista de Candidatos
-        <v-icon size="x-small"> mdi-information </v-icon>
-        <v-tooltip activator="parent" location="start">
-          <strong>Permissões:</strong> <br />
-          Todas as permissões (SUPER) <br />
-          Cadastro de usuários (SUPER) <br />
-          Controle dos próprios dados cadastrais (TODOS) <br />
-          Controle total de empresas e candidatos (SUPER e ADM) <br />
-          Vizualização e leitura (TODOS)
-        </v-tooltip>
       </h1>
     </div>
 
