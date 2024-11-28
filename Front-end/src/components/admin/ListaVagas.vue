@@ -20,22 +20,22 @@
           <v-card v-for="item in items" :key="item" class="my-8">
             <v-card-text>
               <v-row align="center">
-                <v-col cols="6" sm="4" class="d-flex align-center ga-2">
-                  <v-avatar color="surface-variant" image="/src/assets/avatar.png">
+                <v-col cols="8" sm="4" class="d-flex align-center ga-2">
+                  <!-- <v-avatar color="surface-variant" image="/src/assets/avatar.png">
                   </v-avatar>
                   <v-avatar color="surface-variant" :image="`${this.dominio}/uploads/perfil/${item.raw.foto}`"
                     v-if="item.raw.foto">
-                  </v-avatar>
-                  <div>
+                  </v-avatar> -->
+                  <div class="ml-4">
                     <h3>{{ item.raw.titulo }}</h3>
                     <p>{{ item.raw.cep }} - {{ item.raw.cidade }} - {{ item.raw.estado }}</p>
                   </div>
                 </v-col>
-                <v-col cols="3" sm="4" class="text-align">
+                <v-col cols="4" sm="6" class="text-align text-center">
                   <v-chip size="small" :color="colorTipoVaga(item.raw.status)">{{ item.raw.status === 1 ? 'Verificada' :
                     'Não verificada' }}</v-chip>
                 </v-col>
-                <v-col cols="3" sm="4" class="text-end">
+                <v-col cols="12" sm="2" class="d-flex justify-center">
                   <ModalDetalhesVaga :Vagas="item" :MostrarVagas="mostrarVagas"></ModalDetalhesVaga>
                 </v-col>
               </v-row>
@@ -129,6 +129,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+* {
+  // border: 1px solid red;
+}
+
 .vacancy-list-container {
   background-color: #e1d6f6;
   ;

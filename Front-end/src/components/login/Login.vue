@@ -44,12 +44,12 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      email: 'contato@thynkai.com.br',
+      email: '',
       emailRules: [
         (v) => !!v || 'E-mail requerido',
         (v) => /.+@.+\..+/.test(v) || 'E-mail deve ser válido',
       ],
-      password: 'Thiag01@',
+      password: '',
       showPassword: false,
       passwordRules: [(v) => !!v || 'Senha requerida'],
       resposta: '',
@@ -92,10 +92,24 @@ export default {
     respostaGrupo() {
       this.$router.push({ path: '/redefinir-senha', query: { resposta: this.resposta } });
     },
+
+    setCredenciais() {
+      if (this.resposta === 'admin') {
+        this.email = 'admin@admin.com';
+        this.password = '123456';
+      } else if (this.resposta === 'empresa') {
+        this.email = 'contato@thynkai.com.br';
+        this.password = 'Thiag01@';
+      } else if (this.resposta === 'candidato') {
+        this.email = 'mauesckt@gmail.com';
+        this.password = 'Thiag01@';
+      }
+    }
   },
 
   mounted() {
     this.resposta = this.$route.query.resposta;
+    this.setCredenciais();
   },
 };
 

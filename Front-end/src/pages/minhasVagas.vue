@@ -1,10 +1,10 @@
 <template>
   <Navbar />
   <div class="ma-3">
-    <h1 class="my-4" style="font-size: clamp(17px, 4vw, 25px);">Vagas Candidatadas</h1>
     <div style="height: 70vh; margin-bottom: 100px;">
       <v-data-iterator :items="vagas" :items-per-page="12" :search="search" v-if="vagas.length">
         <template v-slot:default="{ items }">
+          <h1 class="my-5 ml-1" style="font-size: clamp(17px, 4vw, 25px);">Vagas Candidatadas</h1>
           <v-row>
             <v-col cols="12" lg="4" md="6" sm="6" v-for="(item, index) in items" :key="item.id"
               :style="{ order: items.length - index }">
@@ -96,11 +96,11 @@
           title="Não encontramos uma correspondência."></v-empty-state>
       </template>
       <div v-if="dadosCarregados === false" class="text-center pt-9 d-flex align-center justify-center"
-        style="height: 45vh;">
+        style="height: 70vh;">
         <v-progress-circular color="deep-purple-accent-4" indeterminate :size="50"></v-progress-circular>
       </div>
     </div>
-  </div>f
+  </div>
 </template>
 
 <script>

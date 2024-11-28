@@ -18,7 +18,8 @@
                                 <v-btn class="bg-purple-darken-4" @click="enviarCodigo" block>Continuar</v-btn>
 
                                 <div class="ma-5 text-center">
-                                    <v-btn size="small" variant="text" to="/empresa-candidato">Voltar para o
+                                    <v-btn size="small" variant="text"
+                                        :to="`/login?resposta=${grupo}`">Voltar para o
                                         Login.</v-btn>
                                 </div>
                             </v-form>
@@ -52,11 +53,13 @@
                                 <h3 class="text-center mb-2 text-h6 text-sm-h5 font-weight-bold	">Crie uma Nova Senha
                                 </h3>
                                 <v-text-field v-model="novaSenha" label="Nova senha" :rules="rules.novaSenha"
-                                    :type="show1 ? 'text' : 'password'" :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"  
-                                    counter @click:append-inner="show1 = !show1"></v-text-field>
+                                    :type="show1 ? 'text' : 'password'"
+                                    :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" counter
+                                    @click:append-inner="show1 = !show1"></v-text-field>
                                 <v-text-field v-model="confirmaSenha" label="Confirme a senha"
-                                    :rules="rules.confirmaSenha" :type="show2 ? 'text' : 'password'" :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" 
-                                    counter @click:append-inner="show2 = !show2"></v-text-field>
+                                    :rules="rules.confirmaSenha" :type="show2 ? 'text' : 'password'"
+                                    :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" counter
+                                    @click:append-inner="show2 = !show2"></v-text-field>
                                 <v-btn elevation="0" class="bg-purple-darken-4" block type="submit">Salvar</v-btn>
                                 <v-btn variant="text" to="/" block>cancelar</v-btn>
                             </v-form>
@@ -78,7 +81,7 @@ import axios from "axios";
 export default {
     data() {
         return {
-            email: 'thiago@gmail.com',
+            email: '',
             emailRules: [
                 (v) => !!v || 'E-mail requerido',
                 (v) => /.+@.+\..+/.test(v) || 'E-mail deve ser válido',
@@ -91,8 +94,8 @@ export default {
             codigo: '',
             snackbar: false,
             snackbarColor: '',
-            novaSenha: 'Thiago1#',
-            confirmaSenha: 'Thiago1#',
+            novaSenha: 'Thiag01@',
+            confirmaSenha: 'Thiag01@',
             show1: false,
             show2: false,
             rules: {

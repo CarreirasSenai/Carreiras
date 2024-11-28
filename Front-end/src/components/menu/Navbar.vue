@@ -87,12 +87,8 @@
                     <v-divider class="my-2" v-if="user.grupo === 'candidato' || user.grupo === 'empresa'"></v-divider>
                     <v-btn variant="text" rounded to="/perfil-candidato"
                       v-if="user.grupo === 'candidato'">Curriculo</v-btn>
-                    <v-btn variant="text" rounded v-if="user.grupo === 'empresa'" class="pa-0">
-                      <a class="pl-4 pr-4" href="/perfil-empresa">Perfil</a>
-                      <!-- Rodrigueira eu sei que tu odeia um "href".
-                      No entando eu resolvi 3 bugs relacionados ao perfil da empresa 
-                      só fazendo a página recarregar, então por hora deixa assim. 😂 -->
-                      <a href="../../assets/meme.png"></a>
+                    <v-btn variant="text" rounded v-if="user.grupo === 'empresa'">
+                      <a class="pa-2" href="/perfil-empresa">Perfil</a>
                     </v-btn>
 
                     <!-- <v-divider class="my-2" v-if="user.grupo === 'admin'"></v-divider>
@@ -198,6 +194,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+* {
+  // border: 1px solid red;
+}
+
 .v-app-bar {
   border-bottom: 1px solid #C3C3C3 !important;
 }

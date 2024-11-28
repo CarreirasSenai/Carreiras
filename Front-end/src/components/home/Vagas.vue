@@ -1,6 +1,6 @@
 <template>
   <div style="height: 70vh; margin-bottom: 100px;">
-    <v-data-iterator :items="vagas" :items-per-page="12" :search="search" v-if="vagas.length">
+    <v-data-iterator :items="sortedItems" :items-per-page="12" :search="search" v-if="sortedItems.length">
       <!-- <template v-slot:header>
               <v-toolbar>
                   <v-text-field v-model="search" class="mt-2 mx-4" density="comfortable" placeholder="Pesquise uma vaga"
@@ -11,7 +11,7 @@
       <template v-slot:default="{ items }">
         <v-row>
           <v-col cols="12" lg="4" md="6" sm="6" v-for="(item, index) in items" :key="item.id"
-            :style="{ order: items.length - index }">
+            :style="{ order: sortedItems.length - index }">
             <v-card class="elevation-2 rounded-lg observavel" style="border-color: #6200EA !important;" :ref="item.id">
               <v-card-title class="opacity-100 bg-deep-purple-accent-4 rounded-lg observavel">
                 {{ item.raw.titulo }}
@@ -139,6 +139,9 @@ export default {
   computed: {
     user() { return useCandidatoStore(); },
     pesquisa() { return usePesquisaVaga(); },
+    sortedItems() {
+      return this.vagas.sort((a, b) => new Date(a.data_atu) - new Date(b.data_atu));
+    }
   },
 
   methods: {
@@ -150,6 +153,7 @@ export default {
 
         setTimeout(() => {
           this.vagas = response.data.result.filter(vaga => vaga.status === 1);
+          console.log(this.vagas);
           this.dadosCarregados = true;
         }, 2000);
 

@@ -56,37 +56,6 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      equipe: [
-        {
-          name: "Paula Rossini",
-          position: "Gerente de Projetos",
-          photo: "https://cdn.vuetifyjs.com/images/john.jpg",
-        },
-        {
-          name: "Rodrigo Neves",
-          position: "Desenvolvedor Full-Stack",
-          photo: "https://cdn.vuetifyjs.com/images/john.jpg",
-        },
-        {
-          name: "Felipe Wisbeck",
-          position: "Analista de Sistemas",
-          photo: "https://cdn.vuetifyjs.com/images/john.jpg",
-        },
-        {
-          name: "Thiago Mauesck",
-          position: "Especialista em Segurança",
-          photo: "https://cdn.vuetifyjs.com/images/john.jpg",
-        },
-      ],
-    };
-  },
-};
-</script>
-
 <style scoped>
 .logo-intro-container {
   margin-bottom: 40px;
