@@ -11,219 +11,94 @@
             <v-form class="my-4" @submit.prevent="enviarCadastro">
               <v-row>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-text-field
-                    v-model="razaoSocial"
-                    :rules="razaoSocialRules"
-                    label="Razão social"
-                    bg-color="#F7F7F7"
-                    density="compact"
-                    required
-                  ></v-text-field>
+                  <v-text-field v-model="razaoSocial" :rules="razaoSocialRules" label="Razão social" bg-color="#F7F7F7"
+                    density="compact" required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                  <v-text-field
-                    v-model="nomeFantasia"
-                    :rules="nomeFantasiaRules"
-                    label="Nome fantasia"
-                    bg-color="#F7F7F7"
-                    density="compact"
-                    required
-                  ></v-text-field>
+                  <v-text-field v-model="nomeFantasia" :rules="nomeFantasiaRules" label="Nome fantasia"
+                    bg-color="#F7F7F7" density="compact" required></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                    <v-text-field
-                      v-model="email"
-                      :rules="emailRules"
-                      label="Email"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                    ></v-text-field>
+                  <v-text-field v-model="email" :rules="emailRules" label="Email" bg-color="#F7F7F7" density="compact"
+                    required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                    <v-text-field
-                      v-mask="'(##) ####-####'"
-                      v-model="telefone"
-                      :rules="telefoneRules"
-                      label="Telefone"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="3" md="3" lg="3">
-                    <v-text-field
-                      v-mask="'(##) #####-####'"
-                      v-model="celular"
-                      :rules="celularRules"
-                      label="Celular"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                    ></v-text-field>
-                  </v-col>
+                  <v-text-field v-mask="'(##) ####-####'" v-model="telefone" :rules="telefoneRules" label="Telefone"
+                    bg-color="#F7F7F7" density="compact" required></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3" md="3" lg="3">
+                  <v-text-field v-mask="'(##) #####-####'" v-model="celular" :rules="celularRules" label="Celular"
+                    bg-color="#F7F7F7" density="compact"></v-text-field>
+                </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                   <v-text-field
-                      v-mask="'##.###.###/####-##'"
-                      maxlength="18"
-                      v-model="cnpj"
-                      :rules="cnpjRules"
-                      label="CNPJ"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                   ></v-text-field>
+                  <v-text-field v-mask="'##.###.###/####-##'" maxlength="18" v-model="cnpj" :rules="cnpjRules"
+                    label="CNPJ" bg-color="#F7F7F7" density="compact" @blur="validarCnpj" required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                   <v-text-field
-                      v-mask="'###.###.###.###'"
-                      v-model="inscricaoEstadual"
-                      :rules="inscricaoEstadualRules"
-                      label="Inscrição estadual"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                    ></v-text-field>
+                  <v-text-field v-mask="'###.###.###.###'" v-model="inscricaoEstadual" :rules="inscricaoEstadualRules"
+                    label="Inscrição estadual" bg-color="#F7F7F7" density="compact" required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
-                   <v-text-field
-                      v-mask="'########'"
-                      maxlength="8"
-                      v-model="cep"
-                      :rules="cepRules"
-                      label="CEP"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      @blur="retornarInformacoesCep"
-                      required
-                    ></v-text-field>
+                  <v-text-field v-mask="'########'" maxlength="8" v-model="cep" :rules="cepRules" label="CEP"
+                    bg-color="#F7F7F7" density="compact" @blur="retornarInformacoesCep" required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="2" md="2" lg="2">
-                   <v-text-field
-                      v-model="numero"
-                      :rules="numeroRules"
-                      label="Nº"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                    ></v-text-field>
+                  <v-text-field v-model="numero" :rules="numeroRules" label="Nº" bg-color="#F7F7F7" density="compact"
+                    required></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                   <v-text-field
-                      v-model="complemento"
-                      label="Complemento"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                    ></v-text-field>
+                  <v-text-field v-model="complemento" label="Complemento" bg-color="#F7F7F7"
+                    density="compact"></v-text-field>
                 </v-col>
                 <v-col>
-                   <v-text-field
-                      v-model="endereco"
-                      :rules="enderecoRules"
-                      label="Endereço"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                    ></v-text-field>
+                  <v-text-field v-model="endereco" :rules="enderecoRules" label="Endereço" bg-color="#F7F7F7"
+                    density="compact" required></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                   <v-text-field
-                      v-model="bairro"
-                      :rules="bairroRules"
-                      label="Bairro"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                    ></v-text-field>
+                  <v-text-field v-model="bairro" :rules="bairroRules" label="Bairro" bg-color="#F7F7F7"
+                    density="compact" required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
-                   <v-text-field
-                      v-model="cidade"
-                      :rules="cidadeRules"
-                      label="Cidade"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                    ></v-text-field>
+                  <v-text-field v-model="cidade" :rules="cidadeRules" label="Cidade" bg-color="#F7F7F7"
+                    density="compact" required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="6" lg="6">
-                   <v-select
-                    v-model="estado"
-                    :rules="estadoRules"
-                    :items="items"
-                    label="Estado"
-                    bg-color="#F7F7F7"
-                    density="compact"
-                    required
-                  ></v-select>
+                  <v-select v-model="estado" :rules="estadoRules" :items="items" label="Estado" bg-color="#F7F7F7"
+                    density="compact" required></v-select>
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
-                    <v-text-field
-                      v-model="responsavelLegal"
-                      :rules="responsavelLegalRules"
-                      label="Responsável legal"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                    ></v-text-field>
+                  <v-text-field v-model="responsavelLegal" :rules="responsavelLegalRules" label="Responsável legal"
+                    bg-color="#F7F7F7" density="compact" required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4" lg="4">
-                    <v-text-field
-                      v-model="cpfResponsavel"
-                      :rules="cpfResponsavelRules"
-                      v-mask="'###.###.###-##'"
-                      label="CPF do responsável legal"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                    ></v-text-field>
+                  <v-text-field v-model="cpfResponsavel" :rules="cpfResponsavelRules" v-mask="'###.###.###-##'"
+                    @blur="validarCpf" label="CPF do responsável legal" bg-color="#F7F7F7" density="compact"
+                    required></v-text-field>
                 </v-col>
                 <v-col cols="11" sm="4" md="4" lg="4">
-                    <v-text-field
-                      v-model="contatoRA"
-                      :rules="emailRules"
-                      label="Contato RA"
-                      bg-color="#F7F7F7"
-                      density="compact"
-                      required
-                    ></v-text-field>
+                  <v-text-field v-model="contatoRA" :rules="emailRules" label="Contato RA" bg-color="#F7F7F7"
+                    density="compact" required></v-text-field>
                 </v-col>
                 <v-col cols="11" sm="6" md="6" lg="6">
-                  <v-text-field
-                     v-model="senha"
-                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  <v-text-field v-model="senha" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[senhaRules.senhaRequired, senhaRules.senhaMin, senhaRules.senhaComplexa]"
-                    :type="showPassword ? 'text' : 'password'"
-                    class="input-group--focused"
-                    label="Senha"
-                    name="senha"
-                    counter
-                    @click:append="showPassword = !showPassword"
-                    density="compact"
-                    required
-                  ></v-text-field>
+                    :type="showPassword ? 'text' : 'password'" class="input-group--focused" label="Senha" name="senha"
+                    counter @click:append="showPassword = !showPassword" density="compact" required></v-text-field>
                 </v-col>
                 <v-col cols="11" sm="6" md="6" lg="6">
-                  <v-text-field
-                    v-model="repSenha"
-                    :append-icon="showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  <v-text-field v-model="repSenha" :append-icon="showRePassword ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[senhaRules.repSenhaRequired, senhaRules.repSenhaMin, senhaRules.confirmSenha]"
-                    :type="showRePassword ? 'text' : 'password'"
-                    class="input-group--focused"
-                    label="Repetir senha"
-                    name="rep-senha"
-                    counter
-                    density="compact"
-                    @click:append="showRePassword = !showRePassword"
-                    required
-                  ></v-text-field>
+                    :type="showRePassword ? 'text' : 'password'" class="input-group--focused" label="Repetir senha"
+                    name="rep-senha" counter density="compact" @click:append="showRePassword = !showRePassword"
+                    required></v-text-field>
                 </v-col>
               </v-row>
               <div class="sign-in-buttons d-flex justify-center my-4">
@@ -238,7 +113,7 @@
       </v-col>
     </v-row>
     <!-- Modal sucesso -->
-     <v-dialog max-width="500">
+    <v-dialog max-width="500">
       <template v-slot:activator="{ props: activatorProps }">
         <v-btn v-bind="activatorProps" color="surface-variant" text="Open Dialog" variant="flat" id="btnAlertaCadastro"
           class="d-none"></v-btn>
@@ -262,7 +137,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
-            <v-btn text="Entrar na Conta" @click="isActive.value = false" to="/login?resposta=empresa" class="bg-purple-darken-4">
+            <v-btn text="Entrar na Conta" @click="isActive.value = false" to="/login?resposta=empresa"
+              class="bg-purple-darken-4">
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -302,37 +178,37 @@ export default {
       showPassword: false,
       showRePassword: false,
       senhaRules: {
-          senhaRequired: value => !!value || 'Senha requerida',
-          repSenhaRequired: value => !!value || 'Repetir senha requerida',
-          senhaMin: v => v.length >= 8 || 'Senha deve ter pelo menos 8 caracteres',
-          repSenhaMin: v => v.length >= 8 || 'Repetir senha deve ter pelo menos 8 caracteres',
-          confirmSenha: (v) => v === this.senha && v.length === this.senha.length || "Senhas não coincidem",
-          senhaComplexa: (v) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(v) ||
+        senhaRequired: value => !!value || 'Senha requerida',
+        repSenhaRequired: value => !!value || 'Repetir senha requerida',
+        senhaMin: v => v.length >= 8 || 'Senha deve ter pelo menos 8 caracteres',
+        repSenhaMin: v => v.length >= 8 || 'Repetir senha deve ter pelo menos 8 caracteres',
+        confirmSenha: (v) => v === this.senha && v.length === this.senha.length || "Senhas não coincidem",
+        senhaComplexa: (v) => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(v) ||
           "Senha deve conter pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial",
       },
       razaoSocialRules: [(v) => !!v || 'Razão social requerida'],
       nomeFantasiaRules: [(v) => !!v || 'Nome fantasia requerido'],
       emailRules: [(v) => !!v || 'E-mail requerido',
-        (v) => /.+@.+\..+/.test(v) || 'E-mail precisa ser válido',
-        (v) => v.length <= 254 || "E-mail deve ter no máximo 254 caracteres"],
+      (v) => /.+@.+\..+/.test(v) || 'E-mail precisa ser válido',
+      (v) => v.length <= 254 || "E-mail deve ter no máximo 254 caracteres"],
       telefoneRules: [(v) => !!v || 'Telefone requerido',
-        (v) => v.length == 14 || "Telefone deve ter pelo menos 14 caracteres"],
+      (v) => v.length == 14 || "Telefone deve ter pelo menos 14 caracteres"],
       celularRules: [(v) => !!v || 'Celular requerido',
-        (v) => v.length == 15 || "Celular deve ter pelo menos 15 caracteres"],
+      (v) => v.length == 15 || "Celular deve ter pelo menos 15 caracteres"],
       cnpjRules: [(v) => !!v || 'CNPJ requerido'],
       inscricaoEstadualRules: [(v) => !!v || 'Inscrição estadual requerida'],
       cepRules: [(v) => !!v || 'CEP requerido',
-        (v) => v.length === 8 || "CEP deve ter 8 caracteres"],
-      numeroRules: [(v) => !!v || 'Número requerido', 
+      (v) => v.length === 8 || "CEP deve ter 8 caracteres"],
+      numeroRules: [(v) => !!v || 'Número requerido',
       (v) => v.length >= 1 || "Nº Casa deve ter pelo menos 1 caractere",],
       enderecoRules: [(v) => !!v || "Endereço Requerido",
-        (v) => v.length >= 5 || "Endereço deve ter pelo menos 5 caracteres",
+      (v) => v.length >= 5 || "Endereço deve ter pelo menos 5 caracteres",
       ],
       bairroRules: [(v) => !!v || "Bairro Requerido",
-        (v) => v.length >= 3 || "Bairro deve ter pelo menos 3 caracteres",
+      (v) => v.length >= 3 || "Bairro deve ter pelo menos 3 caracteres",
       ],
       cidadeRules: [(v) => !!v || "Cidade Requerida",
-        (v) => v.length >= 3 || "Cidade deve ter pelo menos 3 caracteres",
+      (v) => v.length >= 3 || "Cidade deve ter pelo menos 3 caracteres",
       ],
       estadoRules: [(v) => !!v || 'Estado requerido'],
       responsavelLegalRules: [(v) => !!v || 'Responsável legal requerido'],
@@ -341,18 +217,18 @@ export default {
         (v) => v.length === 14 || "CPF deve ter 14 caracteres",
       ],
       items: ['Selecionar', 'AC', 'AL', 'AP', 'AM', 'BA',
-                'CE', 'DF', 'ES', 'GO', 'MA',
-                'MT', 'MS', 'MG', 'PA', 'PB',
-                'PR', 'PE', 'PI', 'RJ', 'RN',
-                'RS', 'RO', 'RR', 'SC', 'SP',
-                'SE', 'TO'],
+        'CE', 'DF', 'ES', 'GO', 'MA',
+        'MT', 'MS', 'MG', 'PA', 'PB',
+        'PR', 'PE', 'PI', 'RJ', 'RN',
+        'RS', 'RO', 'RR', 'SC', 'SP',
+        'SE', 'TO'],
     };
   },
   methods: {
-    async enviarCadastro(event){
+    async enviarCadastro(event) {
       const dados = await event;
 
-      if(dados.valid === true) {
+      if (dados.valid === true) {
         this.cnpj = this.limparMascaraValores(this.cnpj);
         this.celular = this.limparMascaraValores(this.celular);
         this.telefone = this.limparMascaraValores(this.telefone);
@@ -381,11 +257,11 @@ export default {
               senha: this.senha
             }
           );
-  
+
           this.resposta = true;
           console.log("Cadastro bem sucedido!", response.data);
           document.getElementById("btnAlertaCadastro").click();
-        } catch(error) {
+        } catch (error) {
           this.resposta = false;
           console.error("Erro no cadastro", error.response.data.error);
           this.mensagemErro = error.response.data.error;
@@ -393,14 +269,14 @@ export default {
         }
       }
     },
-    async retornarInformacoesCep(){
-      if(this.cep !== "" && this.cep.length === 8) {
+    async retornarInformacoesCep() {
+      if (this.cep !== "" && this.cep.length === 8) {
         try {
           const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${this.cep}`)
           this.endereco = response.data.street,
-          this.bairro = response.data.neighborhood,
-          this.cidade = response.data.city,
-          this.estado = response.data.state
+            this.bairro = response.data.neighborhood,
+            this.cidade = response.data.city,
+            this.estado = response.data.state
         }
         catch (error) {
           console.log("Houve um erro ao validar o CEP. Erro: ", error);
@@ -414,6 +290,67 @@ export default {
       }
 
       return valor;
+    },
+    validarCpf() {
+      // TODO chamar os métodos antes de enviar o formulário
+      if (this.cpfResponsavel !== '' && this.cpfResponsavel.length === 14) {
+        let cpf = this.cpfResponsavel
+        cpf = cpf.replace(/\D/g, '');
+
+        if (/^(\d)\1+$/.test(cpf)) {
+          this.resposta = false;
+          this.mensagemErro = "Informe um CPF válido";
+          document.getElementById("btnAlertaCadastro").click();
+          return false;
+        }
+        // calculo do primeiro dígito verificador
+        let soma = 0;
+        for (let i = 0; i < 9; i++) {
+          soma += parseInt(cpf[i]) * (10 - i);
+        }
+        let resto = (soma * 10) % 11;
+        resto = resto === 10 || resto === 11 ? 0 : resto;
+        if (resto !== parseInt(cpf[9])) {
+          this.resposta = false;
+          this.mensagemErro = "Informe um CPF válido";
+          document.getElementById("btnAlertaCadastro").click();
+          return false;
+        }
+        // calculo do segundo dígito verificador
+        soma = 0;
+        for (let i = 0; i < 10; i++) {
+          soma += parseInt(cpf[i]) * (11 - i);
+        }
+        resto = (soma * 10) % 11;
+        resto = resto === 10 || resto === 11 ? 0 : resto;
+        if (resto !== parseInt(cpf[10])) {
+          this.resposta = false;
+          this.mensagemErro = "Informe um CPF válido";
+          document.getElementById("btnAlertaCadastro").click();
+          return false;
+        }
+
+        return true;
+      }
+    },
+    async validarCnpj() {
+      if (this.cnpj !== '' && this.cnpj.length > 0) {
+        const cnpjFormatado = this.limparMascaraValores(this.cnpj);
+        try {
+          const response = await axios.get(`https://brasilapi.com.br/api/cnpj/v1/${cnpjFormatado}`);
+          this.cnpj = response.data.cnpj;
+          return true;
+        } catch (error) {
+          this.mensagemErro = "Houve um erro ao validar o CNPJ informado";
+          this.resposta = false;
+          document.getElementById("btnAlertaCadastro").click();
+          return false;
+        }
+      }
+      this.mensagemErro = "Informe um CNPJ válido";
+      this.resposta = false;
+      document.getElementById("btnAlertaCadastro").click();
+      return false;
     }
   }
 };
@@ -426,8 +363,8 @@ export default {
 }
 
 .signup-card {
-  margin: 0 auto; 
-  width: auto; 
+  margin: 0 auto;
+  width: auto;
   max-width: 1200px;
 }
 
