@@ -1,73 +1,29 @@
 <template>
-  <div class="text pa-4">
-    <div>
-      <v-btn class="primary bg-purple-darken-2" @click="dialog = true">
-        Contacte-nos!
-      </v-btn>
-    </div>
+  <div>
+    <v-btn class="mt-3" color="deep-purple-accent-3" variant="outlined" @click="dialog = true">
+      Contacte-nos!
+    </v-btn>
 
-    <v-dialog v-model="dialog" max-width="400" class="modal-container">
-      <v-card class="form-container">
-        <!-- Botão "X" para fechar o modal -->
-        <v-btn
-          icon
-          @click="dialog = false"
-          class="close-btn"
-          style="position: absolute; top: 10px; right: 10px; background: transparent; elevation: 0;"
-          variant= "plain"
-          :ripple= "false"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-
+    <v-dialog v-model="dialog" max-width="400">
+      <v-btn @click="dialog = false" icon="mdi-close" size="x-small" class="mb-2 text-end"></v-btn>
+      <v-card class="pa-10">        
         <v-form fast-fail @submit.prevent="sendMessage">
-          <div class="text-center mb-4">
-            <img class="carreiras-logo" src="../../assets/logo.png" />
+          <h2 class="text-center mb-5">Fale Conosco</h2>
+
+          <div>
+            <v-text-field v-model="email" :rules="emailRules" label="Insira seu e-mail" solo dense
+              hint="Exemplo@gmail.com"></v-text-field>
+            <v-textarea v-model="message" :rules="messageRules" label="Digite aqui o motivo do seu contato" solo dense
+              class="mb-2" counter :counter-value="message.length"></v-textarea>
           </div>
-          <v-divider class="mb-4"></v-divider>
 
-          <p class="text-center" style="font-size: 25px">
-            Estamos ansiosos para ouvir você!
-          </p>
-
-          <v-divider class="mb-4"></v-divider>
-
-          <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="Email"
-            solo
-            dense
-            class="mb-2"
-            hint="Exemplo@gmail.com"
-            background-color="#f7f7f7"
-          ></v-text-field>
-
-          <v-textarea
-            v-model="message"
-            :rules="messageRules"
-            label="Mensagem"
-            solo
-            dense
-            class="mb-2"
-            counter
-            :counter-value="message.length"
-            background-color="#f7f7f7"
-          ></v-textarea>
-
-          <v-btn
-            class="mt-2 primary bg-purple-darken-2"
-            type="submit"
-            block
-            :loading="loading"
-          >
+          <v-btn color="deep-purple-accent-3" type="submit" block :loading="loading">
             <v-icon>mdi-send</v-icon> Enviar Mensagem
           </v-btn>
 
           <v-alert v-if="success" type="success" class="mt-4">
             Thank you for reaching out! We'll get back to you soon.
           </v-alert>
-
           <v-alert v-if="error" type="error" class="mt-4">
             Oops, something went wrong. Please try again!
           </v-alert>

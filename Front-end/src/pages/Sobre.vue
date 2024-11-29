@@ -23,7 +23,7 @@
 
   <v-divider></v-divider>
 
-  <div id="pilares" class="d-flex justify-center align-center pa-10 flex-wrap ga-5" style="min-height: 70vh;">
+  <div id="pilares" class="d-flex justify-center align-center pa-10 flex-column ga-5" style="min-height: 70vh;">
     <div class="d-flex flex-column align-center">
       <h5 class="text-uppercase bg-deep-purple-accent-3 px-2 rounded">Nossos Pilares</h5>
       <h1>Propósito e Compromisso</h1>
@@ -84,24 +84,22 @@
 
   <v-divider></v-divider>
 
-  <div class="d-flex justify-center align-center pa-10 flex-wrap ga-5" style="min-height: 70vh;">
+  <div class="d-flex justify-center align-center pa-10 flex-column ga-15" style="min-height: 70vh;">
     <div class="d-flex flex-column align-center">
       <h5 class="text-uppercase bg-deep-purple-accent-3 px-2 rounded">Nossa Equipe</h5>
       <h1>Conheça os profissionais que fazem tudo acontecer</h1>
     </div>
-    <v-row class="membros-equipe" justify="space-between">
-      <v-col v-for="(member, index) in equipe" :key="index" cols="12" md="3" class="membro-equipe">
-        <v-hover v-slot:default="{ isHovering }">
-          <v-card :elevation="isHovering ? 8 : 2" class="text-center team-card">
-            <v-avatar size="90" class="my-2">
-              <v-img :alt="member.name" :src="member.photo"></v-img>
-            </v-avatar>
-            <v-card-title>{{ member.name }}</v-card-title>
-            <v-card-text>{{ member.position }}</v-card-text>
-          </v-card>
-        </v-hover>
+    <div class="d-flex flex-wrap">
+      <v-col v-for="(member, index) in equipe" :key="index" cols="12" md="3">
+        <v-card class="text-center" style="min-height: 230px;">
+          <v-avatar size="90" class="my-2">
+            <v-img :alt="member.name" :src="member.photo"></v-img>
+          </v-avatar>
+          <v-card-title>{{ member.name }}</v-card-title>
+          <v-card-text>{{ member.position }}</v-card-text>
+        </v-card>
       </v-col>
-    </v-row>
+    </div>
   </div>
 
   <Footer />
@@ -137,7 +135,7 @@ export default {
           name: "Felipe Wisbeck",
           position: "Desenvolvedor Front-End",
           photo: "https://cdn.vuetifyjs.com/images/john.jpg",
-        }        
+        }
       ],
       faq: [
         {
