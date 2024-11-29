@@ -192,9 +192,11 @@ export default {
       (v) => /.+@.+\..+/.test(v) || 'E-mail precisa ser válido',
       (v) => v.length <= 254 || "E-mail deve ter no máximo 254 caracteres"],
       telefoneRules: [(v) => !!v || 'Telefone requerido',
-      (v) => v.length == 14 || "Telefone deve ter pelo menos 14 caracteres"],
+      (v) => v.length == 14 || "Telefone deve ter pelo menos 14 caracteres",
+      (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um telefone válido"],
       celularRules: [(v) => !!v || 'Celular requerido',
-      (v) => v.length == 15 || "Celular deve ter pelo menos 15 caracteres"],
+      (v) => v.length == 15 || "Celular deve ter pelo menos 15 caracteres",
+      (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"],
       cnpjRules: [(v) => !!v || 'CNPJ requerido'],
       inscricaoEstadualRules: [(v) => !!v || 'Inscrição estadual requerida'],
       cepRules: [(v) => !!v || 'CEP requerido',
@@ -226,46 +228,48 @@ export default {
   },
   methods: {
     async enviarCadastro(event) {
-      const dados = await event;
+      if (this.validarCpf() && this.validarCnpj()) {
+        const dados = await event;
 
-      if (dados.valid === true) {
-        this.cnpj = this.limparMascaraValores(this.cnpj);
-        this.celular = this.limparMascaraValores(this.celular);
-        this.telefone = this.limparMascaraValores(this.telefone);
-        this.inscricaoEstadual = this.limparMascaraValores(this.inscricaoEstadual);
-        this.cpfResponsavel = this.limparMascaraValores(this.cpfResponsavel);
-        try {
-          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/empresa/create`,
-            {
-              razaoSocial: this.razaoSocial,
-              nomeFantasia: this.nomeFantasia,
-              email: this.email,
-              telefone: this.telefone,
-              celular: this.celular,
-              cnpj: this.cnpj,
-              inscricaoEstadual: this.inscricaoEstadual,
-              cep: this.cep,
-              numero: this.numero,
-              complemento: this.complemento,
-              endereco: this.endereco,
-              bairro: this.bairro,
-              cidade: this.cidade,
-              estado: this.estado,
-              responsavelLegal: this.responsavelLegal,
-              cpfResponsavel: this.cpfResponsavel,
-              contatoRA: this.contatoRA,
-              senha: this.senha
-            }
-          );
+        if (dados.valid === true) {
+          this.cnpj = this.limparMascaraValores(this.cnpj);
+          this.celular = this.limparMascaraValores(this.celular);
+          this.telefone = this.limparMascaraValores(this.telefone);
+          this.inscricaoEstadual = this.limparMascaraValores(this.inscricaoEstadual);
+          this.cpfResponsavel = this.limparMascaraValores(this.cpfResponsavel);
+          try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/empresa/create`,
+              {
+                razaoSocial: this.razaoSocial,
+                nomeFantasia: this.nomeFantasia,
+                email: this.email,
+                telefone: this.telefone,
+                celular: this.celular,
+                cnpj: this.cnpj,
+                inscricaoEstadual: this.inscricaoEstadual,
+                cep: this.cep,
+                numero: this.numero,
+                complemento: this.complemento,
+                endereco: this.endereco,
+                bairro: this.bairro,
+                cidade: this.cidade,
+                estado: this.estado,
+                responsavelLegal: this.responsavelLegal,
+                cpfResponsavel: this.cpfResponsavel,
+                contatoRA: this.contatoRA,
+                senha: this.senha
+              }
+            );
 
-          this.resposta = true;
-          console.log("Cadastro bem sucedido!", response.data);
-          document.getElementById("btnAlertaCadastro").click();
-        } catch (error) {
-          this.resposta = false;
-          console.error("Erro no cadastro", error.response.data.error);
-          this.mensagemErro = error.response.data.error;
-          document.getElementById("btnAlertaCadastro").click();
+            this.resposta = true;
+            console.log("Cadastro bem sucedido!", response.data);
+            document.getElementById("btnAlertaCadastro").click();
+          } catch (error) {
+            this.resposta = false;
+            console.error("Erro no cadastro", error.response.data.error);
+            this.mensagemErro = error.response.data.error;
+            document.getElementById("btnAlertaCadastro").click();
+          }
         }
       }
     },
@@ -292,7 +296,6 @@ export default {
       return valor;
     },
     validarCpf() {
-      // TODO chamar os métodos antes de enviar o formulário
       if (this.cpfResponsavel !== '' && this.cpfResponsavel.length === 14) {
         let cpf = this.cpfResponsavel
         cpf = cpf.replace(/\D/g, '');

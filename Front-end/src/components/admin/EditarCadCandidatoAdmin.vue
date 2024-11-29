@@ -46,7 +46,7 @@
                   <v-row>
                     <v-col cols="12" sm="3" md="3" lg="3">
                       <v-text-field v-model="form.cpf" :rules="cpfRules" label="CPF" v-mask="'###.###.###-##'"
-                        variant="underlined"></v-text-field>
+                        :disabled="true" variant="underlined"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="3" md="3" lg="3">
                       <v-text-field v-model="form.cep" :rules="cepRules" label="CEP"
@@ -167,10 +167,12 @@ export default {
       telefoneRules: [
         (v) => !!v || "Telefone requerido",
         (v) => v.length >= 14 || "Telefone deve ter pelo menos 14 caracteres",
+        (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"
       ],
       celularRules: [
         (v) => !!v || "Celular requerido",
         (v) => v.length >= 15 || "Celular deve ter pelo menos 15 caracteres",
+        (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"
       ],
       cpfRules: [
         (v) => !!v || "CPF requerido",

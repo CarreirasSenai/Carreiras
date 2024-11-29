@@ -38,7 +38,7 @@
                     <v-row>
                       <v-col cols="12" sm="3" md="3" lg="3">
                         <v-text-field v-model="form.cnpj" :rules="cnpjRules" label="CNPJ" variant="underlined"
-                          v-mask="'##.###.###/####-##'"></v-text-field>
+                          v-mask="'##.###.###/####-##'" :disabled="true"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="3" md="3" lg="3">
                         <v-text-field v-model="form.inscricaoEstadual" :rules="inscricaoEstadualRules"
@@ -81,7 +81,7 @@
                           label="Responsável legal" variant="underlined"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6" lg="6">
-                        <v-text-field v-model="form.cpfResponsavel" :rules="cpfResponsavelRules"
+                        <v-text-field :disabled="true" v-model="form.cpfResponsavel" :rules="cpfResponsavelRules"
                           v-mask="'###.###.###-##'" label="CPF do responsável legal"
                           variant="underlined"></v-text-field>
                       </v-col>
@@ -174,10 +174,12 @@ export default {
       telefoneRules: [
         (v) => !!v || "Telefone requerido",
         (v) => v.length >= 14 || "Telefone deve ter pelo menos 14 caracteres",
+        (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"
       ],
       celularRules: [
         (v) => !!v || "Celular requerido",
         (v) => v.length >= 15 || "Celular deve ter pelo menos 15 caracteres",
+        (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"
       ],
       cnpjRules: [
         (v) => !!v || "CNPJ requerido",

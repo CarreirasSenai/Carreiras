@@ -23,7 +23,8 @@
           </v-row>
           <v-row>
             <v-col cols="12" md="6">
-              <v-text-field v-model="form.cpf" :rules="cpfRules" label="CPF" variant="underlined"></v-text-field>
+              <v-text-field v-model="form.cpf" v-mask="'###.###.###-##'" :rules="cpfRules" label="CPF"
+                variant="underlined" @blur="validarCpf"></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
               <v-text-field v-model="form.celular" :rules="cellphoneRules" label="Celular"
@@ -106,19 +107,18 @@ export default {
         (v) => v.length <= 254 || "E-mail deve ter no máximo 254 caracteres",
       ],
       cpfRules: [
-        (v) => !!v || "Cpf requerido",
-        (v) => v.length === 11 || "Celular deve ter pelo menos 10 caracteres",
-        (v) => /^\d+$/.test(v) || "Celular deve conter apenas números",
+        (v) => !!v || "CPF Requerido",
+        (v) => v.length === 14 || "CPF deve ter 14 caracteres",
       ],
       cellphoneRules: [
         (v) => !!v || "Celular requerido",
-        (v) => v.length >= 10 || "Celular deve ter pelo menos 10 caracteres",
-        (v) => /^\d+$/.test(v) || "Celular deve conter apenas números",
+        (v) => v.length >= 10 || "Celular deve ter pelo menos 15 caracteres",
+        (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"
       ],
       phoneRules: [
         (v) => !!v || "Telefone requerido",
-        (v) => v.length >= 10 || "Telefone deve ter pelo menos 10 caracteres",
-        (v) => /^\d+$/.test(v) || "Telefone deve conter apenas números",
+        (v) => v.length >= 10 || "Telefone deve ter pelo menos 14 caracteres",
+        (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"
       ],
       passwordRules: [
         (v) => !!v || "Senha Requerida",
@@ -154,27 +154,64 @@ export default {
 
   methods: {
     async createUser(event) {
-      console.clear();
-      const dados = await event;
+      if (this.validarCpf()) {
+        console.clear();
+        const dados = await event;
 
-      // alert(JSON.stringify(dados, null, 2))
+        // alert(JSON.stringify(dados, null, 2))
 
-      if (dados.valid === true) {
-        console.log(this.form);
+        if (dados.valid === true) {
+          console.log(this.form);
 
-        try {
-          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/create`, {
-            dados: this.form,
-          }, { withCredentials: true });
+          try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/create`, {
+              dados: this.form,
+            }, { withCredentials: true });
 
-          console.log(response.data);
-          this.MostrarUsuarios();
-          this.dialog = false;
+            console.log(response.data);
+            this.MostrarUsuarios();
+            this.dialog = false;
 
-        } catch (error) {
-          console.error('Erro', error.response.data);
-          this.mensagem = error.response.data.error;
+          } catch (error) {
+            console.error('Erro', error.response.data);
+            this.mensagem = error.response.data.error;
+          }
         }
+      }
+    },
+    validarCpf() {
+      if (this.form.cpf !== '' && this.form.cpf.length === 14) {
+        let cpf = this.cpf
+        cpf = cpf.replace(/\D/g, '');
+
+        if (/^(\d)\1+$/.test(cpf)) {
+          alert("Informe um CPF válido.")
+          return false;
+        }
+        // calculo do primeiro dígito verificador
+        let soma = 0;
+        for (let i = 0; i < 9; i++) {
+          soma += parseInt(cpf[i]) * (10 - i);
+        }
+        let resto = (soma * 10) % 11;
+        resto = resto === 10 || resto === 11 ? 0 : resto;
+        if (resto !== parseInt(cpf[9])) {
+          alert("Informe um CPF válido.")
+          return false;
+        }
+        // calculo do segundo dígito verificador
+        soma = 0;
+        for (let i = 0; i < 10; i++) {
+          soma += parseInt(cpf[i]) * (11 - i);
+        }
+        resto = (soma * 10) % 11;
+        resto = resto === 10 || resto === 11 ? 0 : resto;
+        if (resto !== parseInt(cpf[10])) {
+          alert("Informe um CPF válido.")
+          return false;
+        }
+
+        return true;
       }
     }
   },

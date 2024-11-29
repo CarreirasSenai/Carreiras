@@ -20,7 +20,7 @@
             <v-row>
               <v-col cols="12" md="6">
                 <v-text-field v-model="form.cpf" :rules="cpfRules" label="CPF" variant="underlined"
-                  v-mask="'###.###.###-##'"></v-text-field>
+                  v-mask="'###.###.###-##'" :disabled="true"></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
                 <v-text-field v-model="form.celular" :rules="cellphoneRules" label="Celular" variant="underlined"
@@ -122,10 +122,12 @@ export default {
       cellphoneRules: [
         (v) => !!v || "Celular requerido",
         (v) => v.length >= 15 || "Celular deve ter pelo menos 15 caracteres",
+        (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"
       ],
       phoneRules: [
         (v) => !!v || "Telefone requerido",
-        (v) => v.length >= 10 || "Telefone deve ter pelo menos 10 caracteres",
+        (v) => v.length >= 14 || "Telefone deve ter pelo menos 14 caracteres",
+        (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"
       ],
       geral: [
         (v) => !!v || "Escolha uma opção",

@@ -46,7 +46,7 @@
               <v-row>
                 <v-col cols="12" sm="3" md="3" lg="3">
                   <v-text-field v-mask="'###.###.###-##'" v-model="cpf" :rules="cpfRules" label="CPF" bg-color="#F7F7F7"
-                    density="compact"></v-text-field>
+                    density="compact" @blur="validarCpf"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="3" md="3" lg="3">
                   <v-text-field v-model="cep" :rules="confirmcepRules" label="CEP" bg-color="#F7F7F7" density="compact"
@@ -137,7 +137,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
-            <v-btn text="Entrar na Conta" @click="isActive.value = false" to="/login?resposta=candidato" class="bg-purple-darken-4">
+            <v-btn text="Entrar na Conta" @click="isActive.value = false" to="/login?resposta=candidato"
+              class="bg-purple-darken-4">
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -198,10 +199,12 @@ export default {
       cellphoneRules: [
         (v) => !!v || "Celular requerido",
         (v) => v.length == 15 || "Celular deve ter pelo menos 15 caracteres",
+        (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"
       ],
       phoneRules: [
         (v) => !!v || "Telefone requerido",
         (v) => v.length == 14 || "Telefone deve ter pelo menos 14 caracteres",
+        (v) => !/^(\d)\1+$/.test(v.replace(/\D/g, '')) || "Informe um celular válido"
       ],
 
       cpfRules: [
@@ -262,37 +265,39 @@ export default {
   },
   methods: {
     async enviarCadastro() {
-      this.cpf = this.limparMascaraValores(this.cpf);
-      this.phone = this.limparMascaraValores(this.phone);
-      this.cellphone = this.limparMascaraValores(this.cellphone);
-      try {
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/candidato/create`, {
-          nomeSocial: this.nomeSocial,
-          nomeCompleto: this.nomeCompleto,
-          email: this.email,
-          phone: this.phone,
-          cellphone: this.cellphone,
-          cpf: this.cpf,
-          cep: this.cep,
-          rua: this.rua,
-          numCasa: this.numCasa,
-          complemento: this.complemento,
-          bairro: this.bairro,
-          cidade: this.cidade,
-          estado: this.estado,
-          password: this.password,
-          profissao: this.profissao,
-          area: this.area
-        });
+      if (this.validarCpf()) {
+        this.cpf = this.limparMascaraValores(this.cpf);
+        this.phone = this.limparMascaraValores(this.phone);
+        this.cellphone = this.limparMascaraValores(this.cellphone);
+        try {
+          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/candidato/create`, {
+            nomeSocial: this.nomeSocial,
+            nomeCompleto: this.nomeCompleto,
+            email: this.email,
+            phone: this.phone,
+            cellphone: this.cellphone,
+            cpf: this.cpf,
+            cep: this.cep,
+            rua: this.rua,
+            numCasa: this.numCasa,
+            complemento: this.complemento,
+            bairro: this.bairro,
+            cidade: this.cidade,
+            estado: this.estado,
+            password: this.password,
+            profissao: this.profissao,
+            area: this.area
+          });
 
-        this.resposta = true;
-        console.log("Cadastro bem-sucedido", response.data);
-        document.getElementById("btnAlertaCadastro").click();
-      } catch (error) {
-        this.resposta = false;
-        console.error("Erro no cadastro", error.response.data.error);
-        this.mensagemErro = error.response.data.error;
-        document.getElementById("btnAlertaCadastro").click();
+          this.resposta = true;
+          console.log("Cadastro bem-sucedido", response.data);
+          document.getElementById("btnAlertaCadastro").click();
+        } catch (error) {
+          this.resposta = false;
+          console.error("Erro no cadastro", error.response.data.error);
+          this.mensagemErro = error.response.data.error;
+          document.getElementById("btnAlertaCadastro").click();
+        }
       }
     },
     limparMascaraValores(valor) {
@@ -315,6 +320,47 @@ export default {
           console.log("Houve um erro ao validar o CEP. Erro: ", error);
           alert("Erro ao processar o CEP. Envie um cep válido ou tente novamente.")
         }
+      }
+    },
+    validarCpf() {
+      if (this.cpf !== '' && this.cpf.length === 14) {
+        let cpf = this.cpf
+        cpf = cpf.replace(/\D/g, '');
+
+        if (/^(\d)\1+$/.test(cpf)) {
+          this.resposta = false;
+          this.mensagemErro = "Informe um CPF válido";
+          document.getElementById("btnAlertaCadastro").click();
+          return false;
+        }
+        // calculo do primeiro dígito verificador
+        let soma = 0;
+        for (let i = 0; i < 9; i++) {
+          soma += parseInt(cpf[i]) * (10 - i);
+        }
+        let resto = (soma * 10) % 11;
+        resto = resto === 10 || resto === 11 ? 0 : resto;
+        if (resto !== parseInt(cpf[9])) {
+          this.resposta = false;
+          this.mensagemErro = "Informe um CPF válido";
+          document.getElementById("btnAlertaCadastro").click();
+          return false;
+        }
+        // calculo do segundo dígito verificador
+        soma = 0;
+        for (let i = 0; i < 10; i++) {
+          soma += parseInt(cpf[i]) * (11 - i);
+        }
+        resto = (soma * 10) % 11;
+        resto = resto === 10 || resto === 11 ? 0 : resto;
+        if (resto !== parseInt(cpf[10])) {
+          this.resposta = false;
+          this.mensagemErro = "Informe um CPF válido";
+          document.getElementById("btnAlertaCadastro").click();
+          return false;
+        }
+
+        return true;
       }
     }
   },
